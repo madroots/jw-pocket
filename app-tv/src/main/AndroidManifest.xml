@@ -15,6 +15,7 @@
 
         <activity
             android:name=".MainActivity"
+            android:theme="@style/Theme.JwPocketTv.Starting"
             android:exported="true"
             android:launchMode="singleTask"
             android:screenOrientation="landscape"

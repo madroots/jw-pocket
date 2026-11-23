@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Launcher icon foreground and splash icon: a phone in a suit's breast pocket. Flat colors only (also
+     inflated on Android 6 for the splash). PopOutSplash.kt draws the same shapes; keep them in step. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Phone, hidden below the pocket mouth (it's inside the pocket). -->
+    <group>
+        <clip-path android:pathData="M0,68.19L108,57.81L108,0L0,0Z" />
+        <group android:name="phone" android:pivotX="54" android:pivotY="49.5" android:rotation="-8">
+            <path android:fillColor="#FF0B0C10" android:pathData="M45,26.5H63A5,5 0,0 1 68,31.5V67.5A5,5 0,0 1 63,72.5H45A5,5 0,0 1 40,67.5V31.5A5,5 0,0 1 45,26.5Z" />
+            <path android:fillColor="#FFFF3D5A" android:pathData="M45.4,28.5H62.6A3.4,3.4 0,0 1 66,31.9V67.1A3.4,3.4 0,0 1 62.6,70.5H45.4A3.4,3.4 0,0 1 42,67.1V31.9A3.4,3.4 0,0 1 45.4,28.5Z" />
+            <path android:fillColor="#FFFFFFFF" android:pathData="M51.27,39.80Q51.27,38.00 52.84,38.89L59.39,42.61Q60.95,43.50 59.39,44.39L52.84,48.11Q51.27,49.00 51.27,47.20Z" />
+            <path android:fillColor="#FF0B0C10" android:pathData="M50.8,30.5H57.2A0.8,0.8 0,0 1 58,31.3V31.3A0.8,0.8 0,0 1 57.2,32.1H50.8A0.8,0.8 0,0 1 50,31.3V31.3A0.8,0.8 0,0 1 50.8,30.5Z" />
+        </group>
+    </group>
+    <!-- Breast-pocket welt: shadow, band, top highlight, mouth shadow, stitching. -->
+    <path android:fillColor="#59000000" android:pathData="M28.6,68.1L80.6,63.1L81.4,71.3L29.4,76.3Z" />
+    <path android:fillColor="#FF2F3852" android:pathData="M28,65.5L80,60.5L80.8,68.7L28.8,73.7Z" />
+    <path android:fillColor="#2EFFFFFF" android:pathData="M28,65.5L80,60.5L80.15,62.1L28.15,67.1Z" />
+    <path android:fillColor="#73000000" android:pathData="M28,65.1L80,60.1L80,61.5L28,66.5Z" />
+    <path android:pathData="M30.50,67.70L32.37,67.52M33.89,67.37L35.76,67.19M37.29,67.04L39.15,66.86M40.68,66.71L42.54,66.53M44.07,66.39L45.94,66.20M47.46,66.06L49.33,65.88M50.86,65.73L52.72,65.55M54.25,65.40L56.12,65.22M57.64,65.07L59.51,64.89M61.04,64.74L62.90,64.56M64.43,64.41L66.29,64.23M67.82,64.09L69.69,63.91M71.21,63.76L73.08,63.58M74.61,63.43L76.47,63.25" android:strokeColor="#73FFFFFF" android:strokeWidth="0.8" android:strokeLineCap="round" />
+</vector>

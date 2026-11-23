@@ -19,6 +19,8 @@ rootProject.name = "jw-pocket"
 include(":core")
 // Shared playback engine: Media3 session service, player connection, downloads.
 include(":media")
+// Shared look: launcher icon and the launch (splash) animation.
+include(":brand")
 // The two apps. Each one only holds its own screens.
 include(":app-phone")
 include(":app-tv")

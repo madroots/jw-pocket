@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Themed (monochrome) icon: phone outline with its play button, in the pocket. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <group>
+        <clip-path android:pathData="M0,66.79L108,56.41L108,0L0,0Z" />
+        <group android:pivotX="54" android:pivotY="49.5" android:rotation="-8">
+            <path android:fillColor="#FFFFFFFF" android:fillType="evenOdd" android:pathData="M45,26.5H63A5,5 0,0 1 68,31.5V67.5A5,5 0,0 1 63,72.5H45A5,5 0,0 1 40,67.5V31.5A5,5 0,0 1 45,26.5ZM45.4,28.5H62.6A3.4,3.4 0,0 1 66,31.9V67.1A3.4,3.4 0,0 1 62.6,70.5H45.4A3.4,3.4 0,0 1 42,67.1V31.9A3.4,3.4 0,0 1 45.4,28.5Z" />
+            <path android:fillColor="#FFFFFFFF" android:pathData="M51.27,39.80Q51.27,38.00 52.84,38.89L59.39,42.61Q60.95,43.50 59.39,44.39L52.84,48.11Q51.27,49.00 51.27,47.20Z" />
+        </group>
+    </group>
+    <path android:fillColor="#FFFFFFFF" android:pathData="M28,65.5L80,60.5L80.8,68.7L28.8,73.7Z" />
+</vector>

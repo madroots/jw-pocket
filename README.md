@@ -31,6 +31,7 @@ The successor of JW TV, rebuilt from scratch with a clean structure and a shared
 |---|---|
 | `core` | API client, response cache, database (progress, favorites), settings, repositories and the screen logic both apps share. No UI. |
 | `media` | The playback engine: a Media3 session service that owns the player, the connection screens use to control it, and downloads. |
+| `brand` | The launcher icon (a phone in a suit's breast pocket) and the launch animation: the phone pops out of the pocket and flies at you until its screen becomes the app. |
 | `app-phone` | Phone screens (Jetpack Compose, Material 3). |
 | `app-tv` | TV screens (Jetpack Compose for TV). |
 

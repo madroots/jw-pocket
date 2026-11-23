@@ -24,6 +24,7 @@ import androidx.core.util.Consumer
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import app.jwpocket.brand.PocketSplash
 import app.jwpocket.media.PlaybackService
 import app.jwpocket.media.pocketGraph
 import app.jwpocket.phone.ui.LocalPocket
@@ -57,6 +58,7 @@ class MainActivity : ComponentActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val splash = PocketSplash.install(this, savedInstanceState)
         enableEdgeToEdge(
             statusBarStyle = SystemBarStyle.dark(android.graphics.Color.TRANSPARENT),
             navigationBarStyle = SystemBarStyle.dark(android.graphics.Color.TRANSPARENT),
@@ -68,11 +70,14 @@ class MainActivity : ComponentActivity() {
         addOnPictureInPictureModeChangedListener(pipListener)
 
         setContent {
-            PocketTheme {
-                CompositionLocalProvider(LocalPocket provides pocket) {
-                    if (ui.inPictureInPicture) PipContent()
-                    else PhoneRoot(ui, onPictureInPicture = ::enterPip, onToggleFullscreen = ::setFullscreen)
+            Box(Modifier.fillMaxSize()) {
+                PocketTheme {
+                    CompositionLocalProvider(LocalPocket provides pocket) {
+                        if (ui.inPictureInPicture) PipContent()
+                        else PhoneRoot(ui, onPictureInPicture = ::enterPip, onToggleFullscreen = ::setFullscreen)
+                    }
                 }
+                splash.Overlay()
             }
         }
 

@@ -5,5 +5,12 @@
         <item name="android:windowFullscreen">true</item>
         <item name="android:colorAccent">#FFFF3D5A</item>
     </style>
+
+    <!-- Launch: the system splash (icon on the suit color), then MainActivity plays the pop-out animation. -->
+    <style name="Theme.JwPocketTv.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/brand_splash_background</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name="postSplashScreenTheme">@style/Theme.JwPocketTv</item>
+    </style>
     <color name="tv_background">#FF0B0C10</color>
 </resources>

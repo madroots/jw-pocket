@@ -42,6 +42,7 @@ android {
 
 dependencies {
     implementation(project(":media"))
+    implementation(project(":brand"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity.compose)
