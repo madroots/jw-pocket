@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="listen_button">Anhören</string>
+    <string name="listen_saver_title">Daten sparen beim Zuhören</string>
+    <string name="listen_saver_note">Bei ausgeschaltetem Bildschirm oder im Hintergrund werden Videos in der kleinsten Qualität gestreamt. Die Schaltfläche „Anhören“ im Player macht das jederzeit.</string>
+    <string name="listen_saver_mobile">Bei mobilen Daten</string>
+    <string name="listen_saver_always">Immer</string>
+    <string name="listen_saver_off">Aus</string>
+</resources>

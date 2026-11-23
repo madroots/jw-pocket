@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="listen_button">Ascultă</string>
+    <string name="listen_saver_title">Economisește date când doar asculți</string>
+    <string name="listen_saver_note">Cu ecranul stins sau cu aplicația în fundal, videoclipurile sunt transmise la cea mai mică calitate. Butonul Ascultă din player face asta oricând.</string>
+    <string name="listen_saver_mobile">Pe date mobile</string>
+    <string name="listen_saver_always">Întotdeauna</string>
+    <string name="listen_saver_off">Dezactivat</string>
+</resources>

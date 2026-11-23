@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="listen_button">Ouvir</string>
+    <string name="listen_saver_title">Economizar dados ao só ouvir</string>
+    <string name="listen_saver_note">Com a tela desligada ou o app em segundo plano, os vídeos são transmitidos na menor qualidade. O botão Ouvir no player faz isso a qualquer momento.</string>
+    <string name="listen_saver_mobile">Nos dados móveis</string>
+    <string name="listen_saver_always">Sempre</string>
+    <string name="listen_saver_off">Desativado</string>
+</resources>

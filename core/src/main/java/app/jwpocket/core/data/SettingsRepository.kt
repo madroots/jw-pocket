@@ -34,6 +34,8 @@ data class Settings(
     val notifyBroadcasting: Boolean = true,
     /** Phone: notify when a new Governing Body update (or other news video) appears. */
     val notifyNews: Boolean = true,
+    /** When only the sound plays (background, the car), stream the smallest quality. */
+    val listenSaver: ListenSaver = ListenSaver.MobileData,
 ) {
     /** Languages pinned at the top of subtitle lists: used before, then English. */
     val subtitleShortcuts: List<String> get() = (recentSubtitleLanguages + ENGLISH).distinct()
@@ -42,6 +44,16 @@ data class Settings(
         const val ENGLISH = "E"
         const val SUBTITLES_OFF = "off"
     }
+}
+
+/** When to stream the smallest quality while only the sound is heard. */
+enum class ListenSaver {
+    Off,
+    /** Only on metered connections (mobile data, hotspots). */
+    MobileData,
+    Always;
+
+    fun applies(metered: Boolean): Boolean = this == Always || (this == MobileData && metered)
 }
 
 class SettingsRepository(context: Context) {
@@ -94,6 +106,7 @@ class SettingsRepository(context: Context) {
         autoplayNext = prefs.getBoolean("autoplay_next", true),
         notifyBroadcasting = prefs.getBoolean("notify_broadcasting", true),
         notifyNews = prefs.getBoolean("notify_news", true),
+        listenSaver = prefs.getString("listen_saver", null)?.let { name -> ListenSaver.entries.firstOrNull { it.name == name } } ?: ListenSaver.MobileData,
     )
 
     private fun write(s: Settings) {
@@ -112,6 +125,7 @@ class SettingsRepository(context: Context) {
             .putBoolean("autoplay_next", s.autoplayNext)
             .putBoolean("notify_broadcasting", s.notifyBroadcasting)
             .putBoolean("notify_news", s.notifyNews)
+            .putString("listen_saver", s.listenSaver.name)
             .apply()
     }
 

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="listen_button">Écouter</string>
+    <string name="listen_saver_title">Économiser les données en écoute seule</string>
+    <string name="listen_saver_note">Écran éteint ou application en arrière-plan, les vidéos sont diffusées dans la qualité la plus basse. Le bouton Écouter du lecteur le fait à tout moment.</string>
+    <string name="listen_saver_mobile">Avec les données mobiles</string>
+    <string name="listen_saver_always">Toujours</string>
+    <string name="listen_saver_off">Désactivé</string>
+</resources>

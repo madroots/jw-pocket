@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="listen_button">Escuchar</string>
+    <string name="listen_saver_title">Ahorrar datos al solo escuchar</string>
+    <string name="listen_saver_note">Con la pantalla apagada o la aplicación en segundo plano, los videos se transmiten en la calidad más baja. El botón Escuchar del reproductor lo hace en cualquier momento.</string>
+    <string name="listen_saver_mobile">Con datos móviles</string>
+    <string name="listen_saver_always">Siempre</string>
+    <string name="listen_saver_off">Desactivado</string>
+</resources>

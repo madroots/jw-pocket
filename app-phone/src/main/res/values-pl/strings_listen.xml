@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="listen_button">Słuchaj</string>
+    <string name="listen_saver_title">Oszczędzaj dane podczas słuchania</string>
+    <string name="listen_saver_note">Przy wyłączonym ekranie lub aplikacji w tle filmy są przesyłane w najniższej jakości. Przycisk Słuchaj w odtwarzaczu włącza to w każdej chwili.</string>
+    <string name="listen_saver_mobile">Przy danych komórkowych</string>
+    <string name="listen_saver_always">Zawsze</string>
+    <string name="listen_saver_off">Wyłączone</string>
+</resources>

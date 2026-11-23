@@ -27,6 +27,9 @@ class NetworkMonitor(context: Context) {
         }
     }
 
+    /** True on mobile data, hotspots and other connections the person pays by use for. */
+    fun isMetered(): Boolean = runCatching { cm.isActiveNetworkMetered }.getOrDefault(true)
+
     private fun isOnlineNow(): Boolean = runCatching {
         val caps = cm.getNetworkCapabilities(cm.activeNetwork) ?: return false
         caps.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)

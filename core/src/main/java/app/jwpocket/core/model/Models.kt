@@ -74,6 +74,11 @@ data class Video(
             ?: playable.minByOrNull { it.height }
     }
 
+    /** The smallest playable file, for when only the sound is heard. */
+    fun smallestFile(): MediaFile? =
+        files.orEmpty().filter { !it.progressiveDownloadURL.isNullOrBlank() && it.height > 0 }.minByOrNull { it.height }
+            ?: file(null)
+
     /** Highest quality label, for "HD"/"4K" chips. */
     val maxHeight: Int get() = files.orEmpty().maxOfOrNull { it.height } ?: 0
 

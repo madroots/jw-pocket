@@ -52,6 +52,10 @@ data class PlaybackState(
     /** Sleep timer end (epoch ms), or -1 for "end of this video", or null. */
     val sleepAt: Long? = null,
     val error: String? = null,
+    /** Streaming the smallest quality because only the sound is heard. */
+    val listening: Boolean = false,
+    /** The person turned listening on with the Listen button. */
+    val listenByHand: Boolean = false,
 ) {
     val active: Boolean get() = video != null
     val progress: Float get() = if (durationMs > 0) (positionMs.toFloat() / durationMs).coerceIn(0f, 1f) else 0f
@@ -80,6 +84,41 @@ class PlayerConnection internal constructor(
     private var connecting: CompletableDeferred<MediaController>? = null
     private var ticker: Job? = null
     private var sleepJob: Job? = null
+
+    /** The Listen button: smallest quality whatever the setting says. */
+    private var listenByHand = false
+    /** The app is out of sight while playing, so only the sound is heard. */
+    private var inBackground = false
+
+    /** Whether new and reloaded items should stream the smallest quality. */
+    private fun listening(): Boolean =
+        listenByHand || (inBackground && core.settings.current.listenSaver.applies(core.network.isMetered()))
+
+    /** The Listen button in the player. */
+    fun setListen(on: Boolean) {
+        listenByHand = on
+        _state.update { it.copy(listenByHand = on) }
+        applyListening()
+    }
+
+    /**
+     * The app went out of sight (true) or came back (false) while the video
+     * keeps playing as sound only; with the data-saving setting on, the stream
+     * drops to the smallest quality meanwhile.
+     */
+    fun setInBackground(background: Boolean) {
+        inBackground = background
+        applyListening()
+    }
+
+    /** Reloads the queue when its quality no longer matches; downloads are untouched. */
+    private fun applyListening() {
+        val listening = listening()
+        val c = _controller.value ?: return
+        val current = c.currentMediaItem?.let { PlayRequest.from(it) } ?: return
+        if (current.listening == listening) return
+        reload { it.copy(listening = listening) }
+    }
 
     /** Connects to the service ahead of time, so the first tap plays at once. */
     fun warmUp() {
@@ -151,8 +190,14 @@ class PlayerConnection internal constructor(
         reload { it.copy(subtitleChoice = core.settings.current.subtitleLanguage) }
     }
 
-    /** Switches quality of the current video, keeping the position. */
-    fun setQuality(quality: String?) = reloadCurrent { it.copy(quality = quality) }
+    /** Switches quality of the current video, keeping the position; picking one ends Listen. */
+    fun setQuality(quality: String?) {
+        listenByHand = false
+        _state.update { it.copy(listenByHand = false) }
+        val listening = listening()
+        val currentId = _controller.value?.currentMediaItem?.mediaId
+        reload { if (it.video.id == currentId) it.copy(quality = quality, listening = listening) else it.copy(listening = listening) }
+    }
 
     /** Pauses after [minutes]; 0 = at the end of this video; null = off. */
     fun setSleepTimer(minutes: Int?) {
@@ -177,20 +222,7 @@ class PlayerConnection internal constructor(
         val s = core.settings.current
         // A copy loaded in this session may carry fields an older saved copy lacks.
         val fresh = core.library.findLoaded(video.id) ?: video
-        return PlayRequest(fresh, s.languageCode, quality ?: s.streamQuality, s.subtitleLanguage)
-    }
-
-    /** Rebuilds the current video's item with [change], same position. */
-    private fun reloadCurrent(change: (PlayRequest) -> PlayRequest) = command { c ->
-        val index = c.currentMediaItemIndex
-        val item = c.currentMediaItem ?: return@command
-        val request = PlayRequest.from(item) ?: return@command
-        val position = c.currentPosition
-        val wasPlaying = c.playWhenReady
-        val items = (0 until c.mediaItemCount).map { i -> if (i == index) change(request).toMediaItem() else c.getMediaItemAt(i) }
-        c.setMediaItems(items, index, position)
-        c.prepare()
-        if (wasPlaying) c.play()
+        return PlayRequest(fresh, s.languageCode, quality ?: s.streamQuality, s.subtitleLanguage, listening())
     }
 
     /** Rebuilds every queued item with [change] (e.g. a new subtitle language). */
@@ -257,6 +289,7 @@ class PlayerConnection internal constructor(
                 subtitleLanguage = extras?.getString(PlayRequest.KEY_SUBTITLE_LANGUAGE),
                 subtitleMissing = extras?.getBoolean(PlayRequest.KEY_SUBTITLE_MISSING) == true,
                 fromDownload = extras?.getBoolean(PlayRequest.KEY_FROM_DOWNLOAD) == true,
+                listening = item?.let { PlayRequest.from(it)?.listening } == true && extras?.getBoolean(PlayRequest.KEY_FROM_DOWNLOAD) != true,
                 speed = player.playbackParameters.speed,
                 error = if (player.playerError == null) null else old.error,
                 sleepAt = if (old.sleepAt == END_OF_VIDEO && player.playbackState == Player.STATE_ENDED) null else old.sleepAt,

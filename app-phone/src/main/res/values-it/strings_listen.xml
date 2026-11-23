@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="listen_button">Ascolta</string>
+    <string name="listen_saver_title">Risparmia dati quando ascolti soltanto</string>
+    <string name="listen_saver_note">Con lo schermo spento o l\'app in background, i video vengono trasmessi nella qualità più bassa. Il pulsante Ascolta nel lettore lo fa in qualsiasi momento.</string>
+    <string name="listen_saver_mobile">Con dati mobili</string>
+    <string name="listen_saver_always">Sempre</string>
+    <string name="listen_saver_off">Disattivato</string>
+</resources>

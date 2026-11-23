@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="listen_button">Слушать</string>
+    <string name="listen_saver_title">Экономить трафик при прослушивании</string>
+    <string name="listen_saver_note">При выключенном экране или в фоновом режиме видео транслируются в самом низком качестве. Кнопка «Слушать» в плеере включает это в любой момент.</string>
+    <string name="listen_saver_mobile">В мобильной сети</string>
+    <string name="listen_saver_always">Всегда</string>
+    <string name="listen_saver_off">Выкл.</string>
+</resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Player button: stream the smallest quality, for listening only. -->
+    <string name="listen_button">Listen</string>
+    <!-- Settings: when to stream the smallest quality while only the sound is heard. -->
+    <string name="listen_saver_title">Save data when only listening</string>
+    <string name="listen_saver_note">With the screen off or the app in the background, videos stream in the smallest quality. The Listen button in the player does it anytime.</string>
+    <string name="listen_saver_mobile">On mobile data</string>
+    <string name="listen_saver_always">Always</string>
+    <string name="listen_saver_off">Off</string>
+</resources>

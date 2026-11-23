@@ -16,6 +16,7 @@ The successor of JW TV, rebuilt from scratch with a clean structure and a shared
 - **Downloaded videos are marked everywhere** with a green check; "Ready offline" row on Home and an offline banner when there's no internet.
 - **New-video notifications** for the monthly JW Broadcasting program and Governing Body updates, each with its own switch in Settings; tapping one opens the video.
 - **Android Auto**: browse Continue watching, Downloads, Favorites, Latest and every category in the car and listen (sound only).
+- **Saves data when only listening**: with the screen off or the app in the background (and in the car), videos stream in the smallest quality, on mobile data by default; the **Listen** button in the player does it anytime.
 
 **TV**
 - New **Downloads**, **Favorites**, **History** and **Search** pages in the sidebar; downloaded videos marked on every card.

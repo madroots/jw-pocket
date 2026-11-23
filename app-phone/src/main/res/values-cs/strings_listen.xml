@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="listen_button">Poslech</string>
+    <string name="listen_saver_title">Šetřit data při pouhém poslechu</string>
+    <string name="listen_saver_note">Se zhasnutou obrazovkou nebo s aplikací na pozadí se videa streamují v nejnižší kvalitě. Tlačítko Poslech v přehrávači to zapne kdykoli.</string>
+    <string name="listen_saver_mobile">Na mobilních datech</string>
+    <string name="listen_saver_always">Vždy</string>
+    <string name="listen_saver_off">Vypnuto</string>
+</resources>

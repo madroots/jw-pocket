@@ -43,6 +43,7 @@ import androidx.compose.material.icons.rounded.FavoriteBorder
 import androidx.compose.material.icons.rounded.Forward10
 import androidx.compose.material.icons.rounded.Fullscreen
 import androidx.compose.material.icons.rounded.FullscreenExit
+import androidx.compose.material.icons.rounded.Headphones
 import androidx.compose.material.icons.rounded.HighQuality
 import androidx.compose.material.icons.rounded.KeyboardArrowDown
 import androidx.compose.material.icons.rounded.Pause
@@ -282,6 +283,11 @@ private fun NowPlayingInfo(state: PlaybackState, onSheet: (Sheet) -> Unit) {
             Pill(if (cc != null) Icons.Rounded.ClosedCaption else Icons.Rounded.ClosedCaptionDisabled,
                 if (cc != null) pocket.core.languages.name(cc) else stringResource(R.string.player_subtitles_off), highlighted = cc != null) { onSheet(Sheet.Subtitles) }
             Pill(Icons.Rounded.HighQuality, state.quality ?: stringResource(R.string.player_quality)) { onSheet(Sheet.Quality) }
+            if (!state.fromDownload) {
+                Pill(Icons.Rounded.Headphones, stringResource(R.string.listen_button), highlighted = state.listening) {
+                    connection.setListen(!state.listenByHand)
+                }
+            }
             val download = marks.download
             when {
                 download == null -> Pill(Icons.Rounded.Download, stringResource(R.string.common_download)) {

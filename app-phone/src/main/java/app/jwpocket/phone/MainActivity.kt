@@ -145,11 +145,18 @@ class MainActivity : ComponentActivity() {
         updatePipParams()
     }
 
+    override fun onStart() {
+        super.onStart()
+        graph.media.player.setInBackground(false)
+    }
+
     override fun onStop() {
         super.onStop()
         val inPip = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && isInPictureInPictureMode
-        if (!inPip && !isChangingConfigurations && !graph.core.settings.current.backgroundPlayback) {
-            graph.media.player.pause()
+        if (!inPip && !isChangingConfigurations) {
+            // Out of sight: pause, or keep playing as sound only (smallest quality if the setting says so).
+            if (graph.core.settings.current.backgroundPlayback) graph.media.player.setInBackground(true)
+            else graph.media.player.pause()
         }
     }
 

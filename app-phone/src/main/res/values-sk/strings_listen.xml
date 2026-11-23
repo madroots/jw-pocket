@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="listen_button">Počúvať</string>
+    <string name="listen_saver_title">Šetriť dáta pri počúvaní</string>
+    <string name="listen_saver_note">Pri vypnutej obrazovke alebo s aplikáciou na pozadí sa videá streamujú v najnižšej kvalite. Tlačidlo Počúvať v prehrávači to zapne kedykoľvek.</string>
+    <string name="listen_saver_mobile">Na mobilných dátach</string>
+    <string name="listen_saver_always">Vždy</string>
+    <string name="listen_saver_off">Vypnuté</string>
+</resources>

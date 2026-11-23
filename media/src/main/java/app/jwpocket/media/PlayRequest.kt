@@ -20,6 +20,8 @@ data class PlayRequest(
     val quality: String?,
     /** See Settings.subtitleLanguage. */
     val subtitleChoice: String?,
+    /** Only the sound is heard: stream the smallest quality (saves data). */
+    val listening: Boolean = false,
 ) {
     fun toMediaItem(): MediaItem {
         val extras = Bundle().apply {
@@ -27,6 +29,7 @@ data class PlayRequest(
             putString(KEY_LANGUAGE, language)
             putString(KEY_QUALITY, quality)
             putString(KEY_SUBTITLE_CHOICE, subtitleChoice)
+            putBoolean(KEY_LISTENING, listening)
         }
         return MediaItem.Builder()
             .setMediaId(video.id)
@@ -40,6 +43,7 @@ data class PlayRequest(
         internal const val KEY_LANGUAGE = "pocket.language"
         internal const val KEY_QUALITY = "pocket.quality"
         internal const val KEY_SUBTITLE_CHOICE = "pocket.subtitle_choice"
+        internal const val KEY_LISTENING = "pocket.listening"
 
         /** Filled in by the service on the playable item. */
         const val KEY_PLAYING_QUALITY = "pocket.playing_quality"
@@ -57,6 +61,7 @@ data class PlayRequest(
                 language = extras.getString(KEY_LANGUAGE) ?: "E",
                 quality = extras.getString(KEY_QUALITY),
                 subtitleChoice = extras.getString(KEY_SUBTITLE_CHOICE),
+                listening = extras.getBoolean(KEY_LISTENING),
             )
         }
     }

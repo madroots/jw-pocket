@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="listen_button">Hallgatás</string>
+    <string name="listen_saver_title">Adatforgalom spórolása csak hallgatáskor</string>
+    <string name="listen_saver_note">Kikapcsolt képernyőnél vagy háttérben futó alkalmazásnál a videók a legkisebb minőségben töltődnek. A lejátszó Hallgatás gombjával bármikor bekapcsolhatod.</string>
+    <string name="listen_saver_mobile">Mobiladat-kapcsolaton</string>
+    <string name="listen_saver_always">Mindig</string>
+    <string name="listen_saver_off">Ki</string>
+</resources>

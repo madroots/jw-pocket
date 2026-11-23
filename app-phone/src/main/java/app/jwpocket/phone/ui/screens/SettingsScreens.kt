@@ -52,6 +52,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import app.jwpocket.core.data.LibraryRepository
+import app.jwpocket.core.data.ListenSaver
 import app.jwpocket.core.data.Settings
 import app.jwpocket.core.model.Language
 import app.jwpocket.core.util.AppLanguage
@@ -109,6 +110,7 @@ fun SettingsScreen(
         item { Toggle(stringResource(R.string.settings_pip_title), stringResource(R.string.settings_pip_detail), settings.autoPictureInPicture) { on -> repo.update { it.copy(autoPictureInPicture = on) } } }
         item { Toggle(stringResource(R.string.settings_autoplay_title), stringResource(R.string.settings_autoplay_detail), settings.autoplayNext) { on -> repo.update { it.copy(autoplayNext = on) } } }
         item { Entry(stringResource(R.string.settings_streaming_quality), settings.streamQuality ?: stringResource(R.string.quality_auto)) { pick = "stream" } }
+        item { Entry(stringResource(R.string.listen_saver_title), listenSaverLabel(settings.listenSaver)) { pick = "listen" } }
 
         item { Group(stringResource(R.string.settings_group_subtitles)) }
         item {
@@ -163,8 +165,22 @@ fun SettingsScreen(
             item { ChoiceRow(stringResource(R.string.quality_ask_every_time), settings.downloadQuality == null) { repo.update { it.copy(downloadQuality = null) }; pick = null } }
             items(QUALITIES) { q -> ChoiceRow(q, settings.downloadQuality == q) { repo.update { it.copy(downloadQuality = q) }; pick = null } }
         }
+        "listen" -> ChoiceSheet(stringResource(R.string.listen_saver_title), stringResource(R.string.listen_saver_note), { pick = null }) {
+            items(listOf(ListenSaver.MobileData, ListenSaver.Always, ListenSaver.Off)) { option ->
+                ChoiceRow(listenSaverLabel(option), settings.listenSaver == option) { repo.update { it.copy(listenSaver = option) }; pick = null }
+            }
+        }
     }
 }
+
+@Composable
+private fun listenSaverLabel(saver: ListenSaver): String = stringResource(
+    when (saver) {
+        ListenSaver.MobileData -> R.string.listen_saver_mobile
+        ListenSaver.Always -> R.string.listen_saver_always
+        ListenSaver.Off -> R.string.listen_saver_off
+    }
+)
 
 @Composable
 private fun appLanguageLabel(chosen: String?): String =

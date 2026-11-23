@@ -138,9 +138,11 @@ internal class LibraryTree(private val context: Context) {
             ?: graph.core.library.findLoaded(videoId)
             ?: listed.values.firstNotNullOfOrNull { list -> list.firstOrNull { it.id == videoId } }
 
+    /** Car and other browsers play sound only: smallest quality, as the data-saving setting allows. */
     private fun request(video: Video): PlayRequest {
         val settings = graph.core.settings.current
-        return PlayRequest(graph.core.library.findLoaded(video.id) ?: video, settings.languageCode, null, settings.subtitleLanguage)
+        val listening = settings.listenSaver.applies(graph.core.network.isMetered())
+        return PlayRequest(graph.core.library.findLoaded(video.id) ?: video, settings.languageCode, null, settings.subtitleLanguage, listening)
     }
 
     /** Videos of a folder that lists videos, or null for any other id. */

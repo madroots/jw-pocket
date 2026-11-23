@@ -241,7 +241,7 @@ class PlaybackService : MediaLibraryService() {
             quality = download.quality
             uri = (video.file(download.quality)?.progressiveDownloadURL ?: "").toUri()
         } else {
-            val file = video.file(request.quality)
+            val file = if (request.listening) video.smallestFile() else video.file(request.quality)
             quality = file?.label
             uri = (file?.progressiveDownloadURL ?: "").toUri()
         }

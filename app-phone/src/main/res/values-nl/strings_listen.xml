@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="listen_button">Luisteren</string>
+    <string name="listen_saver_title">Data besparen als je alleen luistert</string>
+    <string name="listen_saver_note">Met het scherm uit of de app op de achtergrond worden video\'s in de laagste kwaliteit gestreamd. De knop Luisteren in de speler doet dat altijd.</string>
+    <string name="listen_saver_mobile">Bij mobiele data</string>
+    <string name="listen_saver_always">Altijd</string>
+    <string name="listen_saver_off">Uit</string>
+</resources>
