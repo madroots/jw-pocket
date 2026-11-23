@@ -2,6 +2,7 @@ package app.jwpocket.media
 
 import android.annotation.SuppressLint
 import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -17,6 +18,7 @@ import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import androidx.media3.session.DefaultMediaNotificationProvider
 import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaSessionService
+import app.jwpocket.core.util.withAppLanguage
 import app.jwpocket.media.download.DownloadsRepository
 import com.google.common.util.concurrent.ListenableFuture
 import kotlinx.coroutines.CoroutineScope
@@ -43,6 +45,8 @@ class PlaybackService : MediaSessionService() {
     private val graph get() = pocketGraph
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
     private var session: MediaSession? = null
+
+    override fun attachBaseContext(base: Context) = super.attachBaseContext(base.withAppLanguage())
 
     override fun onCreate() {
         super.onCreate()

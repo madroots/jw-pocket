@@ -1,5 +1,7 @@
 package app.jwpocket.core.data
 
+import app.jwpocket.core.R
+import app.jwpocket.core.util.AppText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -25,6 +27,7 @@ data class UpdateUiState(
 class UpdateController(
     private val updates: UpdateRepository,
     private val installer: UpdateInstaller,
+    private val text: AppText,
     private val scope: CoroutineScope,
     private val currentVersion: String,
 ) {
@@ -33,18 +36,18 @@ class UpdateController(
 
     fun check(manual: Boolean = false) {
         scope.launch {
-            if (manual) _state.update { it.copy(message = "Checking for updates…") }
+            if (manual) _state.update { it.copy(message = text.get(R.string.update_checking)) }
             updates.check(currentVersion)
                 .onSuccess { update ->
                     _state.update {
                         when {
                             update != null -> it.copy(available = update, dismissed = false, message = null)
-                            manual -> it.copy(message = "JW Pocket is up to date ($currentVersion).")
+                            manual -> it.copy(message = text.get(R.string.update_up_to_date, currentVersion))
                             else -> it
                         }
                     }
                 }
-                .onFailure { if (manual) _state.update { it.copy(message = "Couldn't check for updates.") } }
+                .onFailure { if (manual) _state.update { it.copy(message = text.get(R.string.update_check_failed)) } }
         }
     }
 
@@ -58,7 +61,7 @@ class UpdateController(
             val file = installer.download(update.apkUrl) { p -> _state.update { it.copy(downloadProgress = p) } }
             _state.update { it.copy(downloadProgress = null, dismissed = true) }
             if (file == null) {
-                _state.update { it.copy(message = "Update download failed. Please try again.") }
+                _state.update { it.copy(message = text.get(R.string.update_download_failed)) }
                 return@launch
             }
             delay(300) // let the progress dialog close first; some TVs drop the installer otherwise

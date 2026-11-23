@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_app_language">Jazyk aplikace</string>
+    <string name="settings_video_language">Jazyk videí</string>
+    <string name="settings_subtitle_language">Jazyk titulků</string>
+    <string name="settings_device_language">Jazyk zařízení (%1$s)</string>
+    <string name="settings_streaming_quality">Kvalita streamování</string>
+    <string name="settings_download_quality">Kvalita stahování</string>
+    <string name="settings_ask_every_time">Pokaždé se zeptat</string>
+    <string name="settings_download_quality_note">Nižší kvalita šetří místo.</string>
+    <string name="settings_autoplay">Automaticky přehrát další video</string>
+    <string name="settings_wifi_only">Stahovat jen přes Wi-Fi</string>
+    <string name="settings_on">Zapnuto</string>
+    <string name="settings_off">Vypnuto</string>
+    <string name="settings_check_updates">Zkontrolovat aktualizace</string>
+    <string name="settings_version">Verze %1$s</string>
+    <string name="settings_disclaimer">JW Pocket je osobní, nekomerční projekt, který není nijak spojen se Svědky Jehovovými ani jimi schválen. Videa patří jejich vlastníkům a pocházejí z veřejné videoslužby jw.org.</string>
+    <string name="settings_subtitles_note">Zobrazí se u každého videa, které v něm bylo zveřejněno.</string>
+    <string name="settings_recently_used">Nedávno použité</string>
+
+    <string name="cascade_app_title">I videa v jazyce %1$s?</string>
+    <string name="cascade_app_text">Videa (i jejich titulky) můžeš sledovat také v jazyce %1$s. Každý jazyk můžeš později změnit tady.</string>
+    <string name="cascade_app_yes">Videa i titulky</string>
+    <string name="cascade_app_videos_only">Jen videa</string>
+    <string name="cascade_app_no">Jen aplikaci</string>
+    <string name="cascade_video_title">I titulky v jazyce %1$s?</string>
+    <string name="cascade_video_text">Titulky máš nastavené na jazyk %1$s. Zobrazovat raději titulky v jazyce videí?</string>
+    <string name="cascade_video_yes">Ano</string>
+    <string name="cascade_video_no">Ponechat jazyk %1$s</string>
+</resources>

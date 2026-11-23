@@ -42,6 +42,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
 import app.jwpocket.core.data.LibraryRepository
@@ -49,6 +51,7 @@ import app.jwpocket.core.data.Settings
 import app.jwpocket.core.model.Language
 import app.jwpocket.core.model.Video
 import app.jwpocket.core.util.formatBytes
+import app.jwpocket.phone.R
 import app.jwpocket.phone.ui.theme.Pocket
 
 /**
@@ -128,14 +131,14 @@ fun SubtitleSheet(
         LibraryRepository.normalize(it.vernacular).contains(q) || LibraryRepository.normalize(it.name).contains(q)
     }
     ChoiceSheet(
-        "Subtitles", "Your choice is remembered for the next videos.", onDismiss,
+        stringResource(R.string.player_subtitles), stringResource(R.string.player_subtitles_hint), onDismiss,
         header = if (others.size > SEARCH_FROM) {
             {
                 TextField(
                     value = query, onValueChange = { query = it }, singleLine = true,
-                    placeholder = { Text("Search languages") },
+                    placeholder = { Text(stringResource(R.string.player_search_languages)) },
                     leadingIcon = { Icon(Icons.Rounded.Search, null) },
-                    trailingIcon = { if (query.isNotEmpty()) IconButton(onClick = { query = "" }) { Icon(Icons.Rounded.Close, "Clear") } },
+                    trailingIcon = { if (query.isNotEmpty()) IconButton(onClick = { query = "" }) { Icon(Icons.Rounded.Close, stringResource(R.string.common_clear_text)) } },
                     shape = RoundedCornerShape(14.dp),
                     colors = TextFieldDefaults.colors(
                         focusedContainerColor = Pocket.SurfaceHigh, unfocusedContainerColor = Pocket.SurfaceHigh,
@@ -147,9 +150,9 @@ fun SubtitleSheet(
         } else null,
     ) {
         if (q.isEmpty()) {
-            item { ChoiceRow("Off", selected == Settings.SUBTITLES_OFF) { onPick(Settings.SUBTITLES_OFF) } }
+            item { ChoiceRow(stringResource(R.string.player_subtitles_off_choice), selected == Settings.SUBTITLES_OFF) { onPick(Settings.SUBTITLES_OFF) } }
             if (ownLanguageName != null) {
-                item { ChoiceRow(ownLanguageName, selected == null, "Same as the video") { onPick(null) } }
+                item { ChoiceRow(ownLanguageName, selected == null, stringResource(R.string.player_subtitles_same_as_video)) { onPick(null) } }
             }
         }
         if (shown.isNotEmpty()) {
@@ -159,7 +162,7 @@ fun SubtitleSheet(
                     lang.vernacular,
                     selected == lang.code,
                     detail = when {
-                        lang.code in pinned -> "Recently used · ${lang.name}"
+                        lang.code in pinned -> stringResource(R.string.player_subtitles_recently_used, lang.name)
                         lang.vernacular != lang.name -> lang.name
                         else -> null
                     },
@@ -168,7 +171,7 @@ fun SubtitleSheet(
         } else {
             item {
                 Text(
-                    if (q.isEmpty()) "This video has no other subtitle languages." else "No language matches \"$query\".",
+                    if (q.isEmpty()) stringResource(R.string.player_subtitles_no_others) else stringResource(R.string.player_subtitles_no_match, query),
                     style = MaterialTheme.typography.bodySmall,
                     color = Pocket.TextSecondary,
                     modifier = Modifier.padding(24.dp),
@@ -176,7 +179,7 @@ fun SubtitleSheet(
             }
         }
         if (q.isEmpty() && showingLanguage == null && selected != Settings.SUBTITLES_OFF && ownLanguageName == null) {
-            item { Text("No subtitles for this video.", color = Pocket.TextSecondary, modifier = Modifier.padding(24.dp)) }
+            item { Text(stringResource(R.string.player_subtitles_none), color = Pocket.TextSecondary, modifier = Modifier.padding(24.dp)) }
         }
     }
 }
@@ -196,7 +199,7 @@ fun QualitySheet(
     onDismiss: () -> Unit,
 ) {
     ChoiceSheet(title, onDismiss = onDismiss) {
-        if (showAuto) item { ChoiceRow("Auto", selected == null, "Best for this screen, up to 720p") { onPick(null) } }
+        if (showAuto) item { ChoiceRow(stringResource(R.string.player_quality_auto), selected == null, stringResource(R.string.player_quality_auto_detail)) { onPick(null) } }
         items(video.qualities.reversed()) { q ->
             val size = video.file(q)?.filesize
             ChoiceRow(
@@ -204,7 +207,7 @@ fun QualitySheet(
                 selected.equals(q, ignoreCase = true),
                 detail = size?.let { formatBytes(it) },
                 trailing = if (downloadedQuality.equals(q, ignoreCase = true)) {
-                    { Icon(Icons.Rounded.CheckCircle, "Downloaded", tint = Pocket.Success) }
+                    { Icon(Icons.Rounded.CheckCircle, stringResource(R.string.common_downloaded), tint = Pocket.Success) }
                 } else null,
             ) { onPick(q) }
         }
@@ -213,18 +216,18 @@ fun QualitySheet(
 
 @Composable
 fun SpeedSheet(selected: Float, onPick: (Float) -> Unit, onDismiss: () -> Unit) {
-    ChoiceSheet("Playback speed", onDismiss = onDismiss) {
+    ChoiceSheet(stringResource(R.string.player_speed_title), onDismiss = onDismiss) {
         items(listOf(0.5f, 0.75f, 1f, 1.25f, 1.5f, 1.75f, 2f)) { s ->
-            ChoiceRow(if (s == 1f) "Normal" else "${s}×", selected == s) { onPick(s) }
+            ChoiceRow(if (s == 1f) stringResource(R.string.player_speed_normal) else "${s}×", selected == s) { onPick(s) }
         }
     }
 }
 
 @Composable
 fun SleepSheet(active: Boolean, onPick: (Int?) -> Unit, onDismiss: () -> Unit) {
-    ChoiceSheet("Sleep timer", "Playback pauses by itself.", onDismiss) {
-        if (active) item { ChoiceRow("Turn off timer", false) { onPick(null) } }
-        item { ChoiceRow("End of this video", false) { onPick(0) } }
-        items(listOf(5, 15, 30, 45, 60, 90)) { m -> ChoiceRow("$m minutes", false) { onPick(m) } }
+    ChoiceSheet(stringResource(R.string.player_sleep_timer), stringResource(R.string.player_sleep_hint), onDismiss) {
+        if (active) item { ChoiceRow(stringResource(R.string.player_sleep_turn_off), false) { onPick(null) } }
+        item { ChoiceRow(stringResource(R.string.player_sleep_end_of_video), false) { onPick(0) } }
+        items(listOf(5, 15, 30, 45, 60, 90)) { m -> ChoiceRow(pluralStringResource(R.plurals.player_sleep_minutes, m, m), false) { onPick(m) } }
     }
 }

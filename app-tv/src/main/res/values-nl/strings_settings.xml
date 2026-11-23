@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_app_language">App-taal</string>
+    <string name="settings_video_language">Videotaal</string>
+    <string name="settings_subtitle_language">Ondertitelingstaal</string>
+    <string name="settings_device_language">Apparaattaal (%1$s)</string>
+    <string name="settings_streaming_quality">Streamingkwaliteit</string>
+    <string name="settings_download_quality">Downloadkwaliteit</string>
+    <string name="settings_ask_every_time">Elke keer vragen</string>
+    <string name="settings_download_quality_note">Een lagere kwaliteit bespaart ruimte.</string>
+    <string name="settings_autoplay">Volgende video automatisch afspelen</string>
+    <string name="settings_wifi_only">Alleen via wifi downloaden</string>
+    <string name="settings_on">Aan</string>
+    <string name="settings_off">Uit</string>
+    <string name="settings_check_updates">Controleren op updates</string>
+    <string name="settings_version">Versie %1$s</string>
+    <string name="settings_disclaimer">JW Pocket is een persoonlijk, niet-commercieel project, niet verbonden aan of goedgekeurd door Jehovah\'s Getuigen. Video\'s zijn eigendom van hun eigenaars en komen van de openbare videodienst van jw.org.</string>
+    <string name="settings_subtitles_note">Wordt getoond bij elke video met ondertiteling in die taal.</string>
+    <string name="settings_recently_used">Recent gebruikt</string>
+
+    <string name="cascade_app_title">Video\'s ook in %1$s?</string>
+    <string name="cascade_app_text">Je kunt de video\'s (en hun ondertiteling) ook in %1$s bekijken. Elke taal kun je hier later nog wijzigen.</string>
+    <string name="cascade_app_yes">Video\'s en ondertiteling</string>
+    <string name="cascade_app_videos_only">Alleen video\'s</string>
+    <string name="cascade_app_no">Alleen de app</string>
+    <string name="cascade_video_title">Ondertiteling ook in %1$s?</string>
+    <string name="cascade_video_text">Je ondertiteling staat op %1$s. Ondertiteling in plaats daarvan tonen in de taal van de video\'s?</string>
+    <string name="cascade_video_yes">Ja</string>
+    <string name="cascade_video_no">%1$s behouden</string>
+</resources>

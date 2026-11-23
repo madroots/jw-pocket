@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="downloads_channel">Letöltések</string>
+    <string name="downloads_running">Videók letöltése</string>
+    <string name="download_done">Letöltve</string>
+    <string name="download_failed">Sikertelen letöltés</string>
+</resources>

@@ -1,6 +1,7 @@
 package app.jwpocket.phone
 
 import android.app.PictureInPictureParams
+import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
@@ -25,6 +26,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import app.jwpocket.brand.PocketSplash
+import app.jwpocket.core.util.withAppLanguage
 import app.jwpocket.media.PlaybackService
 import app.jwpocket.media.pocketGraph
 import app.jwpocket.phone.ui.LocalPocket
@@ -43,6 +45,9 @@ import kotlinx.coroutines.launch
  * picture-in-picture, keep playing as audio, or pause (Settings).
  */
 class MainActivity : ComponentActivity() {
+
+    // The app's own text in the language chosen in Settings (or the device's).
+    override fun attachBaseContext(newBase: Context) = super.attachBaseContext(newBase.withAppLanguage())
 
     private val graph by lazy { pocketGraph }
     private val ui = PhoneUiState()

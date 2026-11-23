@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="common_play">Odtwórz</string>
+    <string name="common_pause">Wstrzymaj</string>
+    <string name="common_resume">Wznów</string>
+    <string name="common_retry">Ponów</string>
+    <string name="common_cancel">Anuluj</string>
+    <string name="common_close">Zamknij</string>
+    <string name="common_more">Więcej</string>
+    <string name="common_share">Udostępnij</string>
+    <string name="common_see_all">Pokaż wszystko</string>
+    <string name="common_clear_text">Wyczyść</string>
+    <string name="common_download">Pobierz</string>
+    <string name="common_downloaded">Pobrano</string>
+    <string name="common_download_failed">Nie udało się pobrać</string>
+    <string name="common_delete_download">Usuń pobrany plik</string>
+    <string name="common_cancel_download">Anuluj pobieranie</string>
+    <string name="common_paused">Wstrzymano</string>
+    <string name="common_waiting_for_wifi">Oczekiwanie na Wi-Fi</string>
+    <string name="common_watched">Obejrzane</string>
+    <string name="common_saved">W ulubionych</string>
+    <string name="common_favorite">Do ulubionych</string>
+    <string name="common_ready_offline">Dostępne offline</string>
+    <string name="common_offline_cached">Offline: wyświetlana jest ostatnio zapisana wersja.</string>
+    <string name="common_percent">%1$d%%</string>
+
+    <string name="nav_home">Start</string>
+    <string name="nav_browse">Przeglądaj</string>
+    <string name="nav_search">Szukaj</string>
+    <string name="nav_library">Biblioteka</string>
+    <string name="nav_settings">Ustawienia</string>
+    <string name="nav_back">Wstecz</string>
+    <string name="nav_library_language">Język biblioteki</string>
+    <string name="nav_subtitle_language">Język napisów</string>
+
+    <string name="update_available_title">Dostępna aktualizacja: %1$s</string>
+    <string name="update_available_message">Nowa wersja JW Pocket jest gotowa (%1$s).</string>
+    <string name="update_install">Aktualizuj</string>
+    <string name="update_later">Później</string>
+    <string name="update_downloading">Pobieranie aktualizacji</string>
+
+    <string name="home_continue_watching">Oglądaj dalej</string>
+    <string name="home_latest">Najnowsze</string>
+    <string name="home_your_favorites">Twoje ulubione</string>
+    <string name="home_new_badge">NOWOŚĆ</string>
+    <string name="home_offline_title">Jesteś offline</string>
+    <plurals name="home_offline_ready">
+        <item quantity="one">%d pobrany film czeka na obejrzenie.</item>
+        <item quantity="few">%d pobrane filmy czekają na obejrzenie.</item>
+        <item quantity="many">%d pobranych filmów czeka na obejrzenie.</item>
+        <item quantity="other">%d pobranego filmu czeka na obejrzenie.</item>
+    </plurals>
+    <string name="home_offline_empty">Pobierz filmy, aby oglądać je bez internetu.</string>
+
+    <string name="browse_error_library">Nie można wczytać biblioteki</string>
+    <string name="browse_error_category">Nie można wczytać tej kategorii</string>
+
+    <string name="search_placeholder">Filmy, serie, pieśni…</string>
+    <string name="search_browse_categories">Przeglądaj kategorie</string>
+    <string name="search_searching">Przeszukiwanie całej biblioteki…</string>
+    <string name="search_no_results">Brak wyników</string>
+    <string name="search_no_results_hint">Spróbuj innych słów lub sprawdź pisownię.</string>
+    <string name="search_failed">Wyszukiwanie nie powiodło się</string>
+    <plurals name="search_result_count">
+        <item quantity="one">%d film</item>
+        <item quantity="few">%d filmy</item>
+        <item quantity="many">%d filmów</item>
+        <item quantity="other">%d filmu</item>
+    </plurals>
+
+    <string name="library_tab_downloads">Pobrane</string>
+    <string name="library_tab_favorites">Ulubione</string>
+    <string name="library_tab_history">Historia</string>
+    <plurals name="library_downloads_summary">
+        <item quantity="one">%1$d film · %2$s</item>
+        <item quantity="few">%1$d filmy · %2$s</item>
+        <item quantity="many">%1$d filmów · %2$s</item>
+        <item quantity="other">%1$d filmu · %2$s</item>
+    </plurals>
+    <string name="library_free_space">Wolne na tym telefonie: %1$s</string>
+    <string name="library_delete_all">Usuń wszystko</string>
+    <string name="library_wifi_only">Pobieraj tylko przez Wi-Fi</string>
+    <string name="library_downloads_empty_title">Nic jeszcze nie pobrano</string>
+    <string name="library_downloads_empty_body">Dotknij Pobierz przy dowolnym filmie, aby obejrzeć go później bez internetu. Pobrane filmy są wszędzie oznaczone na zielono.</string>
+    <string name="library_find_videos">Znajdź filmy</string>
+    <string name="library_in_progress">W toku</string>
+    <string name="library_delete_all_title">Usunąć wszystkie pobrane?</string>
+    <string name="library_delete_all_message">Zwolnisz %1$s. Filmy możesz później pobrać ponownie.</string>
+    <string name="library_status_downloading">%1$d%% z %2$s</string>
+    <string name="library_status_queued">Czeka na rozpoczęcie</string>
+    <string name="library_status_paused">Wstrzymano przy %1$d%%</string>
+    <string name="library_status_failed">Błąd. Dotknij ⋮, aby ponowić</string>
+    <string name="library_favorites_empty_title">Brak ulubionych</string>
+    <string name="library_favorites_empty_body">Dotknij serca przy filmie, aby go tu zachować.</string>
+    <string name="library_history_empty_title">Nic jeszcze nie obejrzano</string>
+    <string name="library_history_empty_body">Tu pojawiają się rozpoczęte filmy, więc łatwo wrócić do miejsca, w którym przerwano.</string>
+    <string name="library_clear_history">Wyczyść historię</string>
+    <string name="library_clear_history_title">Wyczyścić historię?</string>
+    <string name="library_clear_history_message">Miejsca wznowienia i oznaczenia obejrzanych zostaną usunięte.</string>
+    <string name="library_clear_history_confirm">Wyczyść</string>
+
+    <string name="details_stopped_at">Zatrzymano na %1$s · %2$s</string>
+    <string name="details_start_over">Od początku</string>
+    <string name="details_remove_continue_watching">Usuń z sekcji Oglądaj dalej</string>
+    <string name="details_remove_history">Usuń z historii</string>
+    <string name="details_download_quality">Jakość pobierania</string>
+    <string name="details_download_done">Zapisano na tym telefonie · %1$s · %2$s</string>
+    <string name="details_download_progress">Pobieranie %1$s · %2$d%% z %3$s</string>
+    <string name="details_download_queued">Czeka na pobranie · %1$s</string>
+    <string name="details_download_waiting_wifi">Oczekiwanie na Wi-Fi · %1$s</string>
+    <string name="details_download_paused">Wstrzymano · %1$d%%</string>
+    <string name="details_download_failed">Nie udało się pobrać. Dotknij Ponów.</string>
+
+    <string name="player_minimize">Minimalizuj</string>
+    <string name="player_now_playing">TERAZ ODTWARZANE</string>
+    <string name="player_from_downloads">Z pobranych</string>
+    <string name="player_streaming">Streaming</string>
+    <string name="player_picture_in_picture">Obraz w obrazie</string>
+    <string name="player_up_next">Następne</string>
+    <string name="player_in_this_list">Na tej liście</string>
+    <string name="player_previous">Poprzedni</string>
+    <string name="player_next">Następny</string>
+    <string name="player_back_10">10 sekund do tyłu</string>
+    <string name="player_forward_10">10 sekund do przodu</string>
+    <string name="player_full_screen">Pełny ekran</string>
+    <string name="player_exit_full_screen">Zamknij pełny ekran</string>
+    <string name="player_close">Zamknij odtwarzacz</string>
+    <string name="player_status_error">Nie można odtworzyć</string>
+    <string name="player_status_loading">Wczytywanie…</string>
+    <string name="player_status_playing">Odtwarzanie</string>
+    <string name="player_status_playing_offline">Odtwarzanie offline</string>
+    <string name="player_status_finished">Zakończono</string>
+    <string name="player_status_paused">Wstrzymano</string>
+    <string name="player_subtitles_missing">Brak napisów (%1$s) do tego filmu, wyświetlany jest oryginał.</string>
+    <string name="player_subtitles">Napisy</string>
+    <string name="player_subtitles_off">Napisy wyłączone</string>
+    <string name="player_quality">Jakość</string>
+    <string name="player_speed">Prędkość</string>
+    <string name="player_pill_downloaded">Pobrano · %1$s</string>
+    <string name="player_pill_download_progress">%1$d%% · %2$s</string>
+    <string name="player_remove_download_title">Usunąć pobrany plik?</string>
+    <string name="player_cancel_download_title">Anulować pobieranie?</string>
+    <string name="player_remove_download_message">Zwolni %1$s na tym telefonie. Film nadal można oglądać online.</string>
+    <string name="player_cancel_download_message">Pobrana dotąd część zostanie usunięta.</string>
+    <string name="player_remove_download_confirm">Usuń</string>
+    <string name="player_keep_download">Zachowaj</string>
+    <string name="player_sleep_timer">Wyłącznik czasowy</string>
+    <string name="player_sleep_after_video">Po tym filmie</string>
+    <plurals name="player_sleep_minutes_left">
+        <item quantity="one">Jeszcze %d min</item>
+        <item quantity="few">Jeszcze %d min</item>
+        <item quantity="many">Jeszcze %d min</item>
+        <item quantity="other">Jeszcze %d min</item>
+    </plurals>
+
+    <string name="player_subtitles_hint">Twój wybór zostanie zapamiętany dla kolejnych filmów.</string>
+    <string name="player_search_languages">Szukaj języków</string>
+    <string name="player_subtitles_off_choice">Wyłączone</string>
+    <string name="player_subtitles_same_as_video">Jak w filmie</string>
+    <string name="player_subtitles_recently_used">Ostatnio używany · %1$s</string>
+    <string name="player_subtitles_no_others">Ten film nie ma napisów w innych językach.</string>
+    <string name="player_subtitles_no_match">Żaden język nie pasuje do „%1$s”.</string>
+    <string name="player_subtitles_none">Brak napisów do tego filmu.</string>
+    <string name="player_quality_auto">Automatycznie</string>
+    <string name="player_quality_auto_detail">Najlepsza dla tego ekranu, do 720p</string>
+    <string name="player_speed_title">Prędkość odtwarzania</string>
+    <string name="player_speed_normal">Normalna</string>
+    <string name="player_sleep_hint">Odtwarzanie zatrzyma się samo.</string>
+    <string name="player_sleep_turn_off">Wyłącz wyłącznik czasowy</string>
+    <string name="player_sleep_end_of_video">Koniec tego filmu</string>
+    <plurals name="player_sleep_minutes">
+        <item quantity="one">%d minuta</item>
+        <item quantity="few">%d minuty</item>
+        <item quantity="many">%d minut</item>
+        <item quantity="other">%d minuty</item>
+    </plurals>
+</resources>

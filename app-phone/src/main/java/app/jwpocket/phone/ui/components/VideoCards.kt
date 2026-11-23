@@ -43,6 +43,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -51,6 +53,7 @@ import app.jwpocket.core.util.formatDuration
 import app.jwpocket.core.util.formatTimeLeft
 import app.jwpocket.media.download.DownloadItem
 import app.jwpocket.media.download.DownloadStatus
+import app.jwpocket.phone.R
 import app.jwpocket.phone.ui.LocalVideoActions
 import app.jwpocket.phone.ui.rememberMarks
 import app.jwpocket.phone.ui.theme.Pocket
@@ -96,7 +99,7 @@ fun Thumbnail(
             Box(
                 Modifier.align(Alignment.TopEnd).padding(6.dp).size(22.dp).background(Pocket.Scrim, CircleShape),
                 contentAlignment = Alignment.Center,
-            ) { Icon(Icons.Rounded.Check, "Watched", tint = Color.White, modifier = Modifier.size(14.dp)) }
+            ) { Icon(Icons.Rounded.Check, stringResource(R.string.common_watched), tint = Color.White, modifier = Modifier.size(14.dp)) }
         }
         if (watch != null && watch.canResume) {
             ProgressLine(watch.fraction, Modifier.align(Alignment.BottomCenter))
@@ -117,7 +120,7 @@ fun ProgressLine(fraction: Float, modifier: Modifier = Modifier, height: Dp = 3.
 fun DownloadBadge(item: DownloadItem, modifier: Modifier = Modifier, size: Dp = 24.dp) {
     Box(modifier.size(size).background(Pocket.Scrim, CircleShape), contentAlignment = Alignment.Center) {
         when (item.status) {
-            DownloadStatus.Done -> Icon(Icons.Rounded.CheckCircle, "Downloaded", tint = Pocket.Success, modifier = Modifier.size(size - 4.dp))
+            DownloadStatus.Done -> Icon(Icons.Rounded.CheckCircle, stringResource(R.string.common_downloaded), tint = Pocket.Success, modifier = Modifier.size(size - 4.dp))
             DownloadStatus.Downloading, DownloadStatus.Queued -> CircularProgressIndicator(
                 progress = { item.progress.coerceAtLeast(0.03f) },
                 modifier = Modifier.size(size - 6.dp),
@@ -125,9 +128,9 @@ fun DownloadBadge(item: DownloadItem, modifier: Modifier = Modifier, size: Dp = 
                 color = Color.White,
                 trackColor = Color(0x44FFFFFF),
             )
-            DownloadStatus.Waiting -> Icon(Icons.Rounded.Schedule, "Waiting for Wi-Fi", tint = Color.White, modifier = Modifier.size(size - 8.dp))
-            DownloadStatus.Paused -> Icon(Icons.Rounded.Pause, "Paused", tint = Color.White, modifier = Modifier.size(size - 8.dp))
-            DownloadStatus.Failed -> Icon(Icons.Rounded.ErrorOutline, "Download failed", tint = MaterialTheme.colorScheme.error, modifier = Modifier.size(size - 6.dp))
+            DownloadStatus.Waiting -> Icon(Icons.Rounded.Schedule, stringResource(R.string.common_waiting_for_wifi), tint = Color.White, modifier = Modifier.size(size - 8.dp))
+            DownloadStatus.Paused -> Icon(Icons.Rounded.Pause, stringResource(R.string.common_paused), tint = Color.White, modifier = Modifier.size(size - 8.dp))
+            DownloadStatus.Failed -> Icon(Icons.Rounded.ErrorOutline, stringResource(R.string.common_download_failed), tint = MaterialTheme.colorScheme.error, modifier = Modifier.size(size - 6.dp))
         }
     }
 }
@@ -167,11 +170,11 @@ fun ContinueCard(video: Video, remainingMs: Long, row: List<Video>, modifier: Mo
             Box(
                 Modifier.align(Alignment.Center).size(44.dp).background(Pocket.Scrim, CircleShape),
                 contentAlignment = Alignment.Center,
-            ) { Icon(Icons.Rounded.PlayArrow, "Resume", tint = Color.White, modifier = Modifier.size(28.dp)) }
+            ) { Icon(Icons.Rounded.PlayArrow, stringResource(R.string.common_resume), tint = Color.White, modifier = Modifier.size(28.dp)) }
         }
         Spacer(Modifier.height(8.dp))
         Text(video.title, style = MaterialTheme.typography.bodyMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
-        Text(formatTimeLeft(remainingMs), style = MaterialTheme.typography.bodySmall, color = Pocket.TextSecondary)
+        Text(formatTimeLeft(LocalContext.current, remainingMs), style = MaterialTheme.typography.bodySmall, color = Pocket.TextSecondary)
     }
 }
 
@@ -222,7 +225,7 @@ fun SectionHeader(title: String, modifier: Modifier = Modifier, onSeeAll: (() ->
     ) {
         Text(title, style = MaterialTheme.typography.titleLarge, modifier = Modifier.weight(1f), maxLines = 1, overflow = TextOverflow.Ellipsis)
         if (onSeeAll != null) {
-            Text("See all", style = MaterialTheme.typography.labelLarge, color = Pocket.TextSecondary)
+            Text(stringResource(R.string.common_see_all), style = MaterialTheme.typography.labelLarge, color = Pocket.TextSecondary)
             Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, tint = Pocket.TextSecondary)
         }
     }
@@ -273,6 +276,6 @@ fun EmptyState(icon: androidx.compose.ui.graphics.vector.ImageVector, title: Str
 /** Download icon for list rows: tap target lives with the caller. */
 @Composable
 fun DownloadStateIcon(item: DownloadItem?) {
-    if (item == null) Icon(Icons.Rounded.CloudDownload, "Download", tint = Pocket.TextSecondary)
+    if (item == null) Icon(Icons.Rounded.CloudDownload, stringResource(R.string.common_download), tint = Pocket.TextSecondary)
     else DownloadBadge(item, size = 28.dp)
 }

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Portuguese (Brazil) translation. -->
+<resources>
+    <string name="settings_group_language">Idioma</string>
+    <string name="settings_app_language">Idioma do app</string>
+    <string name="settings_video_language">Idioma dos vídeos</string>
+    <string name="settings_subtitle_language">Idioma das legendas</string>
+    <string name="settings_device_language">Idioma do dispositivo (%1$s)</string>
+    <string name="settings_group_playback">Reprodução</string>
+    <string name="settings_background_title">Continuar tocando em segundo plano</string>
+    <string name="settings_background_detail">Continua como áudio com a tela bloqueada ou em outros apps</string>
+    <string name="settings_pip_title">Picture-in-picture</string>
+    <string name="settings_pip_detail">Reduz o vídeo a uma janela flutuante quando você sai do app</string>
+    <string name="settings_autoplay_title">Reproduzir o próximo vídeo automaticamente</string>
+    <string name="settings_autoplay_detail">Reproduz o próximo vídeo da mesma lista</string>
+    <string name="settings_streaming_quality">Qualidade do streaming</string>
+    <string name="settings_group_subtitles">Legendas</string>
+    <string name="settings_subtitle_size">Tamanho das legendas</string>
+    <string name="settings_group_downloads">Downloads</string>
+    <string name="settings_download_quality">Qualidade do download</string>
+    <string name="settings_wifi_only_title">Só Wi-Fi</string>
+    <string name="settings_wifi_only_detail">Aguarda o Wi-Fi para baixar</string>
+    <string name="settings_manage_downloads_title">Gerenciar downloads</string>
+    <string name="settings_manage_downloads_detail">Ver e excluir vídeos baixados</string>
+    <string name="settings_group_app">App</string>
+    <string name="settings_check_updates">Verificar atualizações</string>
+    <string name="settings_version">Versão %1$s</string>
+    <string name="settings_disclaimer">JW Pocket é um projeto pessoal e não comercial. Não tem vínculo com as Testemunhas de Jeová nem é endossado por elas. Todos os vídeos pertencem aos seus donos e vêm do serviço público de vídeos do jw.org.</string>
+    <string name="quality_auto">Automática</string>
+    <string name="quality_auto_detail">Até 720p</string>
+    <string name="quality_streaming_note">Os vídeos baixados sempre são reproduzidos na qualidade em que foram baixados.</string>
+    <string name="quality_ask_every_time">Perguntar sempre</string>
+    <string name="quality_download_note">Qualidades menores economizam espaço.</string>
+    <string name="subtitles_same_as_video">Igual ao vídeo</string>
+    <string name="subtitles_same_as_video_detail">Legendas no idioma dos vídeos</string>
+    <string name="subtitles_off">Desativadas</string>
+    <string name="subtitles_any_language_note">Qualquer idioma: as legendas aparecem em todos os vídeos que as tiverem, seja qual for o idioma do vídeo.</string>
+    <string name="search_languages">Pesquisar idiomas</string>
+    <string name="cascade_app_title">Vídeos em %1$s também?</string>
+    <string name="cascade_app_text">Você também pode assistir aos vídeos (e às legendas deles) em %1$s. Dá para mudar cada idioma depois em Configurações.</string>
+    <string name="cascade_app_yes">Vídeos e legendas</string>
+    <string name="cascade_app_videos_only">Só os vídeos</string>
+    <string name="cascade_app_no">Só o app</string>
+    <string name="cascade_video_title">Legendas em %1$s também?</string>
+    <string name="cascade_video_text">Suas legendas estão em %1$s. Mostrar as legendas no idioma dos vídeos?</string>
+    <string name="cascade_video_yes">Sim</string>
+    <string name="cascade_video_no">Manter %1$s</string>
+</resources>

@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.jwpocket.core.data.Load
 import app.jwpocket.core.data.dataOrNull
@@ -30,6 +31,7 @@ import app.jwpocket.phone.ui.components.EmptyState
 import app.jwpocket.phone.ui.components.PlaceholderRow
 import app.jwpocket.phone.ui.components.VideoCard
 import app.jwpocket.phone.ui.components.VideoRow
+import app.jwpocket.phone.R
 import app.jwpocket.phone.ui.pocketViewModel
 import app.jwpocket.phone.ui.theme.Pocket
 
@@ -51,7 +53,7 @@ fun BrowseScreen(contentPadding: PaddingValues, onOpenCategory: (Category) -> Un
     ) {
         when (val state = categories) {
             is Load.Ready -> items(state.data, key = { it.key }) { CategoryTile(it) { onOpenCategory(it) } }
-            is Load.Failed -> item(span = { GridItemSpan(maxLineSpan) }) { EmptyState(Icons.Rounded.CloudOff, "Can't load the library", state.message) }
+            is Load.Failed -> item(span = { GridItemSpan(maxLineSpan) }) { EmptyState(Icons.Rounded.CloudOff, stringResource(R.string.browse_error_library), state.message) }
             Load.Loading -> items(8) { CategoryTile(Category(key = "", name = "")) {} }
         }
     }
@@ -67,13 +69,13 @@ fun CategoryScreen(key: String, contentPadding: PaddingValues, onOpenSection: (s
     PullToRefreshBox(isRefreshing = ready?.refreshing == true, onRefresh = vm::refresh, modifier = Modifier.fillMaxSize()) {
         LazyColumn(Modifier.fillMaxSize(), contentPadding = contentPadding) {
             if (ready?.offline == true) item {
-                Text("Offline: showing the last saved copy.", style = MaterialTheme.typography.bodySmall, color = Pocket.TextSecondary, modifier = Modifier.padding(16.dp))
+                Text(stringResource(R.string.common_offline_cached), style = MaterialTheme.typography.bodySmall, color = Pocket.TextSecondary, modifier = Modifier.padding(16.dp))
             }
             when (val state = content) {
                 is Load.Ready -> items(state.data.sections, key = { it.key }) { section ->
                     VideoRow(section.title, section.videos, onSeeAll = if (section.videos.size > 4) ({ onOpenSection(section.key) }) else null)
                 }
-                is Load.Failed -> item { EmptyState(Icons.Rounded.CloudOff, "Can't load this category", state.message) }
+                is Load.Failed -> item { EmptyState(Icons.Rounded.CloudOff, stringResource(R.string.browse_error_category), state.message) }
                 Load.Loading -> items(4) { PlaceholderRow() }
             }
         }

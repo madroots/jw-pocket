@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Italian translation. -->
+<resources>
+    <string name="settings_group_language">Lingua</string>
+    <string name="settings_app_language">Lingua dell\'app</string>
+    <string name="settings_video_language">Lingua dei video</string>
+    <string name="settings_subtitle_language">Lingua dei sottotitoli</string>
+    <string name="settings_device_language">Lingua del dispositivo (%1$s)</string>
+    <string name="settings_group_playback">Riproduzione</string>
+    <string name="settings_background_title">Riproduzione in background</string>
+    <string name="settings_background_detail">Continua come audio con lo schermo bloccato o in altre app</string>
+    <string name="settings_pip_title">Picture in picture</string>
+    <string name="settings_pip_detail">Riduci il video in una finestra mobile quando esci dall\'app</string>
+    <string name="settings_autoplay_title">Riproduci automaticamente il video successivo</string>
+    <string name="settings_autoplay_detail">Riproduci il video successivo dello stesso elenco</string>
+    <string name="settings_streaming_quality">Qualità streaming</string>
+    <string name="settings_group_subtitles">Sottotitoli</string>
+    <string name="settings_subtitle_size">Dimensione sottotitoli</string>
+    <string name="settings_group_downloads">Download</string>
+    <string name="settings_download_quality">Qualità download</string>
+    <string name="settings_wifi_only_title">Solo Wi-Fi</string>
+    <string name="settings_wifi_only_detail">Attendi il Wi-Fi prima di scaricare</string>
+    <string name="settings_manage_downloads_title">Gestisci download</string>
+    <string name="settings_manage_downloads_detail">Visualizza ed elimina i video scaricati</string>
+    <string name="settings_group_app">App</string>
+    <string name="settings_check_updates">Cerca aggiornamenti</string>
+    <string name="settings_version">Versione %1$s</string>
+    <string name="settings_disclaimer">JW Pocket è un progetto personale e non commerciale. Non è affiliato ai Testimoni di Geova né approvato da loro. Tutti i video appartengono ai rispettivi proprietari e provengono dal servizio video pubblico di jw.org.</string>
+    <string name="quality_auto">Automatica</string>
+    <string name="quality_auto_detail">Fino a 720p</string>
+    <string name="quality_streaming_note">I video scaricati vengono sempre riprodotti nella qualità in cui sono stati scaricati.</string>
+    <string name="quality_ask_every_time">Chiedi ogni volta</string>
+    <string name="quality_download_note">Le qualità inferiori occupano meno spazio.</string>
+    <string name="subtitles_same_as_video">Come il video</string>
+    <string name="subtitles_same_as_video_detail">Sottotitoli nella lingua dei video</string>
+    <string name="subtitles_off">Disattivati</string>
+    <string name="subtitles_any_language_note">Qualsiasi lingua: i sottotitoli compaiono su tutti i video che li hanno, qualunque sia la lingua del video.</string>
+    <string name="search_languages">Cerca lingue</string>
+    <string name="cascade_app_title">Anche i video in %1$s?</string>
+    <string name="cascade_app_text">Puoi guardare anche i video (e i loro sottotitoli) in %1$s. Potrai cambiare ogni lingua in seguito nelle Impostazioni.</string>
+    <string name="cascade_app_yes">Video e sottotitoli</string>
+    <string name="cascade_app_videos_only">Solo i video</string>
+    <string name="cascade_app_no">Solo l\'app</string>
+    <string name="cascade_video_title">Anche i sottotitoli in %1$s?</string>
+    <string name="cascade_video_text">I tuoi sottotitoli sono impostati in %1$s. Vuoi invece i sottotitoli nella lingua dei video?</string>
+    <string name="cascade_video_yes">Sì</string>
+    <string name="cascade_video_no">Mantieni %1$s</string>
+</resources>

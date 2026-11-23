@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_app_language">Alkalmazás nyelve</string>
+    <string name="settings_video_language">Videók nyelve</string>
+    <string name="settings_subtitle_language">Felirat nyelve</string>
+    <string name="settings_device_language">Eszköz nyelve (%1$s)</string>
+    <string name="settings_streaming_quality">Streamelési minőség</string>
+    <string name="settings_download_quality">Letöltési minőség</string>
+    <string name="settings_ask_every_time">Mindig kérdezzen rá</string>
+    <string name="settings_download_quality_note">A kisebb minőség helyet takarít meg.</string>
+    <string name="settings_autoplay">Következő videó automatikus lejátszása</string>
+    <string name="settings_wifi_only">Letöltés csak Wi-Fi-n</string>
+    <string name="settings_on">Be</string>
+    <string name="settings_off">Ki</string>
+    <string name="settings_check_updates">Frissítések keresése</string>
+    <string name="settings_version">Verzió: %1$s</string>
+    <string name="settings_disclaimer">A JW Pocket személyes, nem kereskedelmi projekt, amely nem áll kapcsolatban Jehova Tanúival, és nem is ők hagyták jóvá. A videók a tulajdonosaikéi, és a jw.org nyilvános videószolgáltatásából származnak.</string>
+    <string name="settings_subtitles_note">Minden olyan videón megjelenik, amelyhez ezen a nyelven kiadták.</string>
+    <string name="settings_recently_used">Nemrég használt</string>
+    <string name="cascade_app_title">A videók is ezen a nyelven: %1$s?</string>
+    <string name="cascade_app_text">A videókat (és a feliratukat) is nézheted ezen a nyelven: %1$s. Az egyes nyelveket később itt is módosíthatod.</string>
+    <string name="cascade_app_yes">Videók és feliratok</string>
+    <string name="cascade_app_videos_only">Csak a videók</string>
+    <string name="cascade_app_no">Csak az alkalmazás</string>
+    <string name="cascade_video_title">A feliratok is ezen a nyelven: %1$s?</string>
+    <string name="cascade_video_text">A felirat nyelve jelenleg: %1$s. Inkább a videók nyelvén jelenjen meg a felirat?</string>
+    <string name="cascade_video_yes">Igen</string>
+    <string name="cascade_video_no">Marad: %1$s</string>
+</resources>

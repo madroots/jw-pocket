@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="common_play">Odtwórz</string>
+    <string name="common_back">Wstecz</string>
+    <string name="common_watched">Obejrzane</string>
+    <string name="common_quality">Jakość</string>
+    <string name="common_quality_auto">Automatycznie</string>
+    <string name="common_quality_auto_detail">Do 720p</string>
+    <string name="common_percent">%1$d%%</string>
+
+    <string name="nav_search">Szukaj</string>
+    <string name="nav_home">Start</string>
+    <string name="nav_downloads">Pobrane</string>
+    <string name="nav_favorites">Ulubione</string>
+    <string name="nav_history">Historia</string>
+    <string name="nav_settings">Ustawienia</string>
+
+    <string name="update_available">Dostępna aktualizacja</string>
+    <string name="update_version_size">Wersja %1$s · %2$s</string>
+    <string name="update_update">Aktualizuj</string>
+    <string name="update_update_now">Aktualizuj teraz</string>
+    <string name="update_whats_new">Co nowego</string>
+    <string name="update_whats_new_in">Co nowego w wersji %1$s</string>
+    <string name="update_later">Później</string>
+    <string name="update_downloading">Pobieranie aktualizacji… %1$d%%</string>
+
+    <string name="home_continue_watching">Oglądaj dalej</string>
+    <string name="home_ready_offline">Dostępne offline</string>
+    <string name="home_latest">Najnowsze</string>
+    <string name="home_your_favorites">Twoje ulubione</string>
+    <string name="home_offline">OFFLINE</string>
+    <plurals name="home_offline_ready">
+        <item quantity="one">OFFLINE · GOTOWE POBRANE FILMY: %1$d</item>
+        <item quantity="few">OFFLINE · GOTOWE POBRANE FILMY: %1$d</item>
+        <item quantity="many">OFFLINE · GOTOWE POBRANE FILMY: %1$d</item>
+        <item quantity="other">OFFLINE · GOTOWE POBRANE FILMY: %1$d</item>
+    </plurals>
+    <string name="home_new">NOWOŚĆ</string>
+    <string name="home_watch_now">Oglądaj teraz</string>
+
+    <plurals name="downloads_summary">
+        <item quantity="one">Dostępne offline: %1$d · zajęte: %2$s · wolne: %3$s</item>
+        <item quantity="few">Dostępne offline: %1$d · zajęte: %2$s · wolne: %3$s</item>
+        <item quantity="many">Dostępne offline: %1$d · zajęte: %2$s · wolne: %3$s</item>
+        <item quantity="other">Dostępne offline: %1$d · zajęte: %2$s · wolne: %3$s</item>
+    </plurals>
+    <string name="downloads_empty">Nic jeszcze nie pobrano. Otwórz dowolny film i wybierz Pobierz, aby oglądać go bez internetu.</string>
+    <string name="downloads_downloading_progress">Pobieranie %1$d%%</string>
+    <string name="favorites_empty">Tu pojawią się filmy oznaczone sercem.</string>
+    <string name="history_empty">Tu pojawią się oglądane filmy.</string>
+
+    <string name="search_hint">Wpisz tytuł…</string>
+    <string name="search_intro">Szukaj filmów według tytułu lub opisu.</string>
+    <string name="search_searching">Przeszukiwanie całej biblioteki…</string>
+    <plurals name="search_results_count">
+        <item quantity="one">%1$d wynik</item>
+        <item quantity="few">%1$d wyniki</item>
+        <item quantity="many">%1$d wyników</item>
+        <item quantity="other">%1$d wyniku</item>
+    </plurals>
+    <string name="search_no_results">Brak wyników. Spróbuj innych słów.</string>
+
+    <string name="downloads_status_done">Pobrano</string>
+    <string name="downloads_status_waiting">Oczekuje</string>
+    <string name="downloads_status_paused">Wstrzymano</string>
+    <string name="downloads_status_failed">Błąd</string>
+
+    <string name="details_download_done">Pobrano · %1$s · %2$s · działa bez internetu</string>
+    <string name="details_download_progress">Pobieranie %1$s · %2$d%% z %3$s</string>
+    <string name="details_download_waiting">Oczekiwanie na Wi-Fi, aby pobrać</string>
+    <string name="details_download_paused">Pobieranie wstrzymane przy %1$d%%</string>
+    <string name="details_download_failed">Nie udało się pobrać</string>
+    <string name="details_resume">Wznów</string>
+    <string name="details_start_over">Od początku</string>
+    <string name="details_download">Pobierz</string>
+    <string name="details_delete_download">Usuń pobrany plik</string>
+    <string name="details_retry_download">Ponów pobieranie</string>
+    <string name="details_resume_download">Wznów pobieranie</string>
+    <string name="details_pause_download">Wstrzymaj pobieranie</string>
+    <string name="details_cancel_download">Anuluj pobieranie</string>
+    <string name="details_in_favorites">W ulubionych</string>
+    <string name="details_favorite">Do ulubionych</string>
+    <string name="details_mark_unwatched">Oznacz jako nieobejrzane</string>
+    <string name="details_download_quality">Jakość pobierania</string>
+    <string name="details_download_quality_hint">Niższa jakość oszczędza miejsce.</string>
+
+    <string name="player_subtitles_missing">Brak napisów (%1$s) do tego filmu</string>
+    <string name="player_from_downloads">Z pobranych</string>
+    <string name="player_subtitles_language">Napisy: %1$s</string>
+    <string name="player_pause">Wstrzymaj</string>
+    <string name="player_back_10">10 sekund do tyłu</string>
+    <string name="player_forward_10">10 sekund do przodu</string>
+    <string name="player_next">Następny</string>
+    <string name="player_subtitles">Napisy</string>
+    <string name="player_speed">Prędkość</string>
+    <string name="player_subtitles_same_as_video">Jak w filmie</string>
+    <string name="player_subtitles_recent">Ostatnio używane</string>
+    <string name="player_subtitles_remembered">Zapamiętano dla kolejnych filmów.</string>
+    <string name="player_subtitles_off">Wyłączone</string>
+    <string name="player_playback_speed">Prędkość odtwarzania</string>
+    <string name="player_speed_normal">Normalna</string>
+</resources>

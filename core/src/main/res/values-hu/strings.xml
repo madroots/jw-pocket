@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="time_left_under_minute">Kevesebb mint egy perc van hátra</string>
+    <plurals name="time_left_minutes">
+        <item quantity="one">Még %d perc</item>
+        <item quantity="other">Még %d perc</item>
+    </plurals>
+    <string name="time_left_hours">Még %1$d ó %2$d perc</string>
+    <string name="load_category_failed">Nem sikerült betölteni ezt a kategóriát. Ellenőrizd az internetkapcsolatot.</string>
+    <string name="load_offline_empty">Offline vagy, és még nincs semmi mentve.</string>
+    <string name="update_checking">Frissítések keresése…</string>
+    <string name="update_up_to_date">A JW Pocket naprakész (%1$s).</string>
+    <string name="update_check_failed">Nem sikerült frissítéseket keresni.</string>
+    <string name="update_download_failed">Nem sikerült letölteni a frissítést. Próbáld újra.</string>
+</resources>

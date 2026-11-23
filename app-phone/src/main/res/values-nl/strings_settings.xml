@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_group_language">Taal</string>
+    <string name="settings_app_language">App-taal</string>
+    <string name="settings_video_language">Videotaal</string>
+    <string name="settings_subtitle_language">Ondertitelingstaal</string>
+    <string name="settings_device_language">Apparaattaal (%1$s)</string>
+    <string name="settings_group_playback">Afspelen</string>
+    <string name="settings_background_title">Op de achtergrond blijven afspelen</string>
+    <string name="settings_background_detail">Doorgaan als audio bij een vergrendeld scherm of in andere apps</string>
+    <string name="settings_pip_title">Beeld-in-beeld</string>
+    <string name="settings_pip_detail">De video verkleinen tot een zwevend venster als je de app verlaat</string>
+    <string name="settings_autoplay_title">Volgende video automatisch afspelen</string>
+    <string name="settings_autoplay_detail">De volgende video uit dezelfde lijst afspelen</string>
+    <string name="settings_streaming_quality">Streamingkwaliteit</string>
+    <string name="settings_group_subtitles">Ondertiteling</string>
+    <string name="settings_subtitle_size">Grootte van ondertiteling</string>
+    <string name="settings_group_downloads">Downloads</string>
+    <string name="settings_download_quality">Downloadkwaliteit</string>
+    <string name="settings_wifi_only_title">Alleen wifi</string>
+    <string name="settings_wifi_only_detail">Wachten op wifi voordat er wordt gedownload</string>
+    <string name="settings_manage_downloads_title">Downloads beheren</string>
+    <string name="settings_manage_downloads_detail">Gedownloade video\'s bekijken en verwijderen</string>
+    <string name="settings_group_app">App</string>
+    <string name="settings_check_updates">Controleren op updates</string>
+    <string name="settings_version">Versie %1$s</string>
+    <string name="settings_disclaimer">JW Pocket is een persoonlijk, niet-commercieel project. Het is niet verbonden aan of goedgekeurd door Jehovah\'s Getuigen. Alle video\'s zijn eigendom van hun eigenaars en komen van de openbare videodienst van jw.org.</string>
+
+    <string name="quality_auto">Automatisch</string>
+    <string name="quality_auto_detail">Tot 720p</string>
+    <string name="quality_streaming_note">Gedownloade video\'s worden altijd afgespeeld in de kwaliteit waarin ze zijn gedownload.</string>
+    <string name="quality_ask_every_time">Elke keer vragen</string>
+    <string name="quality_download_note">Een lagere kwaliteit bespaart ruimte.</string>
+
+    <string name="subtitles_same_as_video">Zelfde als de video</string>
+    <string name="subtitles_same_as_video_detail">Ondertiteling in de taal van de video\'s</string>
+    <string name="subtitles_off">Uit</string>
+    <string name="subtitles_any_language_note">Elke taal: wordt getoond bij elke video met ondertiteling in die taal, ongeacht de taal van de video.</string>
+    <string name="search_languages">Talen zoeken</string>
+
+    <string name="cascade_app_title">Video\'s ook in %1$s?</string>
+    <string name="cascade_app_text">Je kunt de video\'s (en hun ondertiteling) ook in %1$s bekijken. Elke taal kun je later wijzigen in Instellingen.</string>
+    <string name="cascade_app_yes">Video\'s en ondertiteling</string>
+    <string name="cascade_app_videos_only">Alleen video\'s</string>
+    <string name="cascade_app_no">Alleen de app</string>
+    <string name="cascade_video_title">Ondertiteling ook in %1$s?</string>
+    <string name="cascade_video_text">Je ondertiteling staat op %1$s. Ondertiteling in plaats daarvan tonen in de taal van de video\'s?</string>
+    <string name="cascade_video_yes">Ja</string>
+    <string name="cascade_video_no">%1$s behouden</string>
+</resources>

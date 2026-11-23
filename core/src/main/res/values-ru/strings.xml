@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="time_left_under_minute">Осталось меньше минуты</string>
+    <plurals name="time_left_minutes">
+        <item quantity="one">Осталась %d мин</item>
+        <item quantity="few">Осталось %d мин</item>
+        <item quantity="many">Осталось %d мин</item>
+        <item quantity="other">Осталось %d мин</item>
+    </plurals>
+    <string name="time_left_hours">Осталось %1$d ч %2$d мин</string>
+    <string name="load_category_failed">Не удалось загрузить эту категорию. Проверьте подключение к интернету.</string>
+    <string name="load_offline_empty">Нет подключения к интернету, а сохранённых видео пока нет.</string>
+    <string name="update_checking">Проверка обновлений…</string>
+    <string name="update_up_to_date">У вас последняя версия JW Pocket (%1$s).</string>
+    <string name="update_check_failed">Не удалось проверить обновления.</string>
+    <string name="update_download_failed">Не удалось скачать обновление. Повторите попытку.</string>
+</resources>

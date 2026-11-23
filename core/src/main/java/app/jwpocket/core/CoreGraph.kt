@@ -6,6 +6,7 @@ import app.jwpocket.core.data.FavoritesRepository
 import app.jwpocket.core.data.LanguageRepository
 import app.jwpocket.core.data.LibraryRepository
 import app.jwpocket.core.data.ProgressRepository
+import app.jwpocket.core.data.Settings
 import app.jwpocket.core.data.SettingsRepository
 import app.jwpocket.core.data.SubtitleRepository
 import app.jwpocket.core.data.UpdateController
@@ -14,6 +15,8 @@ import app.jwpocket.core.data.UpdateRepository
 import app.jwpocket.core.data.db.PocketDatabase
 import app.jwpocket.core.network.JsonCache
 import app.jwpocket.core.network.MediatorApi
+import app.jwpocket.core.util.AppLanguage
+import app.jwpocket.core.util.AppText
 import app.jwpocket.core.util.NetworkMonitor
 import coil.ImageLoader
 import coil.disk.DiskCache
@@ -21,6 +24,8 @@ import coil.memory.MemoryCache
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import java.io.File
@@ -51,16 +56,32 @@ class CoreGraph(context: Context, updateRepo: String, updateApk: String, version
     val api = MediatorApi(http, JsonCache(File(appContext.filesDir, "json")))
     private val database by lazy { PocketDatabase.create(appContext) }
 
+    private val text = AppText(appContext)
     val settings = SettingsRepository(appContext)
-    val library = LibraryRepository(api)
+    val library = LibraryRepository(api, text)
     val languages = LanguageRepository(api, appScope)
     val subtitles = SubtitleRepository(api)
     val progress by lazy { ProgressRepository(database.progress(), appScope) }
     val favorites by lazy { FavoritesRepository(database.favorites(), appScope) }
     val updates = UpdateController(
-        UpdateRepository(api, updateRepo, updateApk), UpdateInstaller(appContext, http), appScope, versionName,
+        UpdateRepository(api, updateRepo, updateApk), UpdateInstaller(appContext, http), text, appScope, versionName,
     )
     val network = NetworkMonitor(appContext)
+
+    init {
+        // First start: videos in the device's language when the library has it. The app's own
+        // text already follows the device (no app language chosen), and subtitles follow the videos.
+        if (settings.firstRun) appScope.launch {
+            val device = AppLanguage.device() ?: return@launch
+            val list = languages.languages.first { it.isNotEmpty() }
+            val match = languages.forLocale(device, list) ?: return@launch
+            if (match.code != settings.current.languageCode && settings.current.languageCode == Settings.ENGLISH) {
+                settings.setLanguage(match.code, match.vernacular)
+                library.clearMemory()
+                languages.load(match.code)
+            }
+        }
+    }
 
     /** Thumbnails: memory + disk cached; 16-bit and no fades on low-RAM devices (TV sticks). */
     fun imageLoader(): ImageLoader {

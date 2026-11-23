@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="downloads_channel">Sťahovanie</string>
+    <string name="downloads_running">Sťahujú sa videá</string>
+    <string name="download_done">Stiahnuté</string>
+    <string name="download_failed">Sťahovanie zlyhalo</string>
+</resources>

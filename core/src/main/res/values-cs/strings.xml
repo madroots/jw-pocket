@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="time_left_under_minute">Zbývá méně než minuta</string>
+    <plurals name="time_left_minutes">
+        <item quantity="one">Zbývá %d min</item>
+        <item quantity="few">Zbývají %d min</item>
+        <item quantity="many">Zbývá %d min</item>
+        <item quantity="other">Zbývá %d min</item>
+    </plurals>
+    <string name="time_left_hours">Zbývá %1$d h %2$d min</string>
+
+    <string name="load_category_failed">Tuto kategorii se nepodařilo načíst. Zkontroluj připojení.</string>
+    <string name="load_offline_empty">Jsi offline a zatím nemáš nic uloženého.</string>
+
+    <string name="update_checking">Hledají se aktualizace…</string>
+    <string name="update_up_to_date">JW Pocket je aktuální (%1$s).</string>
+    <string name="update_check_failed">Aktualizace se nepodařilo zkontrolovat.</string>
+    <string name="update_download_failed">Aktualizaci se nepodařilo stáhnout. Zkus to znovu.</string>
+</resources>

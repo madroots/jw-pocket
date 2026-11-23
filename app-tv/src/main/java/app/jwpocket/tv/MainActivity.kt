@@ -1,5 +1,6 @@
 package app.jwpocket.tv
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
@@ -19,6 +20,7 @@ import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Surface
 import androidx.tv.material3.SurfaceDefaults
 import app.jwpocket.brand.PocketSplash
+import app.jwpocket.core.util.withAppLanguage
 import app.jwpocket.media.PlaybackService
 import app.jwpocket.media.pocketGraph
 import app.jwpocket.tv.ui.LocalTv
@@ -28,6 +30,9 @@ import app.jwpocket.tv.ui.TvPocket
 import app.jwpocket.tv.ui.TvRoot
 
 class MainActivity : ComponentActivity() {
+
+    // The app's own text in the language chosen in Settings (or the device's).
+    override fun attachBaseContext(newBase: Context) = super.attachBaseContext(newBase.withAppLanguage())
 
     private val graph by lazy { pocketGraph }
     private var openPlayer by mutableStateOf(false)

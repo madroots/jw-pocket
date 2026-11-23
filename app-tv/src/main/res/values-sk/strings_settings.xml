@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_app_language">Jazyk aplikácie</string>
+    <string name="settings_video_language">Jazyk videí</string>
+    <string name="settings_subtitle_language">Jazyk titulkov</string>
+    <string name="settings_device_language">Jazyk zariadenia (%1$s)</string>
+    <string name="settings_streaming_quality">Kvalita streamovania</string>
+    <string name="settings_download_quality">Kvalita sťahovania</string>
+    <string name="settings_ask_every_time">Vždy sa opýtať</string>
+    <string name="settings_download_quality_note">Nižšia kvalita šetrí miesto.</string>
+    <string name="settings_autoplay">Automaticky prehrať ďalšie video</string>
+    <string name="settings_wifi_only">Sťahovať len cez Wi-Fi</string>
+    <string name="settings_on">Zapnuté</string>
+    <string name="settings_off">Vypnuté</string>
+    <string name="settings_check_updates">Skontrolovať aktualizácie</string>
+    <string name="settings_version">Verzia %1$s</string>
+    <string name="settings_disclaimer">JW Pocket je osobný, nekomerčný projekt, ktorý nie je nijako spojený s Jehovovými svedkami ani nimi schválený. Videá patria ich vlastníkom a pochádzajú z verejnej videoslužby jw.org.</string>
+    <string name="settings_subtitles_note">Zobrazia sa pri každom videu, ktoré v ňom bolo zverejnené.</string>
+    <string name="settings_recently_used">Nedávno použité</string>
+
+    <string name="cascade_app_title">Aj videá v jazyku %1$s?</string>
+    <string name="cascade_app_text">Videá (aj ich titulky) môžeš pozerať tiež v jazyku %1$s. Každý jazyk môžeš neskôr zmeniť tu.</string>
+    <string name="cascade_app_yes">Videá aj titulky</string>
+    <string name="cascade_app_videos_only">Len videá</string>
+    <string name="cascade_app_no">Len aplikáciu</string>
+    <string name="cascade_video_title">Aj titulky v jazyku %1$s?</string>
+    <string name="cascade_video_text">Titulky máš nastavené na jazyk %1$s. Zobrazovať radšej titulky v jazyku videí?</string>
+    <string name="cascade_video_yes">Áno</string>
+    <string name="cascade_video_no">Ponechať jazyk %1$s</string>
+</resources>

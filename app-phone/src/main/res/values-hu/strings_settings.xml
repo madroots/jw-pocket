@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_group_language">Nyelv</string>
+    <string name="settings_app_language">Alkalmazás nyelve</string>
+    <string name="settings_video_language">Videók nyelve</string>
+    <string name="settings_subtitle_language">Felirat nyelve</string>
+    <string name="settings_device_language">Eszköz nyelve (%1$s)</string>
+    <string name="settings_group_playback">Lejátszás</string>
+    <string name="settings_background_title">Lejátszás a háttérben</string>
+    <string name="settings_background_detail">Hangként folytatódik zárolt képernyőnél vagy más alkalmazásokban</string>
+    <string name="settings_pip_title">Kép a képben</string>
+    <string name="settings_pip_detail">A videó lebegő ablakká kicsinyül, amikor kilépsz az alkalmazásból</string>
+    <string name="settings_autoplay_title">Következő videó automatikus lejátszása</string>
+    <string name="settings_autoplay_detail">Az ugyanabban a listában következő videó lejátszása</string>
+    <string name="settings_streaming_quality">Streamelési minőség</string>
+    <string name="settings_group_subtitles">Feliratok</string>
+    <string name="settings_subtitle_size">Feliratméret</string>
+    <string name="settings_group_downloads">Letöltések</string>
+    <string name="settings_download_quality">Letöltési minőség</string>
+    <string name="settings_wifi_only_title">Csak Wi-Fi</string>
+    <string name="settings_wifi_only_detail">Letöltés előtt Wi-Fi-re vár</string>
+    <string name="settings_manage_downloads_title">Letöltések kezelése</string>
+    <string name="settings_manage_downloads_detail">Letöltött videók megtekintése és törlése</string>
+    <string name="settings_group_app">Alkalmazás</string>
+    <string name="settings_check_updates">Frissítések keresése</string>
+    <string name="settings_version">Verzió: %1$s</string>
+    <string name="settings_disclaimer">A JW Pocket személyes, nem kereskedelmi projekt. Nem áll kapcsolatban Jehova Tanúival, és nem is ők hagyták jóvá. Minden videó a tulajdonosáé, és a jw.org nyilvános videószolgáltatásából származik.</string>
+    <string name="quality_auto">Automatikus</string>
+    <string name="quality_auto_detail">Legfeljebb 720p</string>
+    <string name="quality_streaming_note">A letöltött videók mindig a letöltött minőségben játszódnak le.</string>
+    <string name="quality_ask_every_time">Mindig kérdezzen rá</string>
+    <string name="quality_download_note">A kisebb minőség helyet takarít meg.</string>
+    <string name="subtitles_same_as_video">A videó nyelvén</string>
+    <string name="subtitles_same_as_video_detail">Felirat a videók nyelvén</string>
+    <string name="subtitles_off">Ki</string>
+    <string name="subtitles_any_language_note">Bármelyik nyelv: minden olyan videón megjelenik, amelyhez ezen a nyelven kiadták, függetlenül a videó nyelvétől.</string>
+    <string name="search_languages">Nyelvek keresése</string>
+    <string name="cascade_app_title">A videók is ezen a nyelven: %1$s?</string>
+    <string name="cascade_app_text">A videókat (és a feliratukat) is nézheted ezen a nyelven: %1$s. Az egyes nyelveket később a Beállításokban módosíthatod.</string>
+    <string name="cascade_app_yes">Videók és feliratok</string>
+    <string name="cascade_app_videos_only">Csak a videók</string>
+    <string name="cascade_app_no">Csak az alkalmazás</string>
+    <string name="cascade_video_title">A feliratok is ezen a nyelven: %1$s?</string>
+    <string name="cascade_video_text">A felirat nyelve jelenleg: %1$s. Inkább a videók nyelvén jelenjen meg a felirat?</string>
+    <string name="cascade_video_yes">Igen</string>
+    <string name="cascade_video_no">Marad: %1$s</string>
+</resources>

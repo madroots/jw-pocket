@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Italian translation. -->
+<resources>
+    <string name="settings_app_language">Lingua dell\'app</string>
+    <string name="settings_video_language">Lingua dei video</string>
+    <string name="settings_subtitle_language">Lingua dei sottotitoli</string>
+    <string name="settings_device_language">Lingua del dispositivo (%1$s)</string>
+    <string name="settings_streaming_quality">Qualità streaming</string>
+    <string name="settings_download_quality">Qualità download</string>
+    <string name="settings_ask_every_time">Chiedi ogni volta</string>
+    <string name="settings_download_quality_note">Le qualità inferiori occupano meno spazio.</string>
+    <string name="settings_autoplay">Riproduci automaticamente il video successivo</string>
+    <string name="settings_wifi_only">Scarica solo con Wi-Fi</string>
+    <string name="settings_on">Attivo</string>
+    <string name="settings_off">Disattivato</string>
+    <string name="settings_check_updates">Cerca aggiornamenti</string>
+    <string name="settings_version">Versione %1$s</string>
+    <string name="settings_disclaimer">JW Pocket è un progetto personale e non commerciale, non affiliato ai Testimoni di Geova né approvato da loro. I video appartengono ai rispettivi proprietari e provengono dal servizio video pubblico di jw.org.</string>
+    <string name="settings_subtitles_note">Compaiono su tutti i video che li hanno.</string>
+    <string name="settings_recently_used">Usate di recente</string>
+    <string name="cascade_app_title">Anche i video in %1$s?</string>
+    <string name="cascade_app_text">Puoi guardare anche i video (e i loro sottotitoli) in %1$s. Potrai comunque cambiare ogni lingua qui in seguito.</string>
+    <string name="cascade_app_yes">Video e sottotitoli</string>
+    <string name="cascade_app_videos_only">Solo i video</string>
+    <string name="cascade_app_no">Solo l\'app</string>
+    <string name="cascade_video_title">Anche i sottotitoli in %1$s?</string>
+    <string name="cascade_video_text">I tuoi sottotitoli sono impostati in %1$s. Vuoi invece i sottotitoli nella lingua dei video?</string>
+    <string name="cascade_video_yes">Sì</string>
+    <string name="cascade_video_no">Mantieni %1$s</string>
+</resources>

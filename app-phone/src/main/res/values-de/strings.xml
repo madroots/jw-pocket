@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="common_play">Abspielen</string>
+    <string name="common_pause">Pause</string>
+    <string name="common_resume">Fortsetzen</string>
+    <string name="common_retry">Wiederholen</string>
+    <string name="common_cancel">Abbrechen</string>
+    <string name="common_close">Schließen</string>
+    <string name="common_more">Mehr</string>
+    <string name="common_share">Teilen</string>
+    <string name="common_see_all">Alle anzeigen</string>
+    <string name="common_clear_text">Löschen</string>
+    <string name="common_download">Herunterladen</string>
+    <string name="common_downloaded">Heruntergeladen</string>
+    <string name="common_download_failed">Download fehlgeschlagen</string>
+    <string name="common_delete_download">Download löschen</string>
+    <string name="common_cancel_download">Download abbrechen</string>
+    <string name="common_paused">Pausiert</string>
+    <string name="common_waiting_for_wifi">Warten auf WLAN</string>
+    <string name="common_watched">Angesehen</string>
+    <string name="common_saved">Gespeichert</string>
+    <string name="common_favorite">Favorit</string>
+    <string name="common_ready_offline">Offline verfügbar</string>
+    <string name="common_offline_cached">Offline: zuletzt gespeicherte Version wird angezeigt.</string>
+    <string name="common_percent">%1$d %%</string>
+
+    <string name="nav_home">Startseite</string>
+    <string name="nav_browse">Entdecken</string>
+    <string name="nav_search">Suche</string>
+    <string name="nav_library">Mediathek</string>
+    <string name="nav_settings">Einstellungen</string>
+    <string name="nav_back">Zurück</string>
+    <string name="nav_library_language">Sprache der Mediathek</string>
+    <string name="nav_subtitle_language">Untertitelsprache</string>
+
+    <string name="update_available_title">Update verfügbar: %1$s</string>
+    <string name="update_available_message">Eine neue Version von JW Pocket ist bereit (%1$s).</string>
+    <string name="update_install">Aktualisieren</string>
+    <string name="update_later">Später</string>
+    <string name="update_downloading">Update wird heruntergeladen</string>
+
+    <string name="home_continue_watching">Weiterschauen</string>
+    <string name="home_latest">Neueste</string>
+    <string name="home_your_favorites">Ihre Favoriten</string>
+    <string name="home_new_badge">NEU</string>
+    <string name="home_offline_title">Sie sind offline</string>
+    <plurals name="home_offline_ready">
+        <item quantity="one">%d heruntergeladenes Video ist bereit zum Ansehen.</item>
+        <item quantity="other">%d heruntergeladene Videos sind bereit zum Ansehen.</item>
+    </plurals>
+    <string name="home_offline_empty">Laden Sie Videos herunter, um sie ohne Internet anzusehen.</string>
+
+    <string name="browse_error_library">Mediathek kann nicht geladen werden</string>
+    <string name="browse_error_category">Kategorie kann nicht geladen werden</string>
+
+    <string name="search_placeholder">Videos, Serien, Lieder…</string>
+    <string name="search_browse_categories">Kategorien entdecken</string>
+    <string name="search_searching">Gesamte Mediathek wird durchsucht…</string>
+    <string name="search_no_results">Keine Ergebnisse</string>
+    <string name="search_no_results_hint">Versuchen Sie andere Wörter oder prüfen Sie die Schreibweise.</string>
+    <string name="search_failed">Suche fehlgeschlagen</string>
+    <plurals name="search_result_count">
+        <item quantity="one">%d Video</item>
+        <item quantity="other">%d Videos</item>
+    </plurals>
+
+    <string name="library_tab_downloads">Downloads</string>
+    <string name="library_tab_favorites">Favoriten</string>
+    <string name="library_tab_history">Verlauf</string>
+    <plurals name="library_downloads_summary">
+        <item quantity="one">%1$d Video · %2$s</item>
+        <item quantity="other">%1$d Videos · %2$s</item>
+    </plurals>
+    <string name="library_free_space">%1$s frei auf diesem Smartphone</string>
+    <string name="library_delete_all">Alle löschen</string>
+    <string name="library_wifi_only">Nur über WLAN herunterladen</string>
+    <string name="library_downloads_empty_title">Noch keine Downloads</string>
+    <string name="library_downloads_empty_body">Tippen Sie bei einem Video auf „Herunterladen“, um es später ohne Internet anzusehen. Heruntergeladene Videos sind überall grün markiert.</string>
+    <string name="library_find_videos">Videos finden</string>
+    <string name="library_in_progress">In Bearbeitung</string>
+    <string name="library_delete_all_title">Alle Downloads löschen?</string>
+    <string name="library_delete_all_message">Dadurch werden %1$s frei. Sie können die Videos später erneut herunterladen.</string>
+    <string name="library_status_downloading">%1$d %% von %2$s</string>
+    <string name="library_status_queued">Wartet auf Start</string>
+    <string name="library_status_paused">Pausiert bei %1$d %%</string>
+    <string name="library_status_failed">Fehlgeschlagen. Zum Wiederholen auf ⋮ tippen</string>
+    <string name="library_favorites_empty_title">Noch keine Favoriten</string>
+    <string name="library_favorites_empty_body">Tippen Sie bei einem Video auf das Herz, um es hier zu behalten.</string>
+    <string name="library_history_empty_title">Noch nichts angesehen</string>
+    <string name="library_history_empty_body">Begonnene Videos erscheinen hier, damit Sie dort weiterschauen können, wo Sie aufgehört haben.</string>
+    <string name="library_clear_history">Verlauf löschen</string>
+    <string name="library_clear_history_title">Verlauf löschen?</string>
+    <string name="library_clear_history_message">Fortsetzungspunkte und Angesehen-Markierungen werden entfernt.</string>
+    <string name="library_clear_history_confirm">Löschen</string>
+
+    <string name="details_stopped_at">Angehalten bei %1$s · %2$s</string>
+    <string name="details_start_over">Von vorn beginnen</string>
+    <string name="details_remove_continue_watching">Aus „Weiterschauen“ entfernen</string>
+    <string name="details_remove_history">Aus dem Verlauf entfernen</string>
+    <string name="details_download_quality">Download-Qualität</string>
+    <string name="details_download_done">Auf diesem Smartphone gespeichert · %1$s · %2$s</string>
+    <string name="details_download_progress">Lädt %1$s · %2$d %% von %3$s</string>
+    <string name="details_download_queued">Wartet auf Download · %1$s</string>
+    <string name="details_download_waiting_wifi">Warten auf WLAN · %1$s</string>
+    <string name="details_download_paused">Pausiert · %1$d %%</string>
+    <string name="details_download_failed">Download fehlgeschlagen. Tippen Sie auf „Wiederholen“.</string>
+
+    <string name="player_minimize">Minimieren</string>
+    <string name="player_now_playing">WIRD ABGESPIELT</string>
+    <string name="player_from_downloads">Aus Ihren Downloads</string>
+    <string name="player_streaming">Streaming</string>
+    <string name="player_picture_in_picture">Bild-im-Bild</string>
+    <string name="player_up_next">Als Nächstes</string>
+    <string name="player_in_this_list">In dieser Liste</string>
+    <string name="player_previous">Vorheriges</string>
+    <string name="player_next">Nächstes</string>
+    <string name="player_back_10">10 Sekunden zurück</string>
+    <string name="player_forward_10">10 Sekunden vor</string>
+    <string name="player_full_screen">Vollbild</string>
+    <string name="player_exit_full_screen">Vollbild beenden</string>
+    <string name="player_close">Player schließen</string>
+    <string name="player_status_error">Wiedergabe nicht möglich</string>
+    <string name="player_status_loading">Wird geladen…</string>
+    <string name="player_status_playing">Wird abgespielt</string>
+    <string name="player_status_playing_offline">Offline-Wiedergabe</string>
+    <string name="player_status_finished">Beendet</string>
+    <string name="player_status_paused">Pausiert</string>
+    <string name="player_subtitles_missing">Keine Untertitel (%1$s) für dieses Video, Original wird angezeigt.</string>
+    <string name="player_subtitles">Untertitel</string>
+    <string name="player_subtitles_off">Untertitel aus</string>
+    <string name="player_quality">Qualität</string>
+    <string name="player_speed">Geschwindigkeit</string>
+    <string name="player_pill_downloaded">Heruntergeladen · %1$s</string>
+    <string name="player_pill_download_progress">%1$d %% · %2$s</string>
+    <string name="player_remove_download_title">Download entfernen?</string>
+    <string name="player_cancel_download_title">Download abbrechen?</string>
+    <string name="player_remove_download_message">Gibt %1$s auf diesem Smartphone frei. Streamen ist weiterhin möglich.</string>
+    <string name="player_cancel_download_message">Der bisher heruntergeladene Teil wird gelöscht.</string>
+    <string name="player_remove_download_confirm">Entfernen</string>
+    <string name="player_keep_download">Behalten</string>
+    <string name="player_sleep_timer">Sleep-Timer</string>
+    <string name="player_sleep_after_video">Nach diesem Video</string>
+    <plurals name="player_sleep_minutes_left">
+        <item quantity="one">Noch %d Min.</item>
+        <item quantity="other">Noch %d Min.</item>
+    </plurals>
+
+    <string name="player_subtitles_hint">Ihre Auswahl wird für die nächsten Videos gespeichert.</string>
+    <string name="player_search_languages">Sprachen suchen</string>
+    <string name="player_subtitles_off_choice">Aus</string>
+    <string name="player_subtitles_same_as_video">Wie das Video</string>
+    <string name="player_subtitles_recently_used">Zuletzt verwendet · %1$s</string>
+    <string name="player_subtitles_no_others">Für dieses Video gibt es keine weiteren Untertitelsprachen.</string>
+    <string name="player_subtitles_no_match">Keine Sprache passt zu „%1$s“.</string>
+    <string name="player_subtitles_none">Keine Untertitel für dieses Video.</string>
+    <string name="player_quality_auto">Automatisch</string>
+    <string name="player_quality_auto_detail">Optimal für diesen Bildschirm, bis 720p</string>
+    <string name="player_speed_title">Wiedergabegeschwindigkeit</string>
+    <string name="player_speed_normal">Normal</string>
+    <string name="player_sleep_hint">Die Wiedergabe wird automatisch angehalten.</string>
+    <string name="player_sleep_turn_off">Timer ausschalten</string>
+    <string name="player_sleep_end_of_video">Ende dieses Videos</string>
+    <plurals name="player_sleep_minutes">
+        <item quantity="one">%d Minute</item>
+        <item quantity="other">%d Minuten</item>
+    </plurals>
+</resources>

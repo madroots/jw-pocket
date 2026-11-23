@@ -9,7 +9,9 @@ import kotlinx.coroutines.flow.update
 
 /** Every choice the person makes in Settings (and a few made in the player). */
 data class Settings(
-    /** Library language, JW code ("E" = English). */
+    /** Language of the app's own text, a tag from AppLanguage; null = the device's language. */
+    val appLanguage: String? = null,
+    /** Library (video) language, JW code ("E" = English). */
     val languageCode: String = ENGLISH,
     val languageName: String = "English",
     /** Streaming quality; null = Auto. */
@@ -41,7 +43,10 @@ data class Settings(
 class SettingsRepository(context: Context) {
 
     private val prefs: SharedPreferences =
-        context.applicationContext.getSharedPreferences("jw_pocket_settings", Context.MODE_PRIVATE)
+        context.applicationContext.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+
+    /** Nothing saved yet: the first start after installing. */
+    val firstRun: Boolean = !prefs.contains("language_code")
 
     private val _settings = MutableStateFlow(read())
     val settings: StateFlow<Settings> = _settings.asStateFlow()
@@ -66,7 +71,11 @@ class SettingsRepository(context: Context) {
         it.copy(subtitleLanguage = normalized, recentSubtitleLanguages = recent)
     }
 
+    /** [tag] from AppLanguage, or null to follow the device. Screens must be recreated to show it. */
+    fun setAppLanguage(tag: String?) = update { it.copy(appLanguage = tag) }
+
     private fun read() = Settings(
+        appLanguage = prefs.getString(KEY_APP_LANGUAGE, null),
         languageCode = prefs.getString("language_code", null) ?: Settings.ENGLISH,
         languageName = prefs.getString("language_name", null) ?: "English",
         streamQuality = prefs.getString("stream_quality", null),
@@ -83,6 +92,7 @@ class SettingsRepository(context: Context) {
 
     private fun write(s: Settings) {
         prefs.edit()
+            .putString(KEY_APP_LANGUAGE, s.appLanguage)
             .putString("language_code", s.languageCode)
             .putString("language_name", s.languageName)
             .putString("stream_quality", s.streamQuality)
@@ -95,5 +105,10 @@ class SettingsRepository(context: Context) {
             .putBoolean("auto_pip", s.autoPictureInPicture)
             .putBoolean("autoplay_next", s.autoplayNext)
             .apply()
+    }
+
+    companion object {
+        const val PREFS = "jw_pocket_settings"
+        const val KEY_APP_LANGUAGE = "app_language"
     }
 }

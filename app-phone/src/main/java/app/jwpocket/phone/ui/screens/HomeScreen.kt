@@ -42,6 +42,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -51,6 +53,7 @@ import app.jwpocket.core.model.Category
 import app.jwpocket.core.model.Video
 import app.jwpocket.core.util.formatDuration
 import app.jwpocket.core.presentation.HomeViewModel
+import app.jwpocket.phone.R
 import app.jwpocket.phone.ui.LocalPocket
 import app.jwpocket.phone.ui.LocalVideoActions
 import app.jwpocket.phone.ui.components.ContinueCard
@@ -89,7 +92,7 @@ fun HomeScreen(
                     Text("JW", style = MaterialTheme.typography.headlineMedium, color = Pocket.Accent, fontWeight = FontWeight.Black)
                     Text(" Pocket", style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
                     Spacer(Modifier.weight(1f))
-                    IconButton(onClick = onOpenSettings) { Icon(Icons.Rounded.Settings, "Settings") }
+                    IconButton(onClick = onOpenSettings) { Icon(Icons.Rounded.Settings, stringResource(R.string.nav_settings)) }
                 }
             }
             if (!online) item(key = "offline") { OfflineBanner(downloaded.size, onOpenDownloads) }
@@ -102,24 +105,24 @@ fun HomeScreen(
 
             if (continueWatching.isNotEmpty()) item(key = "continue") {
                 val row = continueWatching.map { it.video }
-                SectionHeader("Continue watching")
+                SectionHeader(stringResource(R.string.home_continue_watching))
                 LazyRow(contentPadding = PaddingValues(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                     items(continueWatching, key = { it.video.id }) { ContinueCard(it.video, it.remainingMs, row) }
                 }
             }
-            if (downloaded.isNotEmpty()) item(key = "downloaded") { VideoRow("Ready offline", downloaded, onSeeAll = onOpenDownloads) }
+            if (downloaded.isNotEmpty()) item(key = "downloaded") { VideoRow(stringResource(R.string.common_ready_offline), downloaded, onSeeAll = onOpenDownloads) }
 
             latest.dataOrNull?.drop(1)?.takeIf { it.isNotEmpty() }?.let { videos ->
-                item(key = "latest") { VideoRow("Latest", videos) }
+                item(key = "latest") { VideoRow(stringResource(R.string.home_latest), videos) }
             }
             featured.dataOrNull?.sections?.take(3)?.forEach { section ->
                 item(key = "featured_${section.key}") { VideoRow(section.title, section.videos) }
             }
-            if (favorites.isNotEmpty()) item(key = "favorites") { VideoRow("Your favorites", favorites, onSeeAll = onOpenFavorites) }
+            if (favorites.isNotEmpty()) item(key = "favorites") { VideoRow(stringResource(R.string.home_your_favorites), favorites, onSeeAll = onOpenFavorites) }
 
             categories.dataOrNull?.takeIf { it.isNotEmpty() }?.let { list ->
                 item(key = "browse") {
-                    SectionHeader("Browse")
+                    SectionHeader(stringResource(R.string.nav_browse))
                     LazyRow(contentPadding = PaddingValues(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                         items(list, key = { it.key }) { CategoryTile(it, Modifier.width(150.dp)) { onOpenCategory(it) } }
                     }
@@ -152,7 +155,7 @@ private fun Hero(video: Video, row: List<Video>) {
         AsyncImage(video.posterUrl, null, contentScale = ContentScale.Crop, modifier = Modifier.fillMaxSize())
         Box(Modifier.fillMaxSize().background(Brush.verticalGradient(0.35f to Color.Transparent, 1f to Color(0xEE000000))))
         Column(Modifier.align(Alignment.BottomStart).padding(16.dp)) {
-            Text("NEW", style = MaterialTheme.typography.labelSmall, color = Pocket.Accent)
+            Text(stringResource(R.string.home_new_badge), style = MaterialTheme.typography.labelSmall, color = Pocket.Accent)
             Spacer(Modifier.height(4.dp))
             Text(video.title, style = MaterialTheme.typography.titleLarge, color = Color.White, maxLines = 2, overflow = TextOverflow.Ellipsis)
             Spacer(Modifier.height(2.dp))
@@ -165,7 +168,7 @@ private fun Hero(video: Video, row: List<Video>) {
             ) {
                 Icon(Icons.Rounded.PlayArrow, null)
                 Spacer(Modifier.width(6.dp))
-                Text("Play", fontWeight = FontWeight.Bold)
+                Text(stringResource(R.string.common_play), fontWeight = FontWeight.Bold)
             }
         }
     }
@@ -186,10 +189,10 @@ private fun OfflineBanner(downloadCount: Int, onOpenDownloads: () -> Unit) {
         Icon(Icons.Rounded.CloudOff, null, tint = Pocket.TextSecondary)
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
-            Text("You're offline", style = MaterialTheme.typography.titleSmall)
+            Text(stringResource(R.string.home_offline_title), style = MaterialTheme.typography.titleSmall)
             Text(
-                if (downloadCount > 0) "$downloadCount downloaded ${if (downloadCount == 1) "video is" else "videos are"} ready to watch."
-                else "Download videos to watch them without internet.",
+                if (downloadCount > 0) pluralStringResource(R.plurals.home_offline_ready, downloadCount, downloadCount)
+                else stringResource(R.string.home_offline_empty),
                 style = MaterialTheme.typography.bodySmall, color = Pocket.TextSecondary,
             )
         }

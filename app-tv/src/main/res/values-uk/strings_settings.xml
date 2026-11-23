@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_app_language">Мова додатка</string>
+    <string name="settings_video_language">Мова відео</string>
+    <string name="settings_subtitle_language">Мова субтитрів</string>
+    <string name="settings_device_language">Мова пристрою (%1$s)</string>
+    <string name="settings_streaming_quality">Якість онлайн-перегляду</string>
+    <string name="settings_download_quality">Якість завантаження</string>
+    <string name="settings_ask_every_time">Щоразу питати</string>
+    <string name="settings_download_quality_note">Нижча якість заощаджує місце.</string>
+    <string name="settings_autoplay">Автовідтворення наступного відео</string>
+    <string name="settings_wifi_only">Завантажувати лише через Wi-Fi</string>
+    <string name="settings_on">Увімк.</string>
+    <string name="settings_off">Вимк.</string>
+    <string name="settings_check_updates">Перевірити оновлення</string>
+    <string name="settings_version">Версія %1$s</string>
+    <string name="settings_disclaimer">JW Pocket — особистий некомерційний проєкт, не пов\'язаний зі Свідками Єгови й не схвалений ними. Відео належать їхнім власникам і взяті із загальнодоступного відеосервісу jw.org.</string>
+    <string name="settings_subtitles_note">Показуються в кожному відео, яке має субтитри цією мовою.</string>
+    <string name="settings_recently_used">Нещодавні</string>
+    <string name="cascade_app_title">Відео теж мовою «%1$s»?</string>
+    <string name="cascade_app_text">Ви також можете дивитися відео (і субтитри до них) мовою «%1$s». Кожну мову можна буде змінити тут пізніше.</string>
+    <string name="cascade_app_yes">Відео й субтитри</string>
+    <string name="cascade_app_videos_only">Лише відео</string>
+    <string name="cascade_app_no">Лише додаток</string>
+    <string name="cascade_video_title">Субтитри теж мовою «%1$s»?</string>
+    <string name="cascade_video_text">Зараз вибрано субтитри мовою «%1$s». Показувати натомість субтитри мовою відео?</string>
+    <string name="cascade_video_yes">Так</string>
+    <string name="cascade_video_no">Залишити «%1$s»</string>
+</resources>

@@ -1,5 +1,7 @@
 package app.jwpocket.core.util
 
+import android.content.Context
+import app.jwpocket.core.R
 import java.util.Locale
 
 /** "1:02:03" or "4:05". */
@@ -16,13 +18,14 @@ fun formatClock(ms: Long): String {
 fun formatDuration(seconds: Double?): String =
     if (seconds == null || seconds <= 0) "" else formatClock((seconds * 1000).toLong())
 
-/** "12 min left", "1 h 5 min left". */
-fun formatTimeLeft(remainingMs: Long): String {
-    val minutes = remainingMs / 60_000
+/** "12 min left", "1 h 5 min left", in the language of [context]'s resources. */
+fun formatTimeLeft(context: Context, remainingMs: Long): String {
+    val minutes = (remainingMs / 60_000).toInt()
+    val res = context.resources
     return when {
-        minutes < 1 -> "Less than a minute left"
-        minutes < 60 -> "$minutes min left"
-        else -> "${minutes / 60} h ${minutes % 60} min left"
+        minutes < 1 -> res.getString(R.string.time_left_under_minute)
+        minutes < 60 -> res.getQuantityString(R.plurals.time_left_minutes, minutes, minutes)
+        else -> res.getString(R.string.time_left_hours, minutes / 60, minutes % 60)
     }
 }
 

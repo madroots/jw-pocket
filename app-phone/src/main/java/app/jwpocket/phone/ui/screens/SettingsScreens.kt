@@ -1,5 +1,6 @@
 package app.jwpocket.phone.ui.screens
 
+import android.app.Activity
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -15,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
@@ -22,6 +24,7 @@ import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -34,11 +37,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.jwpocket.core.data.LibraryRepository
 import app.jwpocket.core.data.Settings
 import app.jwpocket.core.model.Language
+import app.jwpocket.core.util.AppLanguage
 import app.jwpocket.phone.BuildConfig
+import app.jwpocket.phone.R
 import app.jwpocket.phone.ui.LocalPocket
 import app.jwpocket.phone.ui.player.ChoiceSheet
 import app.jwpocket.phone.ui.player.ChoiceRow
@@ -59,20 +66,22 @@ fun SettingsScreen(
     var pick by remember { mutableStateOf<String?>(null) }
 
     LazyColumn(Modifier.fillMaxSize(), contentPadding = contentPadding) {
-        item { Group("Library") }
-        item { Entry("Language", settings.languageName, onClick = onOpenLanguage) }
+        // Top to bottom: each language follows the one above it unless changed.
+        item { Group(stringResource(R.string.settings_group_language)) }
+        item { Entry(stringResource(R.string.settings_app_language), appLanguageLabel(settings.appLanguage)) { pick = "app" } }
+        item { Entry(stringResource(R.string.settings_video_language), settings.languageName, onClick = onOpenLanguage) }
+        item { Entry(stringResource(R.string.settings_subtitle_language), subtitleLabel(settings, pocket.core.languages::name), onClick = onOpenSubtitles) }
 
-        item { Group("Playback") }
-        item { Toggle("Keep playing in the background", "Continue as audio with the screen locked or in other apps", settings.backgroundPlayback) { on -> repo.update { it.copy(backgroundPlayback = on) } } }
-        item { Toggle("Picture-in-picture", "Shrink the video to a floating window when you leave the app", settings.autoPictureInPicture) { on -> repo.update { it.copy(autoPictureInPicture = on) } } }
-        item { Toggle("Autoplay next video", "Play the next video of the same list", settings.autoplayNext) { on -> repo.update { it.copy(autoplayNext = on) } } }
-        item { Entry("Streaming quality", settings.streamQuality ?: "Auto") { pick = "stream" } }
+        item { Group(stringResource(R.string.settings_group_playback)) }
+        item { Toggle(stringResource(R.string.settings_background_title), stringResource(R.string.settings_background_detail), settings.backgroundPlayback) { on -> repo.update { it.copy(backgroundPlayback = on) } } }
+        item { Toggle(stringResource(R.string.settings_pip_title), stringResource(R.string.settings_pip_detail), settings.autoPictureInPicture) { on -> repo.update { it.copy(autoPictureInPicture = on) } } }
+        item { Toggle(stringResource(R.string.settings_autoplay_title), stringResource(R.string.settings_autoplay_detail), settings.autoplayNext) { on -> repo.update { it.copy(autoplayNext = on) } } }
+        item { Entry(stringResource(R.string.settings_streaming_quality), settings.streamQuality ?: stringResource(R.string.quality_auto)) { pick = "stream" } }
 
-        item { Group("Subtitles") }
-        item { Entry("Subtitle language", subtitleLabel(settings, pocket.core.languages::name), onClick = onOpenSubtitles) }
+        item { Group(stringResource(R.string.settings_group_subtitles)) }
         item {
             Column(Modifier.padding(horizontal = 20.dp, vertical = 8.dp)) {
-                Text("Subtitle size", style = MaterialTheme.typography.bodyLarge)
+                Text(stringResource(R.string.settings_subtitle_size), style = MaterialTheme.typography.bodyLarge)
                 Slider(
                     value = settings.subtitleScale,
                     onValueChange = { v -> repo.update { it.copy(subtitleScale = v) } },
@@ -83,17 +92,16 @@ fun SettingsScreen(
             }
         }
 
-        item { Group("Downloads") }
-        item { Entry("Download quality", settings.downloadQuality ?: "Ask every time") { pick = "download" } }
-        item { Toggle("Wi-Fi only", "Wait for Wi-Fi before downloading", settings.wifiOnlyDownloads) { on -> repo.update { it.copy(wifiOnlyDownloads = on) } } }
-        item { Entry("Manage downloads", "See and delete downloaded videos", onClick = onOpenDownloads) }
+        item { Group(stringResource(R.string.settings_group_downloads)) }
+        item { Entry(stringResource(R.string.settings_download_quality), settings.downloadQuality ?: stringResource(R.string.quality_ask_every_time)) { pick = "download" } }
+        item { Toggle(stringResource(R.string.settings_wifi_only_title), stringResource(R.string.settings_wifi_only_detail), settings.wifiOnlyDownloads) { on -> repo.update { it.copy(wifiOnlyDownloads = on) } } }
+        item { Entry(stringResource(R.string.settings_manage_downloads_title), stringResource(R.string.settings_manage_downloads_detail), onClick = onOpenDownloads) }
 
-        item { Group("App") }
-        item { Entry("Check for updates", "Version ${BuildConfig.VERSION_NAME}") { pocket.core.updates.check(manual = true) } }
+        item { Group(stringResource(R.string.settings_group_app)) }
+        item { Entry(stringResource(R.string.settings_check_updates), stringResource(R.string.settings_version, BuildConfig.VERSION_NAME)) { pocket.core.updates.check(manual = true) } }
         item {
             Text(
-                "JW Pocket is a personal, non-commercial project. It isn't affiliated with or endorsed by Jehovah's Witnesses. " +
-                    "All videos belong to their owners and come from the public jw.org video service.",
+                stringResource(R.string.settings_disclaimer),
                 style = MaterialTheme.typography.bodySmall,
                 color = Pocket.TextMuted,
                 modifier = Modifier.padding(20.dp),
@@ -102,20 +110,76 @@ fun SettingsScreen(
     }
 
     when (pick) {
-        "stream" -> ChoiceSheet("Streaming quality", "Downloaded videos always play in their downloaded quality.", { pick = null }) {
-            item { ChoiceRow("Auto", settings.streamQuality == null, "Up to 720p") { repo.update { it.copy(streamQuality = null) }; pick = null } }
+        "app" -> AppLanguageSheet(settings.appLanguage, onDismiss = { pick = null })
+        "stream" -> ChoiceSheet(stringResource(R.string.settings_streaming_quality), stringResource(R.string.quality_streaming_note), { pick = null }) {
+            item { ChoiceRow(stringResource(R.string.quality_auto), settings.streamQuality == null, stringResource(R.string.quality_auto_detail)) { repo.update { it.copy(streamQuality = null) }; pick = null } }
             items(QUALITIES) { q -> ChoiceRow(q, settings.streamQuality == q) { repo.update { it.copy(streamQuality = q) }; pick = null } }
         }
-        "download" -> ChoiceSheet("Download quality", "Smaller qualities save space.", { pick = null }) {
-            item { ChoiceRow("Ask every time", settings.downloadQuality == null) { repo.update { it.copy(downloadQuality = null) }; pick = null } }
+        "download" -> ChoiceSheet(stringResource(R.string.settings_download_quality), stringResource(R.string.quality_download_note), { pick = null }) {
+            item { ChoiceRow(stringResource(R.string.quality_ask_every_time), settings.downloadQuality == null) { repo.update { it.copy(downloadQuality = null) }; pick = null } }
             items(QUALITIES) { q -> ChoiceRow(q, settings.downloadQuality == q) { repo.update { it.copy(downloadQuality = q) }; pick = null } }
         }
     }
 }
 
+@Composable
+private fun appLanguageLabel(chosen: String?): String =
+    chosen?.let(AppLanguage::name) ?: stringResource(R.string.settings_device_language, AppLanguage.name(AppLanguage.effective(null)))
+
+/**
+ * App language: the device's or one the app is translated into. If the
+ * library has videos in the new language, asks whether videos (and their
+ * subtitles) should follow; then restarts the screen in the new language.
+ */
+@Composable
+private fun AppLanguageSheet(chosen: String?, onDismiss: () -> Unit) {
+    val pocket = LocalPocket.current
+    val activity = LocalContext.current as? Activity
+    var asking by remember { mutableStateOf<Pair<String?, Language>?>(null) }
+    fun apply(tag: String?, videos: Language?, subtitlesToo: Boolean) {
+        pocket.core.settings.setAppLanguage(tag)
+        if (videos != null) {
+            pocket.core.settings.setLanguage(videos.code, videos.vernacular)
+            if (subtitlesToo) pocket.core.settings.setSubtitleLanguage(null)
+            pocket.core.library.clearMemory()
+            pocket.core.languages.load(videos.code)
+        }
+        onDismiss()
+        activity?.recreate()
+    }
+    fun pick(tag: String?) {
+        val match = pocket.core.languages.forLocale(AppLanguage.effective(tag))
+        if (match != null && match.code != pocket.core.settings.current.languageCode) asking = tag to match else apply(tag, null, false)
+    }
+
+    val pending = asking
+    if (pending == null) {
+        ChoiceSheet(stringResource(R.string.settings_app_language), onDismiss = onDismiss) {
+            item { ChoiceRow(stringResource(R.string.settings_device_language, AppLanguage.name(AppLanguage.effective(null))), chosen == null) { pick(null) } }
+            items(AppLanguage.supported) { (tag, name) -> ChoiceRow(name, chosen == tag) { pick(tag) } }
+        }
+    } else {
+        val (tag, videos) = pending
+        AlertDialog(
+            onDismissRequest = { apply(tag, null, false) },
+            title = { Text(stringResource(R.string.cascade_app_title, videos.vernacular)) },
+            text = { Text(stringResource(R.string.cascade_app_text, videos.vernacular)) },
+            confirmButton = {
+                Column(horizontalAlignment = Alignment.End) {
+                    TextButton(onClick = { apply(tag, videos, subtitlesToo = true) }) { Text(stringResource(R.string.cascade_app_yes), color = Pocket.Accent) }
+                    TextButton(onClick = { apply(tag, videos, subtitlesToo = false) }) { Text(stringResource(R.string.cascade_app_videos_only)) }
+                    TextButton(onClick = { apply(tag, null, false) }) { Text(stringResource(R.string.cascade_app_no)) }
+                }
+            },
+            containerColor = Pocket.SurfaceHigh,
+        )
+    }
+}
+
+@Composable
 fun subtitleLabel(settings: Settings, name: (String) -> String): String = when (val s = settings.subtitleLanguage) {
-    null -> "Same as the video"
-    Settings.SUBTITLES_OFF -> "Off"
+    null -> stringResource(R.string.subtitles_same_as_video)
+    Settings.SUBTITLES_OFF -> stringResource(R.string.subtitles_off)
     else -> name(s)
 }
 
@@ -162,7 +226,7 @@ private fun LanguageList(
         item {
             TextField(
                 value = query, onValueChange = { query = it }, singleLine = true,
-                placeholder = { Text("Search languages") },
+                placeholder = { Text(stringResource(R.string.search_languages)) },
                 leadingIcon = { Icon(Icons.Rounded.Search, null) },
                 shape = RoundedCornerShape(14.dp),
                 colors = TextFieldDefaults.colors(
@@ -185,16 +249,37 @@ private fun LanguageList(
     }
 }
 
+/**
+ * Video language. If subtitles are set to another language, asks whether
+ * they should now follow the videos instead.
+ */
 @Composable
 fun LanguageScreen(contentPadding: PaddingValues, onDone: () -> Unit) {
     val pocket = LocalPocket.current
     val settings by pocket.core.settings.settings.collectAsState()
     val languages by pocket.core.languages.languages.collectAsState()
-    LanguageList(contentPadding, languages, settings.languageCode) { lang ->
+    var asking by remember { mutableStateOf<Language?>(null) }
+    fun apply(lang: Language, subtitlesToo: Boolean) {
         pocket.core.settings.setLanguage(lang.code, lang.vernacular)
+        if (subtitlesToo) pocket.core.settings.setSubtitleLanguage(null)
         pocket.core.library.clearMemory()
         pocket.core.languages.load(lang.code)
         onDone()
+    }
+    LanguageList(contentPadding, languages, settings.languageCode) { lang ->
+        val subs = settings.subtitleLanguage
+        if (subs != null && subs != Settings.SUBTITLES_OFF && subs != lang.code) asking = lang else apply(lang, subtitlesToo = false)
+    }
+    asking?.let { lang ->
+        val subs = pocket.core.languages.name(settings.subtitleLanguage.orEmpty())
+        AlertDialog(
+            onDismissRequest = { apply(lang, subtitlesToo = false) },
+            title = { Text(stringResource(R.string.cascade_video_title, lang.vernacular)) },
+            text = { Text(stringResource(R.string.cascade_video_text, subs)) },
+            confirmButton = { TextButton(onClick = { apply(lang, subtitlesToo = true) }) { Text(stringResource(R.string.cascade_video_yes), color = Pocket.Accent) } },
+            dismissButton = { TextButton(onClick = { apply(lang, subtitlesToo = false) }) { Text(stringResource(R.string.cascade_video_no, subs)) } },
+            containerColor = Pocket.SurfaceHigh,
+        )
     }
 }
 
@@ -208,10 +293,10 @@ fun SubtitleLanguageScreen(contentPadding: PaddingValues, onDone: () -> Unit) {
         contentPadding, list, settings.subtitleLanguage,
         header = {
             Column {
-                ChoiceRow("Same as the video", settings.subtitleLanguage == null, "Subtitles in the language of the library") { pocket.core.settings.setSubtitleLanguage(null); onDone() }
-                ChoiceRow("Off", settings.subtitleLanguage == Settings.SUBTITLES_OFF) { pocket.core.settings.setSubtitleLanguage(Settings.SUBTITLES_OFF); onDone() }
+                ChoiceRow(stringResource(R.string.subtitles_same_as_video), settings.subtitleLanguage == null, stringResource(R.string.subtitles_same_as_video_detail)) { pocket.core.settings.setSubtitleLanguage(null); onDone() }
+                ChoiceRow(stringResource(R.string.subtitles_off), settings.subtitleLanguage == Settings.SUBTITLES_OFF) { pocket.core.settings.setSubtitleLanguage(Settings.SUBTITLES_OFF); onDone() }
                 Text(
-                    "Any language: shown over every video published in it, whatever language the video is in.",
+                    stringResource(R.string.subtitles_any_language_note),
                     style = MaterialTheme.typography.bodySmall, color = Pocket.TextSecondary, modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
                 )
             }

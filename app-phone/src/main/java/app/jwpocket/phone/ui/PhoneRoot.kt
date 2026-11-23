@@ -7,6 +7,7 @@ import android.content.res.Configuration
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -60,6 +61,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
@@ -74,6 +76,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import app.jwpocket.core.model.Video
 import app.jwpocket.core.util.formatBytes
+import app.jwpocket.phone.R
 import app.jwpocket.phone.ui.details.DetailsSheet
 import app.jwpocket.phone.ui.player.FullPlayer
 import app.jwpocket.phone.ui.player.MiniPlayer
@@ -96,11 +99,11 @@ class PhoneUiState {
     var inPictureInPicture by mutableStateOf(false)
 }
 
-private enum class Tab(val route: String, val label: String, val icon: ImageVector) {
-    Home("home", "Home", Icons.Rounded.Home),
-    Browse("browse", "Browse", Icons.Rounded.GridView),
-    Search("search", "Search", Icons.Rounded.Search),
-    Library("library", "Library", Icons.Rounded.VideoLibrary),
+private enum class Tab(val route: String, @StringRes val label: Int, val icon: ImageVector) {
+    Home("home", R.string.nav_home, Icons.Rounded.Home),
+    Browse("browse", R.string.nav_browse, Icons.Rounded.GridView),
+    Search("search", R.string.nav_search, Icons.Rounded.Search),
+    Library("library", R.string.nav_library, Icons.Rounded.VideoLibrary),
 }
 
 /** Routes that draw their own header instead of the top bar. */
@@ -178,7 +181,7 @@ fun PhoneRoot(ui: PhoneUiState, onPictureInPicture: () -> Unit, onToggleFullscre
                         TopAppBar(
                             title = { Text(titleFor(route, entry?.arguments), maxLines = 1) },
                             navigationIcon = {
-                                if (route != "browse") IconButton(onClick = { nav.popBackStack() }) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Back") }
+                                if (route != "browse") IconButton(onClick = { nav.popBackStack() }) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, stringResource(R.string.nav_back)) }
                             },
                             colors = TopAppBarDefaults.topAppBarColors(containerColor = Pocket.Background),
                         )
@@ -202,10 +205,11 @@ fun PhoneRoot(ui: PhoneUiState, onPictureInPicture: () -> Unit, onToggleFullscre
                                     },
                                     icon = {
                                         val active = marks.downloads.value.values.count { it.isActive }
-                                        if (t == Tab.Library && active > 0) BadgedBox(badge = { Badge(containerColor = Pocket.Accent) { Text("$active") } }) { Icon(t.icon, t.label) }
-                                        else Icon(t.icon, t.label)
+                                        val label = stringResource(t.label)
+                                        if (t == Tab.Library && active > 0) BadgedBox(badge = { Badge(containerColor = Pocket.Accent) { Text("$active") } }) { Icon(t.icon, label) }
+                                        else Icon(t.icon, label)
                                     },
-                                    label = { Text(t.label) },
+                                    label = { Text(stringResource(t.label)) },
                                     colors = NavigationBarItemDefaults.colors(
                                         selectedIconColor = MaterialTheme.colorScheme.onSurface,
                                         selectedTextColor = MaterialTheme.colorScheme.onSurface,
@@ -246,22 +250,22 @@ fun PhoneRoot(ui: PhoneUiState, onPictureInPicture: () -> Unit, onToggleFullscre
             val update = updates.available!!
             AlertDialog(
                 onDismissRequest = pocket.core.updates::dismiss,
-                title = { Text("Update available: ${update.versionName}") },
-                text = { Text(update.notes ?: "A new version of JW Pocket is ready (${formatBytes(update.sizeBytes)}).") },
-                confirmButton = { TextButton(onClick = pocket.core.updates::install) { Text("Update", color = Pocket.Accent) } },
-                dismissButton = { TextButton(onClick = pocket.core.updates::dismiss) { Text("Later") } },
+                title = { Text(stringResource(R.string.update_available_title, update.versionName)) },
+                text = { Text(update.notes ?: stringResource(R.string.update_available_message, formatBytes(update.sizeBytes))) },
+                confirmButton = { TextButton(onClick = pocket.core.updates::install) { Text(stringResource(R.string.update_install), color = Pocket.Accent) } },
+                dismissButton = { TextButton(onClick = pocket.core.updates::dismiss) { Text(stringResource(R.string.update_later)) } },
                 containerColor = Pocket.SurfaceHigh,
             )
         }
         updates.downloadProgress?.let { p ->
             AlertDialog(
                 onDismissRequest = {},
-                title = { Text("Downloading update") },
+                title = { Text(stringResource(R.string.update_downloading)) },
                 text = {
                     Column {
                         LinearProgressIndicator(progress = { p }, color = Pocket.Accent, modifier = Modifier.fillMaxWidth())
                         Spacer(Modifier.height(8.dp))
-                        Text("${(p * 100).toInt()}%")
+                        Text(stringResource(R.string.common_percent, (p * 100).toInt()))
                     }
                 },
                 confirmButton = {},
@@ -273,10 +277,10 @@ fun PhoneRoot(ui: PhoneUiState, onPictureInPicture: () -> Unit, onToggleFullscre
 
 @Composable
 private fun titleFor(route: String, args: android.os.Bundle?): String = when {
-    route == "browse" -> "Browse"
-    route == "settings" -> "Settings"
-    route == "language" -> "Library language"
-    route == "subtitles" -> "Subtitle language"
+    route == "browse" -> stringResource(R.string.nav_browse)
+    route == "settings" -> stringResource(R.string.nav_settings)
+    route == "language" -> stringResource(R.string.nav_library_language)
+    route == "subtitles" -> stringResource(R.string.nav_subtitle_language)
     route.startsWith("category/") -> categoryTitle(args?.getString("key").orEmpty())
     route.startsWith("section/") -> categoryTitle(args?.getString("cat").orEmpty(), args?.getString("sec"))
     else -> ""

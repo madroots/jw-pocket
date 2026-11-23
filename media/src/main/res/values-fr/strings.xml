@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- French translation. -->
+<resources>
+    <string name="downloads_channel">Téléchargements</string>
+    <string name="downloads_running">Téléchargement des vidéos</string>
+    <string name="download_done">Téléchargement terminé</string>
+    <string name="download_failed">Échec du téléchargement</string>
+</resources>

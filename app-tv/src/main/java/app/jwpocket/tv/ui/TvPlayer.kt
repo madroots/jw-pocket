@@ -52,6 +52,8 @@ import androidx.compose.ui.input.key.nativeKeyCode
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.type
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -91,6 +93,7 @@ fun TvPlayer(onExit: () -> Unit) {
     val root = remember { FocusRequester() }
     val playButton = remember { FocusRequester() }
     val video = state.video
+    val context = LocalContext.current
 
     LaunchedEffect(visible, state.isPlaying, poke, panel) {
         if (visible && state.isPlaying && panel == null) {
@@ -104,7 +107,7 @@ fun TvPlayer(onExit: () -> Unit) {
     LaunchedEffect(state.subtitleMissing, state.video?.id) {
         val wanted = settings.subtitleLanguage
         if (state.subtitleMissing && wanted != null && wanted != Settings.SUBTITLES_OFF) {
-            notice = "No ${tv.core.languages.name(wanted)} subtitles for this video"
+            notice = context.getString(R.string.player_subtitles_missing, tv.core.languages.name(wanted))
             delay(4_000)
             notice = null
         }
@@ -172,7 +175,11 @@ fun TvPlayer(onExit: () -> Unit) {
                 Column(Modifier.align(Alignment.TopStart).padding(48.dp)) {
                     Text(video?.title.orEmpty(), style = MaterialTheme.typography.headlineMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
                     Text(
-                        listOfNotNull(state.quality, if (state.fromDownload) "From downloads" else null, state.subtitleLanguage?.let { "Subtitles: ${tv.core.languages.name(it)}" }).joinToString(" · "),
+                        listOfNotNull(
+                            state.quality,
+                            if (state.fromDownload) stringResource(R.string.player_from_downloads) else null,
+                            state.subtitleLanguage?.let { stringResource(R.string.player_subtitles_language, tv.core.languages.name(it)) },
+                        ).joinToString(" · "),
                         color = Tv.TextSecondary,
                     )
                 }
@@ -189,15 +196,15 @@ fun TvPlayer(onExit: () -> Unit) {
                     }
                     Spacer(Modifier.height(20.dp))
                     Row(horizontalArrangement = Arrangement.spacedBy(14.dp), verticalAlignment = Alignment.CenterVertically) {
-                        ControlButton(if (state.isPlaying) Icons.Rounded.Pause else Icons.Rounded.PlayArrow, if (state.isPlaying) "Pause" else "Play", Modifier.focusRequester(playButton), showLabel = false) { connection.togglePlay() }
-                        ControlButton(Icons.Rounded.Replay10, "Back 10 seconds", showLabel = false) { connection.seekBy(-10_000) }
-                        ControlButton(Icons.Rounded.Forward10, "Forward 10 seconds", showLabel = false) { connection.seekBy(10_000) }
-                        if (state.hasNext) ControlButton(Icons.Rounded.SkipNext, "Next") { connection.next() }
+                        ControlButton(if (state.isPlaying) Icons.Rounded.Pause else Icons.Rounded.PlayArrow, stringResource(if (state.isPlaying) R.string.player_pause else R.string.common_play), Modifier.focusRequester(playButton), showLabel = false) { connection.togglePlay() }
+                        ControlButton(Icons.Rounded.Replay10, stringResource(R.string.player_back_10), showLabel = false) { connection.seekBy(-10_000) }
+                        ControlButton(Icons.Rounded.Forward10, stringResource(R.string.player_forward_10), showLabel = false) { connection.seekBy(10_000) }
+                        if (state.hasNext) ControlButton(Icons.Rounded.SkipNext, stringResource(R.string.player_next)) { connection.next() }
                         Spacer(Modifier.width(24.dp))
                         ControlButton(if (state.subtitleLanguage != null) Icons.Rounded.ClosedCaption else Icons.Rounded.ClosedCaptionDisabled,
-                            state.subtitleLanguage?.let { tv.core.languages.name(it) } ?: "Subtitles") { panel = PlayerPanel.Subtitles }
-                        if (!state.fromDownload) ControlButton(Icons.Rounded.HighQuality, state.quality ?: "Quality") { panel = PlayerPanel.Quality }
-                        ControlButton(Icons.Rounded.Speed, if (state.speed == 1f) "Speed" else "${state.speed}×") { panel = PlayerPanel.Speed }
+                            state.subtitleLanguage?.let { tv.core.languages.name(it) } ?: stringResource(R.string.player_subtitles)) { panel = PlayerPanel.Subtitles }
+                        if (!state.fromDownload) ControlButton(Icons.Rounded.HighQuality, state.quality ?: stringResource(R.string.common_quality)) { panel = PlayerPanel.Quality }
+                        ControlButton(Icons.Rounded.Speed, if (state.speed == 1f) stringResource(R.string.player_speed) else "${state.speed}×") { panel = PlayerPanel.Speed }
                     }
                 }
             }
@@ -206,29 +213,33 @@ fun TvPlayer(onExit: () -> Unit) {
 
     when (panel) {
         PlayerPanel.Subtitles -> if (video != null) {
-            val own = video.subtitleUrl?.let { PanelOption(null, tv.core.languages.name(settings.languageCode), "Same as the video", settings.subtitleLanguage == null) }
+            val own = video.subtitleUrl?.let { PanelOption(null, tv.core.languages.name(settings.languageCode), stringResource(R.string.player_subtitles_same_as_video), settings.subtitleLanguage == null) }
+            val recentlyUsed = stringResource(R.string.player_subtitles_recent)
             val others = tv.core.subtitles.otherLanguages(video, settings.languageCode, languages, settings.subtitleShortcuts)
-                .map { PanelOption(it.code, it.vernacular, if (it.code in settings.recentSubtitleLanguages) "Recently used" else it.name.takeIf { n -> n != it.vernacular }, settings.subtitleLanguage == it.code) }
+                .map { PanelOption(it.code, it.vernacular, if (it.code in settings.recentSubtitleLanguages) recentlyUsed else it.name.takeIf { n -> n != it.vernacular }, settings.subtitleLanguage == it.code) }
             TvSidePanel(
-                "Subtitles", "Remembered for the next videos.",
-                listOf(PanelOption(Settings.SUBTITLES_OFF, "Off", selected = settings.subtitleLanguage == Settings.SUBTITLES_OFF)) + listOfNotNull(own) + others,
+                stringResource(R.string.player_subtitles), stringResource(R.string.player_subtitles_remembered),
+                listOf(PanelOption(Settings.SUBTITLES_OFF, stringResource(R.string.player_subtitles_off), selected = settings.subtitleLanguage == Settings.SUBTITLES_OFF)) + listOfNotNull(own) + others,
                 onPick = { connection.setSubtitles(it.key); panel = null },
                 onDismiss = { panel = null },
             )
         }
         PlayerPanel.Quality -> if (video != null) TvSidePanel(
-            "Quality",
-            options = listOf(PanelOption(null, "Auto", "Up to 720p", state.quality == null)) +
+            stringResource(R.string.common_quality),
+            options = listOf(PanelOption(null, stringResource(R.string.common_quality_auto), stringResource(R.string.common_quality_auto_detail), state.quality == null)) +
                 video.qualities.reversed().map { PanelOption(it, it, video.file(it)?.filesize?.let(::formatBytes), it == state.quality) },
             onPick = { connection.setQuality(it.key); panel = null },
             onDismiss = { panel = null },
         )
-        PlayerPanel.Speed -> TvSidePanel(
-            "Playback speed",
-            options = listOf(0.75f, 1f, 1.25f, 1.5f, 2f).map { PanelOption(it.toString(), if (it == 1f) "Normal" else "${it}×", selected = it == state.speed) },
-            onPick = { o -> o.key?.toFloatOrNull()?.let(connection::setSpeed); panel = null },
-            onDismiss = { panel = null },
-        )
+        PlayerPanel.Speed -> {
+            val normal = stringResource(R.string.player_speed_normal)
+            TvSidePanel(
+                stringResource(R.string.player_playback_speed),
+                options = listOf(0.75f, 1f, 1.25f, 1.5f, 2f).map { PanelOption(it.toString(), if (it == 1f) normal else "${it}×", selected = it == state.speed) },
+                onPick = { o -> o.key?.toFloatOrNull()?.let(connection::setSpeed); panel = null },
+                onDismiss = { panel = null },
+            )
+        }
         null -> Unit
     }
 }

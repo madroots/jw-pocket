@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_app_language">Язык приложения</string>
+    <string name="settings_video_language">Язык видео</string>
+    <string name="settings_subtitle_language">Язык субтитров</string>
+    <string name="settings_device_language">Язык устройства (%1$s)</string>
+    <string name="settings_streaming_quality">Качество онлайн-просмотра</string>
+    <string name="settings_download_quality">Качество скачивания</string>
+    <string name="settings_ask_every_time">Всегда спрашивать</string>
+    <string name="settings_download_quality_note">Более низкое качество экономит место.</string>
+    <string name="settings_autoplay">Автовоспроизведение следующего видео</string>
+    <string name="settings_wifi_only">Скачивать только по Wi-Fi</string>
+    <string name="settings_on">Вкл.</string>
+    <string name="settings_off">Выкл.</string>
+    <string name="settings_check_updates">Проверить обновления</string>
+    <string name="settings_version">Версия %1$s</string>
+    <string name="settings_disclaimer">JW Pocket — личный некоммерческий проект, не связанный со Свидетелями Иеговы и не одобренный ими. Видео принадлежат их владельцам и взяты из общедоступного видеосервиса jw.org.</string>
+    <string name="settings_subtitles_note">Показываются у каждого видео, у которого есть субтитры на этом языке.</string>
+    <string name="settings_recently_used">Недавние</string>
+    <string name="cascade_app_title">Видео тоже на языке «%1$s»?</string>
+    <string name="cascade_app_text">Вы также можете смотреть видео (и субтитры к ним) на языке «%1$s». Каждый язык можно будет изменить здесь позже.</string>
+    <string name="cascade_app_yes">Видео и субтитры</string>
+    <string name="cascade_app_videos_only">Только видео</string>
+    <string name="cascade_app_no">Только приложение</string>
+    <string name="cascade_video_title">Субтитры тоже на языке «%1$s»?</string>
+    <string name="cascade_video_text">Сейчас выбраны субтитры на языке «%1$s». Показывать вместо них субтитры на языке видео?</string>
+    <string name="cascade_video_yes">Да</string>
+    <string name="cascade_video_no">Оставить «%1$s»</string>
+</resources>
