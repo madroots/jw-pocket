@@ -30,6 +30,10 @@ data class Settings(
     val autoPictureInPicture: Boolean = true,
     /** Play the next video of the row when one ends. */
     val autoplayNext: Boolean = true,
+    /** Phone: notify when a new monthly JW Broadcasting program appears. */
+    val notifyBroadcasting: Boolean = true,
+    /** Phone: notify when a new Governing Body update (or other news video) appears. */
+    val notifyNews: Boolean = true,
 ) {
     /** Languages pinned at the top of subtitle lists: used before, then English. */
     val subtitleShortcuts: List<String> get() = (recentSubtitleLanguages + ENGLISH).distinct()
@@ -88,6 +92,8 @@ class SettingsRepository(context: Context) {
         backgroundPlayback = prefs.getBoolean("background_playback", true),
         autoPictureInPicture = prefs.getBoolean("auto_pip", true),
         autoplayNext = prefs.getBoolean("autoplay_next", true),
+        notifyBroadcasting = prefs.getBoolean("notify_broadcasting", true),
+        notifyNews = prefs.getBoolean("notify_news", true),
     )
 
     private fun write(s: Settings) {
@@ -104,6 +110,8 @@ class SettingsRepository(context: Context) {
             .putBoolean("background_playback", s.backgroundPlayback)
             .putBoolean("auto_pip", s.autoPictureInPicture)
             .putBoolean("autoplay_next", s.autoplayNext)
+            .putBoolean("notify_broadcasting", s.notifyBroadcasting)
+            .putBoolean("notify_news", s.notifyNews)
             .apply()
     }
 

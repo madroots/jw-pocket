@@ -36,6 +36,7 @@ class MainActivity : ComponentActivity() {
 
     private val graph by lazy { pocketGraph }
     private var openPlayer by mutableStateOf(false)
+    private var searchByVoice by mutableStateOf(false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // The update check waits for the launch animation, so its dialog never covers it.
@@ -54,7 +55,12 @@ class MainActivity : ComponentActivity() {
                 MaterialTheme(colorScheme = TvColors) {
                     Surface(colors = SurfaceDefaults.colors(containerColor = Tv.Background)) {
                         CompositionLocalProvider(LocalTv provides pocket) {
-                            TvRoot(openPlayer, onPlayerOpened = { openPlayer = false })
+                            TvRoot(
+                                openPlayer,
+                                onPlayerOpened = { openPlayer = false },
+                                searchByVoice = searchByVoice,
+                                onSearchByVoiceTaken = { searchByVoice = false },
+                            )
                         }
                     }
                 }
@@ -75,11 +81,22 @@ class MainActivity : ComponentActivity() {
     /**
      * Back always means back. Left to Compose, a Back press first just moves
      * focus out of the current group (the player controls, the details
-     * buttons), so it took several presses before anything happened.
+     * buttons), so it took several presses before anything happened. The
+     * remote's search key opens Search listening, wherever focus is.
      */
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
-        if (event.keyCode != KeyEvent.KEYCODE_BACK) return super.dispatchKeyEvent(event)
-        if (event.action == KeyEvent.ACTION_UP && !event.isCanceled) onBackPressedDispatcher.onBackPressed()
+        val released = event.action == KeyEvent.ACTION_UP && !event.isCanceled
+        when (event.keyCode) {
+            KeyEvent.KEYCODE_BACK -> if (released) onBackPressedDispatcher.onBackPressed()
+            KeyEvent.KEYCODE_SEARCH -> if (released) onSearchRequested()
+            else -> return super.dispatchKeyEvent(event)
+        }
+        return true
+    }
+
+    /** The system's own search request (remotes whose search key the framework handles): voice search in the app. */
+    override fun onSearchRequested(): Boolean {
+        searchByVoice = true
         return true
     }
 

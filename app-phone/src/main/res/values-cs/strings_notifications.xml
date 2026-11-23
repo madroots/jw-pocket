@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_group_notifications">Oznámení</string>
+    <string name="settings_notify_broadcasting_title">Nové pořady JW Broadcasting</string>
+    <string name="settings_notify_broadcasting_detail">Když vyjde měsíční pořad</string>
+    <string name="settings_notify_news_title">Informace od vedoucího sboru a zprávy</string>
+    <string name="settings_notify_news_detail">Když vyjdou nové aktuální informace nebo oznámení</string>
+    <string name="notify_channel">Nová videa</string>
+    <string name="notify_new_broadcasting">Nový pořad JW Broadcasting</string>
+    <string name="notify_new_news">Nové informace od vedoucího sboru nebo oznámení</string>
+</resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_group_notifications">Értesítések</string>
+    <string name="settings_notify_broadcasting_title">Új JW TV-adások</string>
+    <string name="settings_notify_broadcasting_detail">Amikor megjelenik a havi adás</string>
+    <string name="settings_notify_news_title">Friss hírek a vezetőtestülettől és egyéb hírek</string>
+    <string name="settings_notify_news_detail">Amikor új beszámoló vagy bejelentés jelenik meg</string>
+    <string name="notify_channel">Új videók</string>
+    <string name="notify_new_broadcasting">Új JW TV-adás</string>
+    <string name="notify_new_news">Friss hírek a vezetőtestülettől vagy egyéb hír</string>
+</resources>

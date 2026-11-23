@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="auto_continue_watching">Pokračovať v pozeraní</string>
+    <string name="auto_downloads">Stiahnuté</string>
+    <string name="auto_favorites">Obľúbené</string>
+    <string name="auto_latest">Najnovšie</string>
+    <string name="auto_browse">Prehľadávať</string>
+    <string name="auto_gb_updates">Aktuálne informácie od vedúceho zboru</string>
+</resources>

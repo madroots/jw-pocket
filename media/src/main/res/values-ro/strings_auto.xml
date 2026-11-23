@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="auto_continue_watching">Continuă vizionarea</string>
+    <string name="auto_downloads">Descărcări</string>
+    <string name="auto_favorites">Favorite</string>
+    <string name="auto_latest">Cele mai noi</string>
+    <string name="auto_browse">Explorează</string>
+    <string name="auto_gb_updates">Rapoarte din partea Corpului de Guvernare</string>
+</resources>

@@ -10,15 +10,24 @@
     <application>
         <!-- Owns the player: playback survives the screen locking, the app
              going to the background and screens closing. Gives lock-screen,
-             notification, headset and Bluetooth controls. -->
+             notification, headset and Bluetooth controls, and the media
+             library Android Auto browses. -->
         <service
             android:name="app.jwpocket.media.PlaybackService"
             android:exported="true"
             android:foregroundServiceType="mediaPlayback">
             <intent-filter>
                 <action android:name="androidx.media3.session.MediaSessionService" />
+                <action android:name="androidx.media3.session.MediaLibraryService" />
+                <action android:name="android.media.browse.MediaBrowserService" />
             </intent-filter>
         </service>
+
+        <!-- Thumbnails for Android Auto, which only shows content:// artwork. -->
+        <provider
+            android:name="app.jwpocket.media.ArtworkProvider"
+            android:authorities="${applicationId}.artwork"
+            android:exported="true" />
 
         <!-- Runs downloads with a progress notification, also with the app closed. -->
         <service

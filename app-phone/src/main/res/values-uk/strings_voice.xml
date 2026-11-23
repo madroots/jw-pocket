@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="voice_search">Голосовий пошук</string>
+    <string name="voice_search_prompt">Скажіть, що ви шукаєте</string>
+</resources>

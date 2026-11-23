@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="auto_continue_watching">Oglądaj dalej</string>
+    <string name="auto_downloads">Pobrane</string>
+    <string name="auto_favorites">Ulubione</string>
+    <string name="auto_latest">Najnowsze</string>
+    <string name="auto_browse">Przeglądaj</string>
+    <string name="auto_gb_updates">Sprawozdania Ciała Kierowniczego</string>
+</resources>

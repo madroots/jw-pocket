@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="auto_continue_watching">Verder kijken</string>
+    <string name="auto_downloads">Downloads</string>
+    <string name="auto_favorites">Favorieten</string>
+    <string name="auto_latest">Nieuwste</string>
+    <string name="auto_browse">Bladeren</string>
+    <string name="auto_gb_updates">Besturende Lichaam updates</string>
+</resources>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Folders Android Auto shows in the car. -->
+    <string name="auto_continue_watching">Continue watching</string>
+    <string name="auto_downloads">Downloads</string>
+    <string name="auto_favorites">Favorites</string>
+    <string name="auto_latest">Latest</string>
+    <!-- Holds the categories when the car can't show them all as tabs. -->
+    <string name="auto_browse">Browse</string>
+    <!-- Folder of the Governing Body Update videos (JW Broadcasting news). -->
+    <string name="auto_gb_updates">Governing Body Updates</string>
+</resources>

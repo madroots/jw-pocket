@@ -4,6 +4,13 @@
     <uses-feature android:name="android.software.leanback" android:required="true" />
     <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
 
+    <!-- To find the speech recognizer for voice search (package visibility, Android 11+). -->
+    <queries>
+        <intent>
+            <action android:name="android.speech.action.RECOGNIZE_SPEECH" />
+        </intent>
+    </queries>
+
     <application
         android:name=".PocketTvApp"
         android:allowBackup="true"

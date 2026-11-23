@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_group_notifications">Notificări</string>
+    <string name="settings_notify_broadcasting_title">Emisiuni JW Broadcasting noi</string>
+    <string name="settings_notify_broadcasting_detail">Când apare emisiunea lunară</string>
+    <string name="settings_notify_news_title">Rapoarte din partea Corpului de Guvernare și știri</string>
+    <string name="settings_notify_news_detail">Când apare un nou raport sau anunț</string>
+    <string name="notify_channel">Videoclipuri noi</string>
+    <string name="notify_new_broadcasting">Emisiune JW Broadcasting nouă</string>
+    <string name="notify_new_news">Raport nou din partea Corpului de Guvernare sau știre</string>
+</resources>

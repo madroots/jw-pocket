@@ -16,10 +16,17 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import androidx.media3.session.DefaultMediaNotificationProvider
+import androidx.media3.session.LibraryResult
+import androidx.media3.session.MediaLibraryService
+import androidx.media3.session.MediaLibraryService.LibraryParams
+import androidx.media3.session.MediaLibraryService.MediaLibrarySession
 import androidx.media3.session.MediaSession
-import androidx.media3.session.MediaSessionService
+import androidx.media3.session.MediaSession.MediaItemsWithStartPosition
+import androidx.media3.session.SessionError
 import app.jwpocket.core.util.withAppLanguage
 import app.jwpocket.media.download.DownloadsRepository
+import com.google.common.collect.ImmutableList
+import com.google.common.util.concurrent.Futures
 import com.google.common.util.concurrent.ListenableFuture
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -27,6 +34,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.guava.future
 import kotlinx.coroutines.isActive
@@ -37,14 +45,17 @@ import kotlinx.coroutines.launch
  * not part of a screen, playback carries on with the screen locked or the app
  * in the background, and the system shows lock-screen and notification
  * controls. Progress is saved here too, so it is right whichever screen is open.
+ * It is also a media library: Android Auto browses [LibraryTree] and plays
+ * the sound of the videos through this same player.
  */
 @SuppressLint("UnsafeOptInUsageError")
 @UnstableApi
-class PlaybackService : MediaSessionService() {
+class PlaybackService : MediaLibraryService() {
 
     private val graph get() = pocketGraph
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
-    private var session: MediaSession? = null
+    private var session: MediaLibrarySession? = null
+    private val tree by lazy { LibraryTree(this) }
 
     override fun attachBaseContext(base: Context) = super.attachBaseContext(base.withAppLanguage())
 
@@ -67,8 +78,7 @@ class PlaybackService : MediaSessionService() {
             putExtra(EXTRA_OPEN_PLAYER, true)
             flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
         }
-        session = MediaSession.Builder(this, player)
-            .setCallback(Callback())
+        session = MediaLibrarySession.Builder(this, player, Callback())
             .apply {
                 if (openApp != null) setSessionActivity(
                     PendingIntent.getActivity(this@PlaybackService, 0, openApp, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
@@ -89,7 +99,7 @@ class PlaybackService : MediaSessionService() {
         }
     }
 
-    override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaSession? = session
+    override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaLibrarySession? = session
 
     /** Swiping the app away keeps playback only while something is playing. */
     override fun onTaskRemoved(rootIntent: Intent?) {
@@ -134,20 +144,93 @@ class PlaybackService : MediaSessionService() {
         }
     }
 
-    private inner class Callback : MediaSession.Callback {
-        /** Turns requests from the app into playable items. */
+    private inner class Callback : MediaLibrarySession.Callback {
+        override fun onGetLibraryRoot(
+            session: MediaLibrarySession,
+            browser: MediaSession.ControllerInfo,
+            params: LibraryParams?,
+        ): ListenableFuture<LibraryResult<MediaItem>> =
+            Futures.immediateFuture(LibraryResult.ofItem(tree.root(browser, params), params))
+
+        override fun onGetChildren(
+            session: MediaLibrarySession,
+            browser: MediaSession.ControllerInfo,
+            parentId: String,
+            page: Int,
+            pageSize: Int,
+            params: LibraryParams?,
+        ): ListenableFuture<LibraryResult<ImmutableList<MediaItem>>> = scope.future {
+            val children = tree.children(browser, parentId)
+                ?: return@future LibraryResult.ofError<ImmutableList<MediaItem>>(SessionError.ERROR_BAD_VALUE)
+            val paged = if (page >= 0 && pageSize in 1 until Int.MAX_VALUE) {
+                children.drop((page.toLong() * pageSize).coerceAtMost(Int.MAX_VALUE.toLong()).toInt()).take(pageSize)
+            } else children
+            LibraryResult.ofItemList(paged, params)
+        }
+
+        override fun onGetItem(
+            session: MediaLibrarySession,
+            browser: MediaSession.ControllerInfo,
+            mediaId: String,
+        ): ListenableFuture<LibraryResult<MediaItem>> = scope.future {
+            tree.item(browser, mediaId)?.let { LibraryResult.ofItem(it, null) }
+                ?: LibraryResult.ofError<MediaItem>(SessionError.ERROR_BAD_VALUE)
+        }
+
+        /** Turns requests from the app, or bare media ids from browsers, into playable items. */
         override fun onAddMediaItems(
             mediaSession: MediaSession,
             controller: MediaSession.ControllerInfo,
             mediaItems: MutableList<MediaItem>,
         ): ListenableFuture<MutableList<MediaItem>> = scope.future {
-            mediaItems.map { item -> async { resolve(item) } }.awaitAll().toMutableList()
+            resolveAll(mediaItems).toMutableList()
+        }
+
+        /**
+         * A browser playing one video by its id (Android Auto) gets the
+         * video's folder queued around it, starting where it was left off.
+         */
+        override fun onSetMediaItems(
+            mediaSession: MediaSession,
+            controller: MediaSession.ControllerInfo,
+            mediaItems: MutableList<MediaItem>,
+            startIndex: Int,
+            startPositionMs: Long,
+        ): ListenableFuture<MediaItemsWithStartPosition> = scope.future {
+            val single = mediaItems.singleOrNull()?.takeIf { PlayRequest.from(it) == null }
+            val folder = single?.let { tree.queue(it.mediaId) }
+            if (folder != null) {
+                val (requests, index) = folder
+                val position = if (startPositionMs == C.TIME_UNSET) graph.core.progress.resumePositionMs(requests[index].video.id) else startPositionMs
+                MediaItemsWithStartPosition(resolveAll(requests.map { it.toMediaItem() }), index, position)
+            } else {
+                MediaItemsWithStartPosition(resolveAll(mediaItems), startIndex, startPositionMs)
+            }
+        }
+
+        /** "Play" with nothing queued (e.g. in the car): carry on with Continue watching. */
+        override fun onPlaybackResumption(
+            mediaSession: MediaSession,
+            controller: MediaSession.ControllerInfo,
+        ): ListenableFuture<MediaItemsWithStartPosition> = scope.future {
+            val (requests, index) = tree.resumeQueue() ?: throw UnsupportedOperationException("Nothing to resume")
+            val position = graph.core.progress.resumePositionMs(requests[index].video.id)
+            MediaItemsWithStartPosition(resolveAll(requests.map { it.toMediaItem() }), index, position)
         }
     }
 
+    /** Items the player can't play (an unknown id) are left out. */
+    private suspend fun resolveAll(items: List<MediaItem>): List<MediaItem> = coroutineScope {
+        items.map { item ->
+            async {
+                PlayRequest.from(item)?.let { resolve(it, item) }
+                    ?: tree.request(item.mediaId)?.let { resolve(it, it.toMediaItem()) }
+            }
+        }.awaitAll().filterNotNull()
+    }
+
     /** Download if there is one, otherwise the stream; plus the subtitle file for the choice. */
-    private suspend fun resolve(item: MediaItem): MediaItem {
-        val request = PlayRequest.from(item) ?: return item
+    private suspend fun resolve(request: PlayRequest, item: MediaItem): MediaItem {
         val video = request.video
         val downloads = graph.media.downloads
         val download = downloads.get(video.id)?.takeIf { it.isDone }

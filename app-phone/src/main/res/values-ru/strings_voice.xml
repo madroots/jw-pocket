@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="voice_search">Голосовой поиск</string>
+    <string name="voice_search_prompt">Скажите, что вы ищете</string>
+</resources>

@@ -29,6 +29,7 @@ import app.jwpocket.brand.PocketSplash
 import app.jwpocket.core.util.withAppLanguage
 import app.jwpocket.media.PlaybackService
 import app.jwpocket.media.pocketGraph
+import app.jwpocket.phone.notify.NewVideoNotifier
 import app.jwpocket.phone.ui.LocalPocket
 import app.jwpocket.phone.ui.PhoneRoot
 import app.jwpocket.phone.ui.PhoneUiState
@@ -71,7 +72,7 @@ class MainActivity : ComponentActivity() {
         )
         super.onCreate(savedInstanceState)
         graph.media.player.warmUp()
-        handle(intent)
+        handle(intent, opensDetails = savedInstanceState == null && (intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) == 0)
         addOnPictureInPictureModeChangedListener(pipListener)
 
         setContent {
@@ -98,12 +99,17 @@ class MainActivity : ComponentActivity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        handle(intent)
+        handle(intent, opensDetails = true)
     }
 
-    /** Tapping the media notification opens the full player. */
-    private fun handle(intent: Intent?) {
+    /**
+     * Tapping the media notification opens the full player; tapping a new-video
+     * one opens that video's details. A screen recreated, or reopened from
+     * Recents, with the same launch intent ([opensDetails] false) doesn't open them again.
+     */
+    private fun handle(intent: Intent?, opensDetails: Boolean) {
         if (intent?.getBooleanExtra(PlaybackService.EXTRA_OPEN_PLAYER, false) == true) ui.expanded = true
+        if (opensDetails) NewVideoNotifier.videoFrom(intent)?.let { ui.openDetails = it }
     }
 
     private fun shouldAutoPip(): Boolean =

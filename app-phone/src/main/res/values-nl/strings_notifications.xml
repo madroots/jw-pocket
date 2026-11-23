@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_group_notifications">Meldingen</string>
+    <string name="settings_notify_broadcasting_title">Nieuwe JW Broadcasting-programma\'s</string>
+    <string name="settings_notify_broadcasting_detail">Als het maandprogramma uitkomt</string>
+    <string name="settings_notify_news_title">Updates van het Besturende Lichaam en nieuws</string>
+    <string name="settings_notify_news_detail">Als er een nieuwe update of mededeling uitkomt</string>
+    <string name="notify_channel">Nieuwe video\'s</string>
+    <string name="notify_new_broadcasting">Nieuw JW Broadcasting-programma</string>
+    <string name="notify_new_news">Nieuwe update van het Besturende Lichaam of nieuws</string>
+</resources>

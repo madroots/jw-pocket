@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="auto_continue_watching">Pokračovat ve sledování</string>
+    <string name="auto_downloads">Stažené</string>
+    <string name="auto_favorites">Oblíbené</string>
+    <string name="auto_latest">Nejnovější</string>
+    <string name="auto_browse">Procházet</string>
+    <string name="auto_gb_updates">Aktuální informace od vedoucího sboru</string>
+</resources>

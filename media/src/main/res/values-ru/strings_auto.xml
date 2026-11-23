@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="auto_continue_watching">Продолжить просмотр</string>
+    <string name="auto_downloads">Загрузки</string>
+    <string name="auto_favorites">Избранное</string>
+    <string name="auto_latest">Новое</string>
+    <string name="auto_browse">Обзор</string>
+    <string name="auto_gb_updates">Обращения Руководящего совета</string>
+</resources>

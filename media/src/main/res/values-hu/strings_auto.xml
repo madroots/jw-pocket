@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="auto_continue_watching">Megtekintés folytatása</string>
+    <string name="auto_downloads">Letöltések</string>
+    <string name="auto_favorites">Kedvencek</string>
+    <string name="auto_latest">Legújabbak</string>
+    <string name="auto_browse">Böngészés</string>
+    <string name="auto_gb_updates">Friss hírek a vezetőtestülettől</string>
+</resources>

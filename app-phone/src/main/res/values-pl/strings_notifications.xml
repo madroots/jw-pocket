@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_group_notifications">Powiadomienia</string>
+    <string name="settings_notify_broadcasting_title">Nowe audycje JW Broadcasting</string>
+    <string name="settings_notify_broadcasting_detail">Gdy ukaże się audycja miesięczna</string>
+    <string name="settings_notify_news_title">Sprawozdania Ciała Kierowniczego i wiadomości</string>
+    <string name="settings_notify_news_detail">Gdy ukaże się nowe sprawozdanie lub ogłoszenie</string>
+    <string name="notify_channel">Nowe filmy</string>
+    <string name="notify_new_broadcasting">Nowa audycja JW Broadcasting</string>
+    <string name="notify_new_news">Nowe sprawozdanie Ciała Kierowniczego lub wiadomość</string>
+</resources>

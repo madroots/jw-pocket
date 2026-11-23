@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="voice_search">Hledat hlasem</string>
+    <string name="voice_search_prompt">Řekni, co hledáš</string>
+</resources>

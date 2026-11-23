@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="auto_continue_watching">Continua a guardare</string>
+    <string name="auto_downloads">Download</string>
+    <string name="auto_favorites">Preferiti</string>
+    <string name="auto_latest">Ultime uscite</string>
+    <string name="auto_browse">Esplora</string>
+    <string name="auto_gb_updates">Aggiornamenti dal Corpo Direttivo</string>
+</resources>

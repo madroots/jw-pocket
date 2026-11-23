@@ -1,5 +1,10 @@
 package app.jwpocket.tv.ui
 
+import android.app.Activity
+import android.content.Intent
+import android.speech.RecognizerIntent
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -20,6 +25,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Mic
 import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.Composable
@@ -56,6 +62,7 @@ import app.jwpocket.core.model.Video
 import app.jwpocket.core.presentation.CategoryViewModel
 import app.jwpocket.core.presentation.HomeViewModel
 import app.jwpocket.core.presentation.SearchViewModel
+import app.jwpocket.core.util.AppLanguage
 import app.jwpocket.core.util.formatBytes
 import app.jwpocket.media.download.StorageInfo
 import app.jwpocket.core.util.formatDuration
@@ -210,30 +217,44 @@ fun TvHistory() {
     }
 }
 
+/**
+ * Search. [listen] asks it to start the speech recognizer right away (the
+ * remote's search key); [onListening] says the request was taken.
+ */
 @Composable
-fun TvSearch() {
+fun TvSearch(listen: Boolean, onListening: () -> Unit) {
     val tv = LocalTv.current
     val vm: SearchViewModel = viewModel { SearchViewModel(tv.core) }
     val query by vm.query.collectAsState()
     val results by vm.results.collectAsState()
     val focus = remember { FocusRequester() }
+    val mic = remember { FocusRequester() }
+    val voice = rememberVoiceSearch { vm.query.value = it }
     Column(Modifier.fillMaxSize().padding(top = 32.dp)) {
         Text(stringResource(R.string.nav_search), style = MaterialTheme.typography.displaySmall, modifier = Modifier.padding(start = 48.dp))
         Spacer(Modifier.height(16.dp))
-        FocusSurface(onClick = { runCatching { focus.requestFocus() } }, modifier = Modifier.padding(horizontal = 48.dp).fillMaxWidth(0.6f), scale = 1.02f) {
-            Row(Modifier.padding(horizontal = 18.dp, vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Rounded.Search, null, tint = Tv.TextSecondary)
+        Row(Modifier.padding(horizontal = 48.dp), verticalAlignment = Alignment.CenterVertically) {
+            FocusSurface(onClick = { runCatching { focus.requestFocus() } }, modifier = Modifier.fillMaxWidth(0.6f), scale = 1.02f) {
+                Row(Modifier.padding(horizontal = 18.dp, vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Icon(Icons.Rounded.Search, null, tint = Tv.TextSecondary)
+                    Spacer(Modifier.width(12.dp))
+                    Box {
+                        if (query.isEmpty()) Text(stringResource(R.string.search_hint), color = Tv.TextSecondary)
+                        BasicTextField(
+                            value = query,
+                            onValueChange = { vm.query.value = it },
+                            singleLine = true,
+                            textStyle = TextStyle(color = Color.White, fontSize = 18.sp),
+                            cursorBrush = SolidColor(Tv.Accent),
+                            modifier = Modifier.focusRequester(focus).fillMaxWidth(),
+                        )
+                    }
+                }
+            }
+            if (voice != null) {
                 Spacer(Modifier.width(12.dp))
-                Box {
-                    if (query.isEmpty()) Text(stringResource(R.string.search_hint), color = Tv.TextSecondary)
-                    BasicTextField(
-                        value = query,
-                        onValueChange = { vm.query.value = it },
-                        singleLine = true,
-                        textStyle = TextStyle(color = Color.White, fontSize = 18.sp),
-                        cursorBrush = SolidColor(Tv.Accent),
-                        modifier = Modifier.focusRequester(focus).fillMaxWidth(),
-                    )
+                FocusSurface(onClick = voice, modifier = Modifier.focusRequester(mic), color = Tv.SurfaceHigh) {
+                    Icon(Icons.Rounded.Mic, stringResource(R.string.voice_search), tint = Color.White, modifier = Modifier.padding(14.dp))
                 }
             }
         }
@@ -249,5 +270,38 @@ fun TvSearch() {
             }
         }
     }
-    LaunchedEffect(Unit) { runCatching { focus.requestFocus() } }
+    // Opened to listen: focus rests on the mic rather than the field, so the keyboard doesn't pop up behind the recognizer.
+    LaunchedEffect(Unit) { runCatching { (if (listen && voice != null) mic else focus).requestFocus() } }
+    LaunchedEffect(listen) {
+        if (listen) {
+            onListening()
+            voice?.invoke()
+        }
+    }
+}
+
+/**
+ * The device's speech recognizer, listening in the app language, handing the
+ * first thing it heard to [onText]. Null when no recognizer is installed, so
+ * the mic button doesn't show.
+ */
+@Composable
+private fun rememberVoiceSearch(onText: (String) -> Unit): (() -> Unit)? {
+    val context = LocalContext.current
+    val settings = LocalTv.current.core.settings
+    val prompt = stringResource(R.string.voice_search_prompt)
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode != Activity.RESULT_OK) return@rememberLauncherForActivityResult
+        result.data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)?.firstOrNull()?.takeIf { it.isNotBlank() }?.let(onText)
+    }
+    val available = remember { Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).resolveActivity(context.packageManager) != null }
+    if (!available) return null
+    return {
+        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+            .putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+            .putExtra(RecognizerIntent.EXTRA_LANGUAGE, AppLanguage.effective(settings.current.appLanguage))
+            .putExtra(RecognizerIntent.EXTRA_PROMPT, prompt)
+        // The recognizer can go away between the check and the tap (disabled, updating).
+        runCatching { launcher.launch(intent) }
+    }
 }

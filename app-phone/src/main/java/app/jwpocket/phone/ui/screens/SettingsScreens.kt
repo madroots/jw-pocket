@@ -1,6 +1,13 @@
 package app.jwpocket.phone.ui.screens
 
+import android.Manifest
 import android.app.Activity
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -40,6 +47,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LifecycleEventEffect
 import app.jwpocket.core.data.LibraryRepository
 import app.jwpocket.core.data.Settings
 import app.jwpocket.core.model.Language
@@ -64,6 +75,27 @@ fun SettingsScreen(
     val settings by pocket.core.settings.settings.collectAsState()
     val repo = pocket.core.settings
     var pick by remember { mutableStateOf<String?>(null) }
+    val context = LocalContext.current
+
+    // New-video switches show as on only while the system lets the app notify (re-read on return here).
+    var notificationsAllowed by remember { mutableStateOf(canNotify(context)) }
+    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { notificationsAllowed = canNotify(context) }
+    val askPermission = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { notificationsAllowed = canNotify(context) }
+    // Turning one on keeps the choice and asks: the Android 13+ prompt, or the app's
+    // notification settings when notifications were turned off there. Refused: it simply stays off.
+    fun setNotify(on: Boolean, change: (Settings) -> Settings) {
+        repo.update(change)
+        if (!on || notificationsAllowed) return
+        if (Build.VERSION.SDK_INT >= 33 &&
+            ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
+        ) {
+            askPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
+        } else if (Build.VERSION.SDK_INT >= 26) {
+            context.startActivity(
+                Intent(android.provider.Settings.ACTION_APP_NOTIFICATION_SETTINGS).putExtra(android.provider.Settings.EXTRA_APP_PACKAGE, context.packageName)
+            )
+        }
+    }
 
     LazyColumn(Modifier.fillMaxSize(), contentPadding = contentPadding) {
         // Top to bottom: each language follows the one above it unless changed.
@@ -96,6 +128,18 @@ fun SettingsScreen(
         item { Entry(stringResource(R.string.settings_download_quality), settings.downloadQuality ?: stringResource(R.string.quality_ask_every_time)) { pick = "download" } }
         item { Toggle(stringResource(R.string.settings_wifi_only_title), stringResource(R.string.settings_wifi_only_detail), settings.wifiOnlyDownloads) { on -> repo.update { it.copy(wifiOnlyDownloads = on) } } }
         item { Entry(stringResource(R.string.settings_manage_downloads_title), stringResource(R.string.settings_manage_downloads_detail), onClick = onOpenDownloads) }
+
+        item { Group(stringResource(R.string.settings_group_notifications)) }
+        item {
+            Toggle(stringResource(R.string.settings_notify_broadcasting_title), stringResource(R.string.settings_notify_broadcasting_detail), settings.notifyBroadcasting && notificationsAllowed) { on ->
+                setNotify(on) { it.copy(notifyBroadcasting = on) }
+            }
+        }
+        item {
+            Toggle(stringResource(R.string.settings_notify_news_title), stringResource(R.string.settings_notify_news_detail), settings.notifyNews && notificationsAllowed) { on ->
+                setNotify(on) { it.copy(notifyNews = on) }
+            }
+        }
 
         item { Group(stringResource(R.string.settings_group_app)) }
         item { Entry(stringResource(R.string.settings_check_updates), stringResource(R.string.settings_version, BuildConfig.VERSION_NAME)) { pocket.core.updates.check(manual = true) } }
@@ -182,6 +226,9 @@ fun subtitleLabel(settings: Settings, name: (String) -> String): String = when (
     Settings.SUBTITLES_OFF -> stringResource(R.string.subtitles_off)
     else -> name(s)
 }
+
+/** Whether the app may post notifications: allowed in system settings and, on Android 13+, permitted. */
+private fun canNotify(context: Context): Boolean = NotificationManagerCompat.from(context).areNotificationsEnabled()
 
 @Composable
 private fun Group(title: String) {

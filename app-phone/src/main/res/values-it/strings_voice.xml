@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="voice_search">Cerca con la voce</string>
+    <string name="voice_search_prompt">Di\' cosa stai cercando</string>
+</resources>

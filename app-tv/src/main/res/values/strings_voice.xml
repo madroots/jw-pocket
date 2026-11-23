@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Voice search: the mic button's description, and the prompt the speech recognizer shows. -->
+    <string name="voice_search">Search by voice</string>
+    <string name="voice_search_prompt">Say what you\'re looking for</string>
+</resources>

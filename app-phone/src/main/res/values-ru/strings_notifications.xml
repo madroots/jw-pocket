@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_group_notifications">Уведомления</string>
+    <string name="settings_notify_broadcasting_title">Новые программы JW Broadcasting</string>
+    <string name="settings_notify_broadcasting_detail">Когда выходит ежемесячная программа</string>
+    <string name="settings_notify_news_title">Обращения Руководящего совета и новости</string>
+    <string name="settings_notify_news_detail">Когда выходит новое обращение или объявление</string>
+    <string name="notify_channel">Новые видео</string>
+    <string name="notify_new_broadcasting">Новая программа JW Broadcasting</string>
+    <string name="notify_new_news">Новое обращение Руководящего совета или новость</string>
+</resources>

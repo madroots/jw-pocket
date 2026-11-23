@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_group_notifications">Notifications</string>
+    <string name="settings_notify_broadcasting_title">Nouvelles émissions de JW Télédiffusion</string>
+    <string name="settings_notify_broadcasting_detail">Quand l\'émission mensuelle paraît</string>
+    <string name="settings_notify_news_title">Points actualité du Collège central et reportages</string>
+    <string name="settings_notify_news_detail">Quand un nouveau point actualité ou une annonce paraît</string>
+    <string name="notify_channel">Nouvelles vidéos</string>
+    <string name="notify_new_broadcasting">Nouvelle émission de JW Télédiffusion</string>
+    <string name="notify_new_news">Nouveau point actualité du Collège central ou reportage</string>
+</resources>

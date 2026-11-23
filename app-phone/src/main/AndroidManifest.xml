@@ -4,6 +4,13 @@
     <!-- A phone app: never offered as an Android TV app (the TV app is separate). -->
     <uses-feature android:name="android.hardware.touchscreen" android:required="true" />
 
+    <!-- Lets voice search find the speech recognizer (package visibility, Android 11+). -->
+    <queries>
+        <intent>
+            <action android:name="android.speech.action.RECOGNIZE_SPEECH" />
+        </intent>
+    </queries>
+
     <application
         android:name=".PocketPhoneApp"
         android:allowBackup="true"
@@ -28,5 +35,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Android Auto: the car browses and plays (sound only) through the playback service. -->
+        <meta-data
+            android:name="com.google.android.gms.car.application"
+            android:resource="@xml/automotive_app_desc" />
     </application>
 </manifest>

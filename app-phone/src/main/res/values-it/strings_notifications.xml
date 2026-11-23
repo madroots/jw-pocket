@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_group_notifications">Notifiche</string>
+    <string name="settings_notify_broadcasting_title">Nuovi programmi di JW Broadcasting</string>
+    <string name="settings_notify_broadcasting_detail">Quando esce il programma mensile</string>
+    <string name="settings_notify_news_title">Aggiornamenti dal Corpo Direttivo e news</string>
+    <string name="settings_notify_news_detail">Quando esce un nuovo aggiornamento o annuncio</string>
+    <string name="notify_channel">Nuovi video</string>
+    <string name="notify_new_broadcasting">Nuovo programma di JW Broadcasting</string>
+    <string name="notify_new_news">Nuovo aggiornamento dal Corpo Direttivo o news</string>
+</resources>

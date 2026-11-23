@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="auto_continue_watching">Continuer à regarder</string>
+    <string name="auto_downloads">Téléchargements</string>
+    <string name="auto_favorites">Favoris</string>
+    <string name="auto_latest">Dernières vidéos</string>
+    <string name="auto_browse">Parcourir</string>
+    <string name="auto_gb_updates">Points actualité du Collège central</string>
+</resources>

@@ -82,8 +82,12 @@ sealed interface Dest {
     data class Category(val key: String, val name: String) : Dest { override val id = "cat_$key" }
 }
 
+/**
+ * [searchByVoice] is the remote's search key: it closes the details and opens
+ * Search listening. Ignored while a video plays; [onSearchByVoiceTaken] clears it.
+ */
 @Composable
-fun TvRoot(openPlayer: Boolean, onPlayerOpened: () -> Unit) {
+fun TvRoot(openPlayer: Boolean, onPlayerOpened: () -> Unit, searchByVoice: Boolean, onSearchByVoiceTaken: () -> Unit) {
     val tv = LocalTv.current
     val connection = tv.media.player
     val homeVm: HomeViewModel = viewModel { HomeViewModel(tv.core) }
@@ -101,6 +105,8 @@ fun TvRoot(openPlayer: Boolean, onPlayerOpened: () -> Unit) {
     var focusPage by remember { mutableIntStateOf(0) }
     // The update's release notes, opened from the update banner.
     var whatsNew by remember { mutableStateOf(false) }
+    // Search should start the speech recognizer as soon as it shows.
+    var listen by remember { mutableStateOf(false) }
     LaunchedEffect(focusPage) {
         if (focusPage == 0) return@LaunchedEffect
         // A new page may still be loading: keep trying briefly until something in it takes focus.
@@ -115,6 +121,17 @@ fun TvRoot(openPlayer: Boolean, onPlayerOpened: () -> Unit) {
         if (openPlayer) {
             if (connection.state.value.active) playing = true
             onPlayerOpened()
+        }
+    }
+
+    LaunchedEffect(searchByVoice) {
+        if (searchByVoice) {
+            if (!playing) {
+                details = null
+                destId = Dest.Search.id
+                listen = true
+            }
+            onSearchByVoiceTaken()
         }
     }
 
@@ -138,7 +155,7 @@ fun TvRoot(openPlayer: Boolean, onPlayerOpened: () -> Unit) {
                     .focusGroup()
             ) {
                 when (dest) {
-                    Dest.Search -> TvSearch()
+                    Dest.Search -> TvSearch(listen, onListening = { listen = false })
                     Dest.Home -> TvHome()
                     Dest.Downloads -> TvDownloads()
                     Dest.Favorites -> TvFavorites()

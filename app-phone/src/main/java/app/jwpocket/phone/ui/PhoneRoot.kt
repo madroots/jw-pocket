@@ -93,10 +93,12 @@ import app.jwpocket.phone.ui.screens.SubtitleLanguageScreen
 import app.jwpocket.phone.ui.screens.categoryTitle
 import app.jwpocket.phone.ui.theme.Pocket
 
-/** Window-level player state shared with the activity (picture-in-picture, rotation). */
+/** Window-level state shared with the activity (picture-in-picture, rotation, notification taps). */
 class PhoneUiState {
     var expanded by mutableStateOf(false)
     var inPictureInPicture by mutableStateOf(false)
+    /** A video whose details a tapped notification asked for; cleared once shown. */
+    var openDetails by mutableStateOf<Video?>(null)
 }
 
 private enum class Tab(val route: String, @StringRes val label: Int, val icon: ImageVector) {
@@ -137,6 +139,14 @@ fun PhoneRoot(ui: PhoneUiState, onPictureInPicture: () -> Unit, onToggleFullscre
                 ui.expanded = true
             },
         )
+    }
+
+    // A tapped new-video notification: show that video's details (its row is just the video).
+    LaunchedEffect(ui.openDetails) {
+        ui.openDetails?.let { video ->
+            details = video to listOf(video)
+            ui.openDetails = null
+        }
     }
 
     // Download notifications need permission on Android 13+: ask at the first download.

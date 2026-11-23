@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Settings: notifications about new videos. -->
+    <string name="settings_group_notifications">Notifications</string>
+    <string name="settings_notify_broadcasting_title">New JW Broadcasting programs</string>
+    <string name="settings_notify_broadcasting_detail">When the monthly program comes out</string>
+    <!-- The "News and Announcements" row: mostly Governing Body updates, sometimes other announcements. -->
+    <string name="settings_notify_news_title">Governing Body updates and news</string>
+    <string name="settings_notify_news_detail">When a new update or announcement comes out</string>
+
+    <!-- The notification itself. Its title is the video's title. -->
+    <string name="notify_channel">New videos</string>
+    <string name="notify_new_broadcasting">New JW Broadcasting program</string>
+    <string name="notify_new_news">New Governing Body update or news</string>
+</resources>
