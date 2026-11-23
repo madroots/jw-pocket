@@ -22,3 +22,5 @@ include(":media")
 // The two apps. Each one only holds its own screens.
 include(":app-phone")
 include(":app-tv")
+// Desktop launcher that runs the phone app in the Android emulator (for previews and checks).
+include(":tools:preview")
