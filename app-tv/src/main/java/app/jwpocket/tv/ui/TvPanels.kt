@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
@@ -43,10 +44,19 @@ data class PanelOption(val key: String?, val label: String, val detail: String? 
 
 /**
  * A list of choices sliding in from the right, used for subtitles, quality,
- * language and other settings. Focus starts on the selected choice.
+ * language and other settings. Focus starts on the selected choice. A longer
+ * [body] (release notes) goes under the choices, one paragraph per stop, so
+ * the remote scrolls through it and the choices are never pushed off screen.
  */
 @Composable
-fun TvSidePanel(title: String, subtitle: String? = null, options: List<PanelOption>, onPick: (PanelOption) -> Unit, onDismiss: () -> Unit) {
+fun TvSidePanel(
+    title: String,
+    subtitle: String? = null,
+    options: List<PanelOption>,
+    onPick: (PanelOption) -> Unit,
+    onDismiss: () -> Unit,
+    body: String? = null,
+) {
     BackHandler(onBack = onDismiss)
     val start = options.indexOfFirst { it.selected }.coerceAtLeast(0)
     val focus = remember { FocusRequester() }
@@ -73,6 +83,14 @@ fun TvSidePanel(title: String, subtitle: String? = null, options: List<PanelOpti
                                 if (option.detail != null) Text(option.detail, style = MaterialTheme.typography.bodySmall, color = Tv.TextSecondary)
                             }
                             if (option.selected) Icon(Icons.Rounded.Check, null, tint = Tv.Accent, modifier = Modifier.size(20.dp))
+                        }
+                    }
+                }
+                if (body != null) {
+                    item { Spacer(Modifier.height(12.dp)) }
+                    items(body.lines().filter { it.isNotBlank() }) { paragraph ->
+                        FocusSurface(onClick = {}, modifier = Modifier.fillMaxWidth(), scale = 1f, color = Color.Transparent) {
+                            Text(paragraph.trim(), color = Tv.TextSecondary, modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp))
                         }
                     }
                 }

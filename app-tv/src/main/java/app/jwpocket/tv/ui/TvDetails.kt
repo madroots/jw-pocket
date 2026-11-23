@@ -11,9 +11,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.CheckCircle
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Download
@@ -23,6 +23,7 @@ import androidx.compose.material.icons.rounded.HighQuality
 import androidx.compose.material.icons.rounded.Pause
 import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material.icons.rounded.Refresh
+import androidx.compose.material.icons.rounded.RemoveDone
 import androidx.compose.material.icons.rounded.Replay
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -33,15 +34,21 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.withFrameNanos
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.tv.material3.Icon
 import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Text
 import app.jwpocket.core.model.Video
@@ -90,23 +97,15 @@ fun TvDetails(video: Video, active: Boolean, onPlay: (fromStart: Boolean, qualit
     ) {
         AsyncImage(video.posterUrl, null, contentScale = ContentScale.Crop, modifier = Modifier.fillMaxSize())
         Box(Modifier.fillMaxSize().background(Brush.horizontalGradient(0f to Tv.Background, 0.5f to Color(0xEE0B0C10), 1f to Color(0x330B0C10))))
-        Column(Modifier.padding(start = 64.dp, top = 56.dp, end = 64.dp).width(620.dp)) {
-            Text(video.title, style = MaterialTheme.typography.displaySmall, maxLines = 3, overflow = TextOverflow.Ellipsis)
+        Column(Modifier.padding(start = 64.dp, top = 64.dp, end = 64.dp).width(680.dp)) {
+            Text(video.title, style = MaterialTheme.typography.displaySmall, maxLines = 2, overflow = TextOverflow.Ellipsis)
             Spacer(Modifier.height(10.dp))
             Text(
                 listOf(formatDuration(video.duration), qualityBadge(video.maxHeight), video.publishedDate.orEmpty()).filter { it.isNotEmpty() }.joinToString(" · "),
                 color = Tv.TextSecondary,
             )
-            if (watch != null && watch.canResume) {
-                Spacer(Modifier.height(16.dp))
-                Box(Modifier.width(420.dp).height(4.dp).background(Color(0x44FFFFFF))) {
-                    Box(Modifier.fillMaxWidth(watch.fraction).height(4.dp).background(Tv.Accent))
-                }
-                Spacer(Modifier.height(6.dp))
-                Text("Stopped at ${formatClock(watch.positionMs)} · ${formatTimeLeft(watch.remainingMs)}", color = Tv.TextSecondary)
-            }
             if (download != null) {
-                Spacer(Modifier.height(12.dp))
+                Spacer(Modifier.height(6.dp))
                 Text(
                     when (download.status) {
                         DownloadStatus.Done -> "Downloaded · ${download.quality} · ${formatBytes(download.bytes)} · plays without internet"
@@ -120,38 +119,48 @@ fun TvDetails(video: Video, active: Boolean, onPlay: (fromStart: Boolean, qualit
             }
             video.description?.takeIf { it.isNotBlank() }?.let {
                 Spacer(Modifier.height(16.dp))
-                Text(it, color = Tv.TextSecondary, maxLines = 4, overflow = TextOverflow.Ellipsis)
+                Text(it, color = Tv.TextSecondary, maxLines = 3, overflow = TextOverflow.Ellipsis)
             }
-            Spacer(Modifier.height(28.dp))
-            Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
-                TvButton(Icons.Rounded.PlayArrow, if (watch?.canResume == true) "Resume" else "Play", Modifier.focusRequester(focus), primary = true) { onPlay(false, quality) }
-                if (watch?.canResume == true) TvButton(Icons.Rounded.Replay, "Start over") { onPlay(true, quality) }
-                if (download?.isDone != true) TvButton(Icons.Rounded.HighQuality, quality ?: settings.streamQuality ?: "Auto", Modifier.focusRequester(qualityButton)) {
+            if (watch != null && watch.canResume) {
+                Spacer(Modifier.height(20.dp))
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Box(Modifier.width(240.dp).height(4.dp).background(Color(0x44FFFFFF))) {
+                        Box(Modifier.fillMaxWidth(watch.fraction).height(4.dp).background(Tv.Accent))
+                    }
+                    Spacer(Modifier.width(14.dp))
+                    Text("${formatClock(watch.positionMs)} · ${formatTimeLeft(watch.remainingMs)}", color = Tv.TextSecondary, fontSize = 14.sp)
+                }
+            }
+            Spacer(Modifier.height(32.dp))
+            // One row: Play (or Resume) on the left, then the same round button for every other action.
+            Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.Top) {
+                PlayButton(if (watch?.canResume == true) "Resume" else "Play", Modifier.focusRequester(focus)) { onPlay(false, quality) }
+                Spacer(Modifier.width(12.dp))
+                if (watch?.canResume == true) DetailAction(Icons.Rounded.Replay, "Start over") { onPlay(true, quality) }
+                if (download?.isDone != true) DetailAction(Icons.Rounded.HighQuality, quality ?: settings.streamQuality ?: "Auto", Modifier.focusRequester(qualityButton)) {
                     returnTo = qualityButton
                     panel = DetailsPanel.PlayQuality
                 }
-            }
-            Spacer(Modifier.height(14.dp))
-            Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
+                val inDownloadRow = Modifier.focusRequester(downloadButton)
                 when {
-                    download == null -> TvButton(Icons.Rounded.Download, "Download", Modifier.focusRequester(downloadButton)) {
+                    download == null -> DetailAction(Icons.Rounded.Download, "Download", inDownloadRow) {
                         val q = settings.downloadQuality?.takeIf { it in video.qualities }
                         if (q != null) downloads.download(video, q, settings.languageCode) else { returnTo = downloadButton; panel = DetailsPanel.DownloadQuality }
                     }
-                    download.status == DownloadStatus.Done -> TvButton(Icons.Rounded.Delete, "Delete download", Modifier.focusRequester(downloadButton)) { downloads.remove(video.id) }
-                    download.status == DownloadStatus.Failed -> TvButton(Icons.Rounded.Refresh, "Retry download", Modifier.focusRequester(downloadButton)) { downloads.retry(video.id) }
-                    download.status == DownloadStatus.Paused -> TvButton(Icons.Rounded.Download, "Resume download", Modifier.focusRequester(downloadButton)) { downloads.resume(video.id) }
+                    download.status == DownloadStatus.Done -> DetailAction(Icons.Rounded.Delete, "Delete download", inDownloadRow) { downloads.remove(video.id) }
+                    download.status == DownloadStatus.Failed -> DetailAction(Icons.Rounded.Refresh, "Retry download", inDownloadRow) { downloads.retry(video.id) }
+                    download.status == DownloadStatus.Paused -> DetailAction(Icons.Rounded.Download, "Resume download", inDownloadRow) { downloads.resume(video.id) }
                     else -> {
-                        TvButton(Icons.Rounded.Pause, "Pause download", Modifier.focusRequester(downloadButton)) { downloads.pause(video.id) }
-                        TvButton(Icons.Rounded.Close, "Cancel") { downloads.remove(video.id) }
+                        DetailAction(Icons.Rounded.Pause, "Pause download", inDownloadRow) { downloads.pause(video.id) }
+                        DetailAction(Icons.Rounded.Close, "Cancel download") { downloads.remove(video.id) }
                     }
                 }
-                TvButton(if (marks.favorite) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder, if (marks.favorite) "In favorites" else "Add to favorites") {
-                    tv.core.favorites.toggle(video)
-                }
-                if (watch != null) TvButton(Icons.Rounded.CheckCircle, if (watch.canResume) "Remove from Continue watching" else "Remove from History") {
-                    tv.core.progress.remove(video.id)
-                }
+                DetailAction(
+                    if (marks.favorite) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder,
+                    if (marks.favorite) "In favorites" else "Favorite",
+                    tint = if (marks.favorite) Tv.Accent else Color.White,
+                ) { tv.core.favorites.toggle(video) }
+                if (watch != null) DetailAction(Icons.Rounded.RemoveDone, "Mark unwatched") { tv.core.progress.remove(video.id) }
             }
         }
     }
@@ -184,3 +193,29 @@ fun TvDetails(video: Video, active: Boolean, onPlay: (fromStart: Boolean, qualit
         runCatching { downloadButton.requestFocus() }.onFailure { runCatching { focus.requestFocus() } }
     }
 }
+
+/** The main action: a wide pill the same height as the round actions beside it. */
+@Composable
+private fun PlayButton(label: String, modifier: Modifier, onClick: () -> Unit) {
+    FocusSurface(onClick = onClick, modifier = modifier.height(ActionSize), corner = ActionSize / 2, scale = 1.06f, color = Tv.Accent) {
+        Row(Modifier.align(Alignment.Center).padding(horizontal = 28.dp), verticalAlignment = Alignment.CenterVertically) {
+            Icon(Icons.Rounded.PlayArrow, null, tint = Color.White, modifier = Modifier.size(28.dp))
+            Spacer(Modifier.width(10.dp))
+            Text(label, color = Color.White, fontWeight = FontWeight.Bold, fontSize = 18.sp)
+        }
+    }
+}
+
+/** A round action button with its name under it; every secondary action looks the same. */
+@Composable
+private fun DetailAction(icon: ImageVector, label: String, modifier: Modifier = Modifier, tint: Color = Color.White, onClick: () -> Unit) {
+    Column(Modifier.width(96.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+        FocusSurface(onClick = onClick, modifier = modifier.size(ActionSize), corner = ActionSize / 2, scale = 1.1f, color = Tv.SurfaceHigh) {
+            Icon(icon, label, tint = tint, modifier = Modifier.align(Alignment.Center).size(26.dp))
+        }
+        Spacer(Modifier.height(8.dp))
+        Text(label, color = Tv.TextSecondary, fontSize = 13.sp, textAlign = TextAlign.Center, maxLines = 2, overflow = TextOverflow.Ellipsis)
+    }
+}
+
+private val ActionSize = 56.dp

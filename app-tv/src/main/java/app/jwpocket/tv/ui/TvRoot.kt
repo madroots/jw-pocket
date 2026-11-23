@@ -6,6 +6,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -17,6 +18,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AutoStories
 import androidx.compose.material.icons.rounded.ChildCare
@@ -33,6 +35,7 @@ import androidx.compose.material.icons.rounded.MusicNote
 import androidx.compose.material.icons.rounded.RecordVoiceOver
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material.icons.rounded.SystemUpdate
 import androidx.compose.material.icons.rounded.VideoLibrary
 import androidx.compose.material.icons.rounded.VolunteerActivism
 import androidx.compose.runtime.Composable
@@ -46,11 +49,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.focus.focusRestorer
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -79,7 +80,6 @@ sealed interface Dest {
     data class Category(val key: String, val name: String) : Dest { override val id = "cat_$key" }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun TvRoot(openPlayer: Boolean, onPlayerOpened: () -> Unit) {
     val tv = LocalTv.current
@@ -97,6 +97,8 @@ fun TvRoot(openPlayer: Boolean, onPlayerOpened: () -> Unit) {
     val page = remember { FocusRequester() }
     var pageFocused by remember { mutableStateOf(false) }
     var focusPage by remember { mutableIntStateOf(0) }
+    // The update's release notes, opened from the update banner.
+    var whatsNew by remember { mutableStateOf(false) }
     LaunchedEffect(focusPage) {
         if (focusPage == 0) return@LaunchedEffect
         // A new page may still be loading: keep trying briefly until something in it takes focus.
@@ -171,12 +173,21 @@ fun TvRoot(openPlayer: Boolean, onPlayerOpened: () -> Unit) {
             // Not on top of details or the player: it waits until you're back on a page.
             if (updates.showDialog && details == null && !playing) {
                 val update = updates.available!!
-                TvSidePanel(
-                    "Update available: ${update.versionName}",
-                    update.notes ?: "A new version of JW Pocket is ready (${formatBytes(update.sizeBytes)}).",
-                    listOf(PanelOption("update", "Update now", selected = true), PanelOption("later", "Later")),
-                    onPick = { if (it.key == "update") tv.core.updates.install() else tv.core.updates.dismiss(); focusPage++ },
-                    onDismiss = { tv.core.updates.dismiss(); focusPage++ },
+                UpdateBanner(
+                    version = update.versionName,
+                    size = formatBytes(update.sizeBytes),
+                    notesOpen = whatsNew,
+                    onUpdate = { tv.core.updates.install(); focusPage++ },
+                    onWhatsNew = if (update.notes.isNullOrBlank()) null else ({ whatsNew = true }),
+                    onLater = { tv.core.updates.dismiss(); focusPage++ },
+                    modifier = Modifier.align(Alignment.TopCenter),
+                )
+                if (whatsNew) TvSidePanel(
+                    "What's new in ${update.versionName}",
+                    options = listOf(PanelOption("update", "Update now", selected = true), PanelOption("back", "Back")),
+                    body = update.notes,
+                    onPick = { whatsNew = false; if (it.key == "update") { tv.core.updates.install(); focusPage++ } },
+                    onDismiss = { whatsNew = false },
                 )
             }
             updates.downloadProgress?.let { p ->
@@ -187,6 +198,61 @@ fun TvRoot(openPlayer: Boolean, onPlayerOpened: () -> Unit) {
             }
         }
     }
+}
+
+/**
+ * A short notice across the top of the screen when an update is ready. The
+ * release notes only show if you ask for them (What's new). It takes the
+ * remote when it appears; Down goes on to the page, Back means Later.
+ */
+@Composable
+private fun UpdateBanner(
+    version: String,
+    size: String,
+    notesOpen: Boolean,
+    onUpdate: () -> Unit,
+    onWhatsNew: (() -> Unit)?,
+    onLater: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val update = remember { FocusRequester() }
+    val notes = remember { FocusRequester() }
+    var focused by remember { mutableStateOf(false) }
+    var notesSeen by remember { mutableStateOf(false) }
+    BackHandler(enabled = focused, onBack = onLater)
+    Row(
+        modifier
+            .padding(top = 24.dp)
+            .background(Tv.SurfaceHigh, RoundedCornerShape(16.dp))
+            .padding(horizontal = 20.dp, vertical = 12.dp)
+            .onFocusChanged { focused = it.hasFocus }
+            .focusGroup(),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Icon(Icons.Rounded.SystemUpdate, null, tint = Tv.Accent, modifier = Modifier.size(28.dp))
+        Spacer(Modifier.width(14.dp))
+        Column {
+            Text("Update available", fontWeight = FontWeight.Bold)
+            Text("Version $version · $size", color = Tv.TextSecondary, fontSize = 13.sp)
+        }
+        Spacer(Modifier.width(28.dp))
+        TvButton(null, "Update", Modifier.focusRequester(update), primary = true, onClick = onUpdate)
+        if (onWhatsNew != null) {
+            Spacer(Modifier.width(10.dp))
+            TvButton(null, "What's new", Modifier.focusRequester(notes)) { notesSeen = true; onWhatsNew() }
+        }
+        Spacer(Modifier.width(10.dp))
+        TvButton(null, "Later", onClick = onLater)
+    }
+    LaunchedEffect(Unit) {
+        repeat(20) {
+            if (focused) return@LaunchedEffect
+            runCatching { update.requestFocus() }
+            delay(50)
+        }
+    }
+    // Back from the notes lands on What's new again.
+    LaunchedEffect(notesOpen) { if (!notesOpen && notesSeen) runCatching { notes.requestFocus() } }
 }
 
 /**

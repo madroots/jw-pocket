@@ -2,6 +2,7 @@ package app.jwpocket.tv
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.KeyEvent
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
@@ -64,6 +65,17 @@ class MainActivity : ComponentActivity() {
 
     private fun handle(intent: Intent?) {
         if (intent?.getBooleanExtra(PlaybackService.EXTRA_OPEN_PLAYER, false) == true) openPlayer = true
+    }
+
+    /**
+     * Back always means back. Left to Compose, a Back press first just moves
+     * focus out of the current group (the player controls, the details
+     * buttons), so it took several presses before anything happened.
+     */
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        if (event.keyCode != KeyEvent.KEYCODE_BACK) return super.dispatchKeyEvent(event)
+        if (event.action == KeyEvent.ACTION_UP && !event.isCanceled) onBackPressedDispatcher.onBackPressed()
+        return true
     }
 
     /** On a TV, leaving the app (Home button) pauses the video; Resume picks it up. */

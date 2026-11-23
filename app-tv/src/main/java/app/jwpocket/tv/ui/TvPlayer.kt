@@ -3,6 +3,7 @@ package app.jwpocket.tv.ui
 import android.graphics.Color as AColor
 import android.util.TypedValue
 import android.view.KeyEvent
+import android.view.LayoutInflater
 import androidx.activity.compose.BackHandler
 import androidx.annotation.OptIn
 import androidx.compose.animation.AnimatedVisibility
@@ -65,6 +66,7 @@ import androidx.tv.material3.Text
 import app.jwpocket.core.data.Settings
 import app.jwpocket.core.util.formatBytes
 import app.jwpocket.core.util.formatClock
+import app.jwpocket.tv.R
 import kotlinx.coroutines.delay
 
 private enum class PlayerPanel { Subtitles, Quality, Speed }
@@ -108,8 +110,9 @@ fun TvPlayer(onExit: () -> Unit) {
         }
     }
 
+    // Back: hide the controls first, then leave the player for the details.
     BackHandler(enabled = panel == null) {
-        if (visible && state.isPlaying) visible = false else onExit()
+        if (visible) visible = false else onExit()
     }
 
     Box(
@@ -248,11 +251,7 @@ private fun ControlButton(icon: ImageVector, label: String, modifier: Modifier =
 private fun TvVideoSurface(player: Player?, subtitleScale: Float) {
     AndroidView(
         factory = { context ->
-            PlayerView(context).apply {
-                useController = false
-                isFocusable = false
-                setShutterBackgroundColor(AColor.BLACK)
-                setShowBuffering(PlayerView.SHOW_BUFFERING_NEVER)
+            (LayoutInflater.from(context).inflate(R.layout.tv_player_view, null) as PlayerView).apply {
                 subtitleView?.apply {
                     setApplyEmbeddedStyles(false)
                     setStyle(CaptionStyleCompat(AColor.WHITE, 0x99000000.toInt(), AColor.TRANSPARENT, CaptionStyleCompat.EDGE_TYPE_NONE, AColor.WHITE, null))
