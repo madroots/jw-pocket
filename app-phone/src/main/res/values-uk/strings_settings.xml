@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_group_language">Мова</string>
+    <string name="settings_app_language">Мова додатка</string>
+    <string name="settings_video_language">Мова відео</string>
+    <string name="settings_subtitle_language">Мова субтитрів</string>
+    <string name="settings_device_language">Мова пристрою (%1$s)</string>
+    <string name="settings_group_playback">Відтворення</string>
+    <string name="settings_background_title">Відтворення у фоновому режимі</string>
+    <string name="settings_background_detail">Продовжувати як аудіо, коли екран заблоковано або відкрито інші додатки</string>
+    <string name="settings_pip_title">Картинка в картинці</string>
+    <string name="settings_pip_detail">Зменшувати відео до плаваючого вікна, коли ви виходите з додатка</string>
+    <string name="settings_autoplay_title">Автовідтворення наступного відео</string>
+    <string name="settings_autoplay_detail">Відтворювати наступне відео з того самого списку</string>
+    <string name="settings_streaming_quality">Якість онлайн-перегляду</string>
+    <string name="settings_group_subtitles">Субтитри</string>
+    <string name="settings_subtitle_size">Розмір субтитрів</string>
+    <string name="settings_group_downloads">Завантаження</string>
+    <string name="settings_download_quality">Якість завантаження</string>
+    <string name="settings_wifi_only_title">Лише Wi-Fi</string>
+    <string name="settings_wifi_only_detail">Чекати на Wi-Fi перед завантаженням</string>
+    <string name="settings_manage_downloads_title">Керування завантаженнями</string>
+    <string name="settings_manage_downloads_detail">Перегляд і видалення завантажених відео</string>
+    <string name="settings_group_app">Додаток</string>
+    <string name="settings_check_updates">Перевірити оновлення</string>
+    <string name="settings_version">Версія %1$s</string>
+    <string name="settings_disclaimer">JW Pocket — особистий некомерційний проєкт. Він не пов\'язаний зі Свідками Єгови й не схвалений ними. Усі відео належать їхнім власникам і взяті із загальнодоступного відеосервісу jw.org.</string>
+    <string name="quality_auto">Авто</string>
+    <string name="quality_auto_detail">До 720p</string>
+    <string name="quality_streaming_note">Завантажені відео завжди відтворюються в тій якості, у якій їх завантажено.</string>
+    <string name="quality_ask_every_time">Щоразу питати</string>
+    <string name="quality_download_note">Нижча якість заощаджує місце.</string>
+    <string name="subtitles_same_as_video">Мовою відео</string>
+    <string name="subtitles_same_as_video_detail">Субтитри мовою відео</string>
+    <string name="subtitles_off">Вимк.</string>
+    <string name="subtitles_any_language_note">Будь-яка мова: субтитри показуються в кожному відео, яке має їх цією мовою, незалежно від мови самого відео.</string>
+    <string name="search_languages">Пошук мов</string>
+    <string name="cascade_app_title">Відео теж мовою «%1$s»?</string>
+    <string name="cascade_app_text">Ви також можете дивитися відео (і субтитри до них) мовою «%1$s». Кожну мову можна пізніше змінити в налаштуваннях.</string>
+    <string name="cascade_app_yes">Відео й субтитри</string>
+    <string name="cascade_app_videos_only">Лише відео</string>
+    <string name="cascade_app_no">Лише додаток</string>
+    <string name="cascade_video_title">Субтитри теж мовою «%1$s»?</string>
+    <string name="cascade_video_text">Зараз вибрано субтитри мовою «%1$s». Показувати натомість субтитри мовою відео?</string>
+    <string name="cascade_video_yes">Так</string>
+    <string name="cascade_video_no">Залишити «%1$s»</string>
+</resources>

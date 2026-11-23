@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Settings screen. -->
+    <string name="settings_group_language">Language</string>
+    <string name="settings_app_language">App language</string>
+    <string name="settings_video_language">Video language</string>
+    <string name="settings_subtitle_language">Subtitle language</string>
+    <!-- %1$s: the device's language, e.g. "Slovenčina". -->
+    <string name="settings_device_language">Device language (%1$s)</string>
+    <string name="settings_group_playback">Playback</string>
+    <string name="settings_background_title">Keep playing in the background</string>
+    <string name="settings_background_detail">Continue as audio with the screen locked or in other apps</string>
+    <string name="settings_pip_title">Picture-in-picture</string>
+    <string name="settings_pip_detail">Shrink the video to a floating window when you leave the app</string>
+    <string name="settings_autoplay_title">Autoplay next video</string>
+    <string name="settings_autoplay_detail">Play the next video of the same list</string>
+    <string name="settings_streaming_quality">Streaming quality</string>
+    <string name="settings_group_subtitles">Subtitles</string>
+    <string name="settings_subtitle_size">Subtitle size</string>
+    <string name="settings_group_downloads">Downloads</string>
+    <string name="settings_download_quality">Download quality</string>
+    <string name="settings_wifi_only_title">Wi-Fi only</string>
+    <string name="settings_wifi_only_detail">Wait for Wi-Fi before downloading</string>
+    <string name="settings_manage_downloads_title">Manage downloads</string>
+    <string name="settings_manage_downloads_detail">See and delete downloaded videos</string>
+    <string name="settings_group_app">App</string>
+    <string name="settings_check_updates">Check for updates</string>
+    <string name="settings_version">Version %1$s</string>
+    <string name="settings_disclaimer">JW Pocket is a personal, non-commercial project. It isn\'t affiliated with or endorsed by Jehovah\'s Witnesses. All videos belong to their owners and come from the public jw.org video service.</string>
+
+    <!-- Quality choices. -->
+    <string name="quality_auto">Auto</string>
+    <string name="quality_auto_detail">Up to 720p</string>
+    <string name="quality_streaming_note">Downloaded videos always play in their downloaded quality.</string>
+    <string name="quality_ask_every_time">Ask every time</string>
+    <string name="quality_download_note">Smaller qualities save space.</string>
+
+    <!-- Subtitle choices. -->
+    <string name="subtitles_same_as_video">Same as the video</string>
+    <string name="subtitles_same_as_video_detail">Subtitles in the language of the videos</string>
+    <string name="subtitles_off">Off</string>
+    <string name="subtitles_any_language_note">Any language: shown over every video published in it, whatever language the video is in.</string>
+    <string name="search_languages">Search languages</string>
+
+    <!-- Asking whether a language change should also apply to the settings below it. -->
+    <!-- %1$s: language name, e.g. "Slovenčina". -->
+    <string name="cascade_app_title">Videos in %1$s too?</string>
+    <string name="cascade_app_text">You can also watch the videos (and their subtitles) in %1$s. You can change each language later in Settings.</string>
+    <string name="cascade_app_yes">Videos and subtitles</string>
+    <string name="cascade_app_videos_only">Only videos</string>
+    <string name="cascade_app_no">Only the app</string>
+    <string name="cascade_video_title">Subtitles in %1$s too?</string>
+    <string name="cascade_video_text">Your subtitles are set to %1$s. Show subtitles in the videos\' language instead?</string>
+    <string name="cascade_video_yes">Yes</string>
+    <string name="cascade_video_no">Keep %1$s</string>
+</resources>

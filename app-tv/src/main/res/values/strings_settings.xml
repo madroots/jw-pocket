@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Settings page. -->
+    <string name="settings_app_language">App language</string>
+    <string name="settings_video_language">Video language</string>
+    <string name="settings_subtitle_language">Subtitle language</string>
+    <!-- %1$s: the device's language, e.g. "Slovenčina". -->
+    <string name="settings_device_language">Device language (%1$s)</string>
+    <string name="settings_streaming_quality">Streaming quality</string>
+    <string name="settings_download_quality">Download quality</string>
+    <string name="settings_ask_every_time">Ask every time</string>
+    <string name="settings_download_quality_note">Smaller qualities save space.</string>
+    <string name="settings_autoplay">Autoplay next video</string>
+    <string name="settings_wifi_only">Download on Wi-Fi only</string>
+    <string name="settings_on">On</string>
+    <string name="settings_off">Off</string>
+    <string name="settings_check_updates">Check for updates</string>
+    <string name="settings_version">Version %1$s</string>
+    <string name="settings_disclaimer">JW Pocket is a personal, non-commercial project, not affiliated with or endorsed by Jehovah\'s Witnesses. Videos belong to their owners and come from the public jw.org video service.</string>
+    <string name="settings_subtitles_note">Shown over every video published in it.</string>
+    <string name="settings_recently_used">Recently used</string>
+
+    <!-- Asking whether a language change should also apply to the settings below it. %1$s: language name. -->
+    <string name="cascade_app_title">Videos in %1$s too?</string>
+    <string name="cascade_app_text">You can also watch the videos (and their subtitles) in %1$s. Each language can still be changed here later.</string>
+    <string name="cascade_app_yes">Videos and subtitles</string>
+    <string name="cascade_app_videos_only">Only videos</string>
+    <string name="cascade_app_no">Only the app</string>
+    <string name="cascade_video_title">Subtitles in %1$s too?</string>
+    <string name="cascade_video_text">Your subtitles are set to %1$s. Show subtitles in the videos\' language instead?</string>
+    <string name="cascade_video_yes">Yes</string>
+    <string name="cascade_video_no">Keep %1$s</string>
+</resources>

@@ -43,6 +43,8 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -58,6 +60,7 @@ import app.jwpocket.core.util.formatDuration
 import app.jwpocket.core.util.formatTimeLeft
 import app.jwpocket.core.util.qualityBadge
 import app.jwpocket.media.download.DownloadStatus
+import app.jwpocket.tv.R
 import coil.compose.AsyncImage
 
 private enum class DetailsPanel { PlayQuality, DownloadQuality }
@@ -108,11 +111,11 @@ fun TvDetails(video: Video, active: Boolean, onPlay: (fromStart: Boolean, qualit
                 Spacer(Modifier.height(6.dp))
                 Text(
                     when (download.status) {
-                        DownloadStatus.Done -> "Downloaded · ${download.quality} · ${formatBytes(download.bytes)} · plays without internet"
-                        DownloadStatus.Downloading, DownloadStatus.Queued -> "Downloading ${download.quality} · ${(download.progress * 100).toInt()}% of ${formatBytes(download.totalBytes)}"
-                        DownloadStatus.Waiting -> "Waiting for Wi-Fi to download"
-                        DownloadStatus.Paused -> "Download paused at ${(download.progress * 100).toInt()}%"
-                        DownloadStatus.Failed -> "Download failed"
+                        DownloadStatus.Done -> stringResource(R.string.details_download_done, download.quality, formatBytes(download.bytes))
+                        DownloadStatus.Downloading, DownloadStatus.Queued -> stringResource(R.string.details_download_progress, download.quality, (download.progress * 100).toInt(), formatBytes(download.totalBytes))
+                        DownloadStatus.Waiting -> stringResource(R.string.details_download_waiting)
+                        DownloadStatus.Paused -> stringResource(R.string.details_download_paused, (download.progress * 100).toInt())
+                        DownloadStatus.Failed -> stringResource(R.string.details_download_failed)
                     },
                     color = if (download.isDone) Tv.Success else Tv.TextSecondary,
                 )
@@ -128,53 +131,53 @@ fun TvDetails(video: Video, active: Boolean, onPlay: (fromStart: Boolean, qualit
                         Box(Modifier.fillMaxWidth(watch.fraction).height(4.dp).background(Tv.Accent))
                     }
                     Spacer(Modifier.width(14.dp))
-                    Text("${formatClock(watch.positionMs)} · ${formatTimeLeft(watch.remainingMs)}", color = Tv.TextSecondary, fontSize = 14.sp)
+                    Text("${formatClock(watch.positionMs)} · ${formatTimeLeft(LocalContext.current, watch.remainingMs)}", color = Tv.TextSecondary, fontSize = 14.sp)
                 }
             }
             Spacer(Modifier.height(32.dp))
             // One row: Play (or Resume) on the left, then the same round button for every other action.
             Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.Top) {
-                PlayButton(if (watch?.canResume == true) "Resume" else "Play", Modifier.focusRequester(focus)) { onPlay(false, quality) }
+                PlayButton(stringResource(if (watch?.canResume == true) R.string.details_resume else R.string.common_play), Modifier.focusRequester(focus)) { onPlay(false, quality) }
                 Spacer(Modifier.width(12.dp))
-                if (watch?.canResume == true) DetailAction(Icons.Rounded.Replay, "Start over") { onPlay(true, quality) }
-                if (download?.isDone != true) DetailAction(Icons.Rounded.HighQuality, quality ?: settings.streamQuality ?: "Auto", Modifier.focusRequester(qualityButton)) {
+                if (watch?.canResume == true) DetailAction(Icons.Rounded.Replay, stringResource(R.string.details_start_over)) { onPlay(true, quality) }
+                if (download?.isDone != true) DetailAction(Icons.Rounded.HighQuality, quality ?: settings.streamQuality ?: stringResource(R.string.common_quality_auto), Modifier.focusRequester(qualityButton)) {
                     returnTo = qualityButton
                     panel = DetailsPanel.PlayQuality
                 }
                 val inDownloadRow = Modifier.focusRequester(downloadButton)
                 when {
-                    download == null -> DetailAction(Icons.Rounded.Download, "Download", inDownloadRow) {
+                    download == null -> DetailAction(Icons.Rounded.Download, stringResource(R.string.details_download), inDownloadRow) {
                         val q = settings.downloadQuality?.takeIf { it in video.qualities }
                         if (q != null) downloads.download(video, q, settings.languageCode) else { returnTo = downloadButton; panel = DetailsPanel.DownloadQuality }
                     }
-                    download.status == DownloadStatus.Done -> DetailAction(Icons.Rounded.Delete, "Delete download", inDownloadRow) { downloads.remove(video.id) }
-                    download.status == DownloadStatus.Failed -> DetailAction(Icons.Rounded.Refresh, "Retry download", inDownloadRow) { downloads.retry(video.id) }
-                    download.status == DownloadStatus.Paused -> DetailAction(Icons.Rounded.Download, "Resume download", inDownloadRow) { downloads.resume(video.id) }
+                    download.status == DownloadStatus.Done -> DetailAction(Icons.Rounded.Delete, stringResource(R.string.details_delete_download), inDownloadRow) { downloads.remove(video.id) }
+                    download.status == DownloadStatus.Failed -> DetailAction(Icons.Rounded.Refresh, stringResource(R.string.details_retry_download), inDownloadRow) { downloads.retry(video.id) }
+                    download.status == DownloadStatus.Paused -> DetailAction(Icons.Rounded.Download, stringResource(R.string.details_resume_download), inDownloadRow) { downloads.resume(video.id) }
                     else -> {
-                        DetailAction(Icons.Rounded.Pause, "Pause download", inDownloadRow) { downloads.pause(video.id) }
-                        DetailAction(Icons.Rounded.Close, "Cancel download") { downloads.remove(video.id) }
+                        DetailAction(Icons.Rounded.Pause, stringResource(R.string.details_pause_download), inDownloadRow) { downloads.pause(video.id) }
+                        DetailAction(Icons.Rounded.Close, stringResource(R.string.details_cancel_download)) { downloads.remove(video.id) }
                     }
                 }
                 DetailAction(
                     if (marks.favorite) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder,
-                    if (marks.favorite) "In favorites" else "Favorite",
+                    stringResource(if (marks.favorite) R.string.details_in_favorites else R.string.details_favorite),
                     tint = if (marks.favorite) Tv.Accent else Color.White,
                 ) { tv.core.favorites.toggle(video) }
-                if (watch != null) DetailAction(Icons.Rounded.RemoveDone, "Mark unwatched") { tv.core.progress.remove(video.id) }
+                if (watch != null) DetailAction(Icons.Rounded.RemoveDone, stringResource(R.string.details_mark_unwatched)) { tv.core.progress.remove(video.id) }
             }
         }
     }
 
     when (panel) {
         DetailsPanel.PlayQuality -> TvSidePanel(
-            "Quality",
-            options = listOf(PanelOption(null, "Auto", "Up to 720p", quality == null)) +
+            stringResource(R.string.common_quality),
+            options = listOf(PanelOption(null, stringResource(R.string.common_quality_auto), stringResource(R.string.common_quality_auto_detail), quality == null)) +
                 video.qualities.reversed().map { PanelOption(it, it, video.file(it)?.filesize?.let(::formatBytes), quality == it) },
             onPick = { quality = it.key; panel = null },
             onDismiss = { panel = null },
         )
         DetailsPanel.DownloadQuality -> TvSidePanel(
-            "Download quality", "Smaller qualities save space.",
+            stringResource(R.string.details_download_quality), stringResource(R.string.details_download_quality_hint),
             options = video.qualities.reversed().map { PanelOption(it, it, video.file(it)?.filesize?.let(::formatBytes)) },
             onPick = { o -> o.key?.let { downloads.download(video, it, settings.languageCode) }; panel = null },
             onDismiss = { panel = null },

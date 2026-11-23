@@ -26,6 +26,10 @@ class LanguageRepository(private val api: MediatorApi, private val scope: Corout
 
     fun name(code: String): String = _languages.value.firstOrNull { it.code == code }?.vernacular ?: code
 
+    /** The library language spoken in [locale] ("sk"), not a sign language; null when the library has none. */
+    fun forLocale(locale: String, list: List<Language> = _languages.value): Language? =
+        list.firstOrNull { !it.isSignLanguage && it.locale.equals(locale, ignoreCase = true) }
+
     private fun sorted(list: List<Language>) = list.sortedBy { it.vernacular.lowercase() }
 }
 

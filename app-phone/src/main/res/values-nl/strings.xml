@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="common_play">Afspelen</string>
+    <string name="common_pause">Pauzeren</string>
+    <string name="common_resume">Hervatten</string>
+    <string name="common_retry">Opnieuw</string>
+    <string name="common_cancel">Annuleren</string>
+    <string name="common_close">Sluiten</string>
+    <string name="common_more">Meer</string>
+    <string name="common_share">Delen</string>
+    <string name="common_see_all">Alles bekijken</string>
+    <string name="common_clear_text">Wissen</string>
+    <string name="common_download">Downloaden</string>
+    <string name="common_downloaded">Gedownload</string>
+    <string name="common_download_failed">Download mislukt</string>
+    <string name="common_delete_download">Download verwijderen</string>
+    <string name="common_cancel_download">Download annuleren</string>
+    <string name="common_paused">Gepauzeerd</string>
+    <string name="common_waiting_for_wifi">Wachten op wifi</string>
+    <string name="common_watched">Bekeken</string>
+    <string name="common_saved">Opgeslagen</string>
+    <string name="common_favorite">Favoriet</string>
+    <string name="common_ready_offline">Offline beschikbaar</string>
+    <string name="common_offline_cached">Offline: de laatst opgeslagen versie wordt getoond.</string>
+    <string name="common_percent">%1$d%%</string>
+
+    <string name="nav_home">Start</string>
+    <string name="nav_browse">Bladeren</string>
+    <string name="nav_search">Zoeken</string>
+    <string name="nav_library">Bibliotheek</string>
+    <string name="nav_settings">Instellingen</string>
+    <string name="nav_back">Terug</string>
+    <string name="nav_library_language">Taal van bibliotheek</string>
+    <string name="nav_subtitle_language">Ondertitelingstaal</string>
+
+    <string name="update_available_title">Update beschikbaar: %1$s</string>
+    <string name="update_available_message">Er staat een nieuwe versie van JW Pocket klaar (%1$s).</string>
+    <string name="update_install">Updaten</string>
+    <string name="update_later">Later</string>
+    <string name="update_downloading">Update wordt gedownload</string>
+
+    <string name="home_continue_watching">Verder kijken</string>
+    <string name="home_latest">Nieuwste</string>
+    <string name="home_your_favorites">Je favorieten</string>
+    <string name="home_new_badge">NIEUW</string>
+    <string name="home_offline_title">Je bent offline</string>
+    <plurals name="home_offline_ready">
+        <item quantity="one">%d gedownloade video staat klaar om te bekijken.</item>
+        <item quantity="other">%d gedownloade video\'s staan klaar om te bekijken.</item>
+    </plurals>
+    <string name="home_offline_empty">Download video\'s om ze zonder internet te bekijken.</string>
+
+    <string name="browse_error_library">Kan de bibliotheek niet laden</string>
+    <string name="browse_error_category">Kan deze categorie niet laden</string>
+
+    <string name="search_placeholder">Video\'s, series, liedjes…</string>
+    <string name="search_browse_categories">Categorieën bekijken</string>
+    <string name="search_searching">Hele bibliotheek doorzoeken…</string>
+    <string name="search_no_results">Geen resultaten</string>
+    <string name="search_no_results_hint">Probeer andere woorden of controleer de spelling.</string>
+    <string name="search_failed">Zoeken mislukt</string>
+    <plurals name="search_result_count">
+        <item quantity="one">%d video</item>
+        <item quantity="other">%d video\'s</item>
+    </plurals>
+
+    <string name="library_tab_downloads">Downloads</string>
+    <string name="library_tab_favorites">Favorieten</string>
+    <string name="library_tab_history">Geschiedenis</string>
+    <plurals name="library_downloads_summary">
+        <item quantity="one">%1$d video · %2$s</item>
+        <item quantity="other">%1$d video\'s · %2$s</item>
+    </plurals>
+    <string name="library_free_space">%1$s vrij op deze telefoon</string>
+    <string name="library_delete_all">Alles verwijderen</string>
+    <string name="library_wifi_only">Alleen via wifi downloaden</string>
+    <string name="library_downloads_empty_title">Nog geen downloads</string>
+    <string name="library_downloads_empty_body">Tik bij een video op Downloaden om hem later zonder internet te bekijken. Gedownloade video\'s krijgen overal een groene markering.</string>
+    <string name="library_find_videos">Video\'s zoeken</string>
+    <string name="library_in_progress">Bezig</string>
+    <string name="library_delete_all_title">Alle downloads verwijderen?</string>
+    <string name="library_delete_all_message">Hiermee komt %1$s vrij. Je kunt video\'s later opnieuw downloaden.</string>
+    <string name="library_status_downloading">%1$d%% van %2$s</string>
+    <string name="library_status_queued">Wacht op start</string>
+    <string name="library_status_paused">Gepauzeerd bij %1$d%%</string>
+    <string name="library_status_failed">Mislukt. Tik op ⋮ om het opnieuw te proberen</string>
+    <string name="library_favorites_empty_title">Nog geen favorieten</string>
+    <string name="library_favorites_empty_body">Tik op het hartje bij een video om hem hier te bewaren.</string>
+    <string name="library_history_empty_title">Nog niets bekeken</string>
+    <string name="library_history_empty_body">Video\'s die je start, verschijnen hier, zodat je verder kunt kijken waar je gebleven was.</string>
+    <string name="library_clear_history">Geschiedenis wissen</string>
+    <string name="library_clear_history_title">Geschiedenis wissen?</string>
+    <string name="library_clear_history_message">Hervatpunten en bekeken-markeringen worden verwijderd.</string>
+    <string name="library_clear_history_confirm">Wissen</string>
+
+    <string name="details_stopped_at">Gestopt bij %1$s · %2$s</string>
+    <string name="details_start_over">Opnieuw beginnen</string>
+    <string name="details_remove_continue_watching">Verwijderen uit Verder kijken</string>
+    <string name="details_remove_history">Verwijderen uit geschiedenis</string>
+    <string name="details_download_quality">Downloadkwaliteit</string>
+    <string name="details_download_done">Opgeslagen op deze telefoon · %1$s · %2$s</string>
+    <string name="details_download_progress">%1$s downloaden · %2$d%% van %3$s</string>
+    <string name="details_download_queued">Wacht op download · %1$s</string>
+    <string name="details_download_waiting_wifi">Wachten op wifi · %1$s</string>
+    <string name="details_download_paused">Gepauzeerd · %1$d%%</string>
+    <string name="details_download_failed">Download mislukt. Tik op Opnieuw.</string>
+
+    <string name="player_minimize">Minimaliseren</string>
+    <string name="player_now_playing">NU AAN HET AFSPELEN</string>
+    <string name="player_from_downloads">Uit je downloads</string>
+    <string name="player_streaming">Streamen</string>
+    <string name="player_picture_in_picture">Beeld-in-beeld</string>
+    <string name="player_up_next">Hierna</string>
+    <string name="player_in_this_list">In deze lijst</string>
+    <string name="player_previous">Vorige</string>
+    <string name="player_next">Volgende</string>
+    <string name="player_back_10">10 seconden terug</string>
+    <string name="player_forward_10">10 seconden vooruit</string>
+    <string name="player_full_screen">Volledig scherm</string>
+    <string name="player_exit_full_screen">Volledig scherm sluiten</string>
+    <string name="player_close">Speler sluiten</string>
+    <string name="player_status_error">Kan niet afspelen</string>
+    <string name="player_status_loading">Laden…</string>
+    <string name="player_status_playing">Speelt af</string>
+    <string name="player_status_playing_offline">Speelt offline af</string>
+    <string name="player_status_finished">Afgelopen</string>
+    <string name="player_status_paused">Gepauzeerd</string>
+    <string name="player_subtitles_missing">Geen ondertiteling (%1$s) voor deze video, het origineel wordt getoond.</string>
+    <string name="player_subtitles">Ondertiteling</string>
+    <string name="player_subtitles_off">Ondertiteling uit</string>
+    <string name="player_quality">Kwaliteit</string>
+    <string name="player_speed">Snelheid</string>
+    <string name="player_pill_downloaded">Gedownload · %1$s</string>
+    <string name="player_pill_download_progress">%1$d%% · %2$s</string>
+    <string name="player_remove_download_title">Download verwijderen?</string>
+    <string name="player_cancel_download_title">Download annuleren?</string>
+    <string name="player_remove_download_message">Maakt %1$s vrij op deze telefoon. Je kunt de video nog steeds streamen.</string>
+    <string name="player_cancel_download_message">Het deel dat al is gedownload, wordt verwijderd.</string>
+    <string name="player_remove_download_confirm">Verwijderen</string>
+    <string name="player_keep_download">Behouden</string>
+    <string name="player_sleep_timer">Slaaptimer</string>
+    <string name="player_sleep_after_video">Na deze video</string>
+    <plurals name="player_sleep_minutes_left">
+        <item quantity="one">Nog %d min</item>
+        <item quantity="other">Nog %d min</item>
+    </plurals>
+
+    <string name="player_subtitles_hint">Je keuze wordt onthouden voor de volgende video\'s.</string>
+    <string name="player_search_languages">Talen zoeken</string>
+    <string name="player_subtitles_off_choice">Uit</string>
+    <string name="player_subtitles_same_as_video">Zelfde als de video</string>
+    <string name="player_subtitles_recently_used">Recent gebruikt · %1$s</string>
+    <string name="player_subtitles_no_others">Deze video heeft geen andere ondertitelingstalen.</string>
+    <string name="player_subtitles_no_match">Geen taal gevonden voor \"%1$s\".</string>
+    <string name="player_subtitles_none">Geen ondertiteling voor deze video.</string>
+    <string name="player_quality_auto">Automatisch</string>
+    <string name="player_quality_auto_detail">Beste voor dit scherm, tot 720p</string>
+    <string name="player_speed_title">Afspeelsnelheid</string>
+    <string name="player_speed_normal">Normaal</string>
+    <string name="player_sleep_hint">Het afspelen pauzeert vanzelf.</string>
+    <string name="player_sleep_turn_off">Timer uitzetten</string>
+    <string name="player_sleep_end_of_video">Einde van deze video</string>
+    <plurals name="player_sleep_minutes">
+        <item quantity="one">%d minuut</item>
+        <item quantity="other">%d minuten</item>
+    </plurals>
+</resources>

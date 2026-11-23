@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="downloads_channel">Descărcări</string>
+    <string name="downloads_running">Se descarcă videoclipuri</string>
+    <string name="download_done">Descărcat</string>
+    <string name="download_failed">Descărcare nereușită</string>
+</resources>

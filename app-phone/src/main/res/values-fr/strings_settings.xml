@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- French translation. -->
+<resources>
+    <string name="settings_group_language">Langue</string>
+    <string name="settings_app_language">Langue de l\'appli</string>
+    <string name="settings_video_language">Langue des vidéos</string>
+    <string name="settings_subtitle_language">Langue des sous-titres</string>
+    <string name="settings_device_language">Langue de l\'appareil (%1$s)</string>
+    <string name="settings_group_playback">Lecture</string>
+    <string name="settings_background_title">Continuer la lecture en arrière-plan</string>
+    <string name="settings_background_detail">Continuer en audio avec l\'écran verrouillé ou dans d\'autres applis</string>
+    <string name="settings_pip_title">Picture-in-picture</string>
+    <string name="settings_pip_detail">Réduire la vidéo dans une fenêtre flottante quand vous quittez l\'appli</string>
+    <string name="settings_autoplay_title">Lire automatiquement la vidéo suivante</string>
+    <string name="settings_autoplay_detail">Lire la vidéo suivante de la même liste</string>
+    <string name="settings_streaming_quality">Qualité de streaming</string>
+    <string name="settings_group_subtitles">Sous-titres</string>
+    <string name="settings_subtitle_size">Taille des sous-titres</string>
+    <string name="settings_group_downloads">Téléchargements</string>
+    <string name="settings_download_quality">Qualité de téléchargement</string>
+    <string name="settings_wifi_only_title">Wi-Fi uniquement</string>
+    <string name="settings_wifi_only_detail">Attendre le Wi-Fi pour télécharger</string>
+    <string name="settings_manage_downloads_title">Gérer les téléchargements</string>
+    <string name="settings_manage_downloads_detail">Voir et supprimer les vidéos téléchargées</string>
+    <string name="settings_group_app">Application</string>
+    <string name="settings_check_updates">Rechercher des mises à jour</string>
+    <string name="settings_version">Version %1$s</string>
+    <string name="settings_disclaimer">JW Pocket est un projet personnel et non commercial. Il n\'est ni affilié aux Témoins de Jéhovah ni approuvé par eux. Toutes les vidéos appartiennent à leurs propriétaires et proviennent du service vidéo public de jw.org.</string>
+    <string name="quality_auto">Auto</string>
+    <string name="quality_auto_detail">Jusqu\'à 720p</string>
+    <string name="quality_streaming_note">Les vidéos téléchargées sont toujours lues dans la qualité téléchargée.</string>
+    <string name="quality_ask_every_time">Toujours demander</string>
+    <string name="quality_download_note">Une qualité inférieure prend moins de place.</string>
+    <string name="subtitles_same_as_video">Comme la vidéo</string>
+    <string name="subtitles_same_as_video_detail">Sous-titres dans la langue des vidéos</string>
+    <string name="subtitles_off">Désactivés</string>
+    <string name="subtitles_any_language_note">Toute langue : les sous-titres s\'affichent sur toutes les vidéos qui les proposent, quelle que soit la langue de la vidéo.</string>
+    <string name="search_languages">Rechercher une langue</string>
+    <string name="cascade_app_title">Les vidéos aussi en %1$s ?</string>
+    <string name="cascade_app_text">Vous pouvez aussi regarder les vidéos (et leurs sous-titres) en %1$s. Vous pourrez changer chaque langue plus tard dans les paramètres.</string>
+    <string name="cascade_app_yes">Vidéos et sous-titres</string>
+    <string name="cascade_app_videos_only">Vidéos uniquement</string>
+    <string name="cascade_app_no">Appli uniquement</string>
+    <string name="cascade_video_title">Les sous-titres aussi en %1$s ?</string>
+    <string name="cascade_video_text">Vos sous-titres sont en %1$s. Afficher plutôt les sous-titres dans la langue des vidéos ?</string>
+    <string name="cascade_video_yes">Oui</string>
+    <string name="cascade_video_no">Garder %1$s</string>
+</resources>

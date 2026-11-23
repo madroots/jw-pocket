@@ -29,10 +29,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import app.jwpocket.media.PlaybackState
 import app.jwpocket.media.download.DownloadStatus
+import app.jwpocket.phone.R
 import app.jwpocket.phone.ui.LocalPocket
 import app.jwpocket.phone.ui.components.ProgressLine
 import app.jwpocket.phone.ui.rememberMarks
@@ -63,21 +65,21 @@ fun MiniPlayer(state: PlaybackState, onExpand: () -> Unit, modifier: Modifier = 
             Column(Modifier.weight(1f)) {
                 Text(video.title, style = MaterialTheme.typography.bodyMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 Text(
-                    when {
-                        state.error != null -> "Can't play"
-                        state.buffering && state.playWhenReady -> "Loading…"
-                        state.isPlaying -> if (fromDownload) "Playing offline" else "Playing"
-                        state.ended -> "Finished"
-                        else -> "Paused"
-                    },
+                    stringResource(when {
+                        state.error != null -> R.string.player_status_error
+                        state.buffering && state.playWhenReady -> R.string.player_status_loading
+                        state.isPlaying -> if (fromDownload) R.string.player_status_playing_offline else R.string.player_status_playing
+                        state.ended -> R.string.player_status_finished
+                        else -> R.string.player_status_paused
+                    }),
                     style = MaterialTheme.typography.bodySmall, color = Pocket.TextSecondary, maxLines = 1,
                 )
             }
             IconButton(onClick = connection::togglePlay) {
-                Icon(if (state.isPlaying) Icons.Rounded.Pause else Icons.Rounded.PlayArrow, if (state.isPlaying) "Pause" else "Play")
+                Icon(if (state.isPlaying) Icons.Rounded.Pause else Icons.Rounded.PlayArrow, stringResource(if (state.isPlaying) R.string.common_pause else R.string.common_play))
             }
-            if (state.hasNext) IconButton(onClick = connection::next) { Icon(Icons.Rounded.SkipNext, "Next") }
-            IconButton(onClick = connection::stop) { Icon(Icons.Rounded.Close, "Close player") }
+            if (state.hasNext) IconButton(onClick = connection::next) { Icon(Icons.Rounded.SkipNext, stringResource(R.string.player_next)) }
+            IconButton(onClick = connection::stop) { Icon(Icons.Rounded.Close, stringResource(R.string.player_close)) }
         }
         ProgressLine(state.progress, height = 2.dp)
     }

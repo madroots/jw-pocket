@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="common_play">Afspelen</string>
+    <string name="common_back">Terug</string>
+    <string name="common_watched">Bekeken</string>
+    <string name="common_quality">Kwaliteit</string>
+    <string name="common_quality_auto">Automatisch</string>
+    <string name="common_quality_auto_detail">Tot 720p</string>
+    <string name="common_percent">%1$d%%</string>
+
+    <string name="nav_search">Zoeken</string>
+    <string name="nav_home">Start</string>
+    <string name="nav_downloads">Downloads</string>
+    <string name="nav_favorites">Favorieten</string>
+    <string name="nav_history">Geschiedenis</string>
+    <string name="nav_settings">Instellingen</string>
+
+    <string name="update_available">Update beschikbaar</string>
+    <string name="update_version_size">Versie %1$s · %2$s</string>
+    <string name="update_update">Updaten</string>
+    <string name="update_update_now">Nu updaten</string>
+    <string name="update_whats_new">Wat is er nieuw</string>
+    <string name="update_whats_new_in">Nieuw in %1$s</string>
+    <string name="update_later">Later</string>
+    <string name="update_downloading">Update downloaden… %1$d%%</string>
+
+    <string name="home_continue_watching">Verder kijken</string>
+    <string name="home_ready_offline">Offline beschikbaar</string>
+    <string name="home_latest">Nieuwste</string>
+    <string name="home_your_favorites">Je favorieten</string>
+    <string name="home_offline">OFFLINE</string>
+    <plurals name="home_offline_ready">
+        <item quantity="one">OFFLINE · %1$d GEDOWNLOADE VIDEO KLAAR</item>
+        <item quantity="other">OFFLINE · %1$d GEDOWNLOADE VIDEO\'S KLAAR</item>
+    </plurals>
+    <string name="home_new">NIEUW</string>
+    <string name="home_watch_now">Nu kijken</string>
+
+    <plurals name="downloads_summary">
+        <item quantity="one">%1$d offline beschikbaar · %2$s gebruikt · %3$s vrij</item>
+        <item quantity="other">%1$d offline beschikbaar · %2$s gebruikt · %3$s vrij</item>
+    </plurals>
+    <string name="downloads_empty">Nog niets gedownload. Open een video en kies Downloaden om hem zonder internet te bekijken.</string>
+    <string name="downloads_downloading_progress">Downloaden %1$d%%</string>
+    <string name="favorites_empty">Video\'s die je met het hartje markeert, verschijnen hier.</string>
+    <string name="history_empty">Video\'s die je bekijkt, verschijnen hier.</string>
+
+    <string name="search_hint">Typ een titel…</string>
+    <string name="search_intro">Zoek alle video\'s op titel of beschrijving.</string>
+    <string name="search_searching">Hele bibliotheek doorzoeken…</string>
+    <plurals name="search_results_count">
+        <item quantity="one">%1$d resultaat</item>
+        <item quantity="other">%1$d resultaten</item>
+    </plurals>
+    <string name="search_no_results">Geen resultaten. Probeer andere woorden.</string>
+
+    <string name="downloads_status_done">Gedownload</string>
+    <string name="downloads_status_waiting">Wachten</string>
+    <string name="downloads_status_paused">Gepauzeerd</string>
+    <string name="downloads_status_failed">Mislukt</string>
+
+    <string name="details_download_done">Gedownload · %1$s · %2$s · speelt af zonder internet</string>
+    <string name="details_download_progress">%1$s downloaden · %2$d%% van %3$s</string>
+    <string name="details_download_waiting">Wachten op wifi om te downloaden</string>
+    <string name="details_download_paused">Download gepauzeerd bij %1$d%%</string>
+    <string name="details_download_failed">Download mislukt</string>
+    <string name="details_resume">Hervatten</string>
+    <string name="details_start_over">Opnieuw beginnen</string>
+    <string name="details_download">Downloaden</string>
+    <string name="details_delete_download">Download verwijderen</string>
+    <string name="details_retry_download">Download opnieuw proberen</string>
+    <string name="details_resume_download">Download hervatten</string>
+    <string name="details_pause_download">Download pauzeren</string>
+    <string name="details_cancel_download">Download annuleren</string>
+    <string name="details_in_favorites">In favorieten</string>
+    <string name="details_favorite">Favoriet</string>
+    <string name="details_mark_unwatched">Markeren als niet bekeken</string>
+    <string name="details_download_quality">Downloadkwaliteit</string>
+    <string name="details_download_quality_hint">Een lagere kwaliteit bespaart ruimte.</string>
+
+    <string name="player_subtitles_missing">Geen ondertiteling (%1$s) voor deze video</string>
+    <string name="player_from_downloads">Uit downloads</string>
+    <string name="player_subtitles_language">Ondertiteling: %1$s</string>
+    <string name="player_pause">Pauzeren</string>
+    <string name="player_back_10">10 seconden terug</string>
+    <string name="player_forward_10">10 seconden vooruit</string>
+    <string name="player_next">Volgende</string>
+    <string name="player_subtitles">Ondertiteling</string>
+    <string name="player_speed">Snelheid</string>
+    <string name="player_subtitles_same_as_video">Zelfde als de video</string>
+    <string name="player_subtitles_recent">Recent gebruikt</string>
+    <string name="player_subtitles_remembered">Onthouden voor de volgende video\'s.</string>
+    <string name="player_subtitles_off">Uit</string>
+    <string name="player_playback_speed">Afspeelsnelheid</string>
+    <string name="player_speed_normal">Normaal</string>
+</resources>

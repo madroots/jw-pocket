@@ -1,10 +1,12 @@
 package app.jwpocket.core.data
 
+import app.jwpocket.core.R
 import app.jwpocket.core.model.Category
 import app.jwpocket.core.model.CategoryContent
 import app.jwpocket.core.model.Section
 import app.jwpocket.core.model.Video
 import app.jwpocket.core.network.MediatorApi
+import app.jwpocket.core.util.AppText
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -36,7 +38,7 @@ data class SearchHit(val video: Video, val section: String, val category: String
  * one request (the old apps made one per row), and the whole library - for
  * search - is about fifteen.
  */
-class LibraryRepository(private val api: MediatorApi) {
+class LibraryRepository(private val api: MediatorApi, private val text: AppText) {
 
     private val memory = ConcurrentHashMap<String, CategoryContent>()
     private val indexLock = Mutex()
@@ -65,7 +67,7 @@ class LibraryRepository(private val api: MediatorApi) {
             memory["$language|$key"] != null -> emit(Load.Ready(memory.getValue("$language|$key"), offline = true))
             else -> {
                 val cached = api.category(language, key, fresh = false)?.let { toContent(language, it, fresh = false) }
-                emit(if (cached != null) Load.Ready(cached, offline = true) else Load.Failed("Couldn't load this category. Check your connection."))
+                emit(if (cached != null) Load.Ready(cached, offline = true) else Load.Failed(text.get(R.string.load_category_failed)))
             }
         }
     }
@@ -127,7 +129,7 @@ class LibraryRepository(private val api: MediatorApi) {
         when {
             fresh != null -> emit(Load.Ready(map(fresh)))
             cached != null -> emit(Load.Ready(map(cached), offline = true))
-            else -> emit(Load.Failed("You're offline and nothing is saved yet."))
+            else -> emit(Load.Failed(text.get(R.string.load_offline_empty)))
         }
     }
 

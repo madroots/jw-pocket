@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Time left in a video. -->
+    <string name="time_left_under_minute">Less than a minute left</string>
+    <plurals name="time_left_minutes">
+        <item quantity="one">%d min left</item>
+        <item quantity="other">%d min left</item>
+    </plurals>
+    <string name="time_left_hours">%1$d h %2$d min left</string>
+
+    <!-- Library loading. -->
+    <string name="load_category_failed">Couldn\'t load this category. Check your connection.</string>
+    <string name="load_offline_empty">You\'re offline and nothing is saved yet.</string>
+
+    <!-- Updates. -->
+    <string name="update_checking">Checking for updates…</string>
+    <string name="update_up_to_date">JW Pocket is up to date (%1$s).</string>
+    <string name="update_check_failed">Couldn\'t check for updates.</string>
+    <string name="update_download_failed">Update download failed. Please try again.</string>
+</resources>

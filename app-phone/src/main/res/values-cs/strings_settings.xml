@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_group_language">Jazyk</string>
+    <string name="settings_app_language">Jazyk aplikace</string>
+    <string name="settings_video_language">Jazyk videí</string>
+    <string name="settings_subtitle_language">Jazyk titulků</string>
+    <string name="settings_device_language">Jazyk zařízení (%1$s)</string>
+    <string name="settings_group_playback">Přehrávání</string>
+    <string name="settings_background_title">Přehrávat na pozadí</string>
+    <string name="settings_background_detail">Pokračovat jako zvuk při zamčené obrazovce nebo v jiných aplikacích</string>
+    <string name="settings_pip_title">Obraz v obraze</string>
+    <string name="settings_pip_detail">Po opuštění aplikace zmenšit video do plovoucího okna</string>
+    <string name="settings_autoplay_title">Automaticky přehrát další video</string>
+    <string name="settings_autoplay_detail">Přehrát další video ze stejného seznamu</string>
+    <string name="settings_streaming_quality">Kvalita streamování</string>
+    <string name="settings_group_subtitles">Titulky</string>
+    <string name="settings_subtitle_size">Velikost titulků</string>
+    <string name="settings_group_downloads">Stahování</string>
+    <string name="settings_download_quality">Kvalita stahování</string>
+    <string name="settings_wifi_only_title">Jen přes Wi-Fi</string>
+    <string name="settings_wifi_only_detail">Před stahováním počkat na Wi-Fi</string>
+    <string name="settings_manage_downloads_title">Spravovat stažená videa</string>
+    <string name="settings_manage_downloads_detail">Zobrazit a smazat stažená videa</string>
+    <string name="settings_group_app">Aplikace</string>
+    <string name="settings_check_updates">Zkontrolovat aktualizace</string>
+    <string name="settings_version">Verze %1$s</string>
+    <string name="settings_disclaimer">JW Pocket je osobní, nekomerční projekt. Není nijak spojen se Svědky Jehovovými ani jimi schválen. Všechna videa patří jejich vlastníkům a pocházejí z veřejné videoslužby jw.org.</string>
+
+    <string name="quality_auto">Automaticky</string>
+    <string name="quality_auto_detail">Max. 720p</string>
+    <string name="quality_streaming_note">Stažená videa se vždy přehrávají v kvalitě, ve které byla stažena.</string>
+    <string name="quality_ask_every_time">Pokaždé se zeptat</string>
+    <string name="quality_download_note">Nižší kvalita šetří místo.</string>
+
+    <string name="subtitles_same_as_video">Jako ve videu</string>
+    <string name="subtitles_same_as_video_detail">Titulky v jazyce videí</string>
+    <string name="subtitles_off">Vypnuto</string>
+    <string name="subtitles_any_language_note">Libovolný jazyk: titulky se zobrazí u každého videa, které v něm bylo zveřejněno, bez ohledu na jazyk videa.</string>
+    <string name="search_languages">Hledat jazyky</string>
+
+    <string name="cascade_app_title">I videa v jazyce %1$s?</string>
+    <string name="cascade_app_text">Videa (i jejich titulky) můžeš sledovat také v jazyce %1$s. Každý jazyk můžeš později změnit v Nastavení.</string>
+    <string name="cascade_app_yes">Videa i titulky</string>
+    <string name="cascade_app_videos_only">Jen videa</string>
+    <string name="cascade_app_no">Jen aplikaci</string>
+    <string name="cascade_video_title">I titulky v jazyce %1$s?</string>
+    <string name="cascade_video_text">Titulky máš nastavené na jazyk %1$s. Zobrazovat raději titulky v jazyce videí?</string>
+    <string name="cascade_video_yes">Ano</string>
+    <string name="cascade_video_no">Ponechat jazyk %1$s</string>
+</resources>

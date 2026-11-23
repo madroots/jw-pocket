@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_app_language">App-Sprache</string>
+    <string name="settings_video_language">Videosprache</string>
+    <string name="settings_subtitle_language">Untertitelsprache</string>
+    <string name="settings_device_language">Gerätesprache (%1$s)</string>
+    <string name="settings_streaming_quality">Streaming-Qualität</string>
+    <string name="settings_download_quality">Download-Qualität</string>
+    <string name="settings_ask_every_time">Jedes Mal fragen</string>
+    <string name="settings_download_quality_note">Geringere Qualität spart Speicherplatz.</string>
+    <string name="settings_autoplay">Nächstes Video automatisch abspielen</string>
+    <string name="settings_wifi_only">Nur über WLAN herunterladen</string>
+    <string name="settings_on">An</string>
+    <string name="settings_off">Aus</string>
+    <string name="settings_check_updates">Nach Updates suchen</string>
+    <string name="settings_version">Version %1$s</string>
+    <string name="settings_disclaimer">JW Pocket ist ein privates, nicht kommerzielles Projekt, steht in keiner Verbindung zu Jehovas Zeugen und wird nicht von ihnen unterstützt. Die Videos gehören ihren Eigentümern und stammen aus dem öffentlichen Videoangebot von jw.org.</string>
+    <string name="settings_subtitles_note">Wird bei jedem Video angezeigt, das Untertitel in dieser Sprache hat.</string>
+    <string name="settings_recently_used">Zuletzt verwendet</string>
+
+    <string name="cascade_app_title">Videos auch auf %1$s?</string>
+    <string name="cascade_app_text">Sie können die Videos (und ihre Untertitel) auch auf %1$s ansehen. Jede Sprache lässt sich hier später noch ändern.</string>
+    <string name="cascade_app_yes">Videos und Untertitel</string>
+    <string name="cascade_app_videos_only">Nur Videos</string>
+    <string name="cascade_app_no">Nur die App</string>
+    <string name="cascade_video_title">Untertitel auch auf %1$s?</string>
+    <string name="cascade_video_text">Ihre Untertitel sind auf %1$s eingestellt. Stattdessen Untertitel in der Sprache der Videos anzeigen?</string>
+    <string name="cascade_video_yes">Ja</string>
+    <string name="cascade_video_no">%1$s behalten</string>
+</resources>

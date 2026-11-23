@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="time_left_under_minute">Nog minder dan een minuut</string>
+    <plurals name="time_left_minutes">
+        <item quantity="one">Nog %d min</item>
+        <item quantity="other">Nog %d min</item>
+    </plurals>
+    <string name="time_left_hours">Nog %1$d u %2$d min</string>
+
+    <string name="load_category_failed">Kan deze categorie niet laden. Controleer je verbinding.</string>
+    <string name="load_offline_empty">Je bent offline en er is nog niets opgeslagen.</string>
+
+    <string name="update_checking">Zoeken naar updates…</string>
+    <string name="update_up_to_date">JW Pocket is up-to-date (%1$s).</string>
+    <string name="update_check_failed">Kan niet zoeken naar updates.</string>
+    <string name="update_download_failed">Downloaden van update mislukt. Probeer het opnieuw.</string>
+</resources>

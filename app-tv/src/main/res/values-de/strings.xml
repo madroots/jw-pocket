@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="common_play">Abspielen</string>
+    <string name="common_back">Zurück</string>
+    <string name="common_watched">Angesehen</string>
+    <string name="common_quality">Qualität</string>
+    <string name="common_quality_auto">Automatisch</string>
+    <string name="common_quality_auto_detail">Bis 720p</string>
+    <string name="common_percent">%1$d %%</string>
+
+    <string name="nav_search">Suche</string>
+    <string name="nav_home">Startseite</string>
+    <string name="nav_downloads">Downloads</string>
+    <string name="nav_favorites">Favoriten</string>
+    <string name="nav_history">Verlauf</string>
+    <string name="nav_settings">Einstellungen</string>
+
+    <string name="update_available">Update verfügbar</string>
+    <string name="update_version_size">Version %1$s · %2$s</string>
+    <string name="update_update">Aktualisieren</string>
+    <string name="update_update_now">Jetzt aktualisieren</string>
+    <string name="update_whats_new">Neuigkeiten</string>
+    <string name="update_whats_new_in">Neu in %1$s</string>
+    <string name="update_later">Später</string>
+    <string name="update_downloading">Update wird heruntergeladen… %1$d %%</string>
+
+    <string name="home_continue_watching">Weiterschauen</string>
+    <string name="home_ready_offline">Offline verfügbar</string>
+    <string name="home_latest">Neueste</string>
+    <string name="home_your_favorites">Ihre Favoriten</string>
+    <string name="home_offline">OFFLINE</string>
+    <plurals name="home_offline_ready">
+        <item quantity="one">OFFLINE · %1$d HERUNTERGELADENES VIDEO BEREIT</item>
+        <item quantity="other">OFFLINE · %1$d HERUNTERGELADENE VIDEOS BEREIT</item>
+    </plurals>
+    <string name="home_new">NEU</string>
+    <string name="home_watch_now">Jetzt ansehen</string>
+
+    <plurals name="downloads_summary">
+        <item quantity="one">%1$d offline verfügbar · %2$s belegt · %3$s frei</item>
+        <item quantity="other">%1$d offline verfügbar · %2$s belegt · %3$s frei</item>
+    </plurals>
+    <string name="downloads_empty">Noch nichts heruntergeladen. Öffnen Sie ein Video und wählen Sie „Herunterladen“, um es ohne Internet anzusehen.</string>
+    <string name="downloads_downloading_progress">Wird heruntergeladen: %1$d %%</string>
+    <string name="favorites_empty">Mit dem Herz markierte Videos erscheinen hier.</string>
+    <string name="history_empty">Angesehene Videos erscheinen hier.</string>
+
+    <string name="search_hint">Titel eingeben…</string>
+    <string name="search_intro">Alle Videos nach Titel oder Beschreibung durchsuchen.</string>
+    <string name="search_searching">Gesamte Mediathek wird durchsucht…</string>
+    <plurals name="search_results_count">
+        <item quantity="one">%1$d Ergebnis</item>
+        <item quantity="other">%1$d Ergebnisse</item>
+    </plurals>
+    <string name="search_no_results">Keine Ergebnisse. Versuchen Sie andere Wörter.</string>
+
+    <string name="downloads_status_done">Heruntergeladen</string>
+    <string name="downloads_status_waiting">Wartet</string>
+    <string name="downloads_status_paused">Pausiert</string>
+    <string name="downloads_status_failed">Fehlgeschlagen</string>
+
+    <string name="details_download_done">Heruntergeladen · %1$s · %2$s · ohne Internet abspielbar</string>
+    <string name="details_download_progress">Lädt %1$s · %2$d %% von %3$s</string>
+    <string name="details_download_waiting">Warten auf WLAN zum Herunterladen</string>
+    <string name="details_download_paused">Download pausiert bei %1$d %%</string>
+    <string name="details_download_failed">Download fehlgeschlagen</string>
+    <string name="details_resume">Fortsetzen</string>
+    <string name="details_start_over">Von vorn beginnen</string>
+    <string name="details_download">Herunterladen</string>
+    <string name="details_delete_download">Download löschen</string>
+    <string name="details_retry_download">Download wiederholen</string>
+    <string name="details_resume_download">Download fortsetzen</string>
+    <string name="details_pause_download">Download pausieren</string>
+    <string name="details_cancel_download">Download abbrechen</string>
+    <string name="details_in_favorites">In Favoriten</string>
+    <string name="details_favorite">Favorit</string>
+    <string name="details_mark_unwatched">Als nicht angesehen markieren</string>
+    <string name="details_download_quality">Download-Qualität</string>
+    <string name="details_download_quality_hint">Geringere Qualität spart Speicherplatz.</string>
+
+    <string name="player_subtitles_missing">Keine Untertitel (%1$s) für dieses Video</string>
+    <string name="player_from_downloads">Aus Downloads</string>
+    <string name="player_subtitles_language">Untertitel: %1$s</string>
+    <string name="player_pause">Pause</string>
+    <string name="player_back_10">10 Sekunden zurück</string>
+    <string name="player_forward_10">10 Sekunden vor</string>
+    <string name="player_next">Nächstes</string>
+    <string name="player_subtitles">Untertitel</string>
+    <string name="player_speed">Geschwindigkeit</string>
+    <string name="player_subtitles_same_as_video">Wie das Video</string>
+    <string name="player_subtitles_recent">Zuletzt verwendet</string>
+    <string name="player_subtitles_remembered">Für die nächsten Videos gespeichert.</string>
+    <string name="player_subtitles_off">Aus</string>
+    <string name="player_playback_speed">Wiedergabegeschwindigkeit</string>
+    <string name="player_speed_normal">Normal</string>
+</resources>

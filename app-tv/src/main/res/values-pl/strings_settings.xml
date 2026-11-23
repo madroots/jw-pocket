@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_app_language">Język aplikacji</string>
+    <string name="settings_video_language">Język filmów</string>
+    <string name="settings_subtitle_language">Język napisów</string>
+    <string name="settings_device_language">Język urządzenia (%1$s)</string>
+    <string name="settings_streaming_quality">Jakość strumieniowania</string>
+    <string name="settings_download_quality">Jakość pobierania</string>
+    <string name="settings_ask_every_time">Pytaj za każdym razem</string>
+    <string name="settings_download_quality_note">Niższa jakość oszczędza miejsce.</string>
+    <string name="settings_autoplay">Autoodtwarzanie następnego filmu</string>
+    <string name="settings_wifi_only">Pobieraj tylko przez Wi-Fi</string>
+    <string name="settings_on">Włączone</string>
+    <string name="settings_off">Wyłączone</string>
+    <string name="settings_check_updates">Sprawdź aktualizacje</string>
+    <string name="settings_version">Wersja %1$s</string>
+    <string name="settings_disclaimer">JW Pocket to prywatny, niekomercyjny projekt, niepowiązany ze Świadkami Jehowy ani przez nich niepopierany. Filmy należą do ich właścicieli i pochodzą z publicznego serwisu wideo jw.org.</string>
+    <string name="settings_subtitles_note">Wyświetlane w każdym filmie, który ma napisy w tym języku.</string>
+    <string name="settings_recently_used">Ostatnio używane</string>
+
+    <string name="cascade_app_title">Filmy też w języku: %1$s?</string>
+    <string name="cascade_app_text">Możesz też oglądać filmy (i ich napisy) w języku: %1$s. Każdy język można tu później zmienić.</string>
+    <string name="cascade_app_yes">Filmy i napisy</string>
+    <string name="cascade_app_videos_only">Tylko filmy</string>
+    <string name="cascade_app_no">Tylko aplikacja</string>
+    <string name="cascade_video_title">Napisy też w języku: %1$s?</string>
+    <string name="cascade_video_text">Twoje napisy są ustawione na język: %1$s. Wyświetlać zamiast tego napisy w języku filmów?</string>
+    <string name="cascade_video_yes">Tak</string>
+    <string name="cascade_video_no">Zachowaj: %1$s</string>
+</resources>

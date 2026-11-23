@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="common_play">Prehrať</string>
+    <string name="common_pause">Pozastaviť</string>
+    <string name="common_resume">Pokračovať</string>
+    <string name="common_retry">Skúsiť znova</string>
+    <string name="common_cancel">Zrušiť</string>
+    <string name="common_close">Zavrieť</string>
+    <string name="common_more">Viac</string>
+    <string name="common_share">Zdieľať</string>
+    <string name="common_see_all">Zobraziť všetko</string>
+    <string name="common_clear_text">Vymazať</string>
+    <string name="common_download">Stiahnuť</string>
+    <string name="common_downloaded">Stiahnuté</string>
+    <string name="common_download_failed">Sťahovanie zlyhalo</string>
+    <string name="common_delete_download">Odstrániť stiahnuté video</string>
+    <string name="common_cancel_download">Zrušiť sťahovanie</string>
+    <string name="common_paused">Pozastavené</string>
+    <string name="common_waiting_for_wifi">Čaká sa na Wi-Fi</string>
+    <string name="common_watched">Pozreté</string>
+    <string name="common_saved">Uložené</string>
+    <string name="common_favorite">Do obľúbených</string>
+    <string name="common_ready_offline">Dostupné offline</string>
+    <string name="common_offline_cached">Offline: zobrazuje sa posledná uložená kópia.</string>
+    <string name="common_percent">%1$d %%</string>
+
+    <string name="nav_home">Domov</string>
+    <string name="nav_browse">Prehľadávať</string>
+    <string name="nav_search">Hľadať</string>
+    <string name="nav_library">Knižnica</string>
+    <string name="nav_settings">Nastavenia</string>
+    <string name="nav_back">Späť</string>
+    <string name="nav_library_language">Jazyk knižnice</string>
+    <string name="nav_subtitle_language">Jazyk titulkov</string>
+
+    <string name="update_available_title">Dostupná aktualizácia: %1$s</string>
+    <string name="update_available_message">Nová verzia JW Pocket je pripravená (%1$s).</string>
+    <string name="update_install">Aktualizovať</string>
+    <string name="update_later">Neskôr</string>
+    <string name="update_downloading">Sťahuje sa aktualizácia</string>
+
+    <string name="home_continue_watching">Pokračovať v pozeraní</string>
+    <string name="home_latest">Najnovšie</string>
+    <string name="home_your_favorites">Tvoje obľúbené</string>
+    <string name="home_new_badge">NOVÉ</string>
+    <string name="home_offline_title">Si offline</string>
+    <plurals name="home_offline_ready">
+        <item quantity="one">%d stiahnuté video je pripravené na pozeranie.</item>
+        <item quantity="few">%d stiahnuté videá sú pripravené na pozeranie.</item>
+        <item quantity="many">%d stiahnutých videí je pripravených na pozeranie.</item>
+        <item quantity="other">%d stiahnutých videí je pripravených na pozeranie.</item>
+    </plurals>
+    <string name="home_offline_empty">Stiahni si videá a pozeraj ich bez internetu.</string>
+
+    <string name="browse_error_library">Knižnicu sa nepodarilo načítať</string>
+    <string name="browse_error_category">Túto kategóriu sa nepodarilo načítať</string>
+
+    <string name="search_placeholder">Videá, série, piesne…</string>
+    <string name="search_browse_categories">Prehľadávať kategórie</string>
+    <string name="search_searching">Hľadá sa v celej knižnici…</string>
+    <string name="search_no_results">Žiadne výsledky</string>
+    <string name="search_no_results_hint">Skús iné slová alebo skontroluj pravopis.</string>
+    <string name="search_failed">Vyhľadávanie zlyhalo</string>
+    <plurals name="search_result_count">
+        <item quantity="one">%d video</item>
+        <item quantity="few">%d videá</item>
+        <item quantity="many">%d videa</item>
+        <item quantity="other">%d videí</item>
+    </plurals>
+
+    <string name="library_tab_downloads">Stiahnuté</string>
+    <string name="library_tab_favorites">Obľúbené</string>
+    <string name="library_tab_history">História</string>
+    <plurals name="library_downloads_summary">
+        <item quantity="one">%1$d video · %2$s</item>
+        <item quantity="few">%1$d videá · %2$s</item>
+        <item quantity="many">%1$d videa · %2$s</item>
+        <item quantity="other">%1$d videí · %2$s</item>
+    </plurals>
+    <string name="library_free_space">Voľné miesto v telefóne: %1$s</string>
+    <string name="library_delete_all">Vymazať všetko</string>
+    <string name="library_wifi_only">Sťahovať len cez Wi-Fi</string>
+    <string name="library_downloads_empty_title">Zatiaľ žiadne stiahnuté videá</string>
+    <string name="library_downloads_empty_body">Ťukni na Stiahnuť pri ľubovoľnom videu a pozeraj ho neskôr bez internetu. Stiahnuté videá majú všade zelenú značku.</string>
+    <string name="library_find_videos">Nájsť videá</string>
+    <string name="library_in_progress">Sťahuje sa</string>
+    <string name="library_delete_all_title">Vymazať všetky stiahnuté videá?</string>
+    <string name="library_delete_all_message">Uvoľní sa %1$s. Videá si môžeš neskôr stiahnuť znova.</string>
+    <string name="library_status_downloading">%1$d %% z %2$s</string>
+    <string name="library_status_queued">Čaká na spustenie</string>
+    <string name="library_status_paused">Pozastavené na %1$d %%</string>
+    <string name="library_status_failed">Zlyhalo. Ťukni na ⋮ a skús znova</string>
+    <string name="library_favorites_empty_title">Zatiaľ žiadne obľúbené</string>
+    <string name="library_favorites_empty_body">Ťukni na srdiečko pri videu a uložíš si ho sem.</string>
+    <string name="library_history_empty_title">Zatiaľ žiadne pozreté videá</string>
+    <string name="library_history_empty_body">Tu sa zobrazia videá, ktoré začneš pozerať, takže na ne neskôr ľahko nadviažeš.</string>
+    <string name="library_clear_history">Vymazať históriu</string>
+    <string name="library_clear_history_title">Vymazať históriu?</string>
+    <string name="library_clear_history_message">Uložené pozície a označenia pozretých videí sa odstránia.</string>
+    <string name="library_clear_history_confirm">Vymazať</string>
+
+    <string name="details_stopped_at">Zastavené na %1$s · %2$s</string>
+    <string name="details_start_over">Od začiatku</string>
+    <string name="details_remove_continue_watching">Odstrániť z Pokračovať v pozeraní</string>
+    <string name="details_remove_history">Odstrániť z histórie</string>
+    <string name="details_download_quality">Kvalita sťahovania</string>
+    <string name="details_download_done">Uložené v telefóne · %1$s · %2$s</string>
+    <string name="details_download_progress">Sťahuje sa %1$s · %2$d %% z %3$s</string>
+    <string name="details_download_queued">Čaká na stiahnutie · %1$s</string>
+    <string name="details_download_waiting_wifi">Čaká sa na Wi-Fi · %1$s</string>
+    <string name="details_download_paused">Pozastavené · %1$d %%</string>
+    <string name="details_download_failed">Sťahovanie zlyhalo. Ťukni na Skúsiť znova.</string>
+
+    <string name="player_minimize">Minimalizovať</string>
+    <string name="player_now_playing">PRÁVE HRÁ</string>
+    <string name="player_from_downloads">Zo stiahnutých</string>
+    <string name="player_streaming">Streamovanie</string>
+    <string name="player_picture_in_picture">Obraz v obraze</string>
+    <string name="player_up_next">Nasleduje</string>
+    <string name="player_in_this_list">V tomto zozname</string>
+    <string name="player_previous">Predchádzajúce</string>
+    <string name="player_next">Ďalšie</string>
+    <string name="player_back_10">Späť o 10 sekúnd</string>
+    <string name="player_forward_10">Dopredu o 10 sekúnd</string>
+    <string name="player_full_screen">Celá obrazovka</string>
+    <string name="player_exit_full_screen">Ukončiť celú obrazovku</string>
+    <string name="player_close">Zavrieť prehrávač</string>
+    <string name="player_status_error">Nedá sa prehrať</string>
+    <string name="player_status_loading">Načítava sa…</string>
+    <string name="player_status_playing">Prehráva sa</string>
+    <string name="player_status_playing_offline">Prehráva sa offline</string>
+    <string name="player_status_finished">Dopozerané</string>
+    <string name="player_status_paused">Pozastavené</string>
+    <string name="player_subtitles_missing">Toto video nemá titulky v jazyku %1$s, zobrazuje sa originál.</string>
+    <string name="player_subtitles">Titulky</string>
+    <string name="player_subtitles_off">Titulky vypnuté</string>
+    <string name="player_quality">Kvalita</string>
+    <string name="player_speed">Rýchlosť</string>
+    <string name="player_pill_downloaded">Stiahnuté · %1$s</string>
+    <string name="player_pill_download_progress">%1$d %% · %2$s</string>
+    <string name="player_remove_download_title">Odstrániť stiahnuté video?</string>
+    <string name="player_cancel_download_title">Zrušiť sťahovanie?</string>
+    <string name="player_remove_download_message">V telefóne sa uvoľní %1$s. Video môžeš naďalej streamovať.</string>
+    <string name="player_cancel_download_message">Doteraz stiahnutá časť sa vymaže.</string>
+    <string name="player_remove_download_confirm">Odstrániť</string>
+    <string name="player_keep_download">Ponechať</string>
+    <string name="player_sleep_timer">Časovač vypnutia</string>
+    <string name="player_sleep_after_video">Po tomto videu</string>
+    <plurals name="player_sleep_minutes_left">
+        <item quantity="one">Zostáva %d min</item>
+        <item quantity="few">Zostávajú %d min</item>
+        <item quantity="many">Zostáva %d min</item>
+        <item quantity="other">Zostáva %d min</item>
+    </plurals>
+
+    <string name="player_subtitles_hint">Tvoja voľba sa zapamätá aj pre ďalšie videá.</string>
+    <string name="player_search_languages">Hľadať jazyky</string>
+    <string name="player_subtitles_off_choice">Vypnuté</string>
+    <string name="player_subtitles_same_as_video">Ako vo videu</string>
+    <string name="player_subtitles_recently_used">Nedávno použité · %1$s</string>
+    <string name="player_subtitles_no_others">Toto video nemá titulky v iných jazykoch.</string>
+    <string name="player_subtitles_no_match">Jazyk „%1$s“ sa nenašiel.</string>
+    <string name="player_subtitles_none">Toto video nemá titulky.</string>
+    <string name="player_quality_auto">Automaticky</string>
+    <string name="player_quality_auto_detail">Najlepšia pre túto obrazovku, max. 720p</string>
+    <string name="player_speed_title">Rýchlosť prehrávania</string>
+    <string name="player_speed_normal">Normálna</string>
+    <string name="player_sleep_hint">Prehrávanie sa samo pozastaví.</string>
+    <string name="player_sleep_turn_off">Vypnúť časovač</string>
+    <string name="player_sleep_end_of_video">Na konci tohto videa</string>
+    <plurals name="player_sleep_minutes">
+        <item quantity="one">%d minúta</item>
+        <item quantity="few">%d minúty</item>
+        <item quantity="many">%d minúty</item>
+        <item quantity="other">%d minút</item>
+    </plurals>
+</resources>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="downloads_channel">Pobieranie</string>
+    <string name="downloads_running">Pobieranie filmów</string>
+    <string name="download_done">Pobrano</string>
+    <string name="download_failed">Nie udało się pobrać</string>
+</resources>

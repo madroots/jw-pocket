@@ -55,6 +55,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import app.jwpocket.core.model.Video
@@ -64,6 +65,7 @@ import app.jwpocket.core.util.formatDuration
 import app.jwpocket.core.util.formatTimeLeft
 import app.jwpocket.core.util.qualityBadge
 import app.jwpocket.media.download.DownloadStatus
+import app.jwpocket.phone.R
 import app.jwpocket.phone.ui.LocalPocket
 import app.jwpocket.phone.ui.components.ProgressLine
 import app.jwpocket.phone.ui.player.QualitySheet
@@ -95,7 +97,7 @@ fun DetailsSheet(video: Video, onPlay: (fromStart: Boolean) -> Unit, onDismiss: 
                 AsyncImage(video.posterUrl, null, contentScale = ContentScale.Crop, modifier = Modifier.fillMaxSize())
                 Box(Modifier.fillMaxSize().background(BottomFadeSurface))
                 IconButton(onClick = onDismiss, modifier = Modifier.align(Alignment.TopEnd).padding(8.dp)) {
-                    Icon(Icons.Rounded.Close, "Close", modifier = Modifier.background(Pocket.Scrim, RoundedCornerShape(50)).padding(4.dp))
+                    Icon(Icons.Rounded.Close, stringResource(R.string.common_close), modifier = Modifier.background(Pocket.Scrim, RoundedCornerShape(50)).padding(4.dp))
                 }
             }
             Column(Modifier.padding(horizontal = 20.dp)) {
@@ -114,10 +116,10 @@ fun DetailsSheet(video: Video, onPlay: (fromStart: Boolean) -> Unit, onDismiss: 
                     Spacer(Modifier.height(14.dp))
                     ProgressLine(watch.fraction, Modifier.clip(RoundedCornerShape(2.dp)))
                     Spacer(Modifier.height(6.dp))
-                    Text("Stopped at ${formatClock(watch.positionMs)} · ${formatTimeLeft(watch.remainingMs)}", style = MaterialTheme.typography.bodySmall, color = Pocket.TextSecondary)
+                    Text(stringResource(R.string.details_stopped_at, formatClock(watch.positionMs), formatTimeLeft(context, watch.remainingMs)), style = MaterialTheme.typography.bodySmall, color = Pocket.TextSecondary)
                 } else if (watch?.finished == true) {
                     Spacer(Modifier.height(10.dp))
-                    Text("Watched", style = MaterialTheme.typography.bodySmall, color = Pocket.Success)
+                    Text(stringResource(R.string.common_watched), style = MaterialTheme.typography.bodySmall, color = Pocket.Success)
                 }
 
                 Spacer(Modifier.height(18.dp))
@@ -129,14 +131,14 @@ fun DetailsSheet(video: Video, onPlay: (fromStart: Boolean) -> Unit, onDismiss: 
                 ) {
                     Icon(Icons.Rounded.PlayArrow, null)
                     Spacer(Modifier.width(8.dp))
-                    Text(if (watch?.canResume == true) "Resume" else "Play", style = MaterialTheme.typography.titleMedium)
+                    Text(stringResource(if (watch?.canResume == true) R.string.common_resume else R.string.common_play), style = MaterialTheme.typography.titleMedium)
                 }
                 if (watch?.canResume == true) {
                     Spacer(Modifier.height(8.dp))
                     OutlinedButton(onClick = { onPlay(true) }, modifier = Modifier.fillMaxWidth().height(48.dp), shape = RoundedCornerShape(12.dp)) {
                         Icon(Icons.Rounded.Replay, null)
                         Spacer(Modifier.width(8.dp))
-                        Text("Start over")
+                        Text(stringResource(R.string.details_start_over))
                     }
                 }
 
@@ -144,19 +146,19 @@ fun DetailsSheet(video: Video, onPlay: (fromStart: Boolean) -> Unit, onDismiss: 
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
                     val downloads = pocket.media.downloads
                     when {
-                        download == null -> Action(Icons.Rounded.Download, "Download") {
+                        download == null -> Action(Icons.Rounded.Download, stringResource(R.string.common_download)) {
                             val q = settings.downloadQuality?.takeIf { it in video.qualities }
                             if (q != null) downloads.download(video, q, settings.languageCode) else chooseQuality = true
                         }
-                        download.status == DownloadStatus.Done -> Action(Icons.Rounded.CheckCircle, "Downloaded", tint = Pocket.Success) {}
-                        download.status == DownloadStatus.Failed -> Action(Icons.Rounded.Refresh, "Retry") { downloads.retry(video.id) }
-                        download.status == DownloadStatus.Paused -> Action(Icons.Rounded.Download, "Resume") { downloads.resume(video.id) }
-                        else -> Action(Icons.Rounded.Pause, "Pause") { downloads.pause(video.id) }
+                        download.status == DownloadStatus.Done -> Action(Icons.Rounded.CheckCircle, stringResource(R.string.common_downloaded), tint = Pocket.Success) {}
+                        download.status == DownloadStatus.Failed -> Action(Icons.Rounded.Refresh, stringResource(R.string.common_retry)) { downloads.retry(video.id) }
+                        download.status == DownloadStatus.Paused -> Action(Icons.Rounded.Download, stringResource(R.string.common_resume)) { downloads.resume(video.id) }
+                        else -> Action(Icons.Rounded.Pause, stringResource(R.string.common_pause)) { downloads.pause(video.id) }
                     }
-                    Action(if (marks.favorite) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder, if (marks.favorite) "Saved" else "Favorite",
+                    Action(if (marks.favorite) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder, stringResource(if (marks.favorite) R.string.common_saved else R.string.common_favorite),
                         tint = if (marks.favorite) Pocket.Accent else null) { pocket.core.favorites.toggle(video) }
                     video.shareUrl(settings.languageCode)?.let { url ->
-                        Action(Icons.Rounded.Share, "Share") {
+                        Action(Icons.Rounded.Share, stringResource(R.string.common_share)) {
                             context.startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).apply {
                                 type = "text/plain"
                                 putExtra(Intent.EXTRA_TEXT, "${video.title}\n$url")
@@ -173,7 +175,7 @@ fun DetailsSheet(video: Video, onPlay: (fromStart: Boolean) -> Unit, onDismiss: 
                 if (watch != null) {
                     Spacer(Modifier.height(8.dp))
                     Text(
-                        if (watch.canResume) "Remove from Continue Watching" else "Remove from History",
+                        stringResource(if (watch.canResume) R.string.details_remove_continue_watching else R.string.details_remove_history),
                         style = MaterialTheme.typography.labelLarge, color = Pocket.TextSecondary,
                         modifier = Modifier.clip(RoundedCornerShape(8.dp)).clickable { pocket.core.progress.remove(video.id) }.padding(vertical = 10.dp),
                     )
@@ -197,7 +199,7 @@ fun DetailsSheet(video: Video, onPlay: (fromStart: Boolean) -> Unit, onDismiss: 
     }
 
     if (chooseQuality) {
-        QualitySheet(video, "Download quality", null, null, showAuto = false, onPick = { q ->
+        QualitySheet(video, stringResource(R.string.details_download_quality), null, null, showAuto = false, onPick = { q ->
             if (q != null) pocket.media.downloads.download(video, q, settings.languageCode)
             chooseQuality = false
         }, onDismiss = { chooseQuality = false })
@@ -219,12 +221,12 @@ private fun DownloadPanel(video: Video, onRemove: () -> Unit) {
     ) {
         Column(Modifier.weight(1f)) {
             val label = when (item.status) {
-                DownloadStatus.Done -> "Saved on this phone · ${item.quality} · ${formatBytes(item.bytes)}"
-                DownloadStatus.Downloading -> "Downloading ${item.quality} · ${(item.progress * 100).toInt()}% of ${formatBytes(item.totalBytes)}"
-                DownloadStatus.Queued -> "Waiting to download · ${item.quality}"
-                DownloadStatus.Waiting -> "Waiting for Wi-Fi · ${item.quality}"
-                DownloadStatus.Paused -> "Paused · ${(item.progress * 100).toInt()}%"
-                DownloadStatus.Failed -> "Download failed. Tap Retry."
+                DownloadStatus.Done -> stringResource(R.string.details_download_done, item.quality, formatBytes(item.bytes))
+                DownloadStatus.Downloading -> stringResource(R.string.details_download_progress, item.quality, (item.progress * 100).toInt(), formatBytes(item.totalBytes))
+                DownloadStatus.Queued -> stringResource(R.string.details_download_queued, item.quality)
+                DownloadStatus.Waiting -> stringResource(R.string.details_download_waiting_wifi, item.quality)
+                DownloadStatus.Paused -> stringResource(R.string.details_download_paused, (item.progress * 100).toInt())
+                DownloadStatus.Failed -> stringResource(R.string.details_download_failed)
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
                 if (item.status == DownloadStatus.Failed) {
@@ -238,7 +240,7 @@ private fun DownloadPanel(video: Video, onRemove: () -> Unit) {
                 LinearProgressIndicator(progress = { item.progress }, modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(2.dp)), color = Pocket.Accent, trackColor = Pocket.SurfaceHighest)
             }
         }
-        IconButton(onClick = onRemove) { Icon(Icons.Rounded.Delete, if (item.isDone) "Delete download" else "Cancel download", tint = Pocket.TextSecondary) }
+        IconButton(onClick = onRemove) { Icon(Icons.Rounded.Delete, stringResource(if (item.isDone) R.string.common_delete_download else R.string.common_cancel_download), tint = Pocket.TextSecondary) }
     }
 }
 

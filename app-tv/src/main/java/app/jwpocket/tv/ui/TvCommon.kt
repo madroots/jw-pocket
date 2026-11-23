@@ -49,7 +49,9 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
@@ -70,6 +72,7 @@ import app.jwpocket.core.util.formatTimeLeft
 import app.jwpocket.media.MediaGraph
 import app.jwpocket.media.download.DownloadItem
 import app.jwpocket.media.download.DownloadStatus
+import app.jwpocket.tv.R
 import coil.compose.AsyncImage
 
 object Tv {
@@ -181,7 +184,7 @@ fun TvVideoCard(video: Video, row: List<Video>, width: Dp? = 240.dp, subtitle: S
             val watch = marks.watch
             if (watch?.finished == true && marks.download == null) {
                 Box(Modifier.align(Alignment.TopEnd).padding(8.dp).size(26.dp).background(Tv.Scrim, CircleShape), contentAlignment = Alignment.Center) {
-                    Icon(Icons.Rounded.Check, "Watched", tint = Color.White, modifier = Modifier.size(16.dp))
+                    Icon(Icons.Rounded.Check, stringResource(R.string.common_watched), tint = Color.White, modifier = Modifier.size(16.dp))
                 }
             }
             if (watch != null && watch.canResume) {
@@ -192,7 +195,7 @@ fun TvVideoCard(video: Video, row: List<Video>, width: Dp? = 240.dp, subtitle: S
         }
         Spacer(Modifier.height(8.dp))
         Text(video.title, style = MaterialTheme.typography.bodyMedium, maxLines = 2, overflow = TextOverflow.Ellipsis)
-        val line = subtitle ?: marks.watch?.takeIf { it.canResume }?.let { formatTimeLeft(it.remainingMs) }
+        val line = subtitle ?: marks.watch?.takeIf { it.canResume }?.let { formatTimeLeft(LocalContext.current, it.remainingMs) }
         if (line != null) Text(line, style = MaterialTheme.typography.bodySmall, color = Tv.TextSecondary, maxLines = 1)
     }
 }
@@ -204,11 +207,11 @@ fun TvDownloadBadge(item: DownloadItem, modifier: Modifier = Modifier) {
         verticalAlignment = Alignment.CenterVertically,
     ) {
         val (icon, tint, label) = when (item.status) {
-            DownloadStatus.Done -> Triple(Icons.Rounded.CheckCircle, Tv.Success, "Downloaded")
-            DownloadStatus.Downloading, DownloadStatus.Queued -> Triple(null, Color.White, "${(item.progress * 100).toInt()}%")
-            DownloadStatus.Waiting -> Triple(Icons.Rounded.Schedule, Color.White, "Waiting")
-            DownloadStatus.Paused -> Triple(Icons.Rounded.Pause, Color.White, "Paused")
-            DownloadStatus.Failed -> Triple(Icons.Rounded.ErrorOutline, Color(0xFFFF6B6B), "Failed")
+            DownloadStatus.Done -> Triple(Icons.Rounded.CheckCircle, Tv.Success, stringResource(R.string.downloads_status_done))
+            DownloadStatus.Downloading, DownloadStatus.Queued -> Triple(null, Color.White, stringResource(R.string.common_percent, (item.progress * 100).toInt()))
+            DownloadStatus.Waiting -> Triple(Icons.Rounded.Schedule, Color.White, stringResource(R.string.downloads_status_waiting))
+            DownloadStatus.Paused -> Triple(Icons.Rounded.Pause, Color.White, stringResource(R.string.downloads_status_paused))
+            DownloadStatus.Failed -> Triple(Icons.Rounded.ErrorOutline, Color(0xFFFF6B6B), stringResource(R.string.downloads_status_failed))
         }
         if (icon != null) {
             Icon(icon, null, tint = tint, modifier = Modifier.size(14.dp))

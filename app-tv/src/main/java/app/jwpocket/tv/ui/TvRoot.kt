@@ -56,6 +56,7 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -66,6 +67,7 @@ import app.jwpocket.core.data.dataOrNull
 import app.jwpocket.core.model.Video
 import app.jwpocket.core.presentation.HomeViewModel
 import app.jwpocket.core.util.formatBytes
+import app.jwpocket.tv.R
 import kotlinx.coroutines.delay
 
 /** Where the sidebar can take you. Categories come from the library. */
@@ -183,8 +185,11 @@ fun TvRoot(openPlayer: Boolean, onPlayerOpened: () -> Unit) {
                     modifier = Modifier.align(Alignment.TopCenter),
                 )
                 if (whatsNew) TvSidePanel(
-                    "What's new in ${update.versionName}",
-                    options = listOf(PanelOption("update", "Update now", selected = true), PanelOption("back", "Back")),
+                    stringResource(R.string.update_whats_new_in, update.versionName),
+                    options = listOf(
+                        PanelOption("update", stringResource(R.string.update_update_now), selected = true),
+                        PanelOption("back", stringResource(R.string.common_back)),
+                    ),
                     body = update.notes,
                     onPick = { whatsNew = false; if (it.key == "update") { tv.core.updates.install(); focusPage++ } },
                     onDismiss = { whatsNew = false },
@@ -192,7 +197,7 @@ fun TvRoot(openPlayer: Boolean, onPlayerOpened: () -> Unit) {
             }
             updates.downloadProgress?.let { p ->
                 Text(
-                    "Downloading update… ${(p * 100).toInt()}%",
+                    stringResource(R.string.update_downloading, (p * 100).toInt()),
                     modifier = Modifier.align(Alignment.BottomEnd).padding(32.dp).background(Tv.Surface).padding(16.dp),
                 )
             }
@@ -232,17 +237,17 @@ private fun UpdateBanner(
         Icon(Icons.Rounded.SystemUpdate, null, tint = Tv.Accent, modifier = Modifier.size(28.dp))
         Spacer(Modifier.width(14.dp))
         Column {
-            Text("Update available", fontWeight = FontWeight.Bold)
-            Text("Version $version · $size", color = Tv.TextSecondary, fontSize = 13.sp)
+            Text(stringResource(R.string.update_available), fontWeight = FontWeight.Bold)
+            Text(stringResource(R.string.update_version_size, version, size), color = Tv.TextSecondary, fontSize = 13.sp)
         }
         Spacer(Modifier.width(28.dp))
-        TvButton(null, "Update", Modifier.focusRequester(update), primary = true, onClick = onUpdate)
+        TvButton(null, stringResource(R.string.update_update), Modifier.focusRequester(update), primary = true, onClick = onUpdate)
         if (onWhatsNew != null) {
             Spacer(Modifier.width(10.dp))
-            TvButton(null, "What's new", Modifier.focusRequester(notes)) { notesSeen = true; onWhatsNew() }
+            TvButton(null, stringResource(R.string.update_whats_new), Modifier.focusRequester(notes)) { notesSeen = true; onWhatsNew() }
         }
         Spacer(Modifier.width(10.dp))
-        TvButton(null, "Later", onClick = onLater)
+        TvButton(null, stringResource(R.string.update_later), onClick = onLater)
     }
     LaunchedEffect(Unit) {
         repeat(20) {
@@ -303,13 +308,14 @@ private fun Sidebar(dests: List<Dest>, current: Dest, activeDownloads: Int, onSe
     }
 }
 
-private fun labelFor(d: Dest) = when (d) {
-    Dest.Search -> "Search"
-    Dest.Home -> "Home"
-    Dest.Downloads -> "Downloads"
-    Dest.Favorites -> "Favorites"
-    Dest.History -> "History"
-    Dest.Settings -> "Settings"
+@Composable
+private fun labelFor(d: Dest): String = when (d) {
+    Dest.Search -> stringResource(R.string.nav_search)
+    Dest.Home -> stringResource(R.string.nav_home)
+    Dest.Downloads -> stringResource(R.string.nav_downloads)
+    Dest.Favorites -> stringResource(R.string.nav_favorites)
+    Dest.History -> stringResource(R.string.nav_history)
+    Dest.Settings -> stringResource(R.string.nav_settings)
     is Dest.Category -> d.name
 }
 

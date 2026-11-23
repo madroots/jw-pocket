@@ -20,6 +20,7 @@ The successor of JW TV, rebuilt from scratch with a clean structure and a shared
 - Same remote-friendly player: OK shows the controls, left/right skip (hold to go faster), CC opens the subtitle list.
 
 **Both**
+- **In your language**: the app speaks English, Czech, Slovak, German, Spanish, French, Italian, Portuguese, Polish, Dutch, Hungarian, Romanian, Russian and Ukrainian, and starts in the device's language. App, video and subtitle languages are set separately in Settings; changing one offers to change the ones below it too.
 - **Subtitles in any language** a video is published in, remembered for the next videos; saved with downloads so they work offline.
 - **Downloads run in the background** with a progress notification, resume after a dropped connection, and play through the same player as streams.
 - **Faster**: a category is now one request instead of one per row, the last copy shows instantly (and offline) while a fresh one loads, and release builds are about 3 MB.

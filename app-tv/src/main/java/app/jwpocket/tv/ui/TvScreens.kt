@@ -28,6 +28,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,6 +38,9 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -56,6 +60,7 @@ import app.jwpocket.core.util.formatBytes
 import app.jwpocket.media.download.StorageInfo
 import app.jwpocket.core.util.formatDuration
 import app.jwpocket.core.util.qualityBadge
+import app.jwpocket.tv.R
 import coil.compose.AsyncImage
 
 @Composable
@@ -73,11 +78,11 @@ fun TvHome() {
     LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(bottom = 48.dp)) {
         val hero = latest.dataOrNull?.firstOrNull()
         item(key = "hero") { TvHero(hero, latest.dataOrNull.orEmpty(), online, downloaded.size) }
-        if (continueWatching.isNotEmpty()) item(key = "continue") { TvRow("Continue watching", continueWatching.map { it.video }, 300.dp) }
-        if (downloaded.isNotEmpty()) item(key = "downloaded") { TvRow("Ready offline", downloaded) }
-        latest.dataOrNull?.drop(1)?.takeIf { it.isNotEmpty() }?.let { item(key = "latest") { TvRow("Latest", it) } }
+        if (continueWatching.isNotEmpty()) item(key = "continue") { TvRow(stringResource(R.string.home_continue_watching), continueWatching.map { it.video }, 300.dp) }
+        if (downloaded.isNotEmpty()) item(key = "downloaded") { TvRow(stringResource(R.string.home_ready_offline), downloaded) }
+        latest.dataOrNull?.drop(1)?.takeIf { it.isNotEmpty() }?.let { item(key = "latest") { TvRow(stringResource(R.string.home_latest), it) } }
         featured.dataOrNull?.sections?.take(4)?.forEach { s -> item(key = "f_${s.key}") { TvRow(s.title, s.videos) } }
-        if (favorites.isNotEmpty()) item(key = "fav") { TvRow("Your favorites", favorites) }
+        if (favorites.isNotEmpty()) item(key = "fav") { TvRow(stringResource(R.string.home_your_favorites), favorites) }
         if (latest is Load.Loading) items(3) { TvPlaceholderRow() }
     }
 }
@@ -95,13 +100,13 @@ private fun TvHero(video: Video?, row: List<Video>, online: Boolean, downloadedC
         Column(Modifier.align(Alignment.CenterStart).padding(start = 48.dp, top = 40.dp).width(560.dp)) {
             if (!online) {
                 Text(
-                    if (downloadedCount > 0) "OFFLINE · $downloadedCount DOWNLOADED VIDEOS READY" else "OFFLINE",
+                    if (downloadedCount > 0) pluralStringResource(R.plurals.home_offline_ready, downloadedCount, downloadedCount) else stringResource(R.string.home_offline),
                     color = Tv.Accent, fontWeight = FontWeight.Bold, fontSize = 13.sp,
                 )
                 Spacer(Modifier.height(8.dp))
             }
             if (video != null) {
-                Text("NEW", color = Tv.Accent, fontWeight = FontWeight.Bold, fontSize = 13.sp, letterSpacing = 1.5.sp)
+                Text(stringResource(R.string.home_new), color = Tv.Accent, fontWeight = FontWeight.Bold, fontSize = 13.sp, letterSpacing = 1.5.sp)
                 Spacer(Modifier.height(6.dp))
                 Text(video.title, style = MaterialTheme.typography.displaySmall, maxLines = 2, overflow = TextOverflow.Ellipsis)
                 Spacer(Modifier.height(8.dp))
@@ -110,8 +115,16 @@ private fun TvHero(video: Video?, row: List<Video>, online: Boolean, downloadedC
                     color = Tv.TextSecondary,
                 )
                 Spacer(Modifier.height(20.dp))
-                TvButton(Icons.Rounded.PlayArrow, "Watch now", Modifier.focusRequester(focus), primary = true) { open(video, row, focus) }
-                LaunchedEffect(video.id) { runCatching { focus.requestFocus() } }
+                TvButton(Icons.Rounded.PlayArrow, stringResource(R.string.home_watch_now), Modifier.focusRequester(focus), primary = true) { open(video, row, focus) }
+                // Only the first time the page shows: the hero leaves the list when you scroll down and
+                // comes back on the way up, and grabbing focus then threw you to the top (skipping row 1).
+                var focusedOnce by rememberSaveable(video.id) { mutableStateOf(false) }
+                LaunchedEffect(video.id) {
+                    if (!focusedOnce) {
+                        focusedOnce = true
+                        runCatching { focus.requestFocus() }
+                    }
+                }
             }
         }
     }
@@ -171,27 +184,29 @@ fun TvDownloads() {
     val done = items.values.filter { it.isDone }
     LaunchedEffect(done.size) { storage = tv.media.downloads.storage() }
     val all = items.values.sortedBy { if (it.isDone) 1 else 0 }.map { it.video }
+    val context = LocalContext.current
     TvVideoGrid(
-        title = "Downloads",
-        detail = "${done.size} ready offline · ${formatBytes(storage?.downloadsBytes ?: 0)} used · ${formatBytes(storage?.freeBytes ?: 0)} free",
+        title = stringResource(R.string.nav_downloads),
+        detail = pluralStringResource(R.plurals.downloads_summary, done.size, done.size, formatBytes(storage?.downloadsBytes ?: 0), formatBytes(storage?.freeBytes ?: 0)),
         videos = all,
-        empty = "Nothing downloaded yet. Open any video and choose Download to watch it without internet.",
-        subtitle = { v -> items[v.id]?.let { if (it.isDone) "${it.quality} · ${formatBytes(it.bytes)}" else "Downloading ${(it.progress * 100).toInt()}%" } },
+        empty = stringResource(R.string.downloads_empty),
+        subtitle = { v -> items[v.id]?.let { if (it.isDone) "${it.quality} · ${formatBytes(it.bytes)}" else context.getString(R.string.downloads_downloading_progress, (it.progress * 100).toInt()) } },
     )
 }
 
 @Composable
 fun TvFavorites() {
     val favorites by LocalTv.current.core.favorites.favorites.collectAsState()
-    TvVideoGrid("Favorites", null, favorites, "Videos you mark with the heart appear here.")
+    TvVideoGrid(stringResource(R.string.nav_favorites), null, favorites, stringResource(R.string.favorites_empty))
 }
 
 @Composable
 fun TvHistory() {
     val tv = LocalTv.current
     val history by remember { tv.core.progress.history }.collectAsState(emptyList())
-    TvVideoGrid("History", null, history.map { it.video }, "Videos you watch appear here.") { v ->
-        history.firstOrNull { it.video.id == v.id }?.let { if (it.finished) "Watched" else null }
+    val watched = stringResource(R.string.common_watched)
+    TvVideoGrid(stringResource(R.string.nav_history), null, history.map { it.video }, stringResource(R.string.history_empty)) { v ->
+        history.firstOrNull { it.video.id == v.id }?.let { if (it.finished) watched else null }
     }
 }
 
@@ -203,14 +218,14 @@ fun TvSearch() {
     val results by vm.results.collectAsState()
     val focus = remember { FocusRequester() }
     Column(Modifier.fillMaxSize().padding(top = 32.dp)) {
-        Text("Search", style = MaterialTheme.typography.displaySmall, modifier = Modifier.padding(start = 48.dp))
+        Text(stringResource(R.string.nav_search), style = MaterialTheme.typography.displaySmall, modifier = Modifier.padding(start = 48.dp))
         Spacer(Modifier.height(16.dp))
         FocusSurface(onClick = { runCatching { focus.requestFocus() } }, modifier = Modifier.padding(horizontal = 48.dp).fillMaxWidth(0.6f), scale = 1.02f) {
             Row(Modifier.padding(horizontal = 18.dp, vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Rounded.Search, null, tint = Tv.TextSecondary)
                 Spacer(Modifier.width(12.dp))
                 Box {
-                    if (query.isEmpty()) Text("Type a title…", color = Tv.TextSecondary)
+                    if (query.isEmpty()) Text(stringResource(R.string.search_hint), color = Tv.TextSecondary)
                     BasicTextField(
                         value = query,
                         onValueChange = { vm.query.value = it },
@@ -223,12 +238,12 @@ fun TvSearch() {
             }
         }
         when (val state = results) {
-            null -> Text("Search every video by title or description.", color = Tv.TextSecondary, modifier = Modifier.padding(48.dp))
-            Load.Loading -> Text("Searching the whole library…", color = Tv.TextSecondary, modifier = Modifier.padding(48.dp))
+            null -> Text(stringResource(R.string.search_intro), color = Tv.TextSecondary, modifier = Modifier.padding(48.dp))
+            Load.Loading -> Text(stringResource(R.string.search_searching), color = Tv.TextSecondary, modifier = Modifier.padding(48.dp))
             is Load.Failed -> Text(state.message, color = Tv.TextSecondary, modifier = Modifier.padding(48.dp))
             is Load.Ready -> {
                 val videos = state.data.map { it.video }
-                TvVideoGrid("${videos.size} results", null, videos, "No results. Try other words.") { v ->
+                TvVideoGrid(pluralStringResource(R.plurals.search_results_count, videos.size, videos.size), null, videos, stringResource(R.string.search_no_results)) { v ->
                     state.data.firstOrNull { it.video.id == v.id }?.section
                 }
             }

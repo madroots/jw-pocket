@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="time_left_under_minute">Pozostała mniej niż minuta</string>
+    <plurals name="time_left_minutes">
+        <item quantity="one">Jeszcze %d min</item>
+        <item quantity="few">Jeszcze %d min</item>
+        <item quantity="many">Jeszcze %d min</item>
+        <item quantity="other">Jeszcze %d min</item>
+    </plurals>
+    <string name="time_left_hours">Jeszcze %1$d godz. %2$d min</string>
+
+    <string name="load_category_failed">Nie udało się wczytać tej kategorii. Sprawdź połączenie.</string>
+    <string name="load_offline_empty">Jesteś offline, a nic nie zostało jeszcze zapisane.</string>
+
+    <string name="update_checking">Sprawdzanie aktualizacji…</string>
+    <string name="update_up_to_date">Masz najnowszą wersję JW Pocket (%1$s).</string>
+    <string name="update_check_failed">Nie udało się sprawdzić aktualizacji.</string>
+    <string name="update_download_failed">Nie udało się pobrać aktualizacji. Spróbuj ponownie.</string>
+</resources>

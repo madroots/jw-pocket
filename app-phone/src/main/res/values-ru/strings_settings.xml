@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_group_language">Язык</string>
+    <string name="settings_app_language">Язык приложения</string>
+    <string name="settings_video_language">Язык видео</string>
+    <string name="settings_subtitle_language">Язык субтитров</string>
+    <string name="settings_device_language">Язык устройства (%1$s)</string>
+    <string name="settings_group_playback">Воспроизведение</string>
+    <string name="settings_background_title">Воспроизведение в фоне</string>
+    <string name="settings_background_detail">Продолжать как аудио при заблокированном экране или в других приложениях</string>
+    <string name="settings_pip_title">Картинка в картинке</string>
+    <string name="settings_pip_detail">Уменьшать видео до плавающего окна, когда вы выходите из приложения</string>
+    <string name="settings_autoplay_title">Автовоспроизведение следующего видео</string>
+    <string name="settings_autoplay_detail">Воспроизводить следующее видео из того же списка</string>
+    <string name="settings_streaming_quality">Качество онлайн-просмотра</string>
+    <string name="settings_group_subtitles">Субтитры</string>
+    <string name="settings_subtitle_size">Размер субтитров</string>
+    <string name="settings_group_downloads">Загрузки</string>
+    <string name="settings_download_quality">Качество скачивания</string>
+    <string name="settings_wifi_only_title">Только Wi-Fi</string>
+    <string name="settings_wifi_only_detail">Ждать Wi-Fi перед скачиванием</string>
+    <string name="settings_manage_downloads_title">Управление загрузками</string>
+    <string name="settings_manage_downloads_detail">Просмотр и удаление скачанных видео</string>
+    <string name="settings_group_app">Приложение</string>
+    <string name="settings_check_updates">Проверить обновления</string>
+    <string name="settings_version">Версия %1$s</string>
+    <string name="settings_disclaimer">JW Pocket — личный некоммерческий проект. Он не связан со Свидетелями Иеговы и не одобрен ими. Все видео принадлежат их владельцам и взяты из общедоступного видеосервиса jw.org.</string>
+    <string name="quality_auto">Авто</string>
+    <string name="quality_auto_detail">До 720p</string>
+    <string name="quality_streaming_note">Скачанные видео всегда воспроизводятся в том качестве, в котором были скачаны.</string>
+    <string name="quality_ask_every_time">Всегда спрашивать</string>
+    <string name="quality_download_note">Более низкое качество экономит место.</string>
+    <string name="subtitles_same_as_video">На языке видео</string>
+    <string name="subtitles_same_as_video_detail">Субтитры на языке видео</string>
+    <string name="subtitles_off">Выкл.</string>
+    <string name="subtitles_any_language_note">Любой язык: субтитры показываются у каждого видео, у которого они есть на этом языке, независимо от языка самого видео.</string>
+    <string name="search_languages">Поиск языков</string>
+    <string name="cascade_app_title">Видео тоже на языке «%1$s»?</string>
+    <string name="cascade_app_text">Вы также можете смотреть видео (и субтитры к ним) на языке «%1$s». Каждый язык можно позже изменить в настройках.</string>
+    <string name="cascade_app_yes">Видео и субтитры</string>
+    <string name="cascade_app_videos_only">Только видео</string>
+    <string name="cascade_app_no">Только приложение</string>
+    <string name="cascade_video_title">Субтитры тоже на языке «%1$s»?</string>
+    <string name="cascade_video_text">Сейчас выбраны субтитры на языке «%1$s». Показывать вместо них субтитры на языке видео?</string>
+    <string name="cascade_video_yes">Да</string>
+    <string name="cascade_video_no">Оставить «%1$s»</string>
+</resources>

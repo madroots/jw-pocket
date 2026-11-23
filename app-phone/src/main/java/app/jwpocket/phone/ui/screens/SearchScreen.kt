@@ -32,6 +32,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -43,6 +45,7 @@ import app.jwpocket.core.util.formatDuration
 import app.jwpocket.core.presentation.SearchViewModel
 import app.jwpocket.phone.ui.components.EmptyState
 import app.jwpocket.phone.ui.components.VideoListItem
+import app.jwpocket.phone.R
 import app.jwpocket.phone.ui.pocketViewModel
 import app.jwpocket.phone.ui.theme.Pocket
 
@@ -57,13 +60,13 @@ fun SearchScreen(contentPadding: PaddingValues, onOpenCategory: (Category) -> Un
     val focus = LocalFocusManager.current
 
     Column(Modifier.fillMaxSize().padding(bottom = contentPadding.calculateBottomPadding())) {
-        Text("Search", style = MaterialTheme.typography.headlineMedium, modifier = Modifier.statusBarsPadding().padding(start = 20.dp, top = 16.dp, bottom = 12.dp))
+        Text(stringResource(R.string.nav_search), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.statusBarsPadding().padding(start = 20.dp, top = 16.dp, bottom = 12.dp))
         TextField(
             value = query,
             onValueChange = { vm.query.value = it },
-            placeholder = { Text("Videos, series, songs…") },
+            placeholder = { Text(stringResource(R.string.search_placeholder)) },
             leadingIcon = { Icon(Icons.Rounded.Search, null) },
-            trailingIcon = { if (query.isNotEmpty()) IconButton(onClick = { vm.query.value = "" }) { Icon(Icons.Rounded.Close, "Clear") } },
+            trailingIcon = { if (query.isNotEmpty()) IconButton(onClick = { vm.query.value = "" }) { Icon(Icons.Rounded.Close, stringResource(R.string.common_clear_text)) } },
             singleLine = true,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
             keyboardActions = KeyboardActions(onSearch = { focus.clearFocus() }),
@@ -78,7 +81,7 @@ fun SearchScreen(contentPadding: PaddingValues, onOpenCategory: (Category) -> Un
         )
         when (val state = results) {
             null -> Column(Modifier.padding(16.dp)) {
-                Text("Browse categories", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(vertical = 8.dp))
+                Text(stringResource(R.string.search_browse_categories), style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(vertical = 8.dp))
                 FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     categories.dataOrNull.orEmpty().forEach { c -> AssistChip(onClick = { onOpenCategory(c) }, label = { Text(c.name) }) }
                 }
@@ -86,21 +89,21 @@ fun SearchScreen(contentPadding: PaddingValues, onOpenCategory: (Category) -> Un
             Load.Loading -> Box(Modifier.fillMaxWidth().padding(32.dp), contentAlignment = Alignment.Center) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     CircularProgressIndicator(color = Pocket.Accent)
-                    Text("Searching the whole library…", color = Pocket.TextSecondary, modifier = Modifier.padding(top = 12.dp))
+                    Text(stringResource(R.string.search_searching), color = Pocket.TextSecondary, modifier = Modifier.padding(top = 12.dp))
                 }
             }
             is Load.Ready -> if (state.data.isEmpty()) {
-                EmptyState(Icons.Rounded.SearchOff, "No results", "Try other words, or check the spelling.")
+                EmptyState(Icons.Rounded.SearchOff, stringResource(R.string.search_no_results), stringResource(R.string.search_no_results_hint))
             } else {
                 LazyColumn(contentPadding = PaddingValues(vertical = 8.dp)) {
-                    item { Text("${state.data.size} videos", style = MaterialTheme.typography.bodySmall, color = Pocket.TextSecondary, modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)) }
+                    item { Text(pluralStringResource(R.plurals.search_result_count, state.data.size, state.data.size), style = MaterialTheme.typography.bodySmall, color = Pocket.TextSecondary, modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)) }
                     val row = state.data.map { it.video }
                     items(state.data, key = { it.video.id }) { hit ->
                         VideoListItem(hit.video, row, detail = listOf(formatDuration(hit.video.duration), hit.section).filter { it.isNotEmpty() }.joinToString(" · "))
                     }
                 }
             }
-            is Load.Failed -> EmptyState(Icons.Rounded.SearchOff, "Search failed", state.message)
+            is Load.Failed -> EmptyState(Icons.Rounded.SearchOff, stringResource(R.string.search_failed), state.message)
         }
     }
 }

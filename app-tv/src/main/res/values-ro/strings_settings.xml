@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_app_language">Limba aplicației</string>
+    <string name="settings_video_language">Limba videoclipurilor</string>
+    <string name="settings_subtitle_language">Limba subtitrărilor</string>
+    <string name="settings_device_language">Limba dispozitivului (%1$s)</string>
+    <string name="settings_streaming_quality">Calitatea pentru streaming</string>
+    <string name="settings_download_quality">Calitatea descărcării</string>
+    <string name="settings_ask_every_time">Întreabă de fiecare dată</string>
+    <string name="settings_download_quality_note">Calitățile mai mici economisesc spațiu.</string>
+    <string name="settings_autoplay">Redă automat următorul videoclip</string>
+    <string name="settings_wifi_only">Descarcă doar prin Wi-Fi</string>
+    <string name="settings_on">Activat</string>
+    <string name="settings_off">Dezactivat</string>
+    <string name="settings_check_updates">Caută actualizări</string>
+    <string name="settings_version">Versiunea %1$s</string>
+    <string name="settings_disclaimer">JW Pocket este un proiect personal, necomercial, care nu este afiliat cu Martorii lui Iehova și nici susținut de aceștia. Videoclipurile aparțin proprietarilor lor și provin din serviciul video public jw.org.</string>
+    <string name="settings_subtitles_note">Apar la fiecare videoclip publicat în limba respectivă.</string>
+    <string name="settings_recently_used">Folosite recent</string>
+    <string name="cascade_app_title">Și videoclipurile în limba %1$s?</string>
+    <string name="cascade_app_text">Puteți viziona și videoclipurile (și subtitrările lor) în limba %1$s. Fiecare limbă poate fi schimbată și mai târziu, aici.</string>
+    <string name="cascade_app_yes">Videoclipuri și subtitrări</string>
+    <string name="cascade_app_videos_only">Doar videoclipurile</string>
+    <string name="cascade_app_no">Doar aplicația</string>
+    <string name="cascade_video_title">Și subtitrările în limba %1$s?</string>
+    <string name="cascade_video_text">Subtitrările sunt setate în limba %1$s. Doriți ca subtitrările să apară în schimb în limba videoclipurilor?</string>
+    <string name="cascade_video_yes">Da</string>
+    <string name="cascade_video_no">Păstrează %1$s</string>
+</resources>

@@ -1,4 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">JW Pocket</string>
+
+    <!-- Common -->
+    <string name="common_play">Play</string>
+    <string name="common_back">Back</string>
+    <string name="common_watched">Watched</string>
+    <string name="common_quality">Quality</string>
+    <!-- Automatic video quality choice -->
+    <string name="common_quality_auto">Auto</string>
+    <string name="common_quality_auto_detail">Up to 720p</string>
+    <!-- A percentage, e.g. download progress "42%" -->
+    <string name="common_percent">%1$d%%</string>
+
+    <!-- Sidebar navigation (also used as page titles) -->
+    <string name="nav_search">Search</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_downloads">Downloads</string>
+    <string name="nav_favorites">Favorites</string>
+    <string name="nav_history">History</string>
+    <string name="nav_settings">Settings</string>
+
+    <!-- App update -->
+    <string name="update_available">Update available</string>
+    <!-- %1$s = version name, %2$s = download size -->
+    <string name="update_version_size">Version %1$s · %2$s</string>
+    <!-- Button: install the update -->
+    <string name="update_update">Update</string>
+    <string name="update_update_now">Update now</string>
+    <string name="update_whats_new">What\'s new</string>
+    <!-- %1$s = version name -->
+    <string name="update_whats_new_in">What\'s new in %1$s</string>
+    <!-- Button: dismiss the update for now -->
+    <string name="update_later">Later</string>
+    <string name="update_downloading">Downloading update… %1$d%%</string>
+
+    <!-- Home -->
+    <string name="home_continue_watching">Continue watching</string>
+    <string name="home_ready_offline">Ready offline</string>
+    <string name="home_latest">Latest</string>
+    <string name="home_your_favorites">Your favorites</string>
+    <!-- Upper-case label over the hero picture when there is no internet -->
+    <string name="home_offline">OFFLINE</string>
+    <plurals name="home_offline_ready">
+        <item quantity="one">OFFLINE · %1$d DOWNLOADED VIDEO READY</item>
+        <item quantity="other">OFFLINE · %1$d DOWNLOADED VIDEOS READY</item>
+    </plurals>
+    <!-- Upper-case label over the newest video -->
+    <string name="home_new">NEW</string>
+    <string name="home_watch_now">Watch now</string>
+
+    <!-- Library pages -->
+    <!-- %1$d = videos ready offline, %2$s = space used, %3$s = space free -->
+    <plurals name="downloads_summary">
+        <item quantity="one">%1$d ready offline · %2$s used · %3$s free</item>
+        <item quantity="other">%1$d ready offline · %2$s used · %3$s free</item>
+    </plurals>
+    <string name="downloads_empty">Nothing downloaded yet. Open any video and choose Download to watch it without internet.</string>
+    <string name="downloads_downloading_progress">Downloading %1$d%%</string>
+    <string name="favorites_empty">Videos you mark with the heart appear here.</string>
+    <string name="history_empty">Videos you watch appear here.</string>
+
+    <!-- Search -->
+    <string name="search_hint">Type a title…</string>
+    <string name="search_intro">Search every video by title or description.</string>
+    <string name="search_searching">Searching the whole library…</string>
+    <plurals name="search_results_count">
+        <item quantity="one">%1$d result</item>
+        <item quantity="other">%1$d results</item>
+    </plurals>
+    <string name="search_no_results">No results. Try other words.</string>
+
+    <!-- Download states (badge on video cards) -->
+    <string name="downloads_status_done">Downloaded</string>
+    <string name="downloads_status_waiting">Waiting</string>
+    <string name="downloads_status_paused">Paused</string>
+    <string name="downloads_status_failed">Failed</string>
+
+    <!-- Video details -->
+    <!-- %1$s = quality (e.g. 720p), %2$s = file size -->
+    <string name="details_download_done">Downloaded · %1$s · %2$s · plays without internet</string>
+    <!-- %1$s = quality (e.g. 720p), %2$d = percent done, %3$s = total size -->
+    <string name="details_download_progress">Downloading %1$s · %2$d%% of %3$s</string>
+    <string name="details_download_waiting">Waiting for Wi-Fi to download</string>
+    <string name="details_download_paused">Download paused at %1$d%%</string>
+    <string name="details_download_failed">Download failed</string>
+    <!-- Button: continue watching where you left off -->
+    <string name="details_resume">Resume</string>
+    <string name="details_start_over">Start over</string>
+    <string name="details_download">Download</string>
+    <string name="details_delete_download">Delete download</string>
+    <string name="details_retry_download">Retry download</string>
+    <string name="details_resume_download">Resume download</string>
+    <string name="details_pause_download">Pause download</string>
+    <string name="details_cancel_download">Cancel download</string>
+    <!-- Shown on the favorite button when the video is already a favorite -->
+    <string name="details_in_favorites">In favorites</string>
+    <!-- Button: add the video to favorites -->
+    <string name="details_favorite">Favorite</string>
+    <string name="details_mark_unwatched">Mark unwatched</string>
+    <string name="details_download_quality">Download quality</string>
+    <string name="details_download_quality_hint">Smaller qualities save space.</string>
+
+    <!-- Player -->
+    <!-- %1$s = language name -->
+    <string name="player_subtitles_missing">No %1$s subtitles for this video</string>
+    <string name="player_from_downloads">From downloads</string>
+    <!-- %1$s = language name -->
+    <string name="player_subtitles_language">Subtitles: %1$s</string>
+    <string name="player_pause">Pause</string>
+    <string name="player_back_10">Back 10 seconds</string>
+    <string name="player_forward_10">Forward 10 seconds</string>
+    <!-- Button: play the next video -->
+    <string name="player_next">Next</string>
+    <string name="player_subtitles">Subtitles</string>
+    <string name="player_speed">Speed</string>
+    <string name="player_subtitles_same_as_video">Same as the video</string>
+    <string name="player_subtitles_recent">Recently used</string>
+    <string name="player_subtitles_remembered">Remembered for the next videos.</string>
+    <!-- Subtitles turned off -->
+    <string name="player_subtitles_off">Off</string>
+    <string name="player_playback_speed">Playback speed</string>
+    <!-- Playback speed 1× -->
+    <string name="player_speed_normal">Normal</string>
 </resources>

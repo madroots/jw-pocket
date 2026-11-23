@@ -80,6 +80,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -89,6 +91,7 @@ import app.jwpocket.core.util.formatClock
 import app.jwpocket.core.util.formatDuration
 import app.jwpocket.media.PlaybackState
 import app.jwpocket.media.download.DownloadStatus
+import app.jwpocket.phone.R
 import app.jwpocket.phone.ui.LocalPocket
 import app.jwpocket.phone.ui.components.Thumbnail
 import app.jwpocket.phone.ui.rememberMarks
@@ -155,15 +158,15 @@ fun FullPlayer(
                     Modifier.fillMaxWidth().padding(horizontal = 4.dp, vertical = 2.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    IconButton(onClick = onCollapse) { Icon(Icons.Rounded.KeyboardArrowDown, "Minimize", modifier = Modifier.size(30.dp)) }
+                    IconButton(onClick = onCollapse) { Icon(Icons.Rounded.KeyboardArrowDown, stringResource(R.string.player_minimize), modifier = Modifier.size(30.dp)) }
                     Column(Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text("NOW PLAYING", style = MaterialTheme.typography.labelSmall, color = Pocket.TextSecondary)
+                        Text(stringResource(R.string.player_now_playing), style = MaterialTheme.typography.labelSmall, color = Pocket.TextSecondary)
                         Text(
-                            if (fromDownload) "From your downloads" else (state.quality ?: "Streaming"),
+                            if (fromDownload) stringResource(R.string.player_from_downloads) else (state.quality ?: stringResource(R.string.player_streaming)),
                             style = MaterialTheme.typography.bodySmall, color = Pocket.TextSecondary,
                         )
                     }
-                    IconButton(onClick = onPictureInPicture) { Icon(Icons.Rounded.PictureInPictureAlt, "Picture-in-picture") }
+                    IconButton(onClick = onPictureInPicture) { Icon(Icons.Rounded.PictureInPictureAlt, stringResource(R.string.player_picture_in_picture)) }
                 }
 
                 Box(Modifier.fillMaxWidth().aspectRatio(16f / 9f).background(Color.Black)) {
@@ -180,7 +183,7 @@ fun FullPlayer(
                         Row(Modifier.padding(start = 20.dp, top = 20.dp, bottom = 8.dp), verticalAlignment = Alignment.CenterVertically) {
                             Icon(Icons.AutoMirrored.Rounded.PlaylistPlay, null, tint = Pocket.TextSecondary)
                             Spacer(Modifier.width(8.dp))
-                            Text(if (settings.autoplayNext) "Up next" else "In this list", style = MaterialTheme.typography.titleMedium)
+                            Text(stringResource(if (settings.autoplayNext) R.string.player_up_next else R.string.player_in_this_list), style = MaterialTheme.typography.titleMedium)
                         }
                     }
                     itemsIndexed(state.queue, key = { _, v -> v.id }) { index, v ->
@@ -219,7 +222,7 @@ fun FullPlayer(
             onDismiss = { sheet = null },
         )
         Sheet.Quality -> QualitySheet(
-            video, "Quality", state.quality, pocket.media.downloads.get(video.id)?.takeIf { it.isDone }?.quality, showAuto = true,
+            video, stringResource(R.string.player_quality), state.quality, pocket.media.downloads.get(video.id)?.takeIf { it.isDone }?.quality, showAuto = true,
             onPick = { connection.setQuality(it); sheet = null }, onDismiss = { sheet = null },
         )
         Sheet.Speed -> SpeedSheet(state.speed, onPick = { connection.setSpeed(it); sheet = null }, onDismiss = { sheet = null })
@@ -250,8 +253,8 @@ private fun NowPlayingInfo(state: PlaybackState, onSheet: (Sheet) -> Unit) {
         Spacer(Modifier.height(8.dp))
         SeekBar(state, onSeek = connection::seekTo)
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly, verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = connection::previous, enabled = state.hasPrevious) { Icon(Icons.Rounded.SkipPrevious, "Previous", modifier = Modifier.size(32.dp)) }
-            IconButton(onClick = { connection.seekBy(-10_000) }) { Icon(Icons.Rounded.Replay10, "Back 10 seconds", modifier = Modifier.size(30.dp)) }
+            IconButton(onClick = connection::previous, enabled = state.hasPrevious) { Icon(Icons.Rounded.SkipPrevious, stringResource(R.string.player_previous), modifier = Modifier.size(32.dp)) }
+            IconButton(onClick = { connection.seekBy(-10_000) }) { Icon(Icons.Rounded.Replay10, stringResource(R.string.player_back_10), modifier = Modifier.size(30.dp)) }
             Box(
                 Modifier.size(68.dp).clip(CircleShape).background(Color.White).clickable(onClick = connection::togglePlay),
                 contentAlignment = Alignment.Center,
@@ -259,17 +262,17 @@ private fun NowPlayingInfo(state: PlaybackState, onSheet: (Sheet) -> Unit) {
                 if (state.buffering && state.playWhenReady) CircularProgressIndicator(color = Pocket.Background, strokeWidth = 3.dp, modifier = Modifier.size(30.dp))
                 else Icon(
                     when { state.ended -> Icons.Rounded.Replay; state.isPlaying -> Icons.Rounded.Pause; else -> Icons.Rounded.PlayArrow },
-                    if (state.isPlaying) "Pause" else "Play", tint = Pocket.Background, modifier = Modifier.size(40.dp),
+                    stringResource(if (state.isPlaying) R.string.common_pause else R.string.common_play), tint = Pocket.Background, modifier = Modifier.size(40.dp),
                 )
             }
-            IconButton(onClick = { connection.seekBy(10_000) }) { Icon(Icons.Rounded.Forward10, "Forward 10 seconds", modifier = Modifier.size(30.dp)) }
-            IconButton(onClick = connection::next, enabled = state.hasNext) { Icon(Icons.Rounded.SkipNext, "Next", modifier = Modifier.size(32.dp)) }
+            IconButton(onClick = { connection.seekBy(10_000) }) { Icon(Icons.Rounded.Forward10, stringResource(R.string.player_forward_10), modifier = Modifier.size(30.dp)) }
+            IconButton(onClick = connection::next, enabled = state.hasNext) { Icon(Icons.Rounded.SkipNext, stringResource(R.string.player_next), modifier = Modifier.size(32.dp)) }
         }
         Spacer(Modifier.height(16.dp))
 
         if (state.subtitleMissing && settings.subtitleLanguage != null && settings.subtitleLanguage != Settings.SUBTITLES_OFF) {
             Text(
-                "No ${pocket.core.languages.name(settings.subtitleLanguage!!)} subtitles for this video, showing the original.",
+                stringResource(R.string.player_subtitles_missing, pocket.core.languages.name(settings.subtitleLanguage!!)),
                 style = MaterialTheme.typography.bodySmall, color = Pocket.TextSecondary, modifier = Modifier.padding(bottom = 8.dp),
             )
         }
@@ -277,24 +280,24 @@ private fun NowPlayingInfo(state: PlaybackState, onSheet: (Sheet) -> Unit) {
         Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             val cc = state.subtitleLanguage
             Pill(if (cc != null) Icons.Rounded.ClosedCaption else Icons.Rounded.ClosedCaptionDisabled,
-                if (cc != null) pocket.core.languages.name(cc) else "Subtitles off", highlighted = cc != null) { onSheet(Sheet.Subtitles) }
-            Pill(Icons.Rounded.HighQuality, state.quality ?: "Quality") { onSheet(Sheet.Quality) }
+                if (cc != null) pocket.core.languages.name(cc) else stringResource(R.string.player_subtitles_off), highlighted = cc != null) { onSheet(Sheet.Subtitles) }
+            Pill(Icons.Rounded.HighQuality, state.quality ?: stringResource(R.string.player_quality)) { onSheet(Sheet.Quality) }
             val download = marks.download
             when {
-                download == null -> Pill(Icons.Rounded.Download, "Download") {
+                download == null -> Pill(Icons.Rounded.Download, stringResource(R.string.common_download)) {
                     val quality = settings.downloadQuality ?: state.quality ?: video.file(null)?.label
                     if (quality != null) pocket.media.downloads.download(video, quality, settings.languageCode)
                 }
-                download.status == DownloadStatus.Done -> Pill(Icons.Rounded.CheckCircle, "Downloaded · ${download.quality}", highlighted = true) { confirmRemove = true }
-                else -> Pill(Icons.Rounded.Download, "${(download.progress * 100).toInt()}% · ${formatBytes(download.totalBytes)}") { confirmRemove = true }
+                download.status == DownloadStatus.Done -> Pill(Icons.Rounded.CheckCircle, stringResource(R.string.player_pill_downloaded, download.quality), highlighted = true) { confirmRemove = true }
+                else -> Pill(Icons.Rounded.Download, stringResource(R.string.player_pill_download_progress, (download.progress * 100).toInt(), formatBytes(download.totalBytes))) { confirmRemove = true }
             }
-            Pill(if (marks.favorite) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder, if (marks.favorite) "Saved" else "Favorite", highlighted = marks.favorite) {
+            Pill(if (marks.favorite) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder, stringResource(if (marks.favorite) R.string.common_saved else R.string.common_favorite), highlighted = marks.favorite) {
                 pocket.core.favorites.toggle(video)
             }
-            Pill(Icons.Rounded.Speed, if (state.speed == 1f) "Speed" else "${state.speed}×", highlighted = state.speed != 1f) { onSheet(Sheet.Speed) }
+            Pill(Icons.Rounded.Speed, if (state.speed == 1f) stringResource(R.string.player_speed) else "${state.speed}×", highlighted = state.speed != 1f) { onSheet(Sheet.Speed) }
             Pill(Icons.Rounded.Bedtime, sleepLabel(state.sleepAt), highlighted = state.sleepAt != null) { onSheet(Sheet.Sleep) }
             video.shareUrl(settings.languageCode)?.let { url ->
-                Pill(Icons.Rounded.Share, "Share") {
+                Pill(Icons.Rounded.Share, stringResource(R.string.common_share)) {
                     context.startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).apply {
                         type = "text/plain"
                         putExtra(Intent.EXTRA_TEXT, "${video.title}\n$url")
@@ -313,28 +316,29 @@ private fun NowPlayingInfo(state: PlaybackState, onSheet: (Sheet) -> Unit) {
         val done = download.status == DownloadStatus.Done
         AlertDialog(
             onDismissRequest = { confirmRemove = false },
-            title = { Text(if (done) "Remove download?" else "Cancel download?") },
+            title = { Text(stringResource(if (done) R.string.player_remove_download_title else R.string.player_cancel_download_title)) },
             text = {
                 Text(
-                    if (done) "Frees ${formatBytes(download.totalBytes)} on this phone. You can still stream it."
-                    else "The part downloaded so far is deleted."
+                    if (done) stringResource(R.string.player_remove_download_message, formatBytes(download.totalBytes))
+                    else stringResource(R.string.player_cancel_download_message)
                 )
             },
             confirmButton = {
                 TextButton(onClick = { pocket.media.downloads.remove(video.id); confirmRemove = false }) {
-                    Text(if (done) "Remove" else "Cancel download", color = Pocket.Accent)
+                    Text(stringResource(if (done) R.string.player_remove_download_confirm else R.string.common_cancel_download), color = Pocket.Accent)
                 }
             },
-            dismissButton = { TextButton(onClick = { confirmRemove = false }) { Text("Keep") } },
+            dismissButton = { TextButton(onClick = { confirmRemove = false }) { Text(stringResource(R.string.player_keep_download)) } },
             containerColor = Pocket.SurfaceHigh,
         )
     }
 }
 
+@Composable
 private fun sleepLabel(sleepAt: Long?): String = when {
-    sleepAt == null -> "Sleep timer"
-    sleepAt < 0 -> "After this video"
-    else -> "${((sleepAt - System.currentTimeMillis()) / 60_000).coerceAtLeast(1)} min left"
+    sleepAt == null -> stringResource(R.string.player_sleep_timer)
+    sleepAt < 0 -> stringResource(R.string.player_sleep_after_video)
+    else -> ((sleepAt - System.currentTimeMillis()) / 60_000).coerceAtLeast(1).toInt().let { pluralStringResource(R.plurals.player_sleep_minutes_left, it, it) }
 }
 
 @Composable
@@ -428,7 +432,7 @@ private fun VideoOverlay(
                 Box(Modifier.fillMaxSize()) {
                     IconButton(onClick = onFullscreen, modifier = Modifier.align(Alignment.BottomEnd).padding(4.dp)) {
                         Box(Modifier.size(36.dp).clip(CircleShape).background(Color(0x66000000)), contentAlignment = Alignment.Center) {
-                            Icon(Icons.Rounded.Fullscreen, "Full screen", tint = Color.White)
+                            Icon(Icons.Rounded.Fullscreen, stringResource(R.string.player_full_screen), tint = Color.White)
                         }
                     }
                 }
@@ -436,26 +440,26 @@ private fun VideoOverlay(
             }
             Box(Modifier.fillMaxSize().background(Color(0x77000000))) {
                 Row(Modifier.fillMaxWidth().align(Alignment.TopStart).padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
-                    IconButton(onClick = onCollapse) { Icon(Icons.Rounded.KeyboardArrowDown, "Exit full screen", tint = Color.White) }
+                    IconButton(onClick = onCollapse) { Icon(Icons.Rounded.KeyboardArrowDown, stringResource(R.string.player_exit_full_screen), tint = Color.White) }
                     Text(title.orEmpty(), color = Color.White, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f))
                     IconButton(onClick = { touch++; onSubtitles() }) {
-                        Icon(if (state.subtitleLanguage != null) Icons.Rounded.ClosedCaption else Icons.Rounded.ClosedCaptionDisabled, "Subtitles", tint = Color.White)
+                        Icon(if (state.subtitleLanguage != null) Icons.Rounded.ClosedCaption else Icons.Rounded.ClosedCaptionDisabled, stringResource(R.string.player_subtitles), tint = Color.White)
                     }
-                    IconButton(onClick = { touch++; onQuality() }) { Icon(Icons.Rounded.HighQuality, "Quality", tint = Color.White) }
+                    IconButton(onClick = { touch++; onQuality() }) { Icon(Icons.Rounded.HighQuality, stringResource(R.string.player_quality), tint = Color.White) }
                 }
                 Row(Modifier.align(Alignment.Center), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(40.dp)) {
-                    IconButton(onClick = { touch++; connection.previous() }) { Icon(Icons.Rounded.SkipPrevious, "Previous", tint = Color.White, modifier = Modifier.size(36.dp)) }
-                    IconButton(onClick = { touch++; connection.seekBy(-10_000) }) { Icon(Icons.Rounded.Replay10, "Back 10 seconds", tint = Color.White, modifier = Modifier.size(34.dp)) }
+                    IconButton(onClick = { touch++; connection.previous() }) { Icon(Icons.Rounded.SkipPrevious, stringResource(R.string.player_previous), tint = Color.White, modifier = Modifier.size(36.dp)) }
+                    IconButton(onClick = { touch++; connection.seekBy(-10_000) }) { Icon(Icons.Rounded.Replay10, stringResource(R.string.player_back_10), tint = Color.White, modifier = Modifier.size(34.dp)) }
                     Box(Modifier.size(60.dp).clip(CircleShape).background(Color(0x33FFFFFF)).clickable { touch++; connection.togglePlay() }, contentAlignment = Alignment.Center) {
                         if (state.buffering && state.playWhenReady) CircularProgressIndicator(color = Color.White, modifier = Modifier.size(32.dp))
-                        else Icon(if (state.isPlaying) Icons.Rounded.Pause else Icons.Rounded.PlayArrow, if (state.isPlaying) "Pause" else "Play", tint = Color.White, modifier = Modifier.size(40.dp))
+                        else Icon(if (state.isPlaying) Icons.Rounded.Pause else Icons.Rounded.PlayArrow, stringResource(if (state.isPlaying) R.string.common_pause else R.string.common_play), tint = Color.White, modifier = Modifier.size(40.dp))
                     }
-                    IconButton(onClick = { touch++; connection.seekBy(10_000) }) { Icon(Icons.Rounded.Forward10, "Forward 10 seconds", tint = Color.White, modifier = Modifier.size(34.dp)) }
-                    IconButton(onClick = { touch++; connection.next() }, enabled = state.hasNext) { Icon(Icons.Rounded.SkipNext, "Next", tint = Color.White, modifier = Modifier.size(36.dp)) }
+                    IconButton(onClick = { touch++; connection.seekBy(10_000) }) { Icon(Icons.Rounded.Forward10, stringResource(R.string.player_forward_10), tint = Color.White, modifier = Modifier.size(34.dp)) }
+                    IconButton(onClick = { touch++; connection.next() }, enabled = state.hasNext) { Icon(Icons.Rounded.SkipNext, stringResource(R.string.player_next), tint = Color.White, modifier = Modifier.size(36.dp)) }
                 }
                 Row(Modifier.align(Alignment.BottomStart).fillMaxWidth().padding(horizontal = 12.dp, vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
                     SeekBar(state, onSeek = { touch++; connection.seekTo(it) }, modifier = Modifier.weight(1f), light = true)
-                    IconButton(onClick = onFullscreen) { Icon(Icons.Rounded.FullscreenExit, "Exit full screen", tint = Color.White) }
+                    IconButton(onClick = onFullscreen) { Icon(Icons.Rounded.FullscreenExit, stringResource(R.string.player_exit_full_screen), tint = Color.White) }
                 }
             }
         }

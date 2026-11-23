@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="downloads_channel">Завантаження</string>
+    <string name="downloads_running">Завантаження відео</string>
+    <string name="download_done">Завантажено</string>
+    <string name="download_failed">Помилка завантаження</string>
+</resources>

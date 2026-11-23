@@ -2,11 +2,13 @@ package app.jwpocket.media.download
 
 import android.annotation.SuppressLint
 import android.app.Notification
+import android.content.Context
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.offline.Download
 import androidx.media3.exoplayer.offline.DownloadManager
 import androidx.media3.exoplayer.offline.DownloadService
 import androidx.media3.exoplayer.scheduler.Scheduler
+import app.jwpocket.core.util.withAppLanguage
 import app.jwpocket.media.R
 import app.jwpocket.media.pocketGraph
 
@@ -21,6 +23,8 @@ class PocketDownloadService : DownloadService(
     0,
 ) {
     private val repository get() = pocketGraph.media.downloads
+
+    override fun attachBaseContext(base: Context) = super.attachBaseContext(base.withAppLanguage())
 
     override fun getDownloadManager(): DownloadManager = repository.manager
 

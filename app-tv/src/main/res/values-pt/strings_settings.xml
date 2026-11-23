@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Portuguese (Brazil) translation. -->
+<resources>
+    <string name="settings_app_language">Idioma do app</string>
+    <string name="settings_video_language">Idioma dos vídeos</string>
+    <string name="settings_subtitle_language">Idioma das legendas</string>
+    <string name="settings_device_language">Idioma do dispositivo (%1$s)</string>
+    <string name="settings_streaming_quality">Qualidade do streaming</string>
+    <string name="settings_download_quality">Qualidade do download</string>
+    <string name="settings_ask_every_time">Perguntar sempre</string>
+    <string name="settings_download_quality_note">Qualidades menores economizam espaço.</string>
+    <string name="settings_autoplay">Reproduzir o próximo vídeo automaticamente</string>
+    <string name="settings_wifi_only">Baixar só com Wi-Fi</string>
+    <string name="settings_on">Ativado</string>
+    <string name="settings_off">Desativado</string>
+    <string name="settings_check_updates">Verificar atualizações</string>
+    <string name="settings_version">Versão %1$s</string>
+    <string name="settings_disclaimer">JW Pocket é um projeto pessoal e não comercial, sem vínculo com as Testemunhas de Jeová nem endossado por elas. Os vídeos pertencem aos seus donos e vêm do serviço público de vídeos do jw.org.</string>
+    <string name="settings_subtitles_note">Aparecem em todos os vídeos que as tiverem.</string>
+    <string name="settings_recently_used">Usados recentemente</string>
+    <string name="cascade_app_title">Vídeos em %1$s também?</string>
+    <string name="cascade_app_text">Você também pode assistir aos vídeos (e às legendas deles) em %1$s. Cada idioma ainda pode ser mudado aqui depois.</string>
+    <string name="cascade_app_yes">Vídeos e legendas</string>
+    <string name="cascade_app_videos_only">Só os vídeos</string>
+    <string name="cascade_app_no">Só o app</string>
+    <string name="cascade_video_title">Legendas em %1$s também?</string>
+    <string name="cascade_video_text">Suas legendas estão em %1$s. Mostrar as legendas no idioma dos vídeos?</string>
+    <string name="cascade_video_yes">Sim</string>
+    <string name="cascade_video_no">Manter %1$s</string>
+</resources>

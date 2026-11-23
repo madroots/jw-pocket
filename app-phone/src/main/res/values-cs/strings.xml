@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="common_play">Přehrát</string>
+    <string name="common_pause">Pozastavit</string>
+    <string name="common_resume">Pokračovat</string>
+    <string name="common_retry">Zkusit znovu</string>
+    <string name="common_cancel">Zrušit</string>
+    <string name="common_close">Zavřít</string>
+    <string name="common_more">Více</string>
+    <string name="common_share">Sdílet</string>
+    <string name="common_see_all">Zobrazit vše</string>
+    <string name="common_clear_text">Vymazat</string>
+    <string name="common_download">Stáhnout</string>
+    <string name="common_downloaded">Staženo</string>
+    <string name="common_download_failed">Stahování se nezdařilo</string>
+    <string name="common_delete_download">Smazat stažené video</string>
+    <string name="common_cancel_download">Zrušit stahování</string>
+    <string name="common_paused">Pozastaveno</string>
+    <string name="common_waiting_for_wifi">Čeká se na Wi-Fi</string>
+    <string name="common_watched">Zhlédnuto</string>
+    <string name="common_saved">Uloženo</string>
+    <string name="common_favorite">Do oblíbených</string>
+    <string name="common_ready_offline">Dostupné offline</string>
+    <string name="common_offline_cached">Offline: zobrazuje se poslední uložená kopie.</string>
+    <string name="common_percent">%1$d %%</string>
+
+    <string name="nav_home">Domů</string>
+    <string name="nav_browse">Procházet</string>
+    <string name="nav_search">Hledat</string>
+    <string name="nav_library">Knihovna</string>
+    <string name="nav_settings">Nastavení</string>
+    <string name="nav_back">Zpět</string>
+    <string name="nav_library_language">Jazyk knihovny</string>
+    <string name="nav_subtitle_language">Jazyk titulků</string>
+
+    <string name="update_available_title">Dostupná aktualizace: %1$s</string>
+    <string name="update_available_message">Nová verze JW Pocket je připravena (%1$s).</string>
+    <string name="update_install">Aktualizovat</string>
+    <string name="update_later">Později</string>
+    <string name="update_downloading">Stahuje se aktualizace</string>
+
+    <string name="home_continue_watching">Pokračovat ve sledování</string>
+    <string name="home_latest">Nejnovější</string>
+    <string name="home_your_favorites">Tvoje oblíbené</string>
+    <string name="home_new_badge">NOVÉ</string>
+    <string name="home_offline_title">Jsi offline</string>
+    <plurals name="home_offline_ready">
+        <item quantity="one">%d stažené video je připraveno ke sledování.</item>
+        <item quantity="few">%d stažená videa jsou připravena ke sledování.</item>
+        <item quantity="many">%d stažených videí je připraveno ke sledování.</item>
+        <item quantity="other">%d stažených videí je připraveno ke sledování.</item>
+    </plurals>
+    <string name="home_offline_empty">Stáhni si videa a sleduj je bez internetu.</string>
+
+    <string name="browse_error_library">Knihovnu se nepodařilo načíst</string>
+    <string name="browse_error_category">Tuto kategorii se nepodařilo načíst</string>
+
+    <string name="search_placeholder">Videa, série, písně…</string>
+    <string name="search_browse_categories">Procházet kategorie</string>
+    <string name="search_searching">Hledá se v celé knihovně…</string>
+    <string name="search_no_results">Žádné výsledky</string>
+    <string name="search_no_results_hint">Zkus jiná slova nebo zkontroluj pravopis.</string>
+    <string name="search_failed">Vyhledávání se nezdařilo</string>
+    <plurals name="search_result_count">
+        <item quantity="one">%d video</item>
+        <item quantity="few">%d videa</item>
+        <item quantity="many">%d videa</item>
+        <item quantity="other">%d videí</item>
+    </plurals>
+
+    <string name="library_tab_downloads">Stažené</string>
+    <string name="library_tab_favorites">Oblíbené</string>
+    <string name="library_tab_history">Historie</string>
+    <plurals name="library_downloads_summary">
+        <item quantity="one">%1$d video · %2$s</item>
+        <item quantity="few">%1$d videa · %2$s</item>
+        <item quantity="many">%1$d videa · %2$s</item>
+        <item quantity="other">%1$d videí · %2$s</item>
+    </plurals>
+    <string name="library_free_space">Volné místo v telefonu: %1$s</string>
+    <string name="library_delete_all">Smazat vše</string>
+    <string name="library_wifi_only">Stahovat jen přes Wi-Fi</string>
+    <string name="library_downloads_empty_title">Zatím žádná stažená videa</string>
+    <string name="library_downloads_empty_body">Klepni u libovolného videa na Stáhnout a sleduj ho později bez internetu. Stažená videa mají všude zelenou značku.</string>
+    <string name="library_find_videos">Najít videa</string>
+    <string name="library_in_progress">Stahuje se</string>
+    <string name="library_delete_all_title">Smazat všechna stažená videa?</string>
+    <string name="library_delete_all_message">Uvolní se %1$s. Videa si můžeš později stáhnout znovu.</string>
+    <string name="library_status_downloading">%1$d %% z %2$s</string>
+    <string name="library_status_queued">Čeká na spuštění</string>
+    <string name="library_status_paused">Pozastaveno na %1$d %%</string>
+    <string name="library_status_failed">Nezdařilo se. Klepni na ⋮ a zkus to znovu</string>
+    <string name="library_favorites_empty_title">Zatím žádná oblíbená videa</string>
+    <string name="library_favorites_empty_body">Klepni u videa na srdíčko a uložíš si ho sem.</string>
+    <string name="library_history_empty_title">Zatím žádná zhlédnutá videa</string>
+    <string name="library_history_empty_body">Zde se zobrazí videa, která začneš sledovat, takže na ně později snadno navážeš.</string>
+    <string name="library_clear_history">Vymazat historii</string>
+    <string name="library_clear_history_title">Vymazat historii?</string>
+    <string name="library_clear_history_message">Uložené pozice a označení zhlédnutých videí budou odstraněny.</string>
+    <string name="library_clear_history_confirm">Vymazat</string>
+
+    <string name="details_stopped_at">Zastaveno na %1$s · %2$s</string>
+    <string name="details_start_over">Od začátku</string>
+    <string name="details_remove_continue_watching">Odebrat z Pokračovat ve sledování</string>
+    <string name="details_remove_history">Odebrat z historie</string>
+    <string name="details_download_quality">Kvalita stahování</string>
+    <string name="details_download_done">Uloženo v telefonu · %1$s · %2$s</string>
+    <string name="details_download_progress">Stahuje se %1$s · %2$d %% z %3$s</string>
+    <string name="details_download_queued">Čeká na stažení · %1$s</string>
+    <string name="details_download_waiting_wifi">Čeká se na Wi-Fi · %1$s</string>
+    <string name="details_download_paused">Pozastaveno · %1$d %%</string>
+    <string name="details_download_failed">Stahování se nezdařilo. Klepni na Zkusit znovu.</string>
+
+    <string name="player_minimize">Minimalizovat</string>
+    <string name="player_now_playing">PRÁVĚ HRAJE</string>
+    <string name="player_from_downloads">Ze stažených</string>
+    <string name="player_streaming">Streamování</string>
+    <string name="player_picture_in_picture">Obraz v obraze</string>
+    <string name="player_up_next">Následuje</string>
+    <string name="player_in_this_list">V tomto seznamu</string>
+    <string name="player_previous">Předchozí</string>
+    <string name="player_next">Další</string>
+    <string name="player_back_10">Zpět o 10 sekund</string>
+    <string name="player_forward_10">Vpřed o 10 sekund</string>
+    <string name="player_full_screen">Celá obrazovka</string>
+    <string name="player_exit_full_screen">Ukončit celou obrazovku</string>
+    <string name="player_close">Zavřít přehrávač</string>
+    <string name="player_status_error">Nelze přehrát</string>
+    <string name="player_status_loading">Načítání…</string>
+    <string name="player_status_playing">Přehrává se</string>
+    <string name="player_status_playing_offline">Přehrává se offline</string>
+    <string name="player_status_finished">Dokončeno</string>
+    <string name="player_status_paused">Pozastaveno</string>
+    <string name="player_subtitles_missing">Toto video nemá titulky v jazyce %1$s, zobrazuje se originál.</string>
+    <string name="player_subtitles">Titulky</string>
+    <string name="player_subtitles_off">Titulky vypnuty</string>
+    <string name="player_quality">Kvalita</string>
+    <string name="player_speed">Rychlost</string>
+    <string name="player_pill_downloaded">Staženo · %1$s</string>
+    <string name="player_pill_download_progress">%1$d %% · %2$s</string>
+    <string name="player_remove_download_title">Odstranit stažené video?</string>
+    <string name="player_cancel_download_title">Zrušit stahování?</string>
+    <string name="player_remove_download_message">V telefonu se uvolní %1$s. Video můžeš dál streamovat.</string>
+    <string name="player_cancel_download_message">Dosud stažená část bude smazána.</string>
+    <string name="player_remove_download_confirm">Odstranit</string>
+    <string name="player_keep_download">Ponechat</string>
+    <string name="player_sleep_timer">Časovač vypnutí</string>
+    <string name="player_sleep_after_video">Po tomto videu</string>
+    <plurals name="player_sleep_minutes_left">
+        <item quantity="one">Zbývá %d min</item>
+        <item quantity="few">Zbývají %d min</item>
+        <item quantity="many">Zbývá %d min</item>
+        <item quantity="other">Zbývá %d min</item>
+    </plurals>
+
+    <string name="player_subtitles_hint">Tvoje volba se zapamatuje i pro další videa.</string>
+    <string name="player_search_languages">Hledat jazyky</string>
+    <string name="player_subtitles_off_choice">Vypnuto</string>
+    <string name="player_subtitles_same_as_video">Jako ve videu</string>
+    <string name="player_subtitles_recently_used">Nedávno použité · %1$s</string>
+    <string name="player_subtitles_no_others">Toto video nemá titulky v jiných jazycích.</string>
+    <string name="player_subtitles_no_match">Jazyk „%1$s“ nebyl nalezen.</string>
+    <string name="player_subtitles_none">Toto video nemá titulky.</string>
+    <string name="player_quality_auto">Automaticky</string>
+    <string name="player_quality_auto_detail">Nejlepší pro tuto obrazovku, max. 720p</string>
+    <string name="player_speed_title">Rychlost přehrávání</string>
+    <string name="player_speed_normal">Normální</string>
+    <string name="player_sleep_hint">Přehrávání se samo pozastaví.</string>
+    <string name="player_sleep_turn_off">Vypnout časovač</string>
+    <string name="player_sleep_end_of_video">Na konci tohoto videa</string>
+    <plurals name="player_sleep_minutes">
+        <item quantity="one">%d minuta</item>
+        <item quantity="few">%d minuty</item>
+        <item quantity="many">%d minuty</item>
+        <item quantity="other">%d minut</item>
+    </plurals>
+</resources>
