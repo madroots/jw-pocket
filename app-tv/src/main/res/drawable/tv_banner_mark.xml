@@ -1,0 +1,15 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="320dp"
+    android:height="180dp"
+    android:viewportWidth="320"
+    android:viewportHeight="180">
+    <!-- Pocket -->
+    <path android:fillColor="#FFFFFFFF"
+        android:pathData="M40,62h56a5,5 0,0 1,5 5v17c0,18 -15,33 -33,33s-33,-15 -33,-33V67a5,5 0,0 1,5 -5z" />
+    <path android:fillColor="#FFFF3D5A" android:pathData="M61,74v24l20,-12z" />
+    <!-- "JW" block letters -->
+    <path android:fillColor="#FFFF3D5A"
+        android:pathData="M128,66h8v34c0,8 -5,13 -13,13h-5v-8h5c3,0 5,-2 5,-5zM142,66h8l5,32 6,-32h7l6,32 5,-32h8l-9,46h-8l-6,-30 -6,30h-8z" />
+    <!-- "POCKET" thin bar under the letters -->
+    <path android:fillColor="#FFFFFFFF" android:pathData="M198,84h82v6h-82z" />
+</vector>

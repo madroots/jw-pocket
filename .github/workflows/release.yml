@@ -1,0 +1,74 @@
+# Publishing a GitHub release (web UI or `gh release create vX.Y.Z --generate-notes`)
+# tests and builds both apps and attaches the APKs the apps update from:
+#   jw-pocket-phone.apk  (phone)
+#   jw-pocket-tv.apk     (Android TV)
+#
+# The tag is the version: vMAJOR.MINOR.PATCH -> versionName MAJOR.MINOR.PATCH,
+# versionCode MAJOR*10000 + MINOR*100 + PATCH, so each tag must be higher than
+# the last. Pre-releases build too but are never offered to installed apps.
+#
+# Signing: put a base64 keystore in the RELEASE_KEYSTORE_B64 secret (an Android
+# debug-style keystore: alias androiddebugkey, passwords "android"). Keep the
+# same key forever, or installed apps can't update.
+name: Release
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.event.release.tag_name }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      TAG: ${{ github.event.release.tag_name }}
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Version from tag
+        run: |
+          if [[ ! "$TAG" =~ ^v([0-9]+)\.([0-9]{1,2})\.([0-9]{1,2})$ ]]; then
+            echo "::error::Tag '$TAG' must look like v1.2.3 (minor and patch < 100)"; exit 1
+          fi
+          echo "VERSION_NAME=${BASH_REMATCH[1]}.${BASH_REMATCH[2]}.${BASH_REMATCH[3]}" >> "$GITHUB_ENV"
+          echo "VERSION_CODE=$(( 10#${BASH_REMATCH[1]} * 10000 + 10#${BASH_REMATCH[2]} * 100 + 10#${BASH_REMATCH[3]} ))" >> "$GITHUB_ENV"
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Signing key
+        env:
+          RELEASE_KEYSTORE_B64: ${{ secrets.RELEASE_KEYSTORE_B64 }}
+        run: |
+          export ANDROID_USER_HOME="$RUNNER_TEMP/android-user-home"
+          mkdir -p "$ANDROID_USER_HOME"
+          if [[ -n "$RELEASE_KEYSTORE_B64" ]]; then
+            echo "$RELEASE_KEYSTORE_B64" | base64 -d > "$ANDROID_USER_HOME/debug.keystore"
+          else
+            echo "::warning::RELEASE_KEYSTORE_B64 is not set; APKs are signed with a throwaway key"
+          fi
+          echo "ANDROID_USER_HOME=$ANDROID_USER_HOME" >> "$GITHUB_ENV"
+
+      - name: Test and build
+        run: |
+          ./gradlew --no-daemon \
+            -PreleaseVersionCode="$VERSION_CODE" -PreleaseVersionName="$VERSION_NAME" \
+            :core:testDebugUnitTest :app-phone:assembleRelease :app-tv:assembleRelease
+
+      - name: Attach APKs
+        run: |
+          mkdir -p dist
+          cp app-phone/build/outputs/apk/release/app-phone-release.apk dist/jw-pocket-phone.apk
+          cp app-tv/build/outputs/apk/release/app-tv-release.apk dist/jw-pocket-tv.apk
+          gh release upload "$TAG" dist/jw-pocket-phone.apk dist/jw-pocket-tv.apk --clobber

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="downloads_channel">Downloads</string>
+    <string name="downloads_running">Downloading videos</string>
+    <string name="download_done">Downloaded</string>
+    <string name="download_failed">Download failed</string>
+</resources>

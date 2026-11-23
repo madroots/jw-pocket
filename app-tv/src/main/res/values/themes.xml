@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.JwPocketTv" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/tv_background</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:colorAccent">#FFFF3D5A</item>
+    </style>
+    <color name="tv_background">#FF0B0C10</color>
+</resources>

@@ -1,0 +1,99 @@
+package app.jwpocket.core.data
+
+import android.content.Context
+import android.content.SharedPreferences
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+
+/** Every choice the person makes in Settings (and a few made in the player). */
+data class Settings(
+    /** Library language, JW code ("E" = English). */
+    val languageCode: String = ENGLISH,
+    val languageName: String = "English",
+    /** Streaming quality; null = Auto. */
+    val streamQuality: String? = null,
+    /** Download quality; null = ask every time. */
+    val downloadQuality: String? = null,
+    val wifiOnlyDownloads: Boolean = false,
+    /** null = the video's own language, [SUBTITLES_OFF], or a language code. */
+    val subtitleLanguage: String? = null,
+    /** Foreign subtitle languages picked before, most recent first. */
+    val recentSubtitleLanguages: List<String> = emptyList(),
+    val subtitleScale: Float = 1f,
+    /** Keep playing (as audio) when the app goes to the background or the screen locks. */
+    val backgroundPlayback: Boolean = true,
+    /** Shrink to a floating window when leaving the app during a video. */
+    val autoPictureInPicture: Boolean = true,
+    /** Play the next video of the row when one ends. */
+    val autoplayNext: Boolean = true,
+) {
+    /** Languages pinned at the top of subtitle lists: used before, then English. */
+    val subtitleShortcuts: List<String> get() = (recentSubtitleLanguages + ENGLISH).distinct()
+
+    companion object {
+        const val ENGLISH = "E"
+        const val SUBTITLES_OFF = "off"
+    }
+}
+
+class SettingsRepository(context: Context) {
+
+    private val prefs: SharedPreferences =
+        context.applicationContext.getSharedPreferences("jw_pocket_settings", Context.MODE_PRIVATE)
+
+    private val _settings = MutableStateFlow(read())
+    val settings: StateFlow<Settings> = _settings.asStateFlow()
+    val current: Settings get() = _settings.value
+
+    fun update(transform: (Settings) -> Settings) {
+        _settings.update(transform)
+        write(_settings.value)
+    }
+
+    fun setLanguage(code: String, name: String) = update {
+        // A subtitle preference equal to the new library language means "original".
+        it.copy(languageCode = code, languageName = name,
+            subtitleLanguage = it.subtitleLanguage.takeUnless { s -> s == code })
+    }
+
+    fun setSubtitleLanguage(choice: String?) = update {
+        val normalized = choice.takeUnless { c -> c == it.languageCode }
+        val recent = if (normalized != null && normalized != Settings.SUBTITLES_OFF) {
+            (listOf(normalized) + it.recentSubtitleLanguages - normalized).distinct().take(4)
+        } else it.recentSubtitleLanguages
+        it.copy(subtitleLanguage = normalized, recentSubtitleLanguages = recent)
+    }
+
+    private fun read() = Settings(
+        languageCode = prefs.getString("language_code", null) ?: Settings.ENGLISH,
+        languageName = prefs.getString("language_name", null) ?: "English",
+        streamQuality = prefs.getString("stream_quality", null),
+        downloadQuality = prefs.getString("download_quality", null),
+        wifiOnlyDownloads = prefs.getBoolean("wifi_only_downloads", false),
+        subtitleLanguage = prefs.getString("subtitle_language", null),
+        recentSubtitleLanguages = prefs.getString("subtitle_recent", "").orEmpty()
+            .split(',').filter { it.isNotBlank() },
+        subtitleScale = prefs.getFloat("subtitle_scale", 1f),
+        backgroundPlayback = prefs.getBoolean("background_playback", true),
+        autoPictureInPicture = prefs.getBoolean("auto_pip", true),
+        autoplayNext = prefs.getBoolean("autoplay_next", true),
+    )
+
+    private fun write(s: Settings) {
+        prefs.edit()
+            .putString("language_code", s.languageCode)
+            .putString("language_name", s.languageName)
+            .putString("stream_quality", s.streamQuality)
+            .putString("download_quality", s.downloadQuality)
+            .putBoolean("wifi_only_downloads", s.wifiOnlyDownloads)
+            .putString("subtitle_language", s.subtitleLanguage)
+            .putString("subtitle_recent", s.recentSubtitleLanguages.joinToString(","))
+            .putFloat("subtitle_scale", s.subtitleScale)
+            .putBoolean("background_playback", s.backgroundPlayback)
+            .putBoolean("auto_pip", s.autoPictureInPicture)
+            .putBoolean("autoplay_next", s.autoplayNext)
+            .apply()
+    }
+}
