@@ -6,48 +6,85 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.CheckCircle
+import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
+import app.jwpocket.core.data.LibraryRepository
 import app.jwpocket.core.data.Settings
 import app.jwpocket.core.model.Language
 import app.jwpocket.core.model.Video
 import app.jwpocket.core.util.formatBytes
 import app.jwpocket.phone.ui.theme.Pocket
 
-/** A bottom sheet with a title and a list of choices. */
+/**
+ * Keeps scrolling inside the list. Without it the sheet sometimes takes a
+ * scroll or fling that reaches the top of the list and drags itself down
+ * instead; the sheet still closes by dragging its handle or title, tapping
+ * outside, or Back.
+ */
+private val KeepScrollInList = object : NestedScrollConnection {
+    override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource) = available
+    override suspend fun onPostFling(consumed: Velocity, available: Velocity) = available
+}
+
+/** A bottom sheet with a title, an optional [header] (a search field) and a list of choices. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ChoiceSheet(title: String, subtitle: String? = null, onDismiss: () -> Unit, content: androidx.compose.foundation.lazy.LazyListScope.() -> Unit) {
+fun ChoiceSheet(
+    title: String,
+    subtitle: String? = null,
+    onDismiss: () -> Unit,
+    header: (@Composable () -> Unit)? = null,
+    content: LazyListScope.() -> Unit,
+) {
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
         containerColor = Pocket.Surface,
     ) {
-        Column(Modifier.navigationBarsPadding()) {
+        Column(Modifier.navigationBarsPadding().imePadding()) {
             Text(title, style = MaterialTheme.typography.titleLarge, modifier = Modifier.padding(horizontal = 24.dp))
             if (subtitle != null) {
                 Text(subtitle, style = MaterialTheme.typography.bodySmall, color = Pocket.TextSecondary, modifier = Modifier.padding(horizontal = 24.dp, vertical = 4.dp))
             }
+            header?.invoke()
             Spacer(Modifier.size(8.dp))
-            LazyColumn(Modifier.fillMaxWidth().heightIn(max = 520.dp), content = content)
+            LazyColumn(Modifier.fillMaxWidth().heightIn(max = 520.dp).nestedScroll(KeepScrollInList), content = content)
             Spacer(Modifier.size(12.dp))
         }
     }
@@ -73,7 +110,7 @@ fun ChoiceRow(label: String, selected: Boolean, detail: String? = null, trailing
 
 /**
  * Subtitles: Off, the video's own language, recent picks and every other
- * language the video is published in.
+ * language the video is published in, with a search field for long lists.
  */
 @Composable
 fun SubtitleSheet(
@@ -85,14 +122,39 @@ fun SubtitleSheet(
     onPick: (String?) -> Unit,
     onDismiss: () -> Unit,
 ) {
-    ChoiceSheet("Subtitles", "Your choice is remembered for the next videos.", onDismiss) {
-        item { ChoiceRow("Off", selected == Settings.SUBTITLES_OFF) { onPick(Settings.SUBTITLES_OFF) } }
-        if (ownLanguageName != null) {
-            item { ChoiceRow(ownLanguageName, selected == null, "Same as the video") { onPick(null) } }
+    var query by remember { mutableStateOf("") }
+    val q = LibraryRepository.normalize(query).trim()
+    val shown = if (q.isEmpty()) others else others.filter {
+        LibraryRepository.normalize(it.vernacular).contains(q) || LibraryRepository.normalize(it.name).contains(q)
+    }
+    ChoiceSheet(
+        "Subtitles", "Your choice is remembered for the next videos.", onDismiss,
+        header = if (others.size > SEARCH_FROM) {
+            {
+                TextField(
+                    value = query, onValueChange = { query = it }, singleLine = true,
+                    placeholder = { Text("Search languages") },
+                    leadingIcon = { Icon(Icons.Rounded.Search, null) },
+                    trailingIcon = { if (query.isNotEmpty()) IconButton(onClick = { query = "" }) { Icon(Icons.Rounded.Close, "Clear") } },
+                    shape = RoundedCornerShape(14.dp),
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Pocket.SurfaceHigh, unfocusedContainerColor = Pocket.SurfaceHigh,
+                        focusedIndicatorColor = Color.Transparent, unfocusedIndicatorColor = Color.Transparent,
+                    ),
+                    modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, top = 12.dp),
+                )
+            }
+        } else null,
+    ) {
+        if (q.isEmpty()) {
+            item { ChoiceRow("Off", selected == Settings.SUBTITLES_OFF) { onPick(Settings.SUBTITLES_OFF) } }
+            if (ownLanguageName != null) {
+                item { ChoiceRow(ownLanguageName, selected == null, "Same as the video") { onPick(null) } }
+            }
         }
-        if (others.isNotEmpty()) {
-            item { HorizontalDivider(Modifier.padding(vertical = 6.dp, horizontal = 24.dp), color = Pocket.SurfaceHighest) }
-            items(others, key = { it.code }) { lang ->
+        if (shown.isNotEmpty()) {
+            if (q.isEmpty()) item { HorizontalDivider(Modifier.padding(vertical = 6.dp, horizontal = 24.dp), color = Pocket.SurfaceHighest) }
+            items(shown, key = { it.code }) { lang ->
                 ChoiceRow(
                     lang.vernacular,
                     selected == lang.code,
@@ -106,18 +168,21 @@ fun SubtitleSheet(
         } else {
             item {
                 Text(
-                    "This video has no other subtitle languages.",
+                    if (q.isEmpty()) "This video has no other subtitle languages." else "No language matches \"$query\".",
                     style = MaterialTheme.typography.bodySmall,
                     color = Pocket.TextSecondary,
                     modifier = Modifier.padding(24.dp),
                 )
             }
         }
-        if (showingLanguage == null && selected != Settings.SUBTITLES_OFF && ownLanguageName == null) {
+        if (q.isEmpty() && showingLanguage == null && selected != Settings.SUBTITLES_OFF && ownLanguageName == null) {
             item { Text("No subtitles for this video.", color = Pocket.TextSecondary, modifier = Modifier.padding(24.dp)) }
         }
     }
 }
+
+/** Lists longer than this get a search field. */
+private const val SEARCH_FROM = 8
 
 /** Auto, then each quality with its size; the downloaded one is marked. */
 @Composable

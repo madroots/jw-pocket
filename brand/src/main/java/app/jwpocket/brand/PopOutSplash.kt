@@ -36,25 +36,26 @@ import kotlin.math.min
 import kotlin.math.sin
 
 /*
- * Timeline (ms). The phone peeks out of the breast pocket, wiggles, leaps out
- * with a spin, then flies at the viewer until its screen is the whole window
- * and turns into a hole onto the app underneath.
+ * Timeline (ms). The camera zooms in on the icon where the system drew it,
+ * and the jacket fades in around the pocket; the phone peeks out, wiggles,
+ * leaps out with a spin, then flies at the viewer until its screen is the
+ * whole window and turns into a hole onto the app underneath.
  */
-private const val TOTAL = 1300f
-private const val ZOOM_END = 350f
-private const val PEEK_START = 350f
-private const val PEEK_END = 600f
-private const val DIP_START = 600f
-private const val DIP_END = 660f
-private const val LEAP_START = 650f
-private const val LEAP_END = 880f
-private const val SPIN_START = 700f
-private const val SPIN_END = 900f
-private const val FLY_START = 880f
-private const val FADE_START = 1000f
-private const val FADE_END = 1150f
-private const val HOLE_START = 1080f
-private const val HOLE_END = 1280f
+private const val TOTAL = 1400f
+private const val ZOOM_END = 400f
+private const val PEEK_START = 420f
+private const val PEEK_END = 670f
+private const val DIP_START = 670f
+private const val DIP_END = 730f
+private const val LEAP_START = 720f
+private const val LEAP_END = 960f
+private const val SPIN_START = 770f
+private const val SPIN_END = 980f
+private const val FLY_START = 960f
+private const val FADE_START = 1080f
+private const val FADE_END = 1230f
+private const val HOLE_START = 1160f
+private const val HOLE_END = 1380f
 
 /*
  * Scene geometry in icon units (the 108-unit viewport of
@@ -70,16 +71,40 @@ private const val TILT = -8f
 private val WELT = floatArrayOf(28f, 65.5f, 80f, 60.5f, 80.8f, 68.7f, 28.8f, 73.7f)
 private val WELT_LIGHT = floatArrayOf(28f, 65.5f, 80f, 60.5f, 80.15f, 62.1f, 28.15f, 67.1f)
 private val MOUTH = floatArrayOf(28f, 65.1f, 80f, 60.1f, 80f, 61.5f, 28f, 66.5f)
-private val LAPEL = floatArrayOf(88f, -174f, -66f, 232f, -400f, 232f, -400f, -174f)
+
+/*
+ * The suit around the pocket, in the same units: the pocket sits on the left
+ * chest. Right-hand shapes are mirrored for the other side.
+ */
+private val JACKET = floatArrayOf(
+    -24f, -34f, -64f, -36f, -100f, -28f, -116f, -8f, -122f, 60f, -126f, 600f,
+    126f, 600f, 122f, 60f, 116f, -8f, 100f, -28f, 64f, -36f, 24f, -34f,
+)
+private val SHIRT = floatArrayOf(-24f, -34f, 24f, -34f, 0f, 150f)
+private val COLLAR = floatArrayOf(22f, -37f, 3f, -9f, 15f, 4f)
+private val LAPEL = floatArrayOf(22f, -37f, 38f, -31f, 41f, -12f, 35f, -9f, 49f, -4f, 1f, 145f)
+private val BUTTONS = floatArrayOf(160f, 216f)
+
+/*
+ * The close-up: the camera zooms in on the icon's centre, so the pocket stays
+ * where the system drew the icon. This much of the jacket shows around it on
+ * a phone (the lapel on the left), and this much height leaves room above for
+ * the leap on a wide screen.
+ */
+private const val ICON_CENTER = 54f
+private const val CLOSE_WIDTH = 74f
+private const val CLOSE_HEIGHT = 150f
 private const val STITCHES = 14
 
 /** Pocket mouth line: the phone is hidden below it while it's in the pocket. */
 private fun mouthY(x: Float) = 65.5f - (x - 28f) * 5f / 52f
 
 private val SplashBackground = Color(0xFF1D2234) // @color/brand_splash_background
+private val Backdrop = Color(0xFF10131C)
 private val SuitLight = Color(0xFF283048)
 private val SuitDark = Color(0xFF121521)
-private val LapelColor = Color(0xFF2B3350)
+private val LapelColor = Color(0xFF313A5A)
+private val Shirt = Color(0xFFF3EEE6)
 private val WeltColor = Color(0xFF2F3852)
 private val Bezel = Color(0xFF0B0C10)
 private val Coral = Color(0xFFFF3D5A)
@@ -123,24 +148,22 @@ private class PopOutPainter {
         val w = size.width
         val h = size.height
 
-        // From where the system drew the icon to a close-up of the pocket.
+        // Zoom in on the icon where the system drew it, the suit fading in around it.
+        val focus = icon?.center ?: Offset(w / 2f, h / 2f)
         val startScale = (icon?.width ?: 288.dp.toPx()) / 108f
-        val startOrigin = icon?.topLeft ?: Offset((w - 108f * startScale) / 2f, (h - 108f * startScale) / 2f)
-        val closeScale = min(w * 0.85f / 52f, h * 0.42f / 46f)
-        val closeOrigin = Offset(w / 2f - 54f * closeScale, h * 0.62f - 54f * closeScale)
-        val zoom = ease(phase(t, 0f, ZOOM_END))
-        scale = lerp(startScale, closeScale, zoom)
-        origin = lerp(startOrigin, closeOrigin, zoom)
+        val closeScale = min(w / CLOSE_WIDTH, h / CLOSE_HEIGHT)
+        scale = lerp(startScale, closeScale, ease(phase(t, 0f, ZOOM_END)))
+        origin = focus - Offset(ICON_CENTER * scale, ICON_CENTER * scale)
 
-        drawFabric(phase(t, 0f, ZOOM_END - 30f))
+        drawSuit(phase(t, 0f, ZOOM_END - 100f))
 
         // The phone in the scene: peek and wiggle, a little dip, then the leap and a spin.
         val peek = phase(t, PEEK_START, PEEK_END)
         val leap = phase(t, LEAP_START, LEAP_END)
-        val dx = 3f * leap
+        val dx = -6f * leap
         val dy = -5f * ease(phase(t, PEEK_START, PEEK_START + 130f)) +
             2.5f * bell(phase(t, DIP_START, DIP_END)) -
-            28f * easeOutCubic(leap)
+            30f * easeOutCubic(leap)
         val rotation = TILT + 7f * sin(peek * 3f * PI.toFloat()) * (1f - peek) +
             360f * ease(phase(t, SPIN_START, SPIN_END))
 
@@ -172,22 +195,40 @@ private class PopOutPainter {
         }
     }
 
-    /** Suit fabric: fades in over the plain splash color while the camera moves in. */
-    private fun DrawScope.drawFabric(alpha: Float) {
+    /** The suit around the pocket: fades in over the plain splash color while the camera moves in. */
+    private fun DrawScope.drawSuit(alpha: Float) {
         drawRect(SplashBackground)
         if (alpha <= 0f) return
-        drawRect(Brush.linearGradient(listOf(SuitLight, SuitDark), Offset.Zero, Offset(size.width, size.height)), alpha = alpha)
-        val step = 7f * scale
-        var x = origin.x + 3f * scale
-        x -= floor(x / step) * step
-        val stripe = (0.6f * scale).coerceIn(1f, 1.5.dp.toPx())
-        while (x < size.width) {
-            drawLine(Color.White, Offset(x, 0f), Offset(x, size.height), stripe, alpha = 0.07f * alpha)
-            x += step
+        drawRect(Backdrop, alpha = alpha)
+        path.polygon(*JACKET)
+        drawPath(path, Brush.linearGradient(listOf(SuitLight, SuitDark), Offset.Zero, Offset(size.width, size.height)), alpha = alpha)
+        clipPath(path) {
+            val step = 7f * scale
+            var x = origin.x + 3f * scale
+            x -= floor(x / step) * step
+            val stripe = (0.6f * scale).coerceIn(1f, 1.5.dp.toPx())
+            while (x < size.width) {
+                drawLine(Color.White, Offset(x, 0f), Offset(x, size.height), stripe, alpha = 0.07f * alpha)
+                x += step
+            }
         }
-        path.polygon(*LAPEL)
-        drawPath(path, LapelColor, alpha = alpha)
-        drawLine(Color.Black, map(LAPEL[0], LAPEL[1]), map(LAPEL[2], LAPEL[3]), (1.5f * scale).coerceAtMost(3.dp.toPx()), alpha = 0.35f * alpha)
+        path.polygon(*SHIRT)
+        drawPath(path, Shirt, alpha = alpha)
+        for (flip in booleanArrayOf(false, true)) {
+            path.polygon(*COLLAR, flip = flip)
+            drawPath(path, Color.White, alpha = alpha)
+        }
+        val edge = (1.2f * scale).coerceAtMost(3.dp.toPx())
+        for (flip in booleanArrayOf(false, true)) {
+            path.polygon(*LAPEL, flip = flip)
+            drawPath(path, LapelColor, alpha = alpha)
+            val sign = if (flip) -1f else 1f
+            // Lapel edge down to the button, and the notch.
+            drawLine(Color.Black, map(sign * LAPEL[8], LAPEL[9]), map(sign * LAPEL[10], LAPEL[11]), edge, alpha = 0.35f * alpha)
+            drawLine(Color.Black, map(sign * LAPEL[6], LAPEL[7]), map(sign * LAPEL[8], LAPEL[9]), edge, alpha = 0.35f * alpha)
+        }
+        drawLine(Color.Black, map(0f, LAPEL[11]), map(0f, 600f), edge, alpha = 0.4f * alpha)
+        for (y in BUTTONS) drawCircle(Bezel, 3.2f * scale, map(0f, y), alpha = alpha)
     }
 
     /** The breast-pocket welt: shadow, band, top highlight, mouth shadow, stitching. */
@@ -235,11 +276,11 @@ private class PopOutPainter {
         }
     }
 
-    /** Polygon from icon-unit x,y pairs, mapped through the camera. */
-    private fun Path.polygon(vararg xy: Float, dx: Float = 0f, dy: Float = 0f) {
+    /** Polygon from icon-unit x,y pairs, mapped through the camera; [flip] mirrors it across the suit's centre line. */
+    private fun Path.polygon(vararg xy: Float, dx: Float = 0f, dy: Float = 0f, flip: Boolean = false) {
         reset()
         for (i in xy.indices step 2) {
-            val p = map(xy[i] + dx, xy[i + 1] + dy)
+            val p = map((if (flip) -xy[i] else xy[i]) + dx, xy[i + 1] + dy)
             if (i == 0) moveTo(p.x, p.y) else lineTo(p.x, p.y)
         }
         close()

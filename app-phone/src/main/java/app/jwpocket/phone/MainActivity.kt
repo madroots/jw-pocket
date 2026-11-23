@@ -58,14 +58,14 @@ class MainActivity : ComponentActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val splash = PocketSplash.install(this, savedInstanceState)
+        // The update check waits for the launch animation, so its dialog never covers it.
+        val splash = PocketSplash.install(this, savedInstanceState) { if (savedInstanceState == null) graph.core.updates.check() }
         enableEdgeToEdge(
             statusBarStyle = SystemBarStyle.dark(android.graphics.Color.TRANSPARENT),
             navigationBarStyle = SystemBarStyle.dark(android.graphics.Color.TRANSPARENT),
         )
         super.onCreate(savedInstanceState)
         graph.media.player.warmUp()
-        if (savedInstanceState == null) graph.core.updates.check()
         handle(intent)
         addOnPictureInPictureModeChangedListener(pipListener)
 

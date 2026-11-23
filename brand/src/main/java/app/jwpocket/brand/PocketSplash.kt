@@ -25,7 +25,7 @@ import androidx.core.splashscreen.SplashScreenViewProvider
  * (not when the activity is restored); with animations turned off in the
  * system settings the app simply appears.
  */
-class PocketSplash private constructor(play: Boolean) {
+class PocketSplash private constructor(play: Boolean, private val onDone: () -> Unit) {
 
     /** The system splash, kept on screen until the overlay has drawn its first frame. */
     private var leaving: SplashScreenViewProvider? by mutableStateOf(null)
@@ -33,6 +33,7 @@ class PocketSplash private constructor(play: Boolean) {
     private var icon: Rect? by mutableStateOf(null)
     private var run by mutableIntStateOf(0)
     private var playing by mutableStateOf(play)
+    private var done = false
 
     /** Draw last, above the app. */
     @Composable
@@ -42,26 +43,36 @@ class PocketSplash private constructor(play: Boolean) {
             PopOutSplash(
                 icon = icon,
                 onFirstFrame = { leaving?.remove(); leaving = null },
-                onFinished = { playing = false },
+                onFinished = ::finish,
             )
         }
     }
 
+    private fun finish() {
+        if (done) return
+        done = true
+        playing = false
+        onDone()
+    }
+
     companion object {
-        /** Call before `super.onCreate()`. */
-        fun install(activity: ComponentActivity, savedInstanceState: Bundle?): PocketSplash {
+        /**
+         * Call before `super.onCreate()`. [onDone] runs once the app is fully in view: when the
+         * animation ends or is skipped, or right away when it doesn't play.
+         */
+        fun install(activity: ComponentActivity, savedInstanceState: Bundle?, onDone: () -> Unit): PocketSplash {
             val play = savedInstanceState == null && animationsEnabled()
-            val splash = PocketSplash(play)
+            val splash = PocketSplash(play, onDone)
             activity.installSplashScreen().setOnExitAnimationListener { provider ->
-                if (play) {
+                if (!splash.done) {
                     splash.icon = runCatching { provider.iconView.viewportInWindow() }.getOrNull()
                     splash.leaving = provider
-                    splash.playing = true
                     splash.run++
                 } else {
                     provider.remove()
                 }
             }
+            if (!play) splash.finish()
             return splash
         }
 

@@ -110,7 +110,7 @@ private fun TvHero(video: Video?, row: List<Video>, online: Boolean, downloadedC
                     color = Tv.TextSecondary,
                 )
                 Spacer(Modifier.height(20.dp))
-                TvButton(Icons.Rounded.PlayArrow, "Watch now", Modifier.focusRequester(focus), primary = true) { open(video, row) }
+                TvButton(Icons.Rounded.PlayArrow, "Watch now", Modifier.focusRequester(focus), primary = true) { open(video, row, focus) }
                 LaunchedEffect(video.id) { runCatching { focus.requestFocus() } }
             }
         }

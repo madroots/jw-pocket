@@ -117,6 +117,8 @@ fun TvPlayer(onExit: () -> Unit) {
             .fillMaxSize()
             .background(Color.Black)
             .focusRequester(root)
+            // Controls stay within the player; the page underneath is still there.
+            .keepFocusInside()
             .focusable()
             .onPreviewKeyEvent { event ->
                 if (event.type != KeyEventType.KeyDown) return@onPreviewKeyEvent false

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -16,6 +17,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.unit.dp
 import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Text
@@ -34,19 +37,25 @@ fun TvSettings() {
     val updates by tv.core.updates.state.collectAsState()
     val repo = tv.core.settings
     var panel by remember { mutableStateOf<SettingsPanel?>(null) }
+    // The row that opened a panel gets focus back when the panel closes.
+    val rows = remember { SettingsPanel.entries.associateWith { FocusRequester() } }
+    var opened by remember { mutableStateOf<SettingsPanel?>(null) }
+    fun open(p: SettingsPanel) { opened = p; panel = p }
+    fun row(p: SettingsPanel) = Modifier.focusRequester(rows.getValue(p))
+    LaunchedEffect(panel) { if (panel == null) opened?.let { runCatching { rows.getValue(it).requestFocus() } } }
 
     LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(start = 48.dp, end = 48.dp, top = 32.dp, bottom = 48.dp)) {
         item { Text("Settings", style = MaterialTheme.typography.displaySmall, modifier = Modifier.padding(bottom = 16.dp)) }
-        item { SettingRow("Library language", settings.languageName) { panel = SettingsPanel.Language } }
+        item { SettingRow("Library language", settings.languageName, row(SettingsPanel.Language)) { open(SettingsPanel.Language) } }
         item {
             SettingRow("Subtitle language", when (val s = settings.subtitleLanguage) {
                 null -> "Same as the video"
                 Settings.SUBTITLES_OFF -> "Off"
                 else -> tv.core.languages.name(s)
-            }) { panel = SettingsPanel.Subtitles }
+            }, row(SettingsPanel.Subtitles)) { open(SettingsPanel.Subtitles) }
         }
-        item { SettingRow("Streaming quality", settings.streamQuality ?: "Auto") { panel = SettingsPanel.Stream } }
-        item { SettingRow("Download quality", settings.downloadQuality ?: "Ask every time") { panel = SettingsPanel.Download } }
+        item { SettingRow("Streaming quality", settings.streamQuality ?: "Auto", row(SettingsPanel.Stream)) { open(SettingsPanel.Stream) } }
+        item { SettingRow("Download quality", settings.downloadQuality ?: "Ask every time", row(SettingsPanel.Download)) { open(SettingsPanel.Download) } }
         item { SettingRow("Autoplay next video", if (settings.autoplayNext) "On" else "Off") { repo.update { it.copy(autoplayNext = !it.autoplayNext) } } }
         item { SettingRow("Download on Wi-Fi only", if (settings.wifiOnlyDownloads) "On" else "Off") { repo.update { it.copy(wifiOnlyDownloads = !it.wifiOnlyDownloads) } } }
         item { SettingRow("Check for updates", updates.message ?: "Version ${BuildConfig.VERSION_NAME}") { tv.core.updates.check(manual = true) } }
@@ -100,8 +109,8 @@ fun TvSettings() {
 }
 
 @Composable
-private fun SettingRow(title: String, value: String, onClick: () -> Unit) {
-    FocusSurface(onClick = onClick, modifier = Modifier.fillMaxWidth(0.7f).padding(vertical = 5.dp), scale = 1.02f) {
+private fun SettingRow(title: String, value: String, modifier: Modifier = Modifier, onClick: () -> Unit) {
+    FocusSurface(onClick = onClick, modifier = modifier.fillMaxWidth(0.7f).padding(vertical = 5.dp), scale = 1.02f) {
         Row(Modifier.padding(horizontal = 24.dp, vertical = 16.dp), verticalAlignment = Alignment.CenterVertically) {
             Column(Modifier.weight(1f)) { Text(title, style = MaterialTheme.typography.titleMedium) }
             Text(value, color = Tv.TextSecondary)

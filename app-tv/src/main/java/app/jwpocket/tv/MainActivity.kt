@@ -32,7 +32,8 @@ class MainActivity : ComponentActivity() {
     private var openPlayer by mutableStateOf(false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val splash = PocketSplash.install(this, savedInstanceState)
+        // The update check waits for the launch animation, so its dialog never covers it.
+        val splash = PocketSplash.install(this, savedInstanceState) { if (savedInstanceState == null) graph.core.updates.check() }
         super.onCreate(savedInstanceState)
         // Google TV boxes can show system bars; keep the picture full screen.
         WindowCompat.getInsetsController(window, window.decorView).apply {
@@ -40,7 +41,6 @@ class MainActivity : ComponentActivity() {
             hide(WindowInsetsCompat.Type.systemBars())
         }
         graph.media.player.warmUp()
-        if (savedInstanceState == null) graph.core.updates.check()
         handle(intent)
         val pocket = TvPocket(graph.core, graph.media)
         setContent {

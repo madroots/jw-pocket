@@ -21,17 +21,22 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.tv.material3.Icon
 import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Text
+import kotlinx.coroutines.delay
 
 /** One choice in a side panel. */
 data class PanelOption(val key: String?, val label: String, val detail: String? = null, val selected: Boolean = false)
@@ -45,8 +50,9 @@ fun TvSidePanel(title: String, subtitle: String? = null, options: List<PanelOpti
     BackHandler(onBack = onDismiss)
     val start = options.indexOfFirst { it.selected }.coerceAtLeast(0)
     val focus = remember { FocusRequester() }
+    var focused by remember { mutableStateOf(false) }
     val list = rememberLazyListState(initialFirstVisibleItemIndex = (start - 2).coerceAtLeast(0))
-    Box(Modifier.fillMaxSize().background(Color(0x99000000))) {
+    Box(Modifier.fillMaxSize().background(Color(0x99000000)).onFocusChanged { focused = it.hasFocus }.focusTrap()) {
         Column(
             Modifier.align(Alignment.CenterEnd).fillMaxHeight().width(440.dp).background(Tv.Surface).padding(top = 40.dp)
         ) {
@@ -73,5 +79,12 @@ fun TvSidePanel(title: String, subtitle: String? = null, options: List<PanelOpti
             }
         }
     }
-    LaunchedEffect(Unit) { runCatching { focus.requestFocus() } }
+    // The list may need a frame or two before the selected choice can take focus.
+    LaunchedEffect(Unit) {
+        repeat(20) {
+            if (focused) return@LaunchedEffect
+            runCatching { focus.requestFocus() }
+            delay(50)
+        }
+    }
 }

@@ -32,8 +32,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import app.jwpocket.media.PlaybackState
+import app.jwpocket.media.download.DownloadStatus
 import app.jwpocket.phone.ui.LocalPocket
 import app.jwpocket.phone.ui.components.ProgressLine
+import app.jwpocket.phone.ui.rememberMarks
 import app.jwpocket.phone.ui.theme.Pocket
 
 /** The minimized player above the tab bar: the video keeps playing in it. */
@@ -43,6 +45,9 @@ fun MiniPlayer(state: PlaybackState, onExpand: () -> Unit, modifier: Modifier = 
     val connection = pocket.media.player
     val controller by connection.controller.collectAsState()
     val video = state.video ?: return
+    val marks by rememberMarks(video.id)
+    // A download removed while it plays keeps playing, streamed.
+    val fromDownload = state.fromDownload && marks.download?.status == DownloadStatus.Done
     Column(
         modifier
             .padding(horizontal = 8.dp, vertical = 4.dp)
@@ -61,7 +66,7 @@ fun MiniPlayer(state: PlaybackState, onExpand: () -> Unit, modifier: Modifier = 
                     when {
                         state.error != null -> "Can't play"
                         state.buffering && state.playWhenReady -> "Loading…"
-                        state.isPlaying -> if (state.fromDownload) "Playing offline" else "Playing"
+                        state.isPlaying -> if (fromDownload) "Playing offline" else "Playing"
                         state.ended -> "Finished"
                         else -> "Paused"
                     },

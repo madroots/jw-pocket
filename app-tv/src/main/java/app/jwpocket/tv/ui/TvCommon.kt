@@ -1,7 +1,11 @@
 package app.jwpocket.tv.ui
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.focusGroup
+import androidx.compose.foundation.gestures.BringIntoViewSpec
+import androidx.compose.foundation.gestures.LocalBringIntoViewSpec
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -27,6 +31,7 @@ import androidx.compose.material.icons.rounded.ErrorOutline
 import androidx.compose.material.icons.rounded.Pause
 import androidx.compose.material.icons.rounded.Schedule
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
@@ -34,11 +39,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusProperties
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
@@ -96,8 +107,12 @@ class TvMarks(
 
 val LocalTvMarks = staticCompositionLocalOf<TvMarks> { error("not provided") }
 
-/** Opens a video's details; [row] is the list it came from, for autoplay. */
-val LocalOpenVideo = staticCompositionLocalOf<(Video, List<Video>) -> Unit> { { _, _ -> } }
+/**
+ * Opens a video's details; [row] is the list it came from, for autoplay, and
+ * the requester is the control that opened it, which gets focus back when the
+ * details close.
+ */
+val LocalOpenVideo = staticCompositionLocalOf<(Video, List<Video>, FocusRequester) -> Unit> { { _, _, _ -> } }
 
 data class CardMarks(val watch: WatchState?, val download: DownloadItem?, val favorite: Boolean)
 
@@ -105,6 +120,23 @@ data class CardMarks(val watch: WatchState?, val download: DownloadItem?, val fa
 fun rememberCardMarks(id: String): State<CardMarks> {
     val marks = LocalTvMarks.current
     return remember(id, marks) { derivedStateOf { CardMarks(marks.progress.value[id], marks.downloads.value[id], id in marks.favorites.value) } }
+}
+
+/**
+ * For layers drawn over the page (details, side panels, the player): the
+ * remote moves only between this layer's own controls and never lands on the
+ * page underneath, which stays composed (and focusable) behind it.
+ */
+fun Modifier.focusTrap(): Modifier = keepFocusInside().focusGroup()
+
+/**
+ * Cancels remote (D-pad) moves that would take focus out of the focus target
+ * that follows. Focus requested in code (a panel or the player opening on
+ * top) still goes wherever it's asked to.
+ */
+@OptIn(ExperimentalComposeUiApi::class)
+fun Modifier.keepFocusInside(): Modifier = focusProperties {
+    exit = { direction -> if (direction == FocusDirection.Enter || direction == FocusDirection.Exit) FocusRequester.Default else FocusRequester.Cancel }
 }
 
 /** A focusable surface that grows and gets a white outline when the remote lands on it. */
@@ -135,8 +167,9 @@ fun FocusSurface(
 fun TvVideoCard(video: Video, row: List<Video>, width: Dp? = 240.dp, subtitle: String? = null) {
     val open = LocalOpenVideo.current
     val marks by rememberCardMarks(video.id)
+    val self = remember { FocusRequester() }
     Column(if (width != null) Modifier.width(width) else Modifier.fillMaxWidth()) {
-        FocusSurface(onClick = { open(video, row) }, modifier = Modifier.fillMaxWidth().aspectRatio(16f / 9f)) {
+        FocusSurface(onClick = { open(video, row, self) }, modifier = Modifier.fillMaxWidth().aspectRatio(16f / 9f).focusRequester(self)) {
             AsyncImage(video.thumbnailUrl, null, contentScale = ContentScale.Crop, modifier = Modifier.fillMaxSize())
             if (video.duration != null) {
                 Text(
@@ -185,19 +218,34 @@ fun TvDownloadBadge(item: DownloadItem, modifier: Modifier = Modifier) {
     }
 }
 
-/** A titled row of cards. */
+/**
+ * A titled row of cards. The card the remote lands on lines up with the
+ * title (the row's start padding), so every row stays in step instead of each
+ * one scrolling to its own offset.
+ */
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TvRow(title: String, videos: List<Video>, cardWidth: Dp = 240.dp) {
+    val start = with(LocalDensity.current) { RowInset.toPx() }
+    val alignToStart = remember(start) {
+        object : BringIntoViewSpec {
+            override fun calculateScrollDistance(offset: Float, size: Float, containerSize: Float) = offset - start
+        }
+    }
     Column {
-        Text(title, style = MaterialTheme.typography.titleLarge, modifier = Modifier.padding(start = 48.dp, top = 24.dp, bottom = 12.dp))
-        LazyRow(
-            contentPadding = PaddingValues(horizontal = 48.dp, vertical = 8.dp),
-            horizontalArrangement = Arrangement.spacedBy(20.dp),
-        ) {
-            items(videos, key = { it.id }) { TvVideoCard(it, videos, cardWidth) }
+        Text(title, style = MaterialTheme.typography.titleLarge, modifier = Modifier.padding(start = RowInset, top = 24.dp, bottom = 12.dp))
+        CompositionLocalProvider(LocalBringIntoViewSpec provides alignToStart) {
+            LazyRow(
+                contentPadding = PaddingValues(horizontal = RowInset, vertical = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(20.dp),
+            ) {
+                items(videos, key = { it.id }) { TvVideoCard(it, videos, cardWidth) }
+            }
         }
     }
 }
+
+private val RowInset = 48.dp
 
 /** Focusable button with an icon, for dialogs and the details screen. */
 @Composable

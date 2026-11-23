@@ -54,6 +54,7 @@ import androidx.compose.material.icons.rounded.Share
 import androidx.compose.material.icons.rounded.SkipNext
 import androidx.compose.material.icons.rounded.SkipPrevious
 import androidx.compose.material.icons.rounded.Speed
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -61,6 +62,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -117,6 +119,9 @@ fun FullPlayer(
     var dragY by remember { mutableFloatStateOf(0f) }
     val density = LocalDensity.current
     val video = state.video ?: return
+    val marks by rememberMarks(video.id)
+    // A download removed while it plays keeps playing, streamed.
+    val fromDownload = state.fromDownload && marks.download?.status == DownloadStatus.Done
 
     BackHandler { if (landscape) onToggleFullscreen() else onCollapse() }
 
@@ -134,37 +139,38 @@ fun FullPlayer(
                 .background(Pocket.Background)
                 .statusBarsPadding()
         ) {
-            // Grab bar: swipe down to minimize.
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .pointerInput(Unit) {
-                        detectVerticalDragGestures(
-                            onDragEnd = {
-                                if (dragY > with(density) { 120.dp.toPx() }) onCollapse()
-                                dragY = 0f
-                            },
-                            onDragCancel = { dragY = 0f },
-                        ) { _, delta -> dragY += delta }
-                    }
-                    .padding(horizontal = 4.dp, vertical = 2.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                IconButton(onClick = onCollapse) { Icon(Icons.Rounded.KeyboardArrowDown, "Minimize", modifier = Modifier.size(30.dp)) }
-                Column(Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text("NOW PLAYING", style = MaterialTheme.typography.labelSmall, color = Pocket.TextSecondary)
-                    Text(
-                        if (state.fromDownload) "From your downloads" else (state.quality ?: "Streaming"),
-                        style = MaterialTheme.typography.bodySmall, color = Pocket.TextSecondary,
-                    )
+            // Grab bar and video: swipe down anywhere on them to minimize.
+            Column(
+                Modifier.pointerInput(Unit) {
+                    detectVerticalDragGestures(
+                        onDragEnd = {
+                            if (dragY > with(density) { 120.dp.toPx() }) onCollapse()
+                            dragY = 0f
+                        },
+                        onDragCancel = { dragY = 0f },
+                    ) { _, delta -> dragY += delta }
                 }
-                IconButton(onClick = onPictureInPicture) { Icon(Icons.Rounded.PictureInPictureAlt, "Picture-in-picture") }
-            }
+            ) {
+                Row(
+                    Modifier.fillMaxWidth().padding(horizontal = 4.dp, vertical = 2.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    IconButton(onClick = onCollapse) { Icon(Icons.Rounded.KeyboardArrowDown, "Minimize", modifier = Modifier.size(30.dp)) }
+                    Column(Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text("NOW PLAYING", style = MaterialTheme.typography.labelSmall, color = Pocket.TextSecondary)
+                        Text(
+                            if (fromDownload) "From your downloads" else (state.quality ?: "Streaming"),
+                            style = MaterialTheme.typography.bodySmall, color = Pocket.TextSecondary,
+                        )
+                    }
+                    IconButton(onClick = onPictureInPicture) { Icon(Icons.Rounded.PictureInPictureAlt, "Picture-in-picture") }
+                }
 
-            Box(Modifier.fillMaxWidth().aspectRatio(16f / 9f).background(Color.Black)) {
-                VideoSurface(controller, Modifier.fillMaxSize(), settings.subtitleScale)
-                VideoOverlay(state, fullscreen = false, title = null, onCollapse = onCollapse,
-                    onFullscreen = onToggleFullscreen, onSubtitles = { sheet = Sheet.Subtitles }, onQuality = { sheet = Sheet.Quality })
+                Box(Modifier.fillMaxWidth().aspectRatio(16f / 9f).background(Color.Black)) {
+                    VideoSurface(controller, Modifier.fillMaxSize(), settings.subtitleScale)
+                    VideoOverlay(state, fullscreen = false, title = null, onCollapse = onCollapse,
+                        onFullscreen = onToggleFullscreen, onSubtitles = { sheet = Sheet.Subtitles }, onQuality = { sheet = Sheet.Quality })
+                }
             }
 
             LazyColumn(Modifier.weight(1f)) {
@@ -231,6 +237,7 @@ private fun NowPlayingInfo(state: PlaybackState, onSheet: (Sheet) -> Unit) {
     val marks by rememberMarks(video.id)
     val settings by pocket.core.settings.settings.collectAsState()
     val context = LocalContext.current
+    var confirmRemove by remember { mutableStateOf(false) }
 
     Column(Modifier.padding(horizontal = 20.dp)) {
         Spacer(Modifier.height(16.dp))
@@ -278,8 +285,8 @@ private fun NowPlayingInfo(state: PlaybackState, onSheet: (Sheet) -> Unit) {
                     val quality = settings.downloadQuality ?: state.quality ?: video.file(null)?.label
                     if (quality != null) pocket.media.downloads.download(video, quality, settings.languageCode)
                 }
-                download.status == DownloadStatus.Done -> Pill(Icons.Rounded.CheckCircle, "Downloaded · ${download.quality}", highlighted = true) {}
-                else -> Pill(Icons.Rounded.Download, "${(download.progress * 100).toInt()}% · ${formatBytes(download.totalBytes)}") {}
+                download.status == DownloadStatus.Done -> Pill(Icons.Rounded.CheckCircle, "Downloaded · ${download.quality}", highlighted = true) { confirmRemove = true }
+                else -> Pill(Icons.Rounded.Download, "${(download.progress * 100).toInt()}% · ${formatBytes(download.totalBytes)}") { confirmRemove = true }
             }
             Pill(if (marks.favorite) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder, if (marks.favorite) "Saved" else "Favorite", highlighted = marks.favorite) {
                 pocket.core.favorites.toggle(video)
@@ -299,6 +306,28 @@ private fun NowPlayingInfo(state: PlaybackState, onSheet: (Sheet) -> Unit) {
             Spacer(Modifier.height(12.dp))
             Text(state.error!!, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodyMedium)
         }
+    }
+
+    val download = marks.download
+    if (confirmRemove && download != null) {
+        val done = download.status == DownloadStatus.Done
+        AlertDialog(
+            onDismissRequest = { confirmRemove = false },
+            title = { Text(if (done) "Remove download?" else "Cancel download?") },
+            text = {
+                Text(
+                    if (done) "Frees ${formatBytes(download.totalBytes)} on this phone. You can still stream it."
+                    else "The part downloaded so far is deleted."
+                )
+            },
+            confirmButton = {
+                TextButton(onClick = { pocket.media.downloads.remove(video.id); confirmRemove = false }) {
+                    Text(if (done) "Remove" else "Cancel download", color = Pocket.Accent)
+                }
+            },
+            dismissButton = { TextButton(onClick = { confirmRemove = false }) { Text("Keep") } },
+            containerColor = Pocket.SurfaceHigh,
+        )
     }
 }
 
@@ -354,8 +383,10 @@ fun SeekBar(state: PlaybackState, onSeek: (Long) -> Unit, modifier: Modifier = M
 }
 
 /**
- * Controls drawn over the video: tap to show or hide, double-tap a side to
- * skip 10 seconds. They hide by themselves while playing.
+ * Over the video: double-tap a side to skip 10 seconds, tap to show the
+ * controls, which hide by themselves while playing. In portrait the controls
+ * live below the video, so only the full-screen button shows here; full
+ * screen has the whole set.
  */
 @Composable
 private fun VideoOverlay(
@@ -389,40 +420,42 @@ private fun VideoOverlay(
                 )
             }
     ) {
-        if (state.buffering && state.playWhenReady && !visible) {
+        if (state.buffering && state.playWhenReady && !(visible && fullscreen)) {
             CircularProgressIndicator(color = Color.White, modifier = Modifier.align(Alignment.Center).size(40.dp))
         }
         AnimatedVisibility(visible, enter = fadeIn(), exit = fadeOut(), modifier = Modifier.fillMaxSize()) {
-            Box(Modifier.fillMaxSize().background(Color(0x77000000))) {
-                if (fullscreen) {
-                    Row(Modifier.fillMaxWidth().align(Alignment.TopStart).padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
-                        IconButton(onClick = onCollapse) { Icon(Icons.Rounded.KeyboardArrowDown, "Exit full screen", tint = Color.White) }
-                        Text(title.orEmpty(), color = Color.White, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f))
-                        IconButton(onClick = { touch++; onSubtitles() }) {
-                            Icon(if (state.subtitleLanguage != null) Icons.Rounded.ClosedCaption else Icons.Rounded.ClosedCaptionDisabled, "Subtitles", tint = Color.White)
+            if (!fullscreen) {
+                Box(Modifier.fillMaxSize()) {
+                    IconButton(onClick = onFullscreen, modifier = Modifier.align(Alignment.BottomEnd).padding(4.dp)) {
+                        Box(Modifier.size(36.dp).clip(CircleShape).background(Color(0x66000000)), contentAlignment = Alignment.Center) {
+                            Icon(Icons.Rounded.Fullscreen, "Full screen", tint = Color.White)
                         }
-                        IconButton(onClick = { touch++; onQuality() }) { Icon(Icons.Rounded.HighQuality, "Quality", tint = Color.White) }
                     }
                 }
-                Row(Modifier.align(Alignment.Center), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(if (fullscreen) 40.dp else 24.dp)) {
-                    if (fullscreen) IconButton(onClick = { touch++; connection.previous() }) { Icon(Icons.Rounded.SkipPrevious, "Previous", tint = Color.White, modifier = Modifier.size(36.dp)) }
+                return@AnimatedVisibility
+            }
+            Box(Modifier.fillMaxSize().background(Color(0x77000000))) {
+                Row(Modifier.fillMaxWidth().align(Alignment.TopStart).padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
+                    IconButton(onClick = onCollapse) { Icon(Icons.Rounded.KeyboardArrowDown, "Exit full screen", tint = Color.White) }
+                    Text(title.orEmpty(), color = Color.White, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f))
+                    IconButton(onClick = { touch++; onSubtitles() }) {
+                        Icon(if (state.subtitleLanguage != null) Icons.Rounded.ClosedCaption else Icons.Rounded.ClosedCaptionDisabled, "Subtitles", tint = Color.White)
+                    }
+                    IconButton(onClick = { touch++; onQuality() }) { Icon(Icons.Rounded.HighQuality, "Quality", tint = Color.White) }
+                }
+                Row(Modifier.align(Alignment.Center), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(40.dp)) {
+                    IconButton(onClick = { touch++; connection.previous() }) { Icon(Icons.Rounded.SkipPrevious, "Previous", tint = Color.White, modifier = Modifier.size(36.dp)) }
                     IconButton(onClick = { touch++; connection.seekBy(-10_000) }) { Icon(Icons.Rounded.Replay10, "Back 10 seconds", tint = Color.White, modifier = Modifier.size(34.dp)) }
                     Box(Modifier.size(60.dp).clip(CircleShape).background(Color(0x33FFFFFF)).clickable { touch++; connection.togglePlay() }, contentAlignment = Alignment.Center) {
                         if (state.buffering && state.playWhenReady) CircularProgressIndicator(color = Color.White, modifier = Modifier.size(32.dp))
                         else Icon(if (state.isPlaying) Icons.Rounded.Pause else Icons.Rounded.PlayArrow, if (state.isPlaying) "Pause" else "Play", tint = Color.White, modifier = Modifier.size(40.dp))
                     }
                     IconButton(onClick = { touch++; connection.seekBy(10_000) }) { Icon(Icons.Rounded.Forward10, "Forward 10 seconds", tint = Color.White, modifier = Modifier.size(34.dp)) }
-                    if (fullscreen) IconButton(onClick = { touch++; connection.next() }, enabled = state.hasNext) { Icon(Icons.Rounded.SkipNext, "Next", tint = Color.White, modifier = Modifier.size(36.dp)) }
+                    IconButton(onClick = { touch++; connection.next() }, enabled = state.hasNext) { Icon(Icons.Rounded.SkipNext, "Next", tint = Color.White, modifier = Modifier.size(36.dp)) }
                 }
                 Row(Modifier.align(Alignment.BottomStart).fillMaxWidth().padding(horizontal = 12.dp, vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-                    if (fullscreen) SeekBar(state, onSeek = { touch++; connection.seekTo(it) }, modifier = Modifier.weight(1f), light = true)
-                    else {
-                        Text("${formatClock(state.positionMs)} / ${formatClock(state.durationMs)}", color = Color.White, style = MaterialTheme.typography.labelSmall)
-                        Spacer(Modifier.weight(1f))
-                    }
-                    IconButton(onClick = onFullscreen) {
-                        Icon(if (fullscreen) Icons.Rounded.FullscreenExit else Icons.Rounded.Fullscreen, "Full screen", tint = Color.White)
-                    }
+                    SeekBar(state, onSeek = { touch++; connection.seekTo(it) }, modifier = Modifier.weight(1f), light = true)
+                    IconButton(onClick = onFullscreen) { Icon(Icons.Rounded.FullscreenExit, "Exit full screen", tint = Color.White) }
                 }
             }
         }

@@ -4,6 +4,7 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -39,12 +40,17 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.focusRestorer
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -59,6 +65,7 @@ import app.jwpocket.core.data.dataOrNull
 import app.jwpocket.core.model.Video
 import app.jwpocket.core.presentation.HomeViewModel
 import app.jwpocket.core.util.formatBytes
+import kotlinx.coroutines.delay
 
 /** Where the sidebar can take you. Categories come from the library. */
 sealed interface Dest {
@@ -72,6 +79,7 @@ sealed interface Dest {
     data class Category(val key: String, val name: String) : Dest { override val id = "cat_$key" }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun TvRoot(openPlayer: Boolean, onPlayerOpened: () -> Unit) {
     val tv = LocalTv.current
@@ -81,8 +89,23 @@ fun TvRoot(openPlayer: Boolean, onPlayerOpened: () -> Unit) {
     val downloads by tv.media.downloads.items.collectAsState()
     var destId by rememberSaveable { mutableStateOf(Dest.Home.id) }
     var details by remember { mutableStateOf<Pair<Video, List<Video>>?>(null) }
+    // The card or button that opened the details: focus goes back to it when they close.
+    var opener by remember { mutableStateOf<FocusRequester?>(null) }
     var playing by remember { mutableStateOf(false) }
     val updates by tv.core.updates.state.collectAsState()
+    // Moving focus into the page: after picking a menu entry (which closes the menu) or when the opener is gone.
+    val page = remember { FocusRequester() }
+    var pageFocused by remember { mutableStateOf(false) }
+    var focusPage by remember { mutableIntStateOf(0) }
+    LaunchedEffect(focusPage) {
+        if (focusPage == 0) return@LaunchedEffect
+        // A new page may still be loading: keep trying briefly until something in it takes focus.
+        repeat(40) {
+            if (pageFocused) return@LaunchedEffect
+            runCatching { page.requestFocus() }
+            delay(50)
+        }
+    }
 
     LaunchedEffect(openPlayer) {
         if (openPlayer) {
@@ -100,9 +123,16 @@ fun TvRoot(openPlayer: Boolean, onPlayerOpened: () -> Unit) {
     val dests = listOf(Dest.Search, Dest.Home, Dest.Downloads, Dest.Favorites, Dest.History) + categoryDests + Dest.Settings
     val dest = dests.firstOrNull { it.id == destId } ?: Dest.Home
 
-    CompositionLocalProvider(LocalTvMarks provides marks, LocalOpenVideo provides { v, row -> details = v to row }) {
+    CompositionLocalProvider(LocalTvMarks provides marks, LocalOpenVideo provides { v, row, from -> details = v to row; opener = from }) {
         Box(Modifier.fillMaxSize().background(Tv.Background)) {
-            Box(Modifier.fillMaxSize().padding(start = 84.dp)) {
+            Box(
+                Modifier
+                    .fillMaxSize()
+                    .padding(start = 84.dp)
+                    .focusRequester(page)
+                    .onFocusChanged { pageFocused = it.hasFocus }
+                    .focusGroup()
+            ) {
                 when (dest) {
                     Dest.Search -> TvSearch()
                     Dest.Home -> TvHome()
@@ -113,17 +143,21 @@ fun TvRoot(openPlayer: Boolean, onPlayerOpened: () -> Unit) {
                     is Dest.Category -> TvCategory(dest.key, dest.name)
                 }
             }
-            Sidebar(dests, dest, activeDownloads = downloads.values.count { it.isActive }) { destId = it.id }
-            BackHandler(enabled = dest != Dest.Home && details == null && !playing) { destId = Dest.Home.id }
+            Sidebar(dests, dest, activeDownloads = downloads.values.count { it.isActive }) { destId = it.id; focusPage++ }
+            BackHandler(enabled = dest != Dest.Home && details == null && !playing) { destId = Dest.Home.id; focusPage++ }
 
             details?.let { (video, row) ->
                 TvDetails(
                     video,
+                    active = !playing,
                     onPlay = { fromStart, quality ->
                         connection.play(video, row, fromStart, quality)
                         playing = true
                     },
-                    onClose = { details = null },
+                    onClose = {
+                        if (runCatching { opener?.requestFocus() }.isFailure || opener == null) focusPage++
+                        details = null
+                    },
                 )
             }
             if (playing) {
@@ -134,14 +168,15 @@ fun TvRoot(openPlayer: Boolean, onPlayerOpened: () -> Unit) {
                 })
             }
 
-            if (updates.showDialog) {
+            // Not on top of details or the player: it waits until you're back on a page.
+            if (updates.showDialog && details == null && !playing) {
                 val update = updates.available!!
                 TvSidePanel(
                     "Update available: ${update.versionName}",
                     update.notes ?: "A new version of JW Pocket is ready (${formatBytes(update.sizeBytes)}).",
                     listOf(PanelOption("update", "Update now", selected = true), PanelOption("later", "Later")),
-                    onPick = { if (it.key == "update") tv.core.updates.install() else tv.core.updates.dismiss() },
-                    onDismiss = tv.core.updates::dismiss,
+                    onPick = { if (it.key == "update") tv.core.updates.install() else tv.core.updates.dismiss(); focusPage++ },
+                    onDismiss = { tv.core.updates.dismiss(); focusPage++ },
                 )
             }
             updates.downloadProgress?.let { p ->
