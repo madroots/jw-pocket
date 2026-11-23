@@ -4,6 +4,7 @@ import app.jwpocket.core.data.LibraryRepository
 import app.jwpocket.core.data.UpdateRepository
 import app.jwpocket.core.model.Language
 import app.jwpocket.core.model.MediaFile
+import app.jwpocket.core.model.SeriesOrder
 import app.jwpocket.core.model.Video
 import app.jwpocket.core.network.PocketJson
 import app.jwpocket.core.data.SubtitleRepository
@@ -84,5 +85,41 @@ class CoreLogicTest {
         val video = Video(languageAgnosticNaturalKey = "k", availableLanguages = listOf("E", "S", "F", "ASL"))
         val offered = repo.otherLanguages(video, ownLanguage = "E", languages = languages, pinned = listOf("S"))
         assertEquals(listOf("S", "F"), offered.map { it.code })
+    }
+
+    private fun v(title: String, key: String? = null) = Video(naturalKey = title, title = title, languageAgnosticNaturalKey = key)
+
+    @Test
+    fun seriesPartsFollowInOrderWhateverTheRowOrder() {
+        val p1 = v("True Christians Are Neutral—Part 1")
+        val p2 = v("True Christians Are Neutral—Part 2")
+        val p3 = v("True Christians Are Neutral—Part 3")
+        val other = v("Why Did Jesus Die?—Part 2")
+        val row = listOf(p3, other, v("Never Give Up Hope!"), p2, p1)
+        assertEquals(listOf(p2, p3), SeriesOrder.nextParts(p1, row))
+        // Starting from a later part never goes back.
+        assertEquals(listOf(p3), SeriesOrder.nextParts(p2, row))
+        assertEquals(emptyList<Video>(), SeriesOrder.nextParts(p3, row))
+    }
+
+    @Test
+    fun seriesPartsInOtherLanguagesAndRomanNumerals() {
+        val sk1 = v("Daniel – príbeh nezlomnej viery (1. časť)")
+        val sk2 = v("Daniel – príbeh nezlomnej viery (2. časť)")
+        assertEquals(listOf(sk2), SeriesOrder.nextParts(sk1, listOf(sk2, sk1)))
+        val r1 = v("Nehemiah: “The Joy of Jehovah Is Your Stronghold”\u200B—Part I")
+        val r2 = v("Nehemiah: “The Joy of Jehovah Is Your Stronghold”—Part II")
+        val excerpt = v("Nehemiah: “The Joy of Jehovah Is Your Stronghold”—Part II—Excerpt")
+        assertEquals(listOf(r2), SeriesOrder.nextParts(r1, listOf(excerpt, r2)))
+    }
+
+    @Test
+    fun episodesOfOnePublicationFollowByKey() {
+        val e1 = v("Episode 1: The True Light of the World", "pub-gnj_1_VIDEO")
+        val e2 = v("Episode 2: “This Is My Son”", "pub-gnj_2_VIDEO")
+        val e3 = v("Episode 3: “I Am He”", "pub-gnj_3_VIDEO")
+        assertEquals(listOf(e2, e3), SeriesOrder.nextParts(e1, listOf(e3, e2, e1)))
+        // A video with no number is no series.
+        assertFalse(SeriesOrder.mayBePart(v("Never Give Up Hope!", "pub-lffv_11_VIDEO")))
     }
 }

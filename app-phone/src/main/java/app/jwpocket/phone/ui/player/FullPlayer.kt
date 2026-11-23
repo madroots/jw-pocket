@@ -118,6 +118,7 @@ fun FullPlayer(
     val connection = pocket.media.player
     val controller by connection.controller.collectAsState()
     val settings by pocket.core.settings.settings.collectAsState()
+    val cue by connection.cues.collectAsState()
     val languages by pocket.core.languages.languages.collectAsState()
     var sheet by remember { mutableStateOf<Sheet?>(null) }
     var dragY by remember { mutableFloatStateOf(0f) }
@@ -132,6 +133,7 @@ fun FullPlayer(
     if (landscape) {
         Box(Modifier.fillMaxSize().background(Color.Black)) {
             VideoSurface(controller, Modifier.fillMaxSize(), settings.subtitleScale * 1.25f)
+            if (state.listening) ListenVisual(video, state.playWhenReady && !state.ended, cue, Modifier.fillMaxSize(), subtitleScale = settings.subtitleScale * 1.25f)
             VideoOverlay(state, fullscreen = true, title = video.title, onCollapse = onToggleFullscreen,
                 onFullscreen = onToggleFullscreen, onSubtitles = { sheet = Sheet.Subtitles }, onQuality = { sheet = Sheet.Quality })
         }
@@ -172,6 +174,7 @@ fun FullPlayer(
 
                 Box(Modifier.fillMaxWidth().aspectRatio(16f / 9f).background(Color.Black)) {
                     VideoSurface(controller, Modifier.fillMaxSize(), settings.subtitleScale)
+                    if (state.listening) ListenVisual(video, state.playWhenReady && !state.ended, cue, Modifier.fillMaxSize(), subtitleScale = settings.subtitleScale)
                     VideoOverlay(state, fullscreen = false, title = null, onCollapse = onCollapse,
                         onFullscreen = onToggleFullscreen, onSubtitles = { sheet = Sheet.Subtitles }, onQuality = { sheet = Sheet.Quality })
                 }

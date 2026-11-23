@@ -2,6 +2,7 @@ package app.jwpocket.phone.ui.player
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -60,6 +61,7 @@ fun MiniPlayer(state: PlaybackState, onExpand: () -> Unit, modifier: Modifier = 
         Row(Modifier.fillMaxWidth().height(60.dp), verticalAlignment = Alignment.CenterVertically) {
             Box(Modifier.fillMaxHeight().aspectRatio(16f / 9f).background(Color.Black)) {
                 VideoSurface(controller, Modifier.fillMaxHeight().fillMaxWidth(), subtitles = false)
+                if (state.listening) ListenVisual(video, state.playWhenReady && !state.ended, cue = null, Modifier.fillMaxSize(), compact = true)
             }
             Spacer(Modifier.width(12.dp))
             Column(Modifier.weight(1f)) {

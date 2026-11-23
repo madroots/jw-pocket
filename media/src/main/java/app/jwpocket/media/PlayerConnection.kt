@@ -8,10 +8,12 @@ import androidx.media3.common.C
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.PlaybackParameters
 import androidx.media3.common.Player
+import androidx.media3.common.text.CueGroup
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
 import app.jwpocket.core.CoreGraph
+import app.jwpocket.core.model.SeriesOrder
 import app.jwpocket.core.model.Video
 import app.jwpocket.media.download.DownloadsRepository
 import kotlinx.coroutines.CompletableDeferred
@@ -81,6 +83,10 @@ class PlayerConnection internal constructor(
     /** For video surfaces (PlayerView); null until connected. */
     val controller: StateFlow<MediaController?> = _controller.asStateFlow()
 
+    private val _cues = MutableStateFlow<String?>(null)
+    /** Subtitle text on screen now, for views that draw it themselves (Listen mode). */
+    val cues: StateFlow<String?> = _cues.asStateFlow()
+
     private var connecting: CompletableDeferred<MediaController>? = null
     private var ticker: Job? = null
     private var sleepJob: Job? = null
@@ -149,21 +155,44 @@ class PlayerConnection internal constructor(
     }
 
     /**
-     * Plays [video]; with autoplay on, the next videos of [row] follow it.
-     * Starts where the person left off unless [fromStart].
+     * Plays [video]; with autoplay on, the next parts of its series follow it,
+     * then the next videos of [row]. Starts where the person left off unless [fromStart].
      */
     fun play(video: Video, row: List<Video> = emptyList(), fromStart: Boolean = false, quality: String? = null) {
         scope.launch {
             val c = controller()
             val settings = core.settings.current
-            val start = row.indexOfFirst { it.id == video.id }
-            val queue = if (settings.autoplayNext && start >= 0) row.subList(start, minOf(row.size, start + 1 + QUEUE_AHEAD)) else listOf(video)
+            val queue = if (settings.autoplayNext) upNext(video, row, row) else listOf(video)
             val items = queue.map { request(it, if (it.id == video.id) quality else null).toMediaItem() }
             val position = if (fromStart) 0L else core.progress.resumePositionMs(video.id)
             c.setMediaItems(items, 0, position)
             c.prepare()
             c.play()
+            if (settings.autoplayNext) addSeriesParts(c, video, row, queue)
         }
+    }
+
+    /** [video], the later parts of its series found in [pool], then what follows it in [row]. */
+    private fun upNext(video: Video, row: List<Video>, pool: List<Video>): List<Video> {
+        val start = row.indexOfFirst { it.id == video.id }
+        val rest = if (start >= 0) row.drop(start + 1) else emptyList()
+        return (listOf(video) + SeriesOrder.nextParts(video, pool) + rest).distinctBy { it.id }.take(1 + QUEUE_AHEAD)
+    }
+
+    /**
+     * The row a video was opened from rarely holds its whole series (Latest,
+     * search, Favorites): look in the video's own category and, if that changes
+     * Up next, replace what follows the video, which is already playing.
+     */
+    private suspend fun addSeriesParts(c: MediaController, video: Video, row: List<Video>, queued: List<Video>) {
+        val category = video.primaryCategory ?: return
+        if (!SeriesOrder.mayBePart(video)) return
+        val own = runCatching { core.library.row(core.settings.current.languageCode, category) }.getOrNull() ?: return
+        val better = upNext(video, row, row + own)
+        if (better.map { it.id } == queued.map { it.id }) return
+        if (c.currentMediaItem?.mediaId != video.id || c.currentMediaItemIndex != 0) return
+        if (c.mediaItemCount > 1) c.removeMediaItems(1, c.mediaItemCount)
+        c.addMediaItems(better.drop(1).map { request(it, null).toMediaItem() })
     }
 
     fun togglePlay() = command { if (it.isPlaying) it.pause() else { if (it.playbackState == Player.STATE_ENDED) it.seekTo(0); it.play() } }
@@ -256,6 +285,10 @@ class PlayerConnection internal constructor(
                 _controller.value?.pause()
                 _state.update { it.copy(sleepAt = null) }
             }
+        }
+
+        override fun onCues(cueGroup: CueGroup) {
+            _cues.value = cueGroup.cues.mapNotNull { it.text?.toString() }.joinToString("\n").ifBlank { null }
         }
 
         override fun onPlayerError(error: PlaybackException) {

@@ -73,6 +73,16 @@ class PlaybackService : MediaLibraryService() {
             .setSeekForwardIncrementMs(10_000)
             .build()
         player.addListener(progressSaver(player))
+        player.addListener(object : Player.Listener {
+            // Listening: don't decode a picture nobody sees (saves battery).
+            override fun onEvents(player: Player, events: Player.Events) {
+                if (!events.containsAny(Player.EVENT_MEDIA_ITEM_TRANSITION, Player.EVENT_TIMELINE_CHANGED)) return
+                val listening = player.currentMediaItem?.let { PlayRequest.from(it)?.listening } == true
+                val params = player.trackSelectionParameters
+                if ((C.TRACK_TYPE_VIDEO in params.disabledTrackTypes) == listening) return
+                player.trackSelectionParameters = params.buildUpon().setTrackTypeDisabled(C.TRACK_TYPE_VIDEO, listening).build()
+            }
+        })
 
         val openApp = packageManager.getLaunchIntentForPackage(packageName)?.apply {
             putExtra(EXTRA_OPEN_PLAYER, true)

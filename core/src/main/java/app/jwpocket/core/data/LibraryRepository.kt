@@ -115,6 +115,10 @@ class LibraryRepository(private val api: MediatorApi, private val text: AppText)
         }
     }
 
+    /** Videos of one row (e.g. a video's primaryCategory), saved copy first; null if unavailable. */
+    suspend fun row(language: String, key: String): List<Video>? =
+        (api.category(language, key, fresh = false) ?: api.category(language, key, fresh = true))?.media
+
     /** The freshest copy of a video loaded in this session (older saved copies may lack fields). */
     fun findLoaded(videoId: String): Video? =
         memory.values.asSequence().flatMap { it.sections.asSequence() }.flatMap { it.videos.asSequence() }

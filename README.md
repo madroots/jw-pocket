@@ -10,13 +10,13 @@ The successor of JW TV, rebuilt from scratch with a clean structure and a shared
 - **Keeps playing** with the screen locked or in other apps (as audio), with lock-screen, notification, headset and Bluetooth controls. Can be turned off in Settings.
 - **Picture-in-picture**: leave the app during a video and it shrinks to a floating window (automatic on Android 12+, or with the button in the player).
 - **Mini player** above the tab bar: browse while the video keeps playing; tap it to open the full player, swipe the full player down to shrink it again.
-- **Full player**: Up next list with autoplay, subtitles in any language, quality, playback speed, sleep timer, share, download and favorite in one row. Turn the phone sideways for full screen.
+- **Full player**: Up next list with autoplay (the parts of a series and numbered episodes always follow in order), subtitles in any language, quality, playback speed, sleep timer, share, download and favorite in one row. Turn the phone sideways for full screen.
 - **Library tab**: Downloads (progress, size, free space, pause/resume/retry/delete, Wi-Fi only), Favorites and History.
 - **Search** across the whole library, by title and description.
 - **Downloaded videos are marked everywhere** with a green check; "Ready offline" row on Home and an offline banner when there's no internet.
 - **New-video notifications** for the monthly JW Broadcasting program and Governing Body updates, each with its own switch in Settings; tapping one opens the video.
 - **Android Auto**: browse Continue watching, Downloads, Favorites, Latest and every category in the car and listen (sound only).
-- **Saves data when only listening**: with the screen off or the app in the background (and in the car), videos stream in the smallest quality, on mobile data by default; the **Listen** button in the player does it anytime.
+- **Saves data when only listening**: with the screen off or the app in the background (and in the car), videos stream in the smallest quality, on mobile data by default; the **Listen** button in the player does it anytime and shows moving sound bars with the subtitles instead of the picture. The picture isn't decoded meanwhile, which saves battery.
 
 **TV**
 - New **Downloads**, **Favorites**, **History** and **Search** pages in the sidebar; downloaded videos marked on every card.
