@@ -4,10 +4,7 @@
     <string name="share_moment">Udostępnij fragment…</string>
     <string name="moment_title">Udostępnij fragment</string>
     <string name="moment_hint">Stuknij pierwsze i ostatnie zdanie.</string>
-    <string name="moment_hint_range">Wybierz, gdzie klip się zaczyna i kończy.</string>
-    <string name="moment_preview_empty">Podgląd</string>
-    <string name="moment_preview">Podgląd %1$s – %2$s (%3$s)</string>
-    <string name="moment_stop_preview">Zatrzymaj podgląd</string>
+    <string name="moment_hint_range">Przeciągnij uchwyty na pasku, aby ustawić początek i koniec klipu.</string>
     <string name="moment_subtitles">Pokaż napisy w klipie</string>
     <string name="moment_create">Utwórz klip</string>
     <string name="moment_creating">Tworzenie klipu… %1$d %%</string>
@@ -24,4 +21,16 @@
     <string name="clip_delete">Usuń klip</string>
     <string name="clip_delete_title">Usunąć ten klip?</string>
     <string name="clip_delete_confirm">Usuń</string>
+    <string name="clip_start">Początek</string>
+    <string name="clip_end">Koniec</string>
+    <string name="clip_length">Długość %1$s</string>
+    <string name="editor_sentences">Albo wybierz zdania</string>
+    <string name="editor_no_sentences">Ten film nie ma napisów do wyboru. Ustaw początek i koniec na pasku powyżej.</string>
+    <string name="editor_earlier">%1$s wcześniej</string>
+    <string name="editor_later">%1$s później</string>
+    <string name="switch_to_video_title">Ustawić to na filmie?</string>
+    <string name="switch_to_video_body">Wybrane zdania zostaną zastąpione. Początek i koniec pozostaną te same i można je przesuwać na pasku.</string>
+    <string name="switch_to_sentences_title">Wybrać zdania?</string>
+    <string name="switch_to_sentences_body">Początek i koniec ustawione na pasku zostaną zastąpione wybranymi zdaniami.</string>
+    <string name="switch_confirm">Przełącz</string>
 </resources>

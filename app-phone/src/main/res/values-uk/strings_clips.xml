@@ -4,10 +4,7 @@
     <string name="share_moment">Поділитися моментом…</string>
     <string name="moment_title">Поділитися моментом</string>
     <string name="moment_hint">Торкніться першого й останнього речення.</string>
-    <string name="moment_hint_range">Виберіть, де кліп починається і закінчується.</string>
-    <string name="moment_preview_empty">Перегляд</string>
-    <string name="moment_preview">Перегляд %1$s – %2$s (%3$s)</string>
-    <string name="moment_stop_preview">Зупинити перегляд</string>
+    <string name="moment_hint_range">Перетягніть маркери на шкалі, щоб задати початок і кінець кліпу.</string>
     <string name="moment_subtitles">Показувати субтитри в кліпі</string>
     <string name="moment_create">Створити кліп</string>
     <string name="moment_creating">Створення кліпу… %1$d %%</string>
@@ -24,4 +21,16 @@
     <string name="clip_delete">Видалити кліп</string>
     <string name="clip_delete_title">Видалити цей кліп?</string>
     <string name="clip_delete_confirm">Видалити</string>
+    <string name="clip_start">Початок</string>
+    <string name="clip_end">Кінець</string>
+    <string name="clip_length">Тривалість %1$s</string>
+    <string name="editor_sentences">Або виберіть речення</string>
+    <string name="editor_no_sentences">Це відео не має субтитрів для вибору. Задайте початок і кінець на шкалі вище.</string>
+    <string name="editor_earlier">%1$s раніше</string>
+    <string name="editor_later">%1$s пізніше</string>
+    <string name="switch_to_video_title">Задати на відео?</string>
+    <string name="switch_to_video_body">Вибрані речення буде замінено. Початок і кінець залишаться ті самі, їх можна рухати на шкалі.</string>
+    <string name="switch_to_sentences_title">Вибрати речення?</string>
+    <string name="switch_to_sentences_body">Початок і кінець, задані на шкалі, буде замінено вибраними реченнями.</string>
+    <string name="switch_confirm">Перемкнути</string>
 </resources>

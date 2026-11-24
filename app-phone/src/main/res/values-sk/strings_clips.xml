@@ -4,10 +4,7 @@
     <string name="share_moment">Zdieľať okamih…</string>
     <string name="moment_title">Zdieľať okamih</string>
     <string name="moment_hint">Ťuknite na prvú a poslednú vetu.</string>
-    <string name="moment_hint_range">Vyberte, kde klip začína a končí.</string>
-    <string name="moment_preview_empty">Ukážka</string>
-    <string name="moment_preview">Ukážka %1$s – %2$s (%3$s)</string>
-    <string name="moment_stop_preview">Zastaviť ukážku</string>
+    <string name="moment_hint_range">Potiahnutím úchytov na lište nastavte, kde klip začína a končí.</string>
     <string name="moment_subtitles">Zobraziť titulky v klipe</string>
     <string name="moment_create">Vytvoriť klip</string>
     <string name="moment_creating">Vytvára sa klip… %1$d %%</string>
@@ -24,4 +21,16 @@
     <string name="clip_delete">Vymazať klip</string>
     <string name="clip_delete_title">Vymazať tento klip?</string>
     <string name="clip_delete_confirm">Vymazať</string>
+    <string name="clip_start">Začiatok</string>
+    <string name="clip_end">Koniec</string>
+    <string name="clip_length">Dĺžka %1$s</string>
+    <string name="editor_sentences">Alebo vyberte vety</string>
+    <string name="editor_no_sentences">Toto video nemá titulky, z ktorých by sa dalo vyberať. Začiatok a koniec nastavte na lište vyššie.</string>
+    <string name="editor_earlier">%1$s skôr</string>
+    <string name="editor_later">%1$s neskôr</string>
+    <string name="switch_to_video_title">Nastaviť to radšej na videu?</string>
+    <string name="switch_to_video_body">Vybrané vety sa nahradia. Začiatok a koniec zostanú rovnaké a môžete ich posúvať na lište.</string>
+    <string name="switch_to_sentences_title">Vybrať radšej vety?</string>
+    <string name="switch_to_sentences_body">Začiatok a koniec nastavené na lište sa nahradia vetami, ktoré vyberiete.</string>
+    <string name="switch_confirm">Prepnúť</string>
 </resources>

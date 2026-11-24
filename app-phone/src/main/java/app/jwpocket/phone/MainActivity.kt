@@ -72,6 +72,7 @@ class MainActivity : ComponentActivity() {
             navigationBarStyle = SystemBarStyle.dark(android.graphics.Color.TRANSPARENT),
         )
         super.onCreate(savedInstanceState)
+        setFullscreen(false)
         graph.media.player.warmUp()
         handle(intent, opensDetails = savedInstanceState == null && (intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) == 0)
         addOnPictureInPictureModeChangedListener(pipListener)
@@ -166,11 +167,13 @@ class MainActivity : ComponentActivity() {
         super.onDestroy()
     }
 
-    /** Full screen turns the phone sideways; leaving it turns it back. */
+    /**
+     * The app stays upright; only the full-screen button turns the video
+     * sideways (turning the phone alone doesn't), and leaving full screen
+     * turns it back.
+     */
     private fun setFullscreen(on: Boolean) {
-        requestedOrientation = if (on) ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
-        else if (resources.configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE) ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        else ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+        requestedOrientation = if (on) ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE else ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
     }
 }
 

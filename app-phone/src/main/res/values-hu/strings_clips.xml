@@ -4,10 +4,7 @@
     <string name="share_moment">Egy pillanat megosztása…</string>
     <string name="moment_title">Egy pillanat megosztása</string>
     <string name="moment_hint">Koppints az első és az utolsó mondatra.</string>
-    <string name="moment_hint_range">Válaszd ki, hol kezdődjön és végződjön a klip.</string>
-    <string name="moment_preview_empty">Előnézet</string>
-    <string name="moment_preview">Előnézet: %1$s – %2$s (%3$s)</string>
-    <string name="moment_stop_preview">Előnézet leállítása</string>
+    <string name="moment_hint_range">A sávon lévő fogantyúk húzásával állítsd be, hol kezdődjön és végződjön a klip.</string>
     <string name="moment_subtitles">Feliratok a klipben</string>
     <string name="moment_create">Klip készítése</string>
     <string name="moment_creating">Klip készítése… %1$d %%</string>
@@ -24,4 +21,16 @@
     <string name="clip_delete">Klip törlése</string>
     <string name="clip_delete_title">Törlöd ezt a klipet?</string>
     <string name="clip_delete_confirm">Törlés</string>
+    <string name="clip_start">Kezdet</string>
+    <string name="clip_end">Vég</string>
+    <string name="clip_length">Hossz: %1$s</string>
+    <string name="editor_sentences">Vagy válassz mondatokat</string>
+    <string name="editor_no_sentences">Ennek a videónak nincs felirata, amiből választani lehetne. A kezdetet és a véget a fenti sávon állítsd be.</string>
+    <string name="editor_earlier">%1$s korábban</string>
+    <string name="editor_later">%1$s később</string>
+    <string name="switch_to_video_title">Inkább a videón állítod be?</string>
+    <string name="switch_to_video_body">A kiválasztott mondatok helyére ez lép. A kezdet és a vég ugyanaz marad, és a sávon mozgathatod őket.</string>
+    <string name="switch_to_sentences_title">Inkább mondatokat választasz?</string>
+    <string name="switch_to_sentences_body">A sávon beállított kezdet és vég helyére a kiválasztott mondatok kerülnek.</string>
+    <string name="switch_confirm">Váltás</string>
 </resources>

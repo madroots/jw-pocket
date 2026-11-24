@@ -4,10 +4,7 @@
     <string name="share_moment">Een moment delen…</string>
     <string name="moment_title">Een moment delen</string>
     <string name="moment_hint">Tik op de eerste en de laatste zin.</string>
-    <string name="moment_hint_range">Kies waar de clip begint en eindigt.</string>
-    <string name="moment_preview_empty">Voorbeeld</string>
-    <string name="moment_preview">Voorbeeld %1$s – %2$s (%3$s)</string>
-    <string name="moment_stop_preview">Voorbeeld stoppen</string>
+    <string name="moment_hint_range">Sleep de grepen op de balk om te kiezen waar de clip begint en eindigt.</string>
     <string name="moment_subtitles">Ondertiteling in de clip tonen</string>
     <string name="moment_create">Clip maken</string>
     <string name="moment_creating">Clip wordt gemaakt… %1$d %%</string>
@@ -24,4 +21,16 @@
     <string name="clip_delete">Clip verwijderen</string>
     <string name="clip_delete_title">Deze clip verwijderen?</string>
     <string name="clip_delete_confirm">Verwijderen</string>
+    <string name="clip_start">Begin</string>
+    <string name="clip_end">Einde</string>
+    <string name="clip_length">Lengte %1$s</string>
+    <string name="editor_sentences">Of kies zinnen</string>
+    <string name="editor_no_sentences">Deze video heeft geen ondertiteling om uit te kiezen. Stel begin en einde in op de balk hierboven.</string>
+    <string name="editor_earlier">%1$s eerder</string>
+    <string name="editor_later">%1$s later</string>
+    <string name="switch_to_video_title">In plaats daarvan op de video instellen?</string>
+    <string name="switch_to_video_body">De gekozen zinnen worden vervangen. Begin en einde blijven hetzelfde en je kunt ze op de balk verschuiven.</string>
+    <string name="switch_to_sentences_title">In plaats daarvan zinnen kiezen?</string>
+    <string name="switch_to_sentences_body">Het begin en einde op de balk worden vervangen door de zinnen die je kiest.</string>
+    <string name="switch_confirm">Wisselen</string>
 </resources>

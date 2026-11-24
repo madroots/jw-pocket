@@ -4,10 +4,7 @@
     <string name="share_moment">Condividi un momento…</string>
     <string name="moment_title">Condividi un momento</string>
     <string name="moment_hint">Tocca la prima e l\'ultima frase.</string>
-    <string name="moment_hint_range">Scegli dove inizia e finisce la clip.</string>
-    <string name="moment_preview_empty">Anteprima</string>
-    <string name="moment_preview">Anteprima %1$s – %2$s (%3$s)</string>
-    <string name="moment_stop_preview">Ferma anteprima</string>
+    <string name="moment_hint_range">Trascina le maniglie sulla barra per scegliere dove inizia e finisce la clip.</string>
     <string name="moment_subtitles">Mostra i sottotitoli nella clip</string>
     <string name="moment_create">Crea clip</string>
     <string name="moment_creating">Creazione della clip… %1$d %%</string>
@@ -24,4 +21,16 @@
     <string name="clip_delete">Elimina clip</string>
     <string name="clip_delete_title">Eliminare questa clip?</string>
     <string name="clip_delete_confirm">Elimina</string>
+    <string name="clip_start">Inizio</string>
+    <string name="clip_end">Fine</string>
+    <string name="clip_length">Durata %1$s</string>
+    <string name="editor_sentences">Oppure scegli le frasi</string>
+    <string name="editor_no_sentences">Questo video non ha sottotitoli da scegliere. Imposta inizio e fine sulla barra qui sopra.</string>
+    <string name="editor_earlier">%1$s prima</string>
+    <string name="editor_later">%1$s dopo</string>
+    <string name="switch_to_video_title">Impostarla invece sul video?</string>
+    <string name="switch_to_video_body">Le frasi scelte verranno sostituite. Inizio e fine restano gli stessi e potrai spostarli sulla barra.</string>
+    <string name="switch_to_sentences_title">Scegliere invece le frasi?</string>
+    <string name="switch_to_sentences_body">Inizio e fine impostati sulla barra verranno sostituiti dalle frasi che scegli.</string>
+    <string name="switch_confirm">Cambia</string>
 </resources>

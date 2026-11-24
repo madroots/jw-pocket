@@ -7,11 +7,7 @@
     <!-- "Share a moment": cut a few sentences out of the video -->
     <string name="moment_title">Share a moment</string>
     <string name="moment_hint">Tap the first and the last sentence.</string>
-    <string name="moment_hint_range">Choose where the clip starts and ends.</string>
-    <string name="moment_preview_empty">Preview</string>
-    <!-- %1$s start, %2$s end, %3$s length, like 5:18 – 5:30 (0:12) -->
-    <string name="moment_preview">Preview %1$s – %2$s (%3$s)</string>
-    <string name="moment_stop_preview">Stop preview</string>
+    <string name="moment_hint_range">Drag the handles on the bar to set where the clip starts and ends.</string>
     <string name="moment_subtitles">Show subtitles in the clip</string>
     <string name="moment_create">Create clip</string>
     <string name="moment_creating">Making the clip… %1$d %%</string>
@@ -32,4 +28,18 @@
     <string name="clip_delete">Delete clip</string>
     <string name="clip_delete_title">Delete this clip?</string>
     <string name="clip_delete_confirm">Delete</string>
+
+    <!-- Clip editor -->
+    <string name="clip_start">Start</string>
+    <string name="clip_end">End</string>
+    <string name="clip_length">Length %1$s</string>
+    <string name="editor_sentences">Or pick sentences</string>
+    <string name="editor_no_sentences">This video has no subtitles to pick from. Set the start and end on the bar above.</string>
+    <string name="editor_earlier">%1$s earlier</string>
+    <string name="editor_later">%1$s later</string>
+    <string name="switch_to_video_title">Set it on the video instead?</string>
+    <string name="switch_to_video_body">The sentences you picked will be replaced. You\'ll keep the same start and end and can move them on the bar.</string>
+    <string name="switch_to_sentences_title">Pick sentences instead?</string>
+    <string name="switch_to_sentences_body">The start and end you set on the bar will be replaced by the sentences you pick.</string>
+    <string name="switch_confirm">Switch</string>
 </resources>

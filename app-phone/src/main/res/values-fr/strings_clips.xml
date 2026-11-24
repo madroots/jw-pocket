@@ -4,10 +4,7 @@
     <string name="share_moment">Partager un moment…</string>
     <string name="moment_title">Partager un moment</string>
     <string name="moment_hint">Touchez la première et la dernière phrase.</string>
-    <string name="moment_hint_range">Choisissez le début et la fin de l\'extrait.</string>
-    <string name="moment_preview_empty">Aperçu</string>
-    <string name="moment_preview">Aperçu %1$s – %2$s (%3$s)</string>
-    <string name="moment_stop_preview">Arrêter l\'aperçu</string>
+    <string name="moment_hint_range">Faites glisser les poignées de la barre pour fixer le début et la fin de l\'extrait.</string>
     <string name="moment_subtitles">Afficher les sous-titres dans l\'extrait</string>
     <string name="moment_create">Créer l\'extrait</string>
     <string name="moment_creating">Création de l\'extrait… %1$d %%</string>
@@ -24,4 +21,16 @@
     <string name="clip_delete">Supprimer l\'extrait</string>
     <string name="clip_delete_title">Supprimer cet extrait ?</string>
     <string name="clip_delete_confirm">Supprimer</string>
+    <string name="clip_start">Début</string>
+    <string name="clip_end">Fin</string>
+    <string name="clip_length">Durée %1$s</string>
+    <string name="editor_sentences">Ou choisissez des phrases</string>
+    <string name="editor_no_sentences">Cette vidéo n\'a pas de sous-titres à choisir. Fixez le début et la fin sur la barre ci-dessus.</string>
+    <string name="editor_earlier">%1$s plus tôt</string>
+    <string name="editor_later">%1$s plus tard</string>
+    <string name="switch_to_video_title">Régler plutôt sur la vidéo ?</string>
+    <string name="switch_to_video_body">Les phrases choisies seront remplacées. Le début et la fin restent les mêmes et vous pourrez les déplacer sur la barre.</string>
+    <string name="switch_to_sentences_title">Choisir plutôt des phrases ?</string>
+    <string name="switch_to_sentences_body">Le début et la fin fixés sur la barre seront remplacés par les phrases que vous choisirez.</string>
+    <string name="switch_confirm">Changer</string>
 </resources>

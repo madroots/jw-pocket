@@ -4,10 +4,7 @@
     <string name="share_moment">Einen Moment teilen …</string>
     <string name="moment_title">Einen Moment teilen</string>
     <string name="moment_hint">Tippe auf den ersten und den letzten Satz.</string>
-    <string name="moment_hint_range">Wähle, wo der Clip beginnt und endet.</string>
-    <string name="moment_preview_empty">Vorschau</string>
-    <string name="moment_preview">Vorschau %1$s – %2$s (%3$s)</string>
-    <string name="moment_stop_preview">Vorschau beenden</string>
+    <string name="moment_hint_range">Zieh die Griffe auf der Leiste, um Anfang und Ende des Clips festzulegen.</string>
     <string name="moment_subtitles">Untertitel im Clip zeigen</string>
     <string name="moment_create">Clip erstellen</string>
     <string name="moment_creating">Clip wird erstellt … %1$d %%</string>
@@ -24,4 +21,16 @@
     <string name="clip_delete">Clip löschen</string>
     <string name="clip_delete_title">Diesen Clip löschen?</string>
     <string name="clip_delete_confirm">Löschen</string>
+    <string name="clip_start">Anfang</string>
+    <string name="clip_end">Ende</string>
+    <string name="clip_length">Länge %1$s</string>
+    <string name="editor_sentences">Oder Sätze auswählen</string>
+    <string name="editor_no_sentences">Dieses Video hat keine Untertitel zum Auswählen. Leg Anfang und Ende auf der Leiste oben fest.</string>
+    <string name="editor_earlier">%1$s früher</string>
+    <string name="editor_later">%1$s später</string>
+    <string name="switch_to_video_title">Stattdessen am Video festlegen?</string>
+    <string name="switch_to_video_body">Die ausgewählten Sätze werden ersetzt. Anfang und Ende bleiben gleich und lassen sich auf der Leiste verschieben.</string>
+    <string name="switch_to_sentences_title">Stattdessen Sätze auswählen?</string>
+    <string name="switch_to_sentences_body">Anfang und Ende auf der Leiste werden durch die Sätze ersetzt, die du auswählst.</string>
+    <string name="switch_confirm">Wechseln</string>
 </resources>

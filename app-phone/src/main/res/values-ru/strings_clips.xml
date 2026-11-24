@@ -4,10 +4,7 @@
     <string name="share_moment">Поделиться моментом…</string>
     <string name="moment_title">Поделиться моментом</string>
     <string name="moment_hint">Нажмите на первую и последнюю фразу.</string>
-    <string name="moment_hint_range">Выберите начало и конец клипа.</string>
-    <string name="moment_preview_empty">Просмотр</string>
-    <string name="moment_preview">Просмотр %1$s – %2$s (%3$s)</string>
-    <string name="moment_stop_preview">Остановить просмотр</string>
+    <string name="moment_hint_range">Перетащите маркеры на шкале, чтобы задать начало и конец клипа.</string>
     <string name="moment_subtitles">Показывать субтитры в клипе</string>
     <string name="moment_create">Создать клип</string>
     <string name="moment_creating">Создание клипа… %1$d %%</string>
@@ -24,4 +21,16 @@
     <string name="clip_delete">Удалить клип</string>
     <string name="clip_delete_title">Удалить этот клип?</string>
     <string name="clip_delete_confirm">Удалить</string>
+    <string name="clip_start">Начало</string>
+    <string name="clip_end">Конец</string>
+    <string name="clip_length">Длина %1$s</string>
+    <string name="editor_sentences">Или выберите фразы</string>
+    <string name="editor_no_sentences">У этого видео нет субтитров для выбора. Задайте начало и конец на шкале выше.</string>
+    <string name="editor_earlier">%1$s раньше</string>
+    <string name="editor_later">%1$s позже</string>
+    <string name="switch_to_video_title">Задать на видео?</string>
+    <string name="switch_to_video_body">Выбранные фразы будут заменены. Начало и конец останутся прежними, их можно двигать на шкале.</string>
+    <string name="switch_to_sentences_title">Выбрать фразы?</string>
+    <string name="switch_to_sentences_body">Начало и конец, заданные на шкале, будут заменены выбранными фразами.</string>
+    <string name="switch_confirm">Переключить</string>
 </resources>

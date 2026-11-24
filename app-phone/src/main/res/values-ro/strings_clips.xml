@@ -4,10 +4,7 @@
     <string name="share_moment">Distribuie un moment…</string>
     <string name="moment_title">Distribuie un moment</string>
     <string name="moment_hint">Atinge prima și ultima propoziție.</string>
-    <string name="moment_hint_range">Alege unde începe și unde se termină clipul.</string>
-    <string name="moment_preview_empty">Previzualizare</string>
-    <string name="moment_preview">Previzualizare %1$s – %2$s (%3$s)</string>
-    <string name="moment_stop_preview">Oprește previzualizarea</string>
+    <string name="moment_hint_range">Trage mânerele de pe bară ca să stabilești unde începe și unde se termină clipul.</string>
     <string name="moment_subtitles">Arată subtitrările în clip</string>
     <string name="moment_create">Creează clipul</string>
     <string name="moment_creating">Se creează clipul… %1$d %%</string>
@@ -24,4 +21,16 @@
     <string name="clip_delete">Șterge clipul</string>
     <string name="clip_delete_title">Ștergi acest clip?</string>
     <string name="clip_delete_confirm">Șterge</string>
+    <string name="clip_start">Început</string>
+    <string name="clip_end">Sfârșit</string>
+    <string name="clip_length">Durată %1$s</string>
+    <string name="editor_sentences">Sau alege propoziții</string>
+    <string name="editor_no_sentences">Acest videoclip nu are subtitrări din care să alegi. Stabilește începutul și sfârșitul pe bara de mai sus.</string>
+    <string name="editor_earlier">%1$s mai devreme</string>
+    <string name="editor_later">%1$s mai târziu</string>
+    <string name="switch_to_video_title">Stabilești pe videoclip?</string>
+    <string name="switch_to_video_body">Propozițiile alese vor fi înlocuite. Începutul și sfârșitul rămân aceleași și le poți muta pe bară.</string>
+    <string name="switch_to_sentences_title">Alegi propoziții?</string>
+    <string name="switch_to_sentences_body">Începutul și sfârșitul stabilite pe bară vor fi înlocuite de propozițiile pe care le alegi.</string>
+    <string name="switch_confirm">Schimbă</string>
 </resources>

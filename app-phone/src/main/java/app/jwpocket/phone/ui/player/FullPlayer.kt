@@ -105,7 +105,7 @@ import app.jwpocket.phone.ui.rememberMarks
 import app.jwpocket.phone.ui.theme.Pocket
 import app.jwpocket.phone.clips.Clip
 import app.jwpocket.phone.ui.clips.ClipShareDialog
-import app.jwpocket.phone.ui.clips.MomentSheet
+import app.jwpocket.phone.ui.clips.ClipEditor
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -141,6 +141,12 @@ fun FullPlayer(
     val fromDownload = state.fromDownload && marks.download?.status == DownloadStatus.Done
 
     BackHandler { if (landscape) onToggleFullscreen() else onCollapse() }
+
+    // "Share a moment" takes the whole screen; the player comes back when it closes.
+    if (sheet == Sheet.Moment) {
+        ClipEditor(state, video, onClose = { sheet = null }, onCreated = { sheet = null; savedClip = it })
+        return
+    }
 
     if (landscape) {
         Box(Modifier.fillMaxSize().background(Color.Black)) {
@@ -245,7 +251,7 @@ fun FullPlayer(
         )
         Sheet.Speed -> SpeedSheet(state.speed, onPick = { connection.setSpeed(it); sheet = null }, onDismiss = { sheet = null })
         Sheet.Sleep -> SleepSheet(state.sleepAt != null, onPick = { connection.setSleepTimer(it); sheet = null }, onDismiss = { sheet = null })
-        Sheet.Moment -> MomentSheet(state, video, onDismiss = { sheet = null }, onCreated = { sheet = null; savedClip = it })
+        Sheet.Moment -> Unit // full screen, above
         null -> Unit
     }
     savedClip?.let { ClipShareDialog(it, justSaved = true, onDismiss = { savedClip = null }) }
@@ -428,10 +434,10 @@ fun SeekBar(state: PlaybackState, onSeek: (Long) -> Unit, modifier: Modifier = M
 }
 
 /**
- * Over the video: double-tap a side to skip 10 seconds, tap to show the
- * controls, which hide by themselves while playing. In portrait the controls
- * live below the video, so only the full-screen button shows here; full
- * screen has the whole set.
+ * Over the video: tap to show the controls, which hide by themselves while
+ * playing. In portrait the controls live below the video (with their own
+ * skip buttons), so only the full-screen button shows here; full screen has
+ * the whole set, and there a double-tap on a side skips 10 seconds.
  */
 @Composable
 private fun VideoOverlay(
@@ -455,10 +461,10 @@ private fun VideoOverlay(
     Box(
         Modifier
             .fillMaxSize()
-            .pointerInput(Unit) {
+            .pointerInput(fullscreen) {
                 detectTapGestures(
                     onTap = { visible = !visible; touch++ },
-                    onDoubleTap = { offset ->
+                    onDoubleTap = if (!fullscreen) null else { offset ->
                         connection.seekBy(if (offset.x < size.width / 2) -10_000 else 10_000)
                         visible = true; touch++
                     },
