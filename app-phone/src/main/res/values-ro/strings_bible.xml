@@ -9,7 +9,6 @@
     <string name="bible_this_week">capitole săptămâna aceasta</string>
     <string name="bible_hebrew">Scripturile ebraice și arameice</string>
     <string name="bible_greek">Scripturile grecești creștine</string>
-    <string name="bible_book_heard">%1$d ascultate</string>
     <string name="bible_play_chapter">Redă capitolul %1$d</string>
     <string name="bible_download_title">Descarci %1$s?</string>
     <string name="bible_download_body">%1$d capitole, cam %2$s.</string>
@@ -50,4 +49,20 @@
     <string name="library_bible_open">Deschide Biblia</string>
     <string name="library_bible_delete_title">Ștergi %1$s?</string>
     <string name="library_bible_delete_body">%1$d capitole (%2$s) vor fi șterse de pe acest telefon.</string>
+    <string name="bible_book_progress">%1$d din %2$d ascultate</string>
+    <string name="bible_continue_chapter">Continuă capitolul %1$d · %2$s</string>
+    <string name="bible_next_book">Următorul: %1$s</string>
+    <string name="bible_download_all">Descarcă tot</string>
+    <string name="bible_legend_downloaded">descărcat</string>
+    <string name="bible_legend_playing">se redă</string>
+    <string name="bible_hold_hint">Ține apăsat un capitol pentru mai multe opțiuni</string>
+    <string name="bible_status_heard">Ascultat</string>
+    <string name="bible_status_started">Început · %1$s din %2$s</string>
+    <string name="bible_status_new">Încă neînceput</string>
+    <string name="bible_continue_from">Continuă de la %1$s</string>
+    <string name="bible_play_start">Redă de la început</string>
+    <string name="bible_mark_heard">Marchează ca ascultat</string>
+    <string name="bible_mark_not_heard">Marchează ca neascultat</string>
+    <string name="bible_download_chapter">Descarcă · %1$s</string>
+    <string name="bible_remove_download">Șterge descărcarea</string>
 </resources>

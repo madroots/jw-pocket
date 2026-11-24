@@ -9,7 +9,6 @@
     <string name="bible_this_week">розділів цього тижня</string>
     <string name="bible_hebrew">Єврейсько-арамейські Писання</string>
     <string name="bible_greek">Християнські грецькі Писання</string>
-    <string name="bible_book_heard">Прослухано: %1$d</string>
     <string name="bible_play_chapter">Відтворити розділ %1$d</string>
     <string name="bible_download_title">Завантажити %1$s?</string>
     <string name="bible_download_body">Розділів: %1$d, близько %2$s.</string>
@@ -52,4 +51,20 @@
     <string name="library_bible_open">Відкрити Біблію</string>
     <string name="library_bible_delete_title">Видалити %1$s?</string>
     <string name="library_bible_delete_body">Розділів буде видалено з телефона: %1$d (%2$s).</string>
+    <string name="bible_book_progress">Прослухано %1$d з %2$d</string>
+    <string name="bible_continue_chapter">Продовжити розділ %1$d · %2$s</string>
+    <string name="bible_next_book">Далі: %1$s</string>
+    <string name="bible_download_all">Завантажити все</string>
+    <string name="bible_legend_downloaded">завантажено</string>
+    <string name="bible_legend_playing">грає</string>
+    <string name="bible_hold_hint">Утримуйте розділ, щоб побачити більше</string>
+    <string name="bible_status_heard">Прослухано</string>
+    <string name="bible_status_started">Розпочато · %1$s з %2$s</string>
+    <string name="bible_status_new">Ще не розпочато</string>
+    <string name="bible_continue_from">Продовжити з %1$s</string>
+    <string name="bible_play_start">Відтворити з початку</string>
+    <string name="bible_mark_heard">Позначити як прослухане</string>
+    <string name="bible_mark_not_heard">Позначити як непрослухане</string>
+    <string name="bible_download_chapter">Завантажити · %1$s</string>
+    <string name="bible_remove_download">Видалити завантаження</string>
 </resources>

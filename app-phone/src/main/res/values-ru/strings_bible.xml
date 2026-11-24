@@ -9,7 +9,6 @@
     <string name="bible_this_week">глав на этой неделе</string>
     <string name="bible_hebrew">Еврейско-арамейские Писания</string>
     <string name="bible_greek">Христианские Греческие Писания</string>
-    <string name="bible_book_heard">Прослушано: %1$d</string>
     <string name="bible_play_chapter">Воспроизвести главу %1$d</string>
     <string name="bible_download_title">Скачать %1$s?</string>
     <string name="bible_download_body">Глав: %1$d, около %2$s.</string>
@@ -52,4 +51,20 @@
     <string name="library_bible_open">Открыть Библию</string>
     <string name="library_bible_delete_title">Удалить %1$s?</string>
     <string name="library_bible_delete_body">Глав будет удалено с телефона: %1$d (%2$s).</string>
+    <string name="bible_book_progress">Прослушано %1$d из %2$d</string>
+    <string name="bible_continue_chapter">Продолжить главу %1$d · %2$s</string>
+    <string name="bible_next_book">Далее: %1$s</string>
+    <string name="bible_download_all">Скачать всё</string>
+    <string name="bible_legend_downloaded">скачано</string>
+    <string name="bible_legend_playing">играет</string>
+    <string name="bible_hold_hint">Удерживайте главу, чтобы увидеть больше</string>
+    <string name="bible_status_heard">Прослушано</string>
+    <string name="bible_status_started">Начато · %1$s из %2$s</string>
+    <string name="bible_status_new">Ещё не начато</string>
+    <string name="bible_continue_from">Продолжить с %1$s</string>
+    <string name="bible_play_start">Воспроизвести с начала</string>
+    <string name="bible_mark_heard">Отметить как прослушанное</string>
+    <string name="bible_mark_not_heard">Отметить как непрослушанное</string>
+    <string name="bible_download_chapter">Скачать · %1$s</string>
+    <string name="bible_remove_download">Удалить загрузку</string>
 </resources>

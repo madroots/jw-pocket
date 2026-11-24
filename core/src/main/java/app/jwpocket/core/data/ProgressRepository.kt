@@ -56,18 +56,33 @@ class ProgressRepository(private val dao: ProgressDao, private val scope: Corout
     /**
      * Records a position. Under 5 s nothing is worth resuming; within the last
      * 5 % (or 20 s) the video counts as finished and leaves Continue Watching.
+     * A Bible chapter once heard stays heard: hearing it again leaves no trace
+     * (it doesn't become "started" again, nor the chapter to continue with).
      */
     fun save(video: Video, positionMs: Long, durationMs: Long) {
         if (durationMs <= 0) return
+        if (video.isBible && states.value[video.id]?.finished == true) return
         val finished = positionMs >= durationMs * 0.95 || durationMs - positionMs < 20_000
         if (!finished && positionMs < 5_000 && states.value[video.id] == null) return
+        upsert(video, if (finished) 0 else positionMs, durationMs, finished)
+    }
+
+    /**
+     * Marks [video] as watched (heard) without playing it. It keeps the time it
+     * was last played (none if never), so it doesn't become "the last one
+     * listened to" or count as heard this week.
+     */
+    fun markFinished(video: Video) =
+        upsert(video, 0, video.durationMs.coerceAtLeast(1), finished = true, updatedAt = states.value[video.id]?.updatedAt ?: 0L)
+
+    private fun upsert(video: Video, positionMs: Long, durationMs: Long, finished: Boolean, updatedAt: Long = System.currentTimeMillis()) {
         val entity = ProgressEntity(
             videoId = video.id,
             videoJson = video.toJson(),
-            positionMs = if (finished) 0 else positionMs,
+            positionMs = positionMs,
             durationMs = durationMs,
             finished = finished,
-            updatedAt = System.currentTimeMillis(),
+            updatedAt = updatedAt,
         )
         scope.launch { dao.upsert(entity) }
     }

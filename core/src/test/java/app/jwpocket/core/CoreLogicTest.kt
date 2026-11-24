@@ -159,7 +159,12 @@ class CoreLogicTest {
         val listened = mapOf(state(chapters[0], 100_000, true, 1), state(chapters[1], 30_000, false, 2))
         assertEquals(chapters[1] to 30_000L, app.jwpocket.core.data.BibleProgress.next(listened, chapters))
         val finishedLast = mapOf(state(chapters[1], 30_000, false, 2), state(chapters[0], 100_000, true, 3))
-        assertEquals(chapters[1] to 0L, app.jwpocket.core.data.BibleProgress.next(finishedLast, chapters))
+        // After a finished chapter: the next one not heard, where it was left.
+        assertEquals(chapters[1] to 30_000L, app.jwpocket.core.data.BibleProgress.next(finishedLast, chapters))
+        val skipHeard = mapOf(state(chapters[1], 100_000, true, 1), state(chapters[0], 100_000, true, 2))
+        assertEquals(chapters[2] to 0L, app.jwpocket.core.data.BibleProgress.next(skipHeard, chapters))
+        val allHeard = chapters.associate { state(it, 100_000, true, 1) }
+        assertNull(app.jwpocket.core.data.BibleProgress.next(allHeard, chapters))
         assertEquals(62_345L, app.jwpocket.core.data.BibleRepository.parseTime("00:01:02.345"))
     }
 }

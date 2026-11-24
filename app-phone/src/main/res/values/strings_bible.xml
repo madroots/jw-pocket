@@ -17,7 +17,6 @@
         <item quantity="one">%d chapter</item>
         <item quantity="other">%d chapters</item>
     </plurals>
-    <string name="bible_book_heard">%1$d heard</string>
     <string name="bible_play_chapter">Play chapter %1$d</string>
     <string name="bible_download_title">Download %1$s?</string>
     <string name="bible_download_body">%1$d chapters, about %2$s.</string>
@@ -58,4 +57,22 @@
     <string name="library_bible_open">Open the Bible</string>
     <string name="library_bible_delete_title">Delete %1$s?</string>
     <string name="library_bible_delete_body">%1$d chapters (%2$s) will be removed from this phone.</string>
+
+    <!-- Book screen: chapter marks, continue, options -->
+    <string name="bible_book_progress">%1$d of %2$d heard</string>
+    <string name="bible_continue_chapter">Continue chapter %1$d · %2$s</string>
+    <string name="bible_next_book">Next: %1$s</string>
+    <string name="bible_download_all">Download all</string>
+    <string name="bible_legend_downloaded">downloaded</string>
+    <string name="bible_legend_playing">playing</string>
+    <string name="bible_hold_hint">Hold a chapter for more options</string>
+    <string name="bible_status_heard">Heard</string>
+    <string name="bible_status_started">Started · %1$s of %2$s</string>
+    <string name="bible_status_new">Not started yet</string>
+    <string name="bible_continue_from">Continue from %1$s</string>
+    <string name="bible_play_start">Play from the start</string>
+    <string name="bible_mark_heard">Mark as heard</string>
+    <string name="bible_mark_not_heard">Mark as not heard</string>
+    <string name="bible_download_chapter">Download · %1$s</string>
+    <string name="bible_remove_download">Remove download</string>
 </resources>

@@ -9,7 +9,6 @@
     <string name="bible_this_week">hoofdstukken deze week</string>
     <string name="bible_hebrew">Hebreeuws-Aramese Geschriften</string>
     <string name="bible_greek">Christelijke Griekse Geschriften</string>
-    <string name="bible_book_heard">%1$d beluisterd</string>
     <string name="bible_play_chapter">Hoofdstuk %1$d afspelen</string>
     <string name="bible_download_title">%1$s downloaden?</string>
     <string name="bible_download_body">%1$d hoofdstukken, ongeveer %2$s.</string>
@@ -48,4 +47,20 @@
     <string name="library_bible_open">Bijbel openen</string>
     <string name="library_bible_delete_title">%1$s verwijderen?</string>
     <string name="library_bible_delete_body">%1$d hoofdstukken (%2$s) worden van deze telefoon verwijderd.</string>
+    <string name="bible_book_progress">%1$d van %2$d beluisterd</string>
+    <string name="bible_continue_chapter">Verder met hoofdstuk %1$d · %2$s</string>
+    <string name="bible_next_book">Volgende: %1$s</string>
+    <string name="bible_download_all">Alles downloaden</string>
+    <string name="bible_legend_downloaded">gedownload</string>
+    <string name="bible_legend_playing">speelt</string>
+    <string name="bible_hold_hint">Houd een hoofdstuk vast voor meer opties</string>
+    <string name="bible_status_heard">Beluisterd</string>
+    <string name="bible_status_started">Begonnen · %1$s van %2$s</string>
+    <string name="bible_status_new">Nog niet begonnen</string>
+    <string name="bible_continue_from">Verder vanaf %1$s</string>
+    <string name="bible_play_start">Vanaf het begin afspelen</string>
+    <string name="bible_mark_heard">Markeren als beluisterd</string>
+    <string name="bible_mark_not_heard">Markeren als niet beluisterd</string>
+    <string name="bible_download_chapter">Downloaden · %1$s</string>
+    <string name="bible_remove_download">Download verwijderen</string>
 </resources>

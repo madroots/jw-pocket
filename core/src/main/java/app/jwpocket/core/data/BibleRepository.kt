@@ -181,14 +181,22 @@ class BibleRepository(private val api: MediatorApi, filesDir: File) {
 /** How far the person is through the Bible, from the saved chapter positions. */
 object BibleProgress {
 
-    /** The chapter to continue with and where in it: the last one listened to, or the next one if it was finished. */
+    /**
+     * The chapter to continue with in [chapters] (a book, or the whole Bible)
+     * and where in it: the one listened to last if it isn't finished; after a
+     * finished one, the next chapter not heard yet. Null when every chapter is heard.
+     */
     fun next(states: Map<String, WatchState>, chapters: List<BibleChapter>): Pair<BibleChapter, Long>? {
-        if (chapters.isEmpty()) return null
+        fun heard(c: BibleChapter) = states[c.id]?.finished == true
+        fun at(c: BibleChapter) = c to (states[c.id]?.takeIf { it.canResume }?.positionMs ?: 0L)
+        if (chapters.isEmpty() || chapters.all(::heard)) return null
         val index = chapters.withIndex().associate { (i, c) -> c.id to i }
         val last = states.values.filter { it.video.id in index }.maxByOrNull { it.updatedAt }
-            ?: return chapters.first() to 0L
+            ?: return at(chapters.first())
         val i = index.getValue(last.video.id)
-        return if (last.finished) (chapters.getOrNull(i + 1) ?: chapters.first()) to 0L else chapters[i] to last.positionMs
+        if (!last.finished) return at(chapters[i])
+        val after = chapters.drop(i + 1).firstOrNull { !heard(it) } ?: chapters.first { !heard(it) }
+        return at(after)
     }
 
     fun heard(states: Map<String, WatchState>, chapters: Collection<BibleChapter>): Int =

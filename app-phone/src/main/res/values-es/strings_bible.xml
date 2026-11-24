@@ -9,7 +9,6 @@
     <string name="bible_this_week">capítulos esta semana</string>
     <string name="bible_hebrew">Escrituras Hebreoarameas</string>
     <string name="bible_greek">Escrituras Griegas Cristianas</string>
-    <string name="bible_book_heard">%1$d escuchados</string>
     <string name="bible_play_chapter">Reproducir capítulo %1$d</string>
     <string name="bible_download_title">¿Descargar %1$s?</string>
     <string name="bible_download_body">%1$d capítulos, unos %2$s.</string>
@@ -48,4 +47,20 @@
     <string name="library_bible_open">Abrir la Biblia</string>
     <string name="library_bible_delete_title">¿Eliminar %1$s?</string>
     <string name="library_bible_delete_body">Se quitarán %1$d capítulos (%2$s) de este teléfono.</string>
+    <string name="bible_book_progress">%1$d de %2$d escuchados</string>
+    <string name="bible_continue_chapter">Seguir con el capítulo %1$d · %2$s</string>
+    <string name="bible_next_book">Siguiente: %1$s</string>
+    <string name="bible_download_all">Descargar todo</string>
+    <string name="bible_legend_downloaded">descargado</string>
+    <string name="bible_legend_playing">sonando</string>
+    <string name="bible_hold_hint">Mantén pulsado un capítulo para ver más opciones</string>
+    <string name="bible_status_heard">Escuchado</string>
+    <string name="bible_status_started">Empezado · %1$s de %2$s</string>
+    <string name="bible_status_new">Aún sin empezar</string>
+    <string name="bible_continue_from">Seguir desde %1$s</string>
+    <string name="bible_play_start">Reproducir desde el principio</string>
+    <string name="bible_mark_heard">Marcar como escuchado</string>
+    <string name="bible_mark_not_heard">Marcar como no escuchado</string>
+    <string name="bible_download_chapter">Descargar · %1$s</string>
+    <string name="bible_remove_download">Quitar descarga</string>
 </resources>

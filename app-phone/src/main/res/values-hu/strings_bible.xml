@@ -9,7 +9,6 @@
     <string name="bible_this_week">fejezet ezen a héten</string>
     <string name="bible_hebrew">Héber-arámi iratok</string>
     <string name="bible_greek">Keresztény görög iratok</string>
-    <string name="bible_book_heard">%1$d meghallgatva</string>
     <string name="bible_play_chapter">%1$d. fejezet lejátszása</string>
     <string name="bible_download_title">Letöltöd: %1$s?</string>
     <string name="bible_download_body">%1$d fejezet, kb. %2$s.</string>
@@ -48,4 +47,20 @@
     <string name="library_bible_open">Biblia megnyitása</string>
     <string name="library_bible_delete_title">Törlöd: %1$s?</string>
     <string name="library_bible_delete_body">%1$d fejezet (%2$s) törlődik erről a telefonról.</string>
+    <string name="bible_book_progress">%1$d / %2$d meghallgatva</string>
+    <string name="bible_continue_chapter">%1$d. fejezet folytatása · %2$s</string>
+    <string name="bible_next_book">Következő: %1$s</string>
+    <string name="bible_download_all">Összes letöltése</string>
+    <string name="bible_legend_downloaded">letöltve</string>
+    <string name="bible_legend_playing">szól</string>
+    <string name="bible_hold_hint">Tarts nyomva egy fejezetet a további lehetőségekhez</string>
+    <string name="bible_status_heard">Meghallgatva</string>
+    <string name="bible_status_started">Elkezdve · %1$s / %2$s</string>
+    <string name="bible_status_new">Még nincs elkezdve</string>
+    <string name="bible_continue_from">Folytatás innen: %1$s</string>
+    <string name="bible_play_start">Lejátszás az elejéről</string>
+    <string name="bible_mark_heard">Megjelölés meghallgatottként</string>
+    <string name="bible_mark_not_heard">Megjelölés nem meghallgatottként</string>
+    <string name="bible_download_chapter">Letöltés · %1$s</string>
+    <string name="bible_remove_download">Letöltés törlése</string>
 </resources>

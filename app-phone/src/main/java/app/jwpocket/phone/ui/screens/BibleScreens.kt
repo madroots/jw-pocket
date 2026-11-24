@@ -1,6 +1,19 @@
 package app.jwpocket.phone.ui.screens
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.material.icons.rounded.Check
+import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material.icons.rounded.Delete
+import androidx.compose.material.icons.rounded.GraphicEq
+import androidx.compose.material.icons.rounded.RemoveDone
+import androidx.compose.material.icons.rounded.Replay
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
+import app.jwpocket.core.util.formatClock
+import app.jwpocket.media.download.DownloadItem
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -248,27 +261,41 @@ private fun ProgressRing(fraction: Float, modifier: Modifier) {
     }
 }
 
-/** One book: every chapter at a glance (heard, started), continue, download. */
+/**
+ * One book: every chapter at a glance, the chapter to continue with, and
+ * "Download all". Each mark means one thing: a filled tile with a check is
+ * heard, a bar along the bottom shows how far a started chapter got, a small
+ * arrow is downloaded, moving bars are playing now. Hold a chapter for more.
+ */
 @Composable
 fun BibleBookScreen(bookNumber: Int, contentPadding: PaddingValues) {
     val pocket = LocalPocket.current
     val actions = LocalVideoActions.current
+    val context = LocalContext.current
     val (books, _) = rememberBooks()
     val book = books?.firstOrNull { it.number == bookNumber }
     val states by pocket.core.progress.states.collectAsState()
     val playback by pocket.media.player.state.collectAsState()
     val downloads by pocket.media.downloads.items.collectAsState()
     var confirmDownload by remember { mutableStateOf(false) }
+    var options by remember { mutableStateOf<BibleChapter?>(null) }
     if (book == null) {
         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator(color = Pocket.Accent) }
         return
     }
     val all = remember(books) { books.flatMap { it.chapters }.map { it.video } }
     val heard = book.chapters.count { states[it.id]?.finished == true }
-    // Continue in this book: a started chapter, else the one after the last heard, else the first.
-    val resume = book.chapters.firstOrNull { states[it.id]?.canResume == true }
-        ?: book.chapters.lastOrNull { states[it.id]?.finished == true }?.let { last -> book.chapters.getOrNull(book.chapters.indexOf(last) + 1) }
-        ?: book.chapters.first()
+    // Continue with what was heard last in this book; once it's all heard, the next book.
+    val resume = BibleProgress.next(states, book.chapters)
+    val nextBook = books.getOrNull(books.indexOf(book) + 1)?.chapters?.firstOrNull()
+    val target = resume?.first ?: nextBook ?: book.chapters.first()
+    val label = when {
+        resume != null && resume.second > 0 ->
+            stringResource(R.string.bible_continue_chapter, resume.first.chapter, formatTimeLeft(context, resume.first.video.durationMs - resume.second))
+        resume != null -> stringResource(R.string.bible_play_chapter, resume.first.chapter)
+        nextBook != null -> stringResource(R.string.bible_next_book, nextBook.video.title)
+        else -> stringResource(R.string.bible_play_chapter, 1)
+    }
     val allDownloaded = book.chapters.all { downloads[it.id] != null }
 
     LazyVerticalGrid(
@@ -279,60 +306,66 @@ fun BibleBookScreen(bookNumber: Int, contentPadding: PaddingValues) {
         modifier = Modifier.fillMaxSize(),
     ) {
         full {
-            Text(
-                pluralStringResource(R.plurals.bible_chapters, book.chapters.size, book.chapters.size) + " · " +
-                    formatDuration(book.durationMs / 1000.0) + " · " + stringResource(R.string.bible_book_heard, heard),
-                style = MaterialTheme.typography.bodySmall, color = Pocket.TextSecondary,
-            )
+            Column {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        stringResource(R.string.bible_book_progress, heard, book.chapters.size) + " · " + formatDuration(book.durationMs / 1000.0),
+                        style = MaterialTheme.typography.bodySmall, color = Pocket.TextSecondary, modifier = Modifier.weight(1f),
+                    )
+                    // The whole book; single chapters download from their options (hold a chapter).
+                    Row(
+                        Modifier.clip(RoundedCornerShape(50)).clickable(enabled = !allDownloaded) { confirmDownload = true }.padding(horizontal = 8.dp, vertical = 6.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Icon(if (allDownloaded) Icons.Rounded.CheckCircle else Icons.Rounded.Download, null, tint = if (allDownloaded) Pocket.Success else Pocket.Accent, modifier = Modifier.size(16.dp))
+                        Spacer(Modifier.width(4.dp))
+                        Text(stringResource(if (allDownloaded) R.string.common_downloaded else R.string.bible_download_all), style = MaterialTheme.typography.labelLarge,
+                            color = if (allDownloaded) Pocket.TextSecondary else Pocket.Accent)
+                    }
+                }
+                Spacer(Modifier.height(6.dp))
+                Box(Modifier.fillMaxWidth().height(5.dp).clip(RoundedCornerShape(3.dp)).background(Pocket.SurfaceHighest)) {
+                    Box(Modifier.fillMaxWidth(heard.toFloat() / book.chapters.size).height(5.dp).background(Pocket.Accent))
+                }
+            }
         }
         full {
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.padding(vertical = 8.dp)) {
-                Row(
-                    Modifier.weight(1f).clip(RoundedCornerShape(50)).background(Pocket.Accent)
-                        .clickable { actions.play(resume.video, all, false) }.padding(vertical = 11.dp),
-                    horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Icon(Icons.Rounded.PlayArrow, null, tint = Color.White, modifier = Modifier.size(20.dp))
-                    Spacer(Modifier.width(6.dp))
-                    Text(stringResource(R.string.bible_play_chapter, resume.chapter), color = Color.White, style = MaterialTheme.typography.labelLarge)
-                }
-                Row(
-                    Modifier.clip(RoundedCornerShape(50)).background(Pocket.SurfaceHigh)
-                        .clickable(enabled = !allDownloaded) { confirmDownload = true }.padding(horizontal = 16.dp, vertical = 11.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Icon(if (allDownloaded) Icons.Rounded.CheckCircle else Icons.Rounded.Download, null, tint = if (allDownloaded) Pocket.Success else Pocket.TextPrimary, modifier = Modifier.size(18.dp))
-                    Spacer(Modifier.width(6.dp))
-                    Text(stringResource(if (allDownloaded) R.string.common_downloaded else R.string.common_download), style = MaterialTheme.typography.labelLarge)
-                }
+            Row(
+                Modifier.padding(vertical = 8.dp).fillMaxWidth().clip(RoundedCornerShape(50)).background(Pocket.Accent)
+                    .clickable { actions.play(target.video, all, false) }.padding(horizontal = 16.dp, vertical = 12.dp),
+                horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Icon(Icons.Rounded.PlayArrow, null, tint = Color.White, modifier = Modifier.size(20.dp))
+                Spacer(Modifier.width(6.dp))
+                Text(label, color = Color.White, style = MaterialTheme.typography.labelLarge, maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
         }
         items(book.chapters, key = { it.id }) { chapter ->
-            val state = states[chapter.id]
-            val current = playback.video?.id == chapter.id
-            Box(
-                Modifier
-                    .aspectRatio(1f)
-                    .clip(RoundedCornerShape(10.dp))
-                    .background(if (state?.finished == true) Pocket.AccentSoft else Pocket.SurfaceHigh)
-                    .then(if (state?.canResume == true || current) Modifier.border(1.5.dp, Pocket.Accent, RoundedCornerShape(10.dp)) else Modifier)
-                    .clickable { actions.play(chapter.video, all, false) },
-                contentAlignment = Alignment.Center,
-            ) {
-                Text(
-                    "${chapter.chapter}", fontSize = 15.sp,
-                    color = if (state != null || current) Pocket.TextPrimary else Pocket.TextSecondary,
-                    fontWeight = if (current) FontWeight.Bold else FontWeight.Normal,
-                )
-            }
+            ChapterTile(
+                chapter = chapter,
+                state = states[chapter.id],
+                download = downloads[chapter.id],
+                current = playback.video?.id == chapter.id,
+                playing = playback.isPlaying,
+                onClick = { actions.play(chapter.video, all, false) },
+                onLongClick = { options = chapter },
+            )
         }
         full {
-            Row(Modifier.padding(top = 8.dp), horizontalArrangement = Arrangement.spacedBy(16.dp), verticalAlignment = Alignment.CenterVertically) {
-                Legend(Modifier.background(Pocket.AccentSoft), stringResource(R.string.bible_legend_heard))
-                Legend(Modifier.border(1.5.dp, Pocket.Accent, RoundedCornerShape(3.dp)), stringResource(R.string.bible_legend_started))
+            Column(Modifier.padding(top = 12.dp)) {
+                Row(horizontalArrangement = Arrangement.spacedBy(14.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Legend(stringResource(R.string.bible_legend_heard)) { Box(Modifier.size(12.dp).clip(RoundedCornerShape(3.dp)).background(Pocket.AccentSoft)) }
+                    Legend(stringResource(R.string.bible_legend_started)) { Box(Modifier.width(12.dp).height(3.dp).clip(RoundedCornerShape(2.dp)).background(Pocket.Accent)) }
+                    Legend(stringResource(R.string.bible_legend_downloaded)) { Icon(Icons.Rounded.Download, null, tint = Pocket.TextMuted, modifier = Modifier.size(12.dp)) }
+                    Legend(stringResource(R.string.bible_legend_playing)) { Icon(Icons.Rounded.GraphicEq, null, tint = Pocket.Accent, modifier = Modifier.size(12.dp)) }
+                }
+                Spacer(Modifier.height(6.dp))
+                Text(stringResource(R.string.bible_hold_hint), style = MaterialTheme.typography.bodySmall, color = Pocket.TextMuted)
             }
         }
     }
+
+    options?.let { chapter -> ChapterSheet(chapter, states[chapter.id], downloads[chapter.id], all) { options = null } }
 
     if (confirmDownload) {
         val missing = book.chapters.filter { downloads[it.id] == null }
@@ -353,11 +386,96 @@ fun BibleBookScreen(bookNumber: Int, contentPadding: PaddingValues) {
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun Legend(swatch: Modifier, label: String) {
+private fun ChapterTile(chapter: BibleChapter, state: WatchState?, download: DownloadItem?, current: Boolean, playing: Boolean, onClick: () -> Unit, onLongClick: () -> Unit) {
+    val heard = state?.finished == true
+    Box(
+        Modifier
+            .aspectRatio(1f)
+            .clip(RoundedCornerShape(10.dp))
+            .background(if (heard) Pocket.AccentSoft else Pocket.SurfaceHigh)
+            .combinedClickable(onClick = onClick, onLongClick = onLongClick),
+        contentAlignment = Alignment.Center,
+    ) {
+        when {
+            current && playing -> Icon(Icons.Rounded.GraphicEq, null, tint = Pocket.Accent, modifier = Modifier.size(20.dp))
+            // In the player but paused: its number in the accent colour.
+            current -> Text("${chapter.chapter}", fontSize = 15.sp, color = Pocket.Accent, fontWeight = FontWeight.Bold)
+            else -> Text("${chapter.chapter}", fontSize = 15.sp, color = if (state != null) Pocket.TextPrimary else Pocket.TextSecondary)
+        }
+        if (heard) Icon(Icons.Rounded.Check, null, tint = Pocket.Accent, modifier = Modifier.align(Alignment.TopEnd).padding(3.dp).size(11.dp))
+        if (download != null) Icon(
+            Icons.Rounded.Download, null,
+            tint = if (download.isDone) Pocket.TextMuted else Pocket.Accent,
+            modifier = Modifier.align(Alignment.TopStart).padding(3.dp).size(11.dp),
+        )
+        // How far a started chapter got.
+        if (state?.canResume == true) {
+            Box(Modifier.align(Alignment.BottomStart).fillMaxWidth().padding(horizontal = 6.dp, vertical = 5.dp).height(3.dp).clip(RoundedCornerShape(2.dp)).background(Pocket.SurfaceHighest)) {
+                Box(Modifier.fillMaxWidth(state.fraction.coerceAtLeast(0.05f)).height(3.dp).background(Pocket.Accent))
+            }
+        }
+    }
+}
+
+/** Held chapter: continue or start over, mark heard or not, download or remove. */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ChapterSheet(chapter: BibleChapter, state: WatchState?, download: DownloadItem?, all: List<app.jwpocket.core.model.Video>, onDismiss: () -> Unit) {
+    val pocket = LocalPocket.current
+    val actions = LocalVideoActions.current
+    val video = chapter.video
+    ModalBottomSheet(onDismissRequest = onDismiss, containerColor = Pocket.Surface) {
+        Column(Modifier.navigationBarsPadding().padding(bottom = 12.dp)) {
+            Text(video.title, style = MaterialTheme.typography.titleLarge, modifier = Modifier.padding(horizontal = 24.dp))
+            Text(
+                when {
+                    state?.finished == true -> stringResource(R.string.bible_status_heard)
+                    state?.canResume == true -> stringResource(R.string.bible_status_started, formatClock(state.positionMs), formatClock(state.durationMs))
+                    else -> stringResource(R.string.bible_status_new)
+                },
+                style = MaterialTheme.typography.bodySmall, color = Pocket.TextSecondary,
+                modifier = Modifier.padding(horizontal = 24.dp, vertical = 4.dp),
+            )
+            Spacer(Modifier.height(8.dp))
+            if (state?.canResume == true) {
+                SheetAction(Icons.Rounded.PlayArrow, stringResource(R.string.bible_continue_from, formatClock(state.positionMs))) { actions.play(video, all, false); onDismiss() }
+                SheetAction(Icons.Rounded.Replay, stringResource(R.string.bible_play_start)) { actions.play(video, all, true); onDismiss() }
+            } else {
+                SheetAction(Icons.Rounded.PlayArrow, stringResource(R.string.common_play)) { actions.play(video, all, true); onDismiss() }
+            }
+            if (state?.finished == true) SheetAction(Icons.Rounded.RemoveDone, stringResource(R.string.bible_mark_not_heard)) { pocket.core.progress.remove(video.id); onDismiss() }
+            else SheetAction(Icons.Rounded.Check, stringResource(R.string.bible_mark_heard)) { pocket.core.progress.markFinished(video); onDismiss() }
+            when {
+                download == null -> SheetAction(Icons.Rounded.Download, stringResource(R.string.bible_download_chapter, formatBytes(video.files?.firstOrNull()?.filesize ?: 0))) {
+                    video.audioQuality?.let { pocket.media.downloads.download(video, it, pocket.core.settings.current.languageCode) }
+                    onDismiss()
+                }
+                download.isDone -> SheetAction(Icons.Rounded.Delete, stringResource(R.string.bible_remove_download)) { pocket.media.downloads.remove(video.id); onDismiss() }
+                else -> SheetAction(Icons.Rounded.Close, stringResource(R.string.common_cancel_download)) { pocket.media.downloads.remove(video.id); onDismiss() }
+            }
+        }
+    }
+}
+
+@Composable
+private fun SheetAction(icon: androidx.compose.ui.graphics.vector.ImageVector, label: String, onClick: () -> Unit) {
+    Row(
+        Modifier.fillMaxWidth().clickable(onClick = onClick).padding(horizontal = 24.dp, vertical = 14.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Icon(icon, null, tint = Pocket.TextSecondary)
+        Spacer(Modifier.width(16.dp))
+        Text(label, style = MaterialTheme.typography.bodyLarge)
+    }
+}
+
+@Composable
+private fun Legend(label: String, swatch: @Composable () -> Unit) {
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Box(Modifier.size(12.dp).clip(RoundedCornerShape(3.dp)).then(swatch))
-        Spacer(Modifier.width(6.dp))
+        swatch()
+        Spacer(Modifier.width(5.dp))
         Text(label, style = MaterialTheme.typography.bodySmall, color = Pocket.TextSecondary)
     }
 }
