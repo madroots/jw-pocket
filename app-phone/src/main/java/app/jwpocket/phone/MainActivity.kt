@@ -1,6 +1,24 @@
 package app.jwpocket.phone
 
+import android.app.PendingIntent
 import android.app.PictureInPictureParams
+import android.app.RemoteAction
+import android.content.BroadcastReceiver
+import android.content.IntentFilter
+import android.graphics.drawable.Icon
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Text
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
+import app.jwpocket.phone.ui.player.ListenVisual
+import app.jwpocket.phone.ui.player.LocalVideoSurfacesOff
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
@@ -58,10 +76,18 @@ class MainActivity : ComponentActivity() {
         Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && packageManager.hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE)
     }
 
+    /**
+     * The floating window just closed. Expanding it resumes the app next;
+     * closing it (×, or dragged away) stops the app next, which pauses.
+     */
+    private var leftPip = false
+
     private val pipListener = Consumer<PictureInPictureModeChangedInfo> { info ->
         ui.inPictureInPicture = info.isInPictureInPictureMode
-        // Closing the floating window (rather than expanding it) stops the video.
-        if (!info.isInPictureInPictureMode && lifecycle.currentState == Lifecycle.State.CREATED) graph.media.player.pause()
+        if (!info.isInPictureInPictureMode) {
+            // Already stopped (some Android versions report the close after onStop): pause right away.
+            if (lifecycle.currentState == Lifecycle.State.CREATED) graph.media.player.pause() else leftPip = true
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,22 +109,28 @@ class MainActivity : ComponentActivity() {
             Box(Modifier.fillMaxSize()) {
                 PocketTheme {
                     CompositionLocalProvider(LocalPocket provides pocket) {
+                        // The screens stay underneath (tab, open pages, scroll) for when the window is expanded;
+                        // their video surfaces let go so the floating one shows the picture.
+                        CompositionLocalProvider(LocalVideoSurfacesOff provides ui.inPictureInPicture) {
+                            PhoneRoot(ui, onPictureInPicture = ::enterPip, onToggleFullscreen = ::setFullscreen)
+                        }
                         if (ui.inPictureInPicture) PipContent()
-                        else PhoneRoot(ui, onPictureInPicture = ::enterPip, onToggleFullscreen = ::setFullscreen)
                     }
                 }
                 splash.Overlay()
             }
         }
 
-        // Keep the system's picture-in-picture settings in step with playback.
+        // Keep the system's picture-in-picture settings (and its play/pause button) in step with playback.
         if (hasPip) lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                combine(graph.media.player.state, graph.core.settings.settings) { p, s -> p.isPlaying && s.autoPictureInPicture }
+                combine(graph.media.player.state, graph.core.settings.settings) { p, s -> Triple(p.isPlaying, s.autoPictureInPicture, p.video?.isAudio) }
                     .distinctUntilChanged()
                     .collect { updatePipParams() }
             }
         }
+        // Not only while started: the floating window's buttons are pressed while the app is in the background.
+        ContextCompat.registerReceiver(this, pipControls, IntentFilter(ACTION_PIP_CONTROL), ContextCompat.RECEIVER_NOT_EXPORTED)
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -116,16 +148,51 @@ class MainActivity : ComponentActivity() {
         if (opensDetails) NewVideoNotifier.videoFrom(intent)?.let { ui.openDetails = it }
     }
 
-    private fun shouldAutoPip(): Boolean =
-        hasPip && ui.expanded && graph.core.settings.current.autoPictureInPicture && graph.media.player.state.value.let { it.isPlaying && it.video?.isAudio != true }
+    /**
+     * Leaving the app while something plays shrinks it to the floating window:
+     * a video from the full player, audio from anywhere (it plays on out of
+     * sight otherwise, with nothing on screen saying so).
+     */
+    private fun shouldAutoPip(): Boolean {
+        val state = graph.media.player.state.value
+        return hasPip && graph.core.settings.current.autoPictureInPicture && state.isPlaying &&
+            (ui.expanded || state.video?.isAudio == true)
+    }
 
     private fun pipParams(): PictureInPictureParams? {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return null
-        val builder = PictureInPictureParams.Builder().setAspectRatio(Rational(16, 9))
+        val builder = PictureInPictureParams.Builder().setAspectRatio(Rational(16, 9)).setActions(pipActions())
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             builder.setAutoEnterEnabled(shouldAutoPip()).setSeamlessResizeEnabled(true)
         }
         return builder.build()
+    }
+
+    /** Play/pause and next in the floating window (next chapter, song or video). */
+    @androidx.annotation.RequiresApi(Build.VERSION_CODES.O)
+    private fun pipActions(): List<RemoteAction> {
+        val playing = graph.media.player.state.value.isPlaying
+        fun action(control: Int, icon: Int, label: Int) = RemoteAction(
+            Icon.createWithResource(this, icon), getString(label), getString(label),
+            PendingIntent.getBroadcast(
+                this, control, Intent(ACTION_PIP_CONTROL).setPackage(packageName).putExtra(EXTRA_CONTROL, control),
+                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+            ),
+        )
+        return listOf(
+            if (playing) action(CONTROL_TOGGLE, android.R.drawable.ic_media_pause, R.string.common_pause)
+            else action(CONTROL_TOGGLE, android.R.drawable.ic_media_play, R.string.common_play),
+            action(CONTROL_NEXT, android.R.drawable.ic_media_next, R.string.player_next),
+        )
+    }
+
+    private val pipControls = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            when (intent.getIntExtra(EXTRA_CONTROL, 0)) {
+                CONTROL_TOGGLE -> graph.media.player.togglePlay()
+                CONTROL_NEXT -> graph.media.player.next()
+            }
+        }
     }
 
     private fun updatePipParams() {
@@ -134,7 +201,8 @@ class MainActivity : ComponentActivity() {
 
     private fun enterPip() {
         if (!hasPip || Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
-        ui.expanded = true
+        // A video shows from the full player; audio has its own card and leaves the screens as they were.
+        if (graph.media.player.state.value.video?.isAudio != true) ui.expanded = true
         pipParams()?.let { runCatching { enterPictureInPictureMode(it) } }
     }
 
@@ -146,6 +214,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onResume() {
         super.onResume()
+        leftPip = false // the floating window was expanded back into the app
         updatePipParams()
     }
 
@@ -158,14 +227,20 @@ class MainActivity : ComponentActivity() {
         super.onStop()
         val inPip = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && isInPictureInPictureMode
         if (!inPip && !isChangingConfigurations) {
-            // Out of sight: pause, or keep playing as sound only (smallest quality if the setting says so).
-            if (graph.core.settings.current.backgroundPlayback) graph.media.player.setInBackground(true)
-            else graph.media.player.pause()
+            when {
+                // The floating window was closed (×, or dragged away): pause.
+                leftPip -> graph.media.player.pause()
+                // Out of sight: pause, or keep playing as sound only (smallest quality if the setting says so).
+                graph.core.settings.current.backgroundPlayback -> graph.media.player.setInBackground(true)
+                else -> graph.media.player.pause()
+            }
         }
+        leftPip = false
     }
 
     override fun onDestroy() {
         removeOnPictureInPictureModeChangedListener(pipListener)
+        unregisterReceiver(pipControls)
         super.onDestroy()
     }
 
@@ -179,12 +254,35 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+private const val ACTION_PIP_CONTROL = "app.jwpocket.PIP_CONTROL"
+private const val EXTRA_CONTROL = "control"
+private const val CONTROL_TOGGLE = 1
+private const val CONTROL_NEXT = 2
+
+/**
+ * The floating window: a video shows its picture; audio (the Bible, songs,
+ * dramas) a small card with the sound bars, the title and, for the Bible,
+ * the verse being read.
+ */
 @androidx.compose.runtime.Composable
 private fun PipContent() {
     val pocket = LocalPocket.current
     val controller by pocket.media.player.controller.collectAsState()
     val settings by pocket.core.settings.settings.collectAsState()
+    val state by pocket.media.player.state.collectAsState()
+    val video = state.video
     Box(Modifier.fillMaxSize().background(Color.Black)) {
-        VideoSurface(controller, Modifier.fillMaxSize(), subtitleScale = settings.subtitleScale * 0.7f)
+        if (video == null || !video.isAudio) {
+            VideoSurface(controller, Modifier.fillMaxSize(), subtitleScale = settings.subtitleScale * 0.7f)
+            return@Box
+        }
+        val verse = pocket.core.bible.chapter(video.id)?.verseAt(state.positionMs)
+        Column(Modifier.fillMaxSize()) {
+            ListenVisual(video, state.playWhenReady && !state.ended, cue = null, Modifier.fillMaxWidth().weight(1f), compact = true)
+            Column(Modifier.fillMaxWidth().padding(horizontal = 10.dp, vertical = 5.dp)) {
+                Text(video.title, color = Color.White, fontSize = 13.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                if (verse != null) Text(stringResource(R.string.bible_verse) + " $verse", color = Color.White.copy(alpha = 0.75f), fontSize = 11.sp, maxLines = 1)
+            }
+        }
     }
 }

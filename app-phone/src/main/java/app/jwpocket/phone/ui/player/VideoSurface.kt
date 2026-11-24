@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.util.TypedValue
 import androidx.annotation.OptIn
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.media3.common.Player
@@ -11,6 +12,9 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.ui.AspectRatioFrameLayout
 import androidx.media3.ui.CaptionStyleCompat
 import androidx.media3.ui.PlayerView
+
+/** True while the floating window shows the picture: the surfaces of the screens beneath it let go. */
+val LocalVideoSurfacesOff = compositionLocalOf { false }
 
 /**
  * The video picture. Only one surface shows the player at a time: when this
@@ -20,6 +24,7 @@ import androidx.media3.ui.PlayerView
 @OptIn(UnstableApi::class)
 @Composable
 fun VideoSurface(player: Player?, modifier: Modifier = Modifier, subtitleScale: Float = 1f, subtitles: Boolean = true, zoom: Boolean = false) {
+    if (LocalVideoSurfacesOff.current) return
     AndroidView(
         factory = { context ->
             PlayerView(context).apply {
