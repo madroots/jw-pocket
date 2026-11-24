@@ -233,4 +233,4 @@ private const val GLINT_MS = 550
 private const val DROP_MS = 1100
 private const val SELECT_MS = 220
 /** The tab you're on: its icon a little bigger than the others. */
-private const val ACTIVE_SCALE = 1.15f
+private const val ACTIVE_SCALE = 1.25f
