@@ -34,14 +34,15 @@ class LanguageRepository(private val api: MediatorApi, private val scope: Corout
 }
 
 /**
- * Subtitles in any language a video is published in. Every language version
+ * The other language versions of a video: their subtitles, and their own
+ * files when a video is played in another language. Every language version
  * of a JW video is the same edit, so another version's WebVTT file lines up
- * with the video being watched.
+ * with the video being watched, and the same moment is the same scene.
  */
 class SubtitleRepository(private val api: MediatorApi) {
 
-    /** "lang|key" -> url, or "" when that version has no subtitles. */
-    private val cache = ConcurrentHashMap<String, String>()
+    /** "lang|key" -> that language's version. */
+    private val versions = ConcurrentHashMap<String, Video>()
 
     fun supportsOtherLanguages(video: Video): Boolean =
         video.languageAgnosticNaturalKey != null && !video.availableLanguages.isNullOrEmpty()
@@ -57,22 +58,25 @@ class SubtitleRepository(private val api: MediatorApi) {
             choice == null || choice == videoLanguage -> ResolvedSubtitle(video.subtitleUrl, videoLanguage.takeIf { video.subtitleUrl != null })
             choice !in video.availableLanguages.orEmpty() -> ResolvedSubtitle(video.subtitleUrl, videoLanguage.takeIf { video.subtitleUrl != null }, missing = true)
             else -> {
-                val url = withTimeoutOrNull(timeoutMs) { url(video, choice) }
+                val url = withTimeoutOrNull(timeoutMs) { version(video, choice)?.subtitleUrl }
                 if (url != null) ResolvedSubtitle(url, choice)
                 else ResolvedSubtitle(video.subtitleUrl, videoLanguage.takeIf { video.subtitleUrl != null }, missing = true)
             }
         }
     }
 
-    suspend fun url(video: Video, language: String): String? {
+    /** [video] as published in [language], or null when it isn't or can't be reached (not cached: tried again next time). */
+    suspend fun version(video: Video, language: String): Video? {
         val key = video.languageAgnosticNaturalKey ?: return null
         val cacheKey = "$language|$key"
-        cache[cacheKey]?.let { return it.ifEmpty { null } }
-        val version = api.mediaItem(language, key) ?: return null // not cached: try again later
-        val url = version.subtitleUrl
-        cache[cacheKey] = url.orEmpty()
-        return url
+        versions[cacheKey]?.let { return it }
+        val version = api.mediaItem(language, key) ?: return null
+        versions[cacheKey] = version
+        return version
     }
+
+    /** Subtitle URL of [video]'s [language] version, or null when it has none (or can't be reached). */
+    suspend fun url(video: Video, language: String): String? = version(video, language)?.subtitleUrl
 
     /**
      * Languages to offer over [video]: those it exists in, minus sign languages

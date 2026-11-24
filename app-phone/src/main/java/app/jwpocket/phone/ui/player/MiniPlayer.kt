@@ -69,7 +69,7 @@ fun MiniPlayer(state: PlaybackState, onExpand: () -> Unit, modifier: Modifier = 
             }
             Spacer(Modifier.width(12.dp))
             Column(Modifier.weight(1f)) {
-                Text(video.title, style = MaterialTheme.typography.bodyMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Text(state.title ?: video.title, style = MaterialTheme.typography.bodyMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 Text(
                     stringResource(when {
                         state.error != null -> R.string.player_status_error

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="player_language_title">Язык этого видео</string>
+    <string name="player_language_hint">Только для этого видео, с того места, где вы сейчас. Остальные видео останутся на языке %1$s.</string>
+    <string name="player_language_library">Язык библиотеки</string>
+    <string name="player_language_missing">Не удалось загрузить язык %1$s. Воспроизводится %2$s.</string>
+    <string name="player_language_switch">Переключить на %1$s</string>
+</resources>

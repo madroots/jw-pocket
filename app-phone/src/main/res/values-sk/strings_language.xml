@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="player_language_title">Jazyk tohto videa</string>
+    <string name="player_language_hint">Len pre toto video, od miesta, kde práve ste. Ostatné videá zostanú v jazyku %1$s.</string>
+    <string name="player_language_library">Jazyk knižnice</string>
+    <string name="player_language_missing">Jazyk %1$s sa nepodarilo načítať. Hrá %2$s.</string>
+    <string name="player_language_switch">Prepnúť na %1$s</string>
+</resources>

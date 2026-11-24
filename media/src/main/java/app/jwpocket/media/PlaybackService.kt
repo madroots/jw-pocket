@@ -39,6 +39,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.guava.future
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeoutOrNull
 
 /**
  * Owns the one player of the app. Because it is a media session service and
@@ -239,11 +240,19 @@ class PlaybackService : MediaLibraryService() {
         }.awaitAll().filterNotNull()
     }
 
-    /** Download if there is one, otherwise the stream; plus the subtitle file for the choice. */
+    /**
+     * Download if there is one, otherwise the stream; plus the subtitle file for the choice.
+     * Another language picked for this video plays that version's own stream instead.
+     */
     private suspend fun resolve(request: PlayRequest, item: MediaItem): MediaItem {
         val video = request.video
         val downloads = graph.media.downloads
-        val download = downloads.get(video.id)?.takeIf { it.isDone }
+        val online = graph.core.network.online.value
+        val wanted = request.spoken?.takeIf { it != request.language }
+        val version = if (wanted != null && online) withTimeoutOrNull(8_000) { graph.core.subtitles.version(video, wanted) } else null
+        val playing = version ?: video
+        val language = if (version != null) wanted!! else request.language
+        val download = if (version == null) downloads.get(video.id)?.takeIf { it.isDone } else null
 
         val quality: String?
         val uri: Uri
@@ -251,20 +260,19 @@ class PlaybackService : MediaLibraryService() {
             quality = download.quality
             uri = (video.file(download.quality)?.progressiveDownloadURL ?: "").toUri()
         } else {
-            val file = if (request.listening) video.smallestFile() else video.file(request.quality)
+            val file = if (request.listening) playing.smallestFile() else playing.file(request.quality)
             quality = file?.label
             uri = (file?.progressiveDownloadURL ?: "").toUri()
         }
 
-        val online = graph.core.network.online.value
-        val resolved = if (online) graph.core.subtitles.resolve(video, request.language, request.subtitleChoice) else null
-        val wanted = resolved?.language ?: when (request.subtitleChoice) {
+        val resolved = if (online) graph.core.subtitles.resolve(playing, language, request.subtitleChoice) else null
+        val wantedSubtitles = resolved?.language ?: when (request.subtitleChoice) {
             app.jwpocket.core.data.Settings.SUBTITLES_OFF -> null
-            null -> request.language
+            null -> language
             else -> request.subtitleChoice
         }
         // A saved copy beats the network: works offline and starts faster.
-        val saved = wanted?.let { downloads.savedSubtitle(video.id, it) }
+        val saved = wantedSubtitles?.let { downloads.savedSubtitle(video.id, it) }
             ?: if (!online && request.subtitleChoice != app.jwpocket.core.data.Settings.SUBTITLES_OFF) downloads.savedSubtitle(video.id, request.language) else null
         val subtitleUri: Uri? = saved?.let { Uri.fromFile(it) } ?: resolved?.url?.toUri()
         val subtitleLanguage = when {
@@ -281,14 +289,19 @@ class PlaybackService : MediaLibraryService() {
             putString(PlayRequest.KEY_SUBTITLE_LANGUAGE, subtitleLanguage)
             putBoolean(PlayRequest.KEY_SUBTITLE_MISSING, resolved?.missing == true)
             putBoolean(PlayRequest.KEY_FROM_DOWNLOAD, download != null)
+            if (version != null) {
+                putString(PlayRequest.KEY_SPOKEN_LANGUAGE, language)
+                putString(PlayRequest.KEY_SPOKEN_TITLE, version.title)
+            }
+            if (wanted != null && version == null) putString(PlayRequest.KEY_SPOKEN_MISSING, wanted)
         }
         return item.buildUpon()
             .setUri(uri)
-            .setMimeType(video.files?.firstOrNull()?.mimetype ?: MimeTypes.VIDEO_MP4)
+            .setMimeType(playing.files?.firstOrNull()?.mimetype ?: MimeTypes.VIDEO_MP4)
             // Only a finished download is read by its key; a stream must never
             // read the bytes of a download of another quality still in progress.
             .setCustomCacheKey(if (download != null) DownloadsRepository.cacheKey(video.id) else null)
-            .setMediaMetadata(video.metadata(extras))
+            .setMediaMetadata(video.copy(title = version?.title ?: video.title).metadata(extras))
             .setSubtitleConfigurations(
                 listOfNotNull(subtitleUri?.let {
                     MediaItem.SubtitleConfiguration.Builder(it)

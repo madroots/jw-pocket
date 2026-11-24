@@ -29,17 +29,17 @@ import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material.icons.rounded.VideoLibrary
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Badge
-import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.material.icons.automirrored.outlined.MenuBook
+import androidx.compose.material.icons.outlined.GridView
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.icons.outlined.VideoLibrary
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -107,12 +107,13 @@ class PhoneUiState {
     var openDetails by mutableStateOf<Video?>(null)
 }
 
-private enum class Tab(val route: String, @StringRes val label: Int, val icon: ImageVector) {
-    Home("home", R.string.nav_home, Icons.Rounded.Home),
-    Browse("browse", R.string.nav_browse, Icons.Rounded.GridView),
-    Bible("bible", R.string.nav_bible, Icons.AutoMirrored.Rounded.MenuBook),
-    Search("search", R.string.nav_search, Icons.Rounded.Search),
-    Library("library", R.string.nav_library, Icons.Rounded.VideoLibrary),
+/** [icon] for the tab you're on, [outlined] for the others. */
+private enum class Tab(val route: String, @StringRes val label: Int, val icon: ImageVector, val outlined: ImageVector) {
+    Home("home", R.string.nav_home, Icons.Rounded.Home, Icons.Outlined.Home),
+    Browse("browse", R.string.nav_browse, Icons.Rounded.GridView, Icons.Outlined.GridView),
+    Bible("bible", R.string.nav_bible, Icons.AutoMirrored.Rounded.MenuBook, Icons.AutoMirrored.Outlined.MenuBook),
+    Search("search", R.string.nav_search, Icons.Rounded.Search, Icons.Outlined.Search),
+    Library("library", R.string.nav_library, Icons.Rounded.VideoLibrary, Icons.Outlined.VideoLibrary),
 }
 
 /** Routes that draw their own header instead of the top bar. */
@@ -208,10 +209,15 @@ fun PhoneRoot(ui: PhoneUiState, onPictureInPicture: () -> Unit, onToggleFullscre
                     Column {
                         // Only one picture can show the video: the mini player steps aside while the full one is open.
                         if (playback.active && !ui.expanded) MiniPlayer(playback, onExpand = { ui.expanded = true })
-                        NavigationBar(containerColor = Pocket.Surface, tonalElevation = 0.dp) {
+                        PocketTabBar {
+                            val activeDownloads = marks.downloads.value.values.count { it.isActive }
                             Tab.entries.forEach { t ->
-                                NavigationBarItem(
+                                PocketTab(
                                     selected = tab == t,
+                                    icon = t.outlined,
+                                    selectedIcon = t.icon,
+                                    label = stringResource(t.label),
+                                    badge = if (t == Tab.Library) activeDownloads else 0,
                                     onClick = {
                                         tab = t
                                         nav.navigate(t.route) {
@@ -220,21 +226,6 @@ fun PhoneRoot(ui: PhoneUiState, onPictureInPicture: () -> Unit, onToggleFullscre
                                             restoreState = true
                                         }
                                     },
-                                    icon = {
-                                        val active = marks.downloads.value.values.count { it.isActive }
-                                        val label = stringResource(t.label)
-                                        if (t == Tab.Library && active > 0) BadgedBox(badge = { Badge(containerColor = Pocket.Accent) { Text("$active") } }) { Icon(t.icon, label) }
-                                        else Icon(t.icon, label)
-                                    },
-                                    // Five tabs: labels stay on one line (long words in some languages).
-                                    label = { Text(stringResource(t.label), style = MaterialTheme.typography.labelSmall, maxLines = 1, softWrap = false, overflow = TextOverflow.Ellipsis) },
-                                    colors = NavigationBarItemDefaults.colors(
-                                        selectedIconColor = MaterialTheme.colorScheme.onSurface,
-                                        selectedTextColor = MaterialTheme.colorScheme.onSurface,
-                                        indicatorColor = Pocket.SurfaceHighest,
-                                        unselectedIconColor = Pocket.TextMuted,
-                                        unselectedTextColor = Pocket.TextMuted,
-                                    ),
                                 )
                             }
                         }

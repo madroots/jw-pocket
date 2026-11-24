@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="player_language_title">Langue de cette vidéo</string>
+    <string name="player_language_hint">Seulement pour cette vidéo, à partir de l’endroit où vous êtes. Les autres vidéos restent en %1$s.</string>
+    <string name="player_language_library">Langue de la bibliothèque</string>
+    <string name="player_language_missing">Impossible de charger %1$s. Lecture en %2$s.</string>
+    <string name="player_language_switch">Passer en %1$s</string>
+</resources>

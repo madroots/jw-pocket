@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="player_language_title">Język tego filmu</string>
+    <string name="player_language_hint">Tylko dla tego filmu, od miejsca, w którym jesteś. Pozostałe filmy zostają w języku %1$s.</string>
+    <string name="player_language_library">Język biblioteki</string>
+    <string name="player_language_missing">Nie udało się wczytać języka %1$s. Odtwarzanie w języku %2$s.</string>
+    <string name="player_language_switch">Przełącz na %1$s</string>
+</resources>

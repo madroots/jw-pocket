@@ -22,6 +22,8 @@ data class PlayRequest(
     val subtitleChoice: String?,
     /** Only the sound is heard: stream the smallest quality (saves data). */
     val listening: Boolean = false,
+    /** Another language picked in the player for this video only; null = [language]. */
+    val spoken: String? = null,
 ) {
     fun toMediaItem(): MediaItem {
         val extras = Bundle().apply {
@@ -30,6 +32,7 @@ data class PlayRequest(
             putString(KEY_QUALITY, quality)
             putString(KEY_SUBTITLE_CHOICE, subtitleChoice)
             putBoolean(KEY_LISTENING, listening)
+            putString(KEY_SPOKEN, spoken)
         }
         return MediaItem.Builder()
             .setMediaId(video.id)
@@ -44,12 +47,18 @@ data class PlayRequest(
         internal const val KEY_QUALITY = "pocket.quality"
         internal const val KEY_SUBTITLE_CHOICE = "pocket.subtitle_choice"
         internal const val KEY_LISTENING = "pocket.listening"
+        internal const val KEY_SPOKEN = "pocket.spoken"
 
         /** Filled in by the service on the playable item. */
         const val KEY_PLAYING_QUALITY = "pocket.playing_quality"
         const val KEY_SUBTITLE_LANGUAGE = "pocket.subtitle_language"
         const val KEY_SUBTITLE_MISSING = "pocket.subtitle_missing"
         const val KEY_FROM_DOWNLOAD = "pocket.from_download"
+        /** The language heard when it isn't the library one, and that version's title. */
+        const val KEY_SPOKEN_LANGUAGE = "pocket.spoken_language"
+        const val KEY_SPOKEN_TITLE = "pocket.spoken_title"
+        /** The picked language couldn't be loaded: the library version plays. */
+        const val KEY_SPOKEN_MISSING = "pocket.spoken_missing"
 
         fun from(item: MediaItem): PlayRequest? {
             val extras = item.requestMetadata.extras ?: return null
@@ -62,6 +71,7 @@ data class PlayRequest(
                 quality = extras.getString(KEY_QUALITY),
                 subtitleChoice = extras.getString(KEY_SUBTITLE_CHOICE),
                 listening = extras.getBoolean(KEY_LISTENING),
+                spoken = extras.getString(KEY_SPOKEN),
             )
         }
     }

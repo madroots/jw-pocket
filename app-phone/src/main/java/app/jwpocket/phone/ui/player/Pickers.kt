@@ -126,29 +126,12 @@ fun SubtitleSheet(
     onDismiss: () -> Unit,
 ) {
     var query by remember { mutableStateOf("") }
-    val q = LibraryRepository.normalize(query).trim()
-    val shown = if (q.isEmpty()) others else others.filter {
-        LibraryRepository.normalize(it.vernacular).contains(q) || LibraryRepository.normalize(it.name).contains(q)
-    }
+    val shown = filterLanguages(others, query)
     ChoiceSheet(
         stringResource(R.string.player_subtitles), stringResource(R.string.player_subtitles_hint), onDismiss,
-        header = if (others.size > SEARCH_FROM) {
-            {
-                TextField(
-                    value = query, onValueChange = { query = it }, singleLine = true,
-                    placeholder = { Text(stringResource(R.string.player_search_languages)) },
-                    leadingIcon = { Icon(Icons.Rounded.Search, null) },
-                    trailingIcon = { if (query.isNotEmpty()) IconButton(onClick = { query = "" }) { Icon(Icons.Rounded.Close, stringResource(R.string.common_clear_text)) } },
-                    shape = RoundedCornerShape(14.dp),
-                    colors = TextFieldDefaults.colors(
-                        focusedContainerColor = Pocket.SurfaceHigh, unfocusedContainerColor = Pocket.SurfaceHigh,
-                        focusedIndicatorColor = Color.Transparent, unfocusedIndicatorColor = Color.Transparent,
-                    ),
-                    modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, top = 12.dp),
-                )
-            }
-        } else null,
+        header = if (others.size > SEARCH_FROM) { { LanguageSearch(query) { query = it } } } else null,
     ) {
+        val q = query.trim()
         if (q.isEmpty()) {
             item { ChoiceRow(stringResource(R.string.player_subtitles_off_choice), selected == Settings.SUBTITLES_OFF) { onPick(Settings.SUBTITLES_OFF) } }
             if (ownLanguageName != null) {
@@ -186,6 +169,74 @@ fun SubtitleSheet(
 
 /** Lists longer than this get a search field. */
 private const val SEARCH_FROM = 8
+
+private fun filterLanguages(languages: List<Language>, query: String): List<Language> {
+    val q = LibraryRepository.normalize(query).trim()
+    return if (q.isEmpty()) languages else languages.filter {
+        LibraryRepository.normalize(it.vernacular).contains(q) || LibraryRepository.normalize(it.name).contains(q)
+    }
+}
+
+@Composable
+private fun LanguageSearch(query: String, onChange: (String) -> Unit) {
+    TextField(
+        value = query, onValueChange = onChange, singleLine = true,
+        placeholder = { Text(stringResource(R.string.player_search_languages)) },
+        leadingIcon = { Icon(Icons.Rounded.Search, null) },
+        trailingIcon = { if (query.isNotEmpty()) IconButton(onClick = { onChange("") }) { Icon(Icons.Rounded.Close, stringResource(R.string.common_clear_text)) } },
+        shape = RoundedCornerShape(14.dp),
+        colors = TextFieldDefaults.colors(
+            focusedContainerColor = Pocket.SurfaceHigh, unfocusedContainerColor = Pocket.SurfaceHigh,
+            focusedIndicatorColor = Color.Transparent, unfocusedIndicatorColor = Color.Transparent,
+        ),
+        modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, top = 12.dp),
+    )
+}
+
+/**
+ * The language heard in this video only: the library language, then recent
+ * picks and every other language the video is published in.
+ * [selected] null = the library language.
+ */
+@Composable
+fun LanguageSheet(
+    libraryLanguageName: String,
+    others: List<Language>,
+    pinned: List<String>,
+    selected: String?,
+    onPick: (String?) -> Unit,
+    onDismiss: () -> Unit,
+) {
+    var query by remember { mutableStateOf("") }
+    val shown = filterLanguages(others, query)
+    ChoiceSheet(
+        stringResource(R.string.player_language_title), stringResource(R.string.player_language_hint, libraryLanguageName), onDismiss,
+        header = if (others.size > SEARCH_FROM) { { LanguageSearch(query) { query = it } } } else null,
+    ) {
+        val searching = query.isNotBlank()
+        if (!searching) {
+            item { ChoiceRow(libraryLanguageName, selected == null, stringResource(R.string.player_language_library)) { onPick(null) } }
+            if (shown.isNotEmpty()) item { HorizontalDivider(Modifier.padding(vertical = 6.dp, horizontal = 24.dp), color = Pocket.SurfaceHighest) }
+        }
+        items(shown, key = { it.code }) { lang ->
+            ChoiceRow(
+                lang.vernacular,
+                selected == lang.code,
+                detail = when {
+                    lang.code in pinned -> stringResource(R.string.player_subtitles_recently_used, lang.name)
+                    lang.vernacular != lang.name -> lang.name
+                    else -> null
+                },
+            ) { onPick(lang.code) }
+        }
+        if (searching && shown.isEmpty()) {
+            item {
+                Text(stringResource(R.string.player_subtitles_no_match, query), style = MaterialTheme.typography.bodySmall,
+                    color = Pocket.TextSecondary, modifier = Modifier.padding(24.dp))
+            }
+        }
+    }
+}
 
 /** Auto, then each quality with its size; the downloaded one is marked. */
 @Composable

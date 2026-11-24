@@ -63,9 +63,19 @@ data class PlaybackState(
     val listening: Boolean = false,
     /** The person turned listening on with the Listen button. */
     val listenByHand: Boolean = false,
+    /** The language heard when another one was picked for this video (null = the library language). */
+    val spokenLanguage: String? = null,
+    /** That language version's title. */
+    val spokenTitle: String? = null,
+    /** A language picked for this video that couldn't be loaded (the library version plays). */
+    val spokenMissing: String? = null,
+    /** The language heard before the last pick on this video: one tap flips back to it. */
+    val swapLanguage: String? = null,
 ) {
     val active: Boolean get() = video != null
     val progress: Float get() = if (durationMs > 0) (positionMs.toFloat() / durationMs).coerceIn(0f, 1f) else 0f
+    /** Title in the language heard. */
+    val title: String? get() = spokenTitle ?: video?.title
 }
 
 /**
@@ -275,6 +285,24 @@ class PlayerConnection internal constructor(
         reload { it.copy(subtitleChoice = core.settings.current.subtitleLanguage) }
     }
 
+    /** The language heard before the last pick, for the video it was picked on. */
+    private var swap: Pair<String, String>? = null
+
+    /**
+     * Plays the current video in another of its languages ([language] null or
+     * the library language = back to it), from the same moment. Only this
+     * video: the rest of the queue stays in the library language.
+     */
+    fun setSpokenLanguage(language: String?) = command { c ->
+        val current = c.currentMediaItem?.let { PlayRequest.from(it) } ?: return@command
+        val wanted = language?.takeIf { it != current.language }
+        if (wanted == current.spoken) return@command
+        if (wanted != null) core.settings.addRecentLanguage(wanted)
+        swap = current.video.id to (current.spoken ?: current.language)
+        val id = current.video.id
+        reload { if (it.video.id == id) it.copy(spoken = wanted) else it }
+    }
+
     /** Switches quality of the current video, keeping the position; picking one ends Listen. */
     fun setQuality(quality: String?) {
         listenByHand = false
@@ -380,6 +408,10 @@ class PlayerConnection internal constructor(
                 subtitleMissing = extras?.getBoolean(PlayRequest.KEY_SUBTITLE_MISSING) == true,
                 fromDownload = extras?.getBoolean(PlayRequest.KEY_FROM_DOWNLOAD) == true,
                 listening = item?.let { PlayRequest.from(it)?.listening } == true && extras?.getBoolean(PlayRequest.KEY_FROM_DOWNLOAD) != true,
+                spokenLanguage = extras?.getString(PlayRequest.KEY_SPOKEN_LANGUAGE),
+                spokenTitle = extras?.getString(PlayRequest.KEY_SPOKEN_TITLE),
+                spokenMissing = extras?.getString(PlayRequest.KEY_SPOKEN_MISSING),
+                swapLanguage = swap?.takeIf { it.first == video?.id }?.second,
                 speed = player.playbackParameters.speed,
                 error = if (player.playerError == null) null else old.error,
                 sleepAt = if (old.sleepAt == END_OF_VIDEO && player.playbackState == Player.STATE_ENDED) null else old.sleepAt,

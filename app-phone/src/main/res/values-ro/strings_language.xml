@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="player_language_title">Limba acestui videoclip</string>
+    <string name="player_language_hint">Doar pentru acest videoclip, de unde ești acum. Celelalte videoclipuri rămân în %1$s.</string>
+    <string name="player_language_library">Limba bibliotecii</string>
+    <string name="player_language_missing">Nu s-a putut încărca %1$s. Se redă în %2$s.</string>
+    <string name="player_language_switch">Treci la %1$s</string>
+</resources>

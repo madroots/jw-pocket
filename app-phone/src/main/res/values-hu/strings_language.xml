@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="player_language_title">A videó nyelve</string>
+    <string name="player_language_hint">Csak ennél a videónál, attól a ponttól, ahol most tartasz. A többi videó %1$s nyelven marad.</string>
+    <string name="player_language_library">A könyvtár nyelve</string>
+    <string name="player_language_missing">A(z) %1$s nyelv nem tölthető be. Lejátszás %2$s nyelven.</string>
+    <string name="player_language_switch">Váltás erre: %1$s</string>
+</resources>

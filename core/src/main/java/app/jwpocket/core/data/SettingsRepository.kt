@@ -21,7 +21,7 @@ data class Settings(
     val wifiOnlyDownloads: Boolean = false,
     /** null = the video's own language, [SUBTITLES_OFF], or a language code. */
     val subtitleLanguage: String? = null,
-    /** Foreign subtitle languages picked before, most recent first. */
+    /** Other languages picked before (subtitles, or a video's language in the player), most recent first. */
     val recentSubtitleLanguages: List<String> = emptyList(),
     val subtitleScale: Float = 1f,
     /** Keep playing (as audio) when the app goes to the background or the screen locks. */
@@ -81,11 +81,16 @@ class SettingsRepository(context: Context) {
 
     fun setSubtitleLanguage(choice: String?) = update {
         val normalized = choice.takeUnless { c -> c == it.languageCode }
-        val recent = if (normalized != null && normalized != Settings.SUBTITLES_OFF) {
-            (listOf(normalized) + it.recentSubtitleLanguages - normalized).distinct().take(4)
-        } else it.recentSubtitleLanguages
+        val recent = if (normalized != null && normalized != Settings.SUBTITLES_OFF) withRecent(it, normalized) else it.recentSubtitleLanguages
         it.copy(subtitleLanguage = normalized, recentSubtitleLanguages = recent)
     }
+
+    /** A language picked for one video in the player: offered first next time, like subtitle picks. */
+    fun addRecentLanguage(code: String) = update {
+        if (code == it.languageCode) it else it.copy(recentSubtitleLanguages = withRecent(it, code))
+    }
+
+    private fun withRecent(s: Settings, code: String) = (listOf(code) + s.recentSubtitleLanguages - code).distinct().take(4)
 
     /** [tag] from AppLanguage, or null to follow the device. Screens must be recreated to show it. */
     fun setAppLanguage(tag: String?) = update { it.copy(appLanguage = tag) }

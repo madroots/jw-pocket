@@ -280,7 +280,7 @@ private fun PipContent() {
         Column(Modifier.fillMaxSize()) {
             ListenVisual(video, state.playWhenReady && !state.ended, cue = null, Modifier.fillMaxWidth().weight(1f), compact = true)
             Column(Modifier.fillMaxWidth().padding(horizontal = 10.dp, vertical = 5.dp)) {
-                Text(video.title, color = Color.White, fontSize = 13.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Text(state.title ?: video.title, color = Color.White, fontSize = 13.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 if (verse != null) Text(stringResource(R.string.bible_verse) + " $verse", color = Color.White.copy(alpha = 0.75f), fontSize = 11.sp, maxLines = 1)
             }
         }

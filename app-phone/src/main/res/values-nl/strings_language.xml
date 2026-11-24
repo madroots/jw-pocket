@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="player_language_title">Taal van deze video</string>
+    <string name="player_language_hint">Alleen voor deze video, vanaf waar je nu bent. Andere video’s blijven in het %1$s.</string>
+    <string name="player_language_library">Taal van de bibliotheek</string>
+    <string name="player_language_missing">%1$s kon niet worden geladen. Speelt af in het %2$s.</string>
+    <string name="player_language_switch">Overschakelen naar %1$s</string>
+</resources>

@@ -33,6 +33,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.PlaylistPlay
+import androidx.compose.material.icons.rounded.SwapHoriz
+import androidx.compose.material.icons.rounded.Translate
 import androidx.compose.material.icons.rounded.Bedtime
 import androidx.compose.material.icons.rounded.CheckCircle
 import androidx.compose.material.icons.rounded.ClosedCaption
@@ -109,7 +111,7 @@ import app.jwpocket.phone.ui.clips.ClipEditor
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-internal enum class Sheet { Subtitles, Quality, Speed, Sleep, Moment }
+internal enum class Sheet { Language, Subtitles, Quality, Speed, Sleep, Moment }
 
 /**
  * The full player. Portrait: video on top, then controls, actions and Up
@@ -246,15 +248,27 @@ fun FullPlayer(
     }
 
     when (sheet) {
-        Sheet.Subtitles -> SubtitleSheet(
-            ownLanguageName = video.subtitleUrl?.let { pocket.core.languages.name(settings.languageCode) },
+        Sheet.Language -> LanguageSheet(
+            libraryLanguageName = pocket.core.languages.name(settings.languageCode),
             others = pocket.core.subtitles.otherLanguages(video, settings.languageCode, languages, settings.subtitleShortcuts),
             pinned = settings.recentSubtitleLanguages,
-            selected = settings.subtitleLanguage,
-            showingLanguage = state.subtitleLanguage,
-            onPick = { connection.setSubtitles(it); sheet = null },
+            selected = state.spokenLanguage,
+            onPick = { connection.setSpokenLanguage(it); sheet = null },
             onDismiss = { sheet = null },
         )
+        Sheet.Subtitles -> {
+            // "Same as video" is the language heard, which may be another one picked for this video.
+            val heard = state.spokenLanguage ?: settings.languageCode
+            SubtitleSheet(
+                ownLanguageName = if (state.spokenLanguage != null || video.subtitleUrl != null) pocket.core.languages.name(heard) else null,
+                others = pocket.core.subtitles.otherLanguages(video, heard, languages, settings.subtitleShortcuts),
+                pinned = settings.recentSubtitleLanguages,
+                selected = settings.subtitleLanguage,
+                showingLanguage = state.subtitleLanguage,
+                onPick = { connection.setSubtitles(it); sheet = null },
+                onDismiss = { sheet = null },
+            )
+        }
         Sheet.Quality -> QualitySheet(
             video, stringResource(R.string.player_quality), state.quality, pocket.media.downloads.get(video.id)?.takeIf { it.isDone }?.quality, showAuto = true,
             onPick = { connection.setQuality(it); sheet = null }, onDismiss = { sheet = null },
@@ -277,10 +291,10 @@ private fun NowPlayingInfo(state: PlaybackState, onSheet: (Sheet) -> Unit) {
 
     Column(Modifier.padding(horizontal = 20.dp)) {
         Spacer(Modifier.height(16.dp))
-        Text(video.title, style = MaterialTheme.typography.titleLarge, maxLines = 2, overflow = TextOverflow.Ellipsis)
+        Text(state.title ?: video.title, style = MaterialTheme.typography.titleLarge, maxLines = 2, overflow = TextOverflow.Ellipsis)
         Spacer(Modifier.height(4.dp))
         Text(
-            listOfNotNull(formatDuration(video.duration).ifEmpty { null }, state.quality, video.publishedDate).joinToString(" · "),
+            listOfNotNull(formatDuration(video.duration).ifEmpty { null }, state.quality, state.spokenLanguage?.let(pocket.core.languages::name) ?: video.publishedDate).joinToString(" · "),
             style = MaterialTheme.typography.bodySmall, color = Pocket.TextSecondary,
         )
         Spacer(Modifier.height(8.dp))
@@ -303,6 +317,12 @@ private fun NowPlayingInfo(state: PlaybackState, onSheet: (Sheet) -> Unit) {
         }
         Spacer(Modifier.height(16.dp))
 
+        state.spokenMissing?.let { missing ->
+            Text(
+                stringResource(R.string.player_language_missing, pocket.core.languages.name(missing), pocket.core.languages.name(settings.languageCode)),
+                style = MaterialTheme.typography.bodySmall, color = Pocket.TextSecondary, modifier = Modifier.padding(bottom = 8.dp),
+            )
+        }
         if (state.subtitleMissing && settings.subtitleLanguage != null && settings.subtitleLanguage != Settings.SUBTITLES_OFF) {
             Text(
                 stringResource(R.string.player_subtitles_missing, pocket.core.languages.name(settings.subtitleLanguage!!)),
@@ -335,6 +355,18 @@ internal fun PlayerActions(state: PlaybackState, onSheet: (Sheet) -> Unit, modif
     val audio = video.isAudio
 
     Row(modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        // The language heard, for this video only; after a pick, one tap flips back (handy for comparing).
+        if (!video.isBible && video.availableLanguages.orEmpty().any { it != settings.languageCode } && pocket.core.subtitles.supportsOtherLanguages(video)) {
+            Pill(Icons.Rounded.Translate, pocket.core.languages.name(state.spokenLanguage ?: settings.languageCode), highlighted = state.spokenLanguage != null) {
+                onSheet(Sheet.Language)
+            }
+            state.swapLanguage?.let { other ->
+                val name = pocket.core.languages.name(other)
+                Pill(Icons.Rounded.SwapHoriz, name, description = stringResource(R.string.player_language_switch, name)) {
+                    connection.setSpokenLanguage(other)
+                }
+            }
+        }
         if (!audio) {
             val cc = state.subtitleLanguage
             Pill(if (cc != null) Icons.Rounded.ClosedCaption else Icons.Rounded.ClosedCaptionDisabled,
@@ -421,12 +453,12 @@ private fun sleepLabel(sleepAt: Long?): String = when {
 }
 
 @Composable
-private fun Pill(icon: ImageVector, label: String, highlighted: Boolean = false, onClick: () -> Unit) {
+private fun Pill(icon: ImageVector, label: String, highlighted: Boolean = false, description: String? = null, onClick: () -> Unit) {
     Row(
         Modifier
             .clip(RoundedCornerShape(50))
             .background(if (highlighted) Pocket.AccentSoft else Pocket.SurfaceHigh)
-            .clickable(onClick = onClick)
+            .clickable(onClickLabel = description, onClick = onClick)
             .padding(horizontal = 14.dp, vertical = 9.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
