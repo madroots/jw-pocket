@@ -45,14 +45,16 @@ object AppLanguage {
  * This context with the app's own text in the app language. Activities,
  * services and the application wrap their base context with it; it reads the
  * setting straight from storage because it runs before anything else exists.
+ *
+ * Only the language is overridden: a copy of the whole configuration would
+ * freeze orientation, screen size and dark mode at their values of the moment,
+ * and the screens would never see the phone turn.
  */
 fun Context.withAppLanguage(): Context {
     val chosen = getSharedPreferences(SettingsRepository.PREFS, Context.MODE_PRIVATE).getString(SettingsRepository.KEY_APP_LANGUAGE, null)
-    val locale = Locale.forLanguageTag(AppLanguage.effective(chosen))
-    val config = Configuration(resources.configuration)
-    config.setLocale(locale)
-    config.setLayoutDirection(locale)
-    return createConfigurationContext(config)
+    val override = Configuration() // every field "undefined" except what is set below
+    override.setLocale(Locale.forLanguageTag(AppLanguage.effective(chosen)))
+    return createConfigurationContext(override)
 }
 
 /** Text in the app language for messages made outside the screens (library errors, update status). */
