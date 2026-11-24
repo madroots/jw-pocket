@@ -1,5 +1,7 @@
 package app.jwpocket.core
 
+import app.jwpocket.core.util.Cue
+import app.jwpocket.core.util.WebVtt
 import app.jwpocket.core.data.LibraryRepository
 import app.jwpocket.core.data.UpdateRepository
 import app.jwpocket.core.model.Language
@@ -121,5 +123,12 @@ class CoreLogicTest {
         assertEquals(listOf(e2, e3), SeriesOrder.nextParts(e1, listOf(e3, e2, e1)))
         // A video with no number is no series.
         assertFalse(SeriesOrder.mayBePart(v("Never Give Up Hope!", "pub-lffv_11_VIDEO")))
+    }
+
+    @Test
+    fun webVttCuesWithTagsAndShortTimes() {
+        val vtt = "WEBVTT\n\n1\n00:00:05.120 --> 00:00:07.900 align:middle\n<c.white>The Bible says</c> that\nJehovah &amp; his Son\n\n02:03.5 --> 02:04.000\nOnly <i>minutes</i>\n"
+        val cues = WebVtt.parse(vtt)
+        assertEquals(listOf(Cue(5_120, 7_900, "The Bible says that\nJehovah & his Son"), Cue(123_500, 124_000, "Only minutes")), cues)
     }
 }

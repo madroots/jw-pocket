@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="share_video">Zdieľať video</string>
+    <string name="share_moment">Zdieľať okamih…</string>
+    <string name="moment_title">Zdieľať okamih</string>
+    <string name="moment_hint">Ťuknite na prvú a poslednú vetu.</string>
+    <string name="moment_hint_range">Vyberte, kde klip začína a končí.</string>
+    <string name="moment_preview_empty">Ukážka</string>
+    <string name="moment_preview">Ukážka %1$s – %2$s (%3$s)</string>
+    <string name="moment_stop_preview">Zastaviť ukážku</string>
+    <string name="moment_subtitles">Zobraziť titulky v klipe</string>
+    <string name="moment_create">Vytvoriť klip</string>
+    <string name="moment_creating">Vytvára sa klip… %1$d %%</string>
+    <string name="moment_failed">Klip sa nepodarilo vytvoriť. Skontrolujte pripojenie a skúste to znova.</string>
+    <string name="moment_too_long">Klip môže mať najviac %1$d minút.</string>
+    <string name="clip_share_title">Zdieľať klip</string>
+    <string name="clip_saved">Uložené v Knižnica › Klipy.</string>
+    <string name="clip_share_warning">Len na osobné zdieľanie s ľuďmi, ktorých poznáte. Zverejňovať ho na sociálnych sieťach alebo kdekoľvek verejne nie je dovolené.</string>
+    <string name="clip_share_link">Pridať odkaz na celé video</string>
+    <string name="clip_share_action">Zdieľať</string>
+    <string name="library_tab_clips">Klipy</string>
+    <string name="clips_empty_title">Zatiaľ žiadne klipy</string>
+    <string name="clips_empty_body">V prehrávači ťuknite na Zdieľať › Zdieľať okamih a uložte si zopár viet, ktoré sa vám páčia.</string>
+    <string name="clip_delete">Vymazať klip</string>
+    <string name="clip_delete_title">Vymazať tento klip?</string>
+    <string name="clip_delete_confirm">Vymazať</string>
+</resources>

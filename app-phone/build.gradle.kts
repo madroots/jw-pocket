@@ -45,6 +45,9 @@ android {
 dependencies {
     implementation(project(":media"))
     implementation(project(":brand"))
+    // Cutting clips ("Share a moment"), with subtitles drawn into the picture.
+    implementation(libs.media3.transformer)
+    implementation(libs.media3.effect)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity.compose)

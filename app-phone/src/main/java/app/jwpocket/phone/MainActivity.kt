@@ -30,6 +30,7 @@ import app.jwpocket.core.util.withAppLanguage
 import app.jwpocket.media.PlaybackService
 import app.jwpocket.media.pocketGraph
 import app.jwpocket.phone.notify.NewVideoNotifier
+import app.jwpocket.phone.clips.ClipStore
 import app.jwpocket.phone.ui.LocalPocket
 import app.jwpocket.phone.ui.PhoneRoot
 import app.jwpocket.phone.ui.PhoneUiState
@@ -52,7 +53,7 @@ class MainActivity : ComponentActivity() {
 
     private val graph by lazy { pocketGraph }
     private val ui = PhoneUiState()
-    private val pocket by lazy { Pocket(graph.core, graph.media) }
+    private val pocket by lazy { Pocket(graph.core, graph.media, ClipStore.get(this)) }
     private val hasPip by lazy {
         Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && packageManager.hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE)
     }

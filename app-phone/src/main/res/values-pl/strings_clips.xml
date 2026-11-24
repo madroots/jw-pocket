@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="share_video">Udostępnij film</string>
+    <string name="share_moment">Udostępnij fragment…</string>
+    <string name="moment_title">Udostępnij fragment</string>
+    <string name="moment_hint">Stuknij pierwsze i ostatnie zdanie.</string>
+    <string name="moment_hint_range">Wybierz, gdzie klip się zaczyna i kończy.</string>
+    <string name="moment_preview_empty">Podgląd</string>
+    <string name="moment_preview">Podgląd %1$s – %2$s (%3$s)</string>
+    <string name="moment_stop_preview">Zatrzymaj podgląd</string>
+    <string name="moment_subtitles">Pokaż napisy w klipie</string>
+    <string name="moment_create">Utwórz klip</string>
+    <string name="moment_creating">Tworzenie klipu… %1$d %%</string>
+    <string name="moment_failed">Nie udało się utworzyć klipu. Sprawdź połączenie i spróbuj ponownie.</string>
+    <string name="moment_too_long">Klip może trwać najwyżej %1$d minut.</string>
+    <string name="clip_share_title">Udostępnij klip</string>
+    <string name="clip_saved">Zapisano w Biblioteka › Klipy.</string>
+    <string name="clip_share_warning">Tylko do osobistego udostępniania znajomym. Publikowanie go w mediach społecznościowych lub w innych publicznych miejscach jest niedozwolone.</string>
+    <string name="clip_share_link">Dodaj link do całego filmu</string>
+    <string name="clip_share_action">Udostępnij</string>
+    <string name="library_tab_clips">Klipy</string>
+    <string name="clips_empty_title">Nie ma jeszcze klipów</string>
+    <string name="clips_empty_body">W odtwarzaczu stuknij Udostępnij › Udostępnij fragment, aby zachować kilka zdań, które ci się podobają.</string>
+    <string name="clip_delete">Usuń klip</string>
+    <string name="clip_delete_title">Usunąć ten klip?</string>
+    <string name="clip_delete_confirm">Usuń</string>
+</resources>

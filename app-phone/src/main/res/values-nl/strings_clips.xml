@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="share_video">Video delen</string>
+    <string name="share_moment">Een moment delen…</string>
+    <string name="moment_title">Een moment delen</string>
+    <string name="moment_hint">Tik op de eerste en de laatste zin.</string>
+    <string name="moment_hint_range">Kies waar de clip begint en eindigt.</string>
+    <string name="moment_preview_empty">Voorbeeld</string>
+    <string name="moment_preview">Voorbeeld %1$s – %2$s (%3$s)</string>
+    <string name="moment_stop_preview">Voorbeeld stoppen</string>
+    <string name="moment_subtitles">Ondertiteling in de clip tonen</string>
+    <string name="moment_create">Clip maken</string>
+    <string name="moment_creating">Clip wordt gemaakt… %1$d %%</string>
+    <string name="moment_failed">De clip kon niet worden gemaakt. Controleer de verbinding en probeer het opnieuw.</string>
+    <string name="moment_too_long">Een clip mag hoogstens %1$d minuten duren.</string>
+    <string name="clip_share_title">Clip delen</string>
+    <string name="clip_saved">Opgeslagen in Bibliotheek › Clips.</string>
+    <string name="clip_share_warning">Alleen om persoonlijk te delen met mensen die je kent. Op sociale media of ergens anders openbaar plaatsen is niet toegestaan.</string>
+    <string name="clip_share_link">Link naar de hele video toevoegen</string>
+    <string name="clip_share_action">Delen</string>
+    <string name="library_tab_clips">Clips</string>
+    <string name="clips_empty_title">Nog geen clips</string>
+    <string name="clips_empty_body">Tik in de speler op Delen › Een moment delen om een paar zinnen te bewaren die je mooi vindt.</string>
+    <string name="clip_delete">Clip verwijderen</string>
+    <string name="clip_delete_title">Deze clip verwijderen?</string>
+    <string name="clip_delete_confirm">Verwijderen</string>
+</resources>

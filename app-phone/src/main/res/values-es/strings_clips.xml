@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="share_video">Compartir video</string>
+    <string name="share_moment">Compartir un momento…</string>
+    <string name="moment_title">Compartir un momento</string>
+    <string name="moment_hint">Toca la primera y la última frase.</string>
+    <string name="moment_hint_range">Elige dónde empieza y termina el clip.</string>
+    <string name="moment_preview_empty">Vista previa</string>
+    <string name="moment_preview">Vista previa %1$s – %2$s (%3$s)</string>
+    <string name="moment_stop_preview">Detener vista previa</string>
+    <string name="moment_subtitles">Mostrar subtítulos en el clip</string>
+    <string name="moment_create">Crear clip</string>
+    <string name="moment_creating">Creando el clip… %1$d %%</string>
+    <string name="moment_failed">No se pudo crear el clip. Revisa la conexión e inténtalo de nuevo.</string>
+    <string name="moment_too_long">Un clip puede durar como máximo %1$d minutos.</string>
+    <string name="clip_share_title">Compartir clip</string>
+    <string name="clip_saved">Guardado en Biblioteca › Clips.</string>
+    <string name="clip_share_warning">Solo para compartir de forma personal con personas que conoces. No está permitido publicarlo en redes sociales ni en ningún sitio público.</string>
+    <string name="clip_share_link">Añadir un enlace al video completo</string>
+    <string name="clip_share_action">Compartir</string>
+    <string name="library_tab_clips">Clips</string>
+    <string name="clips_empty_title">Todavía no hay clips</string>
+    <string name="clips_empty_body">En el reproductor, toca Compartir › Compartir un momento para guardar unas frases que te gusten.</string>
+    <string name="clip_delete">Eliminar clip</string>
+    <string name="clip_delete_title">¿Eliminar este clip?</string>
+    <string name="clip_delete_confirm">Eliminar</string>
+</resources>

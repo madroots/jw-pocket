@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="share_video">Sdílet video</string>
+    <string name="share_moment">Sdílet okamžik…</string>
+    <string name="moment_title">Sdílet okamžik</string>
+    <string name="moment_hint">Klepněte na první a poslední větu.</string>
+    <string name="moment_hint_range">Vyberte, kde klip začíná a končí.</string>
+    <string name="moment_preview_empty">Náhled</string>
+    <string name="moment_preview">Náhled %1$s – %2$s (%3$s)</string>
+    <string name="moment_stop_preview">Zastavit náhled</string>
+    <string name="moment_subtitles">Zobrazit titulky v klipu</string>
+    <string name="moment_create">Vytvořit klip</string>
+    <string name="moment_creating">Vytváří se klip… %1$d %%</string>
+    <string name="moment_failed">Klip se nepodařilo vytvořit. Zkontrolujte připojení a zkuste to znovu.</string>
+    <string name="moment_too_long">Klip může být dlouhý nejvýše %1$d minut.</string>
+    <string name="clip_share_title">Sdílet klip</string>
+    <string name="clip_saved">Uloženo v Knihovna › Klipy.</string>
+    <string name="clip_share_warning">Jen pro osobní sdílení s lidmi, které znáte. Zveřejňovat ho na sociálních sítích nebo kdekoli veřejně není dovoleno.</string>
+    <string name="clip_share_link">Přidat odkaz na celé video</string>
+    <string name="clip_share_action">Sdílet</string>
+    <string name="library_tab_clips">Klipy</string>
+    <string name="clips_empty_title">Zatím žádné klipy</string>
+    <string name="clips_empty_body">V přehrávači klepněte na Sdílet › Sdílet okamžik a uložte si pár vět, které se vám líbí.</string>
+    <string name="clip_delete">Smazat klip</string>
+    <string name="clip_delete_title">Smazat tento klip?</string>
+    <string name="clip_delete_confirm">Smazat</string>
+</resources>

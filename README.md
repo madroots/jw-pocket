@@ -11,7 +11,8 @@ The successor of JW TV, rebuilt from scratch with a clean structure and a shared
 - **Picture-in-picture**: leave the app during a video and it shrinks to a floating window (automatic on Android 12+, or with the button in the player).
 - **Mini player** above the tab bar: browse while the video keeps playing; tap it to open the full player, swipe the full player down to shrink it again.
 - **Full player**: Up next list with autoplay (the parts of a series and numbered episodes always follow in order), subtitles in any language, quality, playback speed, sleep timer, share, download and favorite in one row. Turn the phone sideways for full screen.
-- **Library tab**: Downloads (progress, size, free space, pause/resume/retry/delete, Wi-Fi only), Favorites and History.
+- **Library tab**: Downloads (progress, size, free space, pause/resume/retry/delete, Wi-Fi only), Favorites, History and Clips.
+- **Share a moment**: Share › Share a moment cuts a few sentences out of a video. Pick the first and last subtitle line, preview, and the phone makes a short MP4 (subtitles drawn in, if wanted). Clips are kept in Library › Clips and are for personal sharing only, not for social media or anywhere public.
 - **Search** across the whole library, by title and description.
 - **Downloaded videos are marked everywhere** with a green check; "Ready offline" row on Home and an offline banner when there's no internet.
 - **New-video notifications** for the monthly JW Broadcasting program and Governing Body updates, each with its own switch in Settings; tapping one opens the video.

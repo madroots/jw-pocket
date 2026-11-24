@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="share_video">Поділитися відео</string>
+    <string name="share_moment">Поділитися моментом…</string>
+    <string name="moment_title">Поділитися моментом</string>
+    <string name="moment_hint">Торкніться першого й останнього речення.</string>
+    <string name="moment_hint_range">Виберіть, де кліп починається і закінчується.</string>
+    <string name="moment_preview_empty">Перегляд</string>
+    <string name="moment_preview">Перегляд %1$s – %2$s (%3$s)</string>
+    <string name="moment_stop_preview">Зупинити перегляд</string>
+    <string name="moment_subtitles">Показувати субтитри в кліпі</string>
+    <string name="moment_create">Створити кліп</string>
+    <string name="moment_creating">Створення кліпу… %1$d %%</string>
+    <string name="moment_failed">Не вдалося створити кліп. Перевірте з’єднання і спробуйте ще раз.</string>
+    <string name="moment_too_long">Кліп може тривати щонайбільше %1$d хвилин.</string>
+    <string name="clip_share_title">Поділитися кліпом</string>
+    <string name="clip_saved">Збережено в Бібліотека › Кліпи.</string>
+    <string name="clip_share_warning">Лише для особистого обміну зі знайомими. Публікувати його в соцмережах чи деінде публічно не дозволено.</string>
+    <string name="clip_share_link">Додати посилання на все відео</string>
+    <string name="clip_share_action">Поділитися</string>
+    <string name="library_tab_clips">Кліпи</string>
+    <string name="clips_empty_title">Поки немає кліпів</string>
+    <string name="clips_empty_body">У плеєрі торкніться Поділитися › Поділитися моментом, щоб зберегти кілька речень, які вам сподобалися.</string>
+    <string name="clip_delete">Видалити кліп</string>
+    <string name="clip_delete_title">Видалити цей кліп?</string>
+    <string name="clip_delete_confirm">Видалити</string>
+</resources>

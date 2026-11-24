@@ -66,20 +66,24 @@ import app.jwpocket.phone.ui.components.DownloadBadge
 import app.jwpocket.phone.ui.components.EmptyState
 import app.jwpocket.phone.ui.components.VideoListItem
 import app.jwpocket.phone.ui.theme.Pocket
+import app.jwpocket.phone.ui.clips.ClipsTab
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.rememberScrollState
 
 enum class LibraryTab(@StringRes val label: Int) {
     Downloads(R.string.library_tab_downloads),
     Favorites(R.string.library_tab_favorites),
     History(R.string.library_tab_history),
+    Clips(R.string.library_tab_clips),
 }
 
-/** Downloads, favourites and history, all in one place. */
+/** Downloads, favourites, history and saved clips, all in one place. */
 @Composable
 fun LibraryScreen(contentPadding: PaddingValues, initialTab: LibraryTab = LibraryTab.Downloads, onBrowse: () -> Unit) {
     var tab by rememberSaveable(initialTab) { mutableStateOf(initialTab) }
     Column(Modifier.fillMaxSize()) {
         Text(stringResource(R.string.nav_library), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.statusBarsPadding().padding(start = 20.dp, top = 16.dp, bottom = 8.dp))
-        Row(Modifier.padding(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        Row(Modifier.horizontalScroll(rememberScrollState()).padding(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             LibraryTab.entries.forEach { t ->
                 FilterChip(
                     selected = tab == t,
@@ -95,6 +99,7 @@ fun LibraryScreen(contentPadding: PaddingValues, initialTab: LibraryTab = Librar
             LibraryTab.Downloads -> DownloadsTab(bottom, onBrowse)
             LibraryTab.Favorites -> FavoritesTab(bottom, onBrowse)
             LibraryTab.History -> HistoryTab(bottom, onBrowse)
+            LibraryTab.Clips -> ClipsTab(bottom)
         }
     }
 }

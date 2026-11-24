@@ -44,8 +44,9 @@ class MediaGraph(context: Context, val core: CoreGraph) {
     /**
      * Playback reads from downloads first, then the network (and local files,
      * for saved subtitles). Streaming doesn't write into the download store.
+     * The phone's clip maker reads through it too, so a downloaded video is cut offline.
      */
-    internal val playbackDataSource by lazy {
+    val playbackDataSource by lazy {
         CacheDataSource.Factory()
             .setCache(downloadCache)
             .setUpstreamDataSourceFactory(DefaultDataSource.Factory(appContext, httpDataSource))

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Share menu in the player -->
+    <string name="share_video">Share video</string>
+    <string name="share_moment">Share a moment…</string>
+
+    <!-- "Share a moment": cut a few sentences out of the video -->
+    <string name="moment_title">Share a moment</string>
+    <string name="moment_hint">Tap the first and the last sentence.</string>
+    <string name="moment_hint_range">Choose where the clip starts and ends.</string>
+    <string name="moment_preview_empty">Preview</string>
+    <!-- %1$s start, %2$s end, %3$s length, like 5:18 – 5:30 (0:12) -->
+    <string name="moment_preview">Preview %1$s – %2$s (%3$s)</string>
+    <string name="moment_stop_preview">Stop preview</string>
+    <string name="moment_subtitles">Show subtitles in the clip</string>
+    <string name="moment_create">Create clip</string>
+    <string name="moment_creating">Making the clip… %1$d %%</string>
+    <string name="moment_failed">Couldn\'t make the clip. Check the connection and try again.</string>
+    <string name="moment_too_long">A clip can be at most %1$d minutes long.</string>
+
+    <!-- Sharing a clip -->
+    <string name="clip_share_title">Share clip</string>
+    <string name="clip_saved">Saved in Library › Clips.</string>
+    <string name="clip_share_warning">For personal sharing only, with people you know. Posting it on social media or anywhere public isn\'t allowed.</string>
+    <string name="clip_share_link">Add a link to the whole video</string>
+    <string name="clip_share_action">Share</string>
+
+    <!-- Library › Clips -->
+    <string name="library_tab_clips">Clips</string>
+    <string name="clips_empty_title">No clips yet</string>
+    <string name="clips_empty_body">In the player, tap Share › Share a moment to save a few sentences you like.</string>
+    <string name="clip_delete">Delete clip</string>
+    <string name="clip_delete_title">Delete this clip?</string>
+    <string name="clip_delete_confirm">Delete</string>
+</resources>

@@ -52,10 +52,14 @@ import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material.icons.rounded.Replay
 import androidx.compose.material.icons.rounded.Replay10
 import androidx.compose.material.icons.rounded.Share
+import androidx.compose.material.icons.rounded.Link
+import androidx.compose.material.icons.rounded.ContentCut
 import androidx.compose.material.icons.rounded.SkipNext
 import androidx.compose.material.icons.rounded.SkipPrevious
 import androidx.compose.material.icons.rounded.Speed
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -69,6 +73,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.animation.core.Animatable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -97,9 +103,13 @@ import app.jwpocket.phone.ui.LocalPocket
 import app.jwpocket.phone.ui.components.Thumbnail
 import app.jwpocket.phone.ui.rememberMarks
 import app.jwpocket.phone.ui.theme.Pocket
+import app.jwpocket.phone.clips.Clip
+import app.jwpocket.phone.ui.clips.ClipShareDialog
+import app.jwpocket.phone.ui.clips.MomentSheet
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
-private enum class Sheet { Subtitles, Quality, Speed, Sleep }
+private enum class Sheet { Subtitles, Quality, Speed, Sleep, Moment }
 
 /**
  * The full player. Portrait: video on top, then controls, actions and Up
@@ -121,7 +131,9 @@ fun FullPlayer(
     val cue by connection.cues.collectAsState()
     val languages by pocket.core.languages.languages.collectAsState()
     var sheet by remember { mutableStateOf<Sheet?>(null) }
-    var dragY by remember { mutableFloatStateOf(0f) }
+    var savedClip by remember { mutableStateOf<Clip?>(null) }
+    val drag = remember { Animatable(0f) }
+    val dragScope = rememberCoroutineScope()
     val density = LocalDensity.current
     val video = state.video ?: return
     val marks by rememberMarks(video.id)
@@ -141,7 +153,7 @@ fun FullPlayer(
         Column(
             Modifier
                 .fillMaxSize()
-                .graphicsLayer { translationY = dragY.coerceAtLeast(0f) }
+                .graphicsLayer { translationY = drag.value.coerceAtLeast(0f) }
                 .background(Pocket.Background)
                 .statusBarsPadding()
         ) {
@@ -150,11 +162,13 @@ fun FullPlayer(
                 Modifier.pointerInput(Unit) {
                     detectVerticalDragGestures(
                         onDragEnd = {
-                            if (dragY > with(density) { 120.dp.toPx() }) onCollapse()
-                            dragY = 0f
+                            // Far enough: shrink from where the finger left it (the exit
+                            // slide carries on from here); otherwise glide back up.
+                            if (drag.value > with(density) { 120.dp.toPx() }) onCollapse()
+                            else dragScope.launch { drag.animateTo(0f) }
                         },
-                        onDragCancel = { dragY = 0f },
-                    ) { _, delta -> dragY += delta }
+                        onDragCancel = { dragScope.launch { drag.animateTo(0f) } },
+                    ) { _, delta -> dragScope.launch { drag.snapTo(drag.value + delta) } }
                 }
             ) {
                 Row(
@@ -231,8 +245,10 @@ fun FullPlayer(
         )
         Sheet.Speed -> SpeedSheet(state.speed, onPick = { connection.setSpeed(it); sheet = null }, onDismiss = { sheet = null })
         Sheet.Sleep -> SleepSheet(state.sleepAt != null, onPick = { connection.setSleepTimer(it); sheet = null }, onDismiss = { sheet = null })
+        Sheet.Moment -> MomentSheet(state, video, onDismiss = { sheet = null }, onCreated = { sheet = null; savedClip = it })
         null -> Unit
     }
+    savedClip?.let { ClipShareDialog(it, justSaved = true, onDismiss = { savedClip = null }) }
 }
 
 /** Title, seek bar, big transport buttons and the action pills. */
@@ -305,12 +321,28 @@ private fun NowPlayingInfo(state: PlaybackState, onSheet: (Sheet) -> Unit) {
             }
             Pill(Icons.Rounded.Speed, if (state.speed == 1f) stringResource(R.string.player_speed) else "${state.speed}×", highlighted = state.speed != 1f) { onSheet(Sheet.Speed) }
             Pill(Icons.Rounded.Bedtime, sleepLabel(state.sleepAt), highlighted = state.sleepAt != null) { onSheet(Sheet.Sleep) }
-            video.shareUrl(settings.languageCode)?.let { url ->
-                Pill(Icons.Rounded.Share, stringResource(R.string.common_share)) {
-                    context.startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).apply {
-                        type = "text/plain"
-                        putExtra(Intent.EXTRA_TEXT, "${video.title}\n$url")
-                    }, null))
+            Box {
+                var shareMenu by remember { mutableStateOf(false) }
+                Pill(Icons.Rounded.Share, stringResource(R.string.common_share)) { shareMenu = true }
+                DropdownMenu(shareMenu, onDismissRequest = { shareMenu = false }, containerColor = Pocket.SurfaceHigh) {
+                    video.shareUrl(settings.languageCode)?.let { url ->
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.share_video)) },
+                            leadingIcon = { Icon(Icons.Rounded.Link, null) },
+                            onClick = {
+                                shareMenu = false
+                                context.startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).apply {
+                                    type = "text/plain"
+                                    putExtra(Intent.EXTRA_TEXT, "${video.title}\n$url")
+                                }, null))
+                            },
+                        )
+                    }
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.share_moment)) },
+                        leadingIcon = { Icon(Icons.Rounded.ContentCut, null) },
+                        onClick = { shareMenu = false; onSheet(Sheet.Moment) },
+                    )
                 }
             }
         }

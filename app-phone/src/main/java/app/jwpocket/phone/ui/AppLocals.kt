@@ -11,10 +11,11 @@ import app.jwpocket.core.data.WatchState
 import app.jwpocket.core.model.Video
 import app.jwpocket.media.MediaGraph
 import app.jwpocket.media.download.DownloadItem
+import app.jwpocket.phone.clips.ClipStore
 
 /** The shared graph, for screens and their ViewModels. */
 @Stable
-class Pocket(val core: CoreGraph, val media: MediaGraph)
+class Pocket(val core: CoreGraph, val media: MediaGraph, val clips: ClipStore)
 
 val LocalPocket = staticCompositionLocalOf<Pocket> { error("Pocket graph not provided") }
 

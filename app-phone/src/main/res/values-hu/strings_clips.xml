@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="share_video">Videó megosztása</string>
+    <string name="share_moment">Egy pillanat megosztása…</string>
+    <string name="moment_title">Egy pillanat megosztása</string>
+    <string name="moment_hint">Koppints az első és az utolsó mondatra.</string>
+    <string name="moment_hint_range">Válaszd ki, hol kezdődjön és végződjön a klip.</string>
+    <string name="moment_preview_empty">Előnézet</string>
+    <string name="moment_preview">Előnézet: %1$s – %2$s (%3$s)</string>
+    <string name="moment_stop_preview">Előnézet leállítása</string>
+    <string name="moment_subtitles">Feliratok a klipben</string>
+    <string name="moment_create">Klip készítése</string>
+    <string name="moment_creating">Klip készítése… %1$d %%</string>
+    <string name="moment_failed">Nem sikerült elkészíteni a klipet. Ellenőrizd a kapcsolatot, és próbáld újra.</string>
+    <string name="moment_too_long">Egy klip legfeljebb %1$d perces lehet.</string>
+    <string name="clip_share_title">Klip megosztása</string>
+    <string name="clip_saved">Mentve: Könyvtár › Klipek.</string>
+    <string name="clip_share_warning">Csak személyes megosztásra, ismerőseiddel. Közösségi oldalakon vagy bárhol nyilvánosan közzétenni nem szabad.</string>
+    <string name="clip_share_link">Link hozzáadása a teljes videóhoz</string>
+    <string name="clip_share_action">Megosztás</string>
+    <string name="library_tab_clips">Klipek</string>
+    <string name="clips_empty_title">Még nincsenek klipek</string>
+    <string name="clips_empty_body">A lejátszóban koppints a Megosztás › Egy pillanat megosztása lehetőségre, és ments el néhány mondatot, ami tetszik.</string>
+    <string name="clip_delete">Klip törlése</string>
+    <string name="clip_delete_title">Törlöd ezt a klipet?</string>
+    <string name="clip_delete_confirm">Törlés</string>
+</resources>

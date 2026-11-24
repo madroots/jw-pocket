@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="share_video">Distribuie videoclipul</string>
+    <string name="share_moment">Distribuie un moment…</string>
+    <string name="moment_title">Distribuie un moment</string>
+    <string name="moment_hint">Atinge prima și ultima propoziție.</string>
+    <string name="moment_hint_range">Alege unde începe și unde se termină clipul.</string>
+    <string name="moment_preview_empty">Previzualizare</string>
+    <string name="moment_preview">Previzualizare %1$s – %2$s (%3$s)</string>
+    <string name="moment_stop_preview">Oprește previzualizarea</string>
+    <string name="moment_subtitles">Arată subtitrările în clip</string>
+    <string name="moment_create">Creează clipul</string>
+    <string name="moment_creating">Se creează clipul… %1$d %%</string>
+    <string name="moment_failed">Clipul nu a putut fi creat. Verifică conexiunea și încearcă din nou.</string>
+    <string name="moment_too_long">Un clip poate avea cel mult %1$d minute.</string>
+    <string name="clip_share_title">Distribuie clipul</string>
+    <string name="clip_saved">Salvat în Bibliotecă › Clipuri.</string>
+    <string name="clip_share_warning">Doar pentru distribuire personală, cu persoane pe care le cunoști. Nu este permisă publicarea pe rețelele sociale sau oriunde în public.</string>
+    <string name="clip_share_link">Adaugă un link către întregul videoclip</string>
+    <string name="clip_share_action">Distribuie</string>
+    <string name="library_tab_clips">Clipuri</string>
+    <string name="clips_empty_title">Încă nu ai clipuri</string>
+    <string name="clips_empty_body">În player, atinge Distribuie › Distribuie un moment ca să păstrezi câteva propoziții care îți plac.</string>
+    <string name="clip_delete">Șterge clipul</string>
+    <string name="clip_delete_title">Ștergi acest clip?</string>
+    <string name="clip_delete_confirm">Șterge</string>
+</resources>

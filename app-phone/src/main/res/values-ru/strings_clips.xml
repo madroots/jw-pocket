@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="share_video">Поделиться видео</string>
+    <string name="share_moment">Поделиться моментом…</string>
+    <string name="moment_title">Поделиться моментом</string>
+    <string name="moment_hint">Нажмите на первую и последнюю фразу.</string>
+    <string name="moment_hint_range">Выберите начало и конец клипа.</string>
+    <string name="moment_preview_empty">Просмотр</string>
+    <string name="moment_preview">Просмотр %1$s – %2$s (%3$s)</string>
+    <string name="moment_stop_preview">Остановить просмотр</string>
+    <string name="moment_subtitles">Показывать субтитры в клипе</string>
+    <string name="moment_create">Создать клип</string>
+    <string name="moment_creating">Создание клипа… %1$d %%</string>
+    <string name="moment_failed">Не удалось создать клип. Проверьте подключение и попробуйте ещё раз.</string>
+    <string name="moment_too_long">Клип может длиться не более %1$d минут.</string>
+    <string name="clip_share_title">Поделиться клипом</string>
+    <string name="clip_saved">Сохранено в Библиотека › Клипы.</string>
+    <string name="clip_share_warning">Только для личного обмена со знакомыми. Публиковать его в соцсетях или где-либо публично нельзя.</string>
+    <string name="clip_share_link">Добавить ссылку на всё видео</string>
+    <string name="clip_share_action">Поделиться</string>
+    <string name="library_tab_clips">Клипы</string>
+    <string name="clips_empty_title">Клипов пока нет</string>
+    <string name="clips_empty_body">В плеере нажмите Поделиться › Поделиться моментом, чтобы сохранить несколько понравившихся фраз.</string>
+    <string name="clip_delete">Удалить клип</string>
+    <string name="clip_delete_title">Удалить этот клип?</string>
+    <string name="clip_delete_confirm">Удалить</string>
+</resources>
