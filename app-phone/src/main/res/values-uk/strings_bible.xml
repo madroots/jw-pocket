@@ -46,4 +46,10 @@
         <item quantity="many">%d пісень</item>
         <item quantity="other">%d пісні</item>
     </plurals>
+    <string name="library_tab_bible">Біблія</string>
+    <string name="library_bible_empty_title">Немає завантажених розділів Біблії</string>
+    <string name="library_bible_empty_body">На вкладці «Біблія» відкрийте книгу й торкніться «Завантажити», щоб слухати офлайн.</string>
+    <string name="library_bible_open">Відкрити Біблію</string>
+    <string name="library_bible_delete_title">Видалити %1$s?</string>
+    <string name="library_bible_delete_body">Розділів буде видалено з телефона: %1$d (%2$s).</string>
 </resources>

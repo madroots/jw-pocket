@@ -165,6 +165,16 @@ class BibleRepository(private val api: MediatorApi, filesDir: File) {
         }
 
         private fun decodeEntities(text: String) = text.replace("&nbsp;", " ").replace("&amp;", "&").replace("\u00A0", " ")
+
+        /** (book, chapter) of a Bible chapter's video id ("bible:<language>:<book>:<chapter>"), or null. */
+        fun bookAndChapter(videoId: String): Pair<Int, Int>? {
+            if (!videoId.startsWith(Video.BIBLE_PREFIX)) return null
+            val parts = videoId.removePrefix(Video.BIBLE_PREFIX).split(':')
+            if (parts.size != 3) return null
+            val book = parts[1].toIntOrNull() ?: return null
+            val chapter = parts[2].toIntOrNull() ?: return null
+            return book to chapter
+        }
     }
 }
 

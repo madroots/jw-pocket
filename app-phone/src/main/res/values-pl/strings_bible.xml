@@ -46,4 +46,10 @@
         <item quantity="many">%d pieśni</item>
         <item quantity="other">%d pieśni</item>
     </plurals>
+    <string name="library_tab_bible">Biblia</string>
+    <string name="library_bible_empty_title">Brak pobranych rozdziałów Biblii</string>
+    <string name="library_bible_empty_body">W karcie Biblia otwórz księgę i stuknij Pobierz, aby słuchać offline.</string>
+    <string name="library_bible_open">Otwórz Biblię</string>
+    <string name="library_bible_delete_title">Usunąć %1$s?</string>
+    <string name="library_bible_delete_body">Z telefonu zostaną usunięte rozdziały: %1$d (%2$s).</string>
 </resources>

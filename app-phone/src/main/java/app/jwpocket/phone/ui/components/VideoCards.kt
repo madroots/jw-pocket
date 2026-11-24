@@ -24,6 +24,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
+import androidx.compose.material.icons.automirrored.rounded.MenuBook
+import androidx.compose.material.icons.rounded.MusicNote
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.CheckCircle
 import androidx.compose.material.icons.rounded.CloudDownload
@@ -75,7 +77,13 @@ fun Thumbnail(
             .clip(RoundedCornerShape(corner))
             .background(Pocket.SurfaceHigh)
     ) {
-        AsyncImage(
+        // Bible chapters (and audio without artwork) have no picture: an icon instead.
+        if (video.thumbnailUrl == null && video.isAudio) {
+            Icon(
+                if (video.isBible) Icons.AutoMirrored.Rounded.MenuBook else Icons.Rounded.MusicNote, null,
+                tint = Pocket.TextMuted, modifier = Modifier.align(Alignment.Center).size(28.dp),
+            )
+        } else AsyncImage(
             model = video.thumbnailUrl,
             contentDescription = null,
             contentScale = ContentScale.Crop,

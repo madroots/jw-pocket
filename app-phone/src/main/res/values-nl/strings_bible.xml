@@ -42,4 +42,10 @@
         <item quantity="one">%d lied</item>
         <item quantity="other">%d liederen</item>
     </plurals>
+    <string name="library_tab_bible">Bijbel</string>
+    <string name="library_bible_empty_title">Geen Bijbelhoofdstukken gedownload</string>
+    <string name="library_bible_empty_body">Open op het tabblad Bijbel een boek en tik op Downloaden om offline te luisteren.</string>
+    <string name="library_bible_open">Bijbel openen</string>
+    <string name="library_bible_delete_title">%1$s verwijderen?</string>
+    <string name="library_bible_delete_body">%1$d hoofdstukken (%2$s) worden van deze telefoon verwijderd.</string>
 </resources>

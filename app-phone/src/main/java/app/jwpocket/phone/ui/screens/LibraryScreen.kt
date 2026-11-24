@@ -67,19 +67,23 @@ import app.jwpocket.phone.ui.components.EmptyState
 import app.jwpocket.phone.ui.components.VideoListItem
 import app.jwpocket.phone.ui.theme.Pocket
 import app.jwpocket.phone.ui.clips.ClipsTab
+import app.jwpocket.core.data.BibleRepository
+import app.jwpocket.core.model.Video
+import androidx.compose.material.icons.automirrored.rounded.MenuBook
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.rememberScrollState
 
 enum class LibraryTab(@StringRes val label: Int) {
     Downloads(R.string.library_tab_downloads),
+    Bible(R.string.library_tab_bible),
     Favorites(R.string.library_tab_favorites),
     History(R.string.library_tab_history),
     Clips(R.string.library_tab_clips),
 }
 
-/** Downloads, favourites, history and saved clips, all in one place. */
+/** Downloads, downloaded Bible chapters, favourites, history and saved clips, all in one place. */
 @Composable
-fun LibraryScreen(contentPadding: PaddingValues, initialTab: LibraryTab = LibraryTab.Downloads, onBrowse: () -> Unit) {
+fun LibraryScreen(contentPadding: PaddingValues, initialTab: LibraryTab = LibraryTab.Downloads, onBrowse: () -> Unit, onOpenBible: () -> Unit) {
     var tab by rememberSaveable(initialTab) { mutableStateOf(initialTab) }
     Column(Modifier.fillMaxSize()) {
         Text(stringResource(R.string.nav_library), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.statusBarsPadding().padding(start = 20.dp, top = 16.dp, bottom = 8.dp))
@@ -97,6 +101,7 @@ fun LibraryScreen(contentPadding: PaddingValues, initialTab: LibraryTab = Librar
         val bottom = PaddingValues(bottom = contentPadding.calculateBottomPadding() + 16.dp, top = 8.dp)
         when (tab) {
             LibraryTab.Downloads -> DownloadsTab(bottom, onBrowse)
+            LibraryTab.Bible -> BibleDownloadsTab(bottom, onOpenBible)
             LibraryTab.Favorites -> FavoritesTab(bottom, onBrowse)
             LibraryTab.History -> HistoryTab(bottom, onBrowse)
             LibraryTab.Clips -> ClipsTab(bottom)
@@ -108,20 +113,24 @@ fun LibraryScreen(contentPadding: PaddingValues, initialTab: LibraryTab = Librar
 private fun DownloadsTab(padding: PaddingValues, onBrowse: () -> Unit) {
     val pocket = LocalPocket.current
     val downloads = pocket.media.downloads
-    val items by downloads.items.collectAsState()
+    val all by downloads.items.collectAsState()
     val settings by pocket.core.settings.settings.collectAsState()
     var storage by remember { mutableStateOf<StorageInfo?>(null) }
     var confirmDeleteAll by remember { mutableStateOf(false) }
-    val done = items.values.filter { it.isDone }
-    val pending = items.values.filterNot { it.isDone }
-    LaunchedEffect(done.size) { storage = downloads.storage() }
+    // Bible chapters have their own pill.
+    val items = all.values.filterNot { it.video.isBible }
+    val done = items.filter { it.isDone }
+    val pending = items.filterNot { it.isDone }
+    val doneBytes = done.sumOf { it.bytes }
+    val row = done.map { it.video }
+    LaunchedEffect(all.size) { storage = downloads.storage() }
 
     LazyColumn(Modifier.fillMaxSize(), contentPadding = padding) {
         item {
             Column(Modifier.padding(16.dp).fillMaxWidth().clip(RoundedCornerShape(14.dp)).background(Pocket.Surface).padding(16.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Column(Modifier.weight(1f)) {
-                        Text(pluralStringResource(R.plurals.library_downloads_summary, done.size, done.size, formatBytes(storage?.downloadsBytes ?: 0)), style = MaterialTheme.typography.titleMedium)
+                        Text(pluralStringResource(R.plurals.library_downloads_summary, done.size, done.size, formatBytes(doneBytes)), style = MaterialTheme.typography.titleMedium)
                         Text(stringResource(R.string.library_free_space, formatBytes(storage?.freeBytes ?: 0)), style = MaterialTheme.typography.bodySmall, color = Pocket.TextSecondary)
                     }
                     if (items.isNotEmpty()) TextButton(onClick = { confirmDeleteAll = true }) { Text(stringResource(R.string.library_delete_all), color = Pocket.TextSecondary) }
@@ -144,11 +153,11 @@ private fun DownloadsTab(padding: PaddingValues, onBrowse: () -> Unit) {
         }
         if (pending.isNotEmpty()) {
             item { Header(stringResource(R.string.library_in_progress)) }
-            items(pending, key = { "p_" + it.video.id }) { DownloadRow(it) }
+            items(pending, key = { "p_" + it.video.id }) { DownloadRow(it, row) }
         }
         if (done.isNotEmpty()) {
             item { Header(stringResource(R.string.common_ready_offline)) }
-            items(done, key = { it.video.id }) { DownloadRow(it) }
+            items(done, key = { it.video.id }) { DownloadRow(it, row) }
         }
     }
 
@@ -156,9 +165,68 @@ private fun DownloadsTab(padding: PaddingValues, onBrowse: () -> Unit) {
         AlertDialog(
             onDismissRequest = { confirmDeleteAll = false },
             title = { Text(stringResource(R.string.library_delete_all_title)) },
-            text = { Text(stringResource(R.string.library_delete_all_message, formatBytes(storage?.downloadsBytes ?: 0))) },
-            confirmButton = { TextButton(onClick = { downloads.removeAll(); confirmDeleteAll = false }) { Text(stringResource(R.string.library_delete_all), color = Pocket.Accent) } },
+            text = { Text(stringResource(R.string.library_delete_all_message, formatBytes(items.sumOf { it.bytes }))) },
+            confirmButton = {
+                TextButton(onClick = { items.forEach { downloads.remove(it.video.id) }; confirmDeleteAll = false }) {
+                    Text(stringResource(R.string.library_delete_all), color = Pocket.Accent)
+                }
+            },
             dismissButton = { TextButton(onClick = { confirmDeleteAll = false }) { Text(stringResource(R.string.common_cancel)) } },
+            containerColor = Pocket.SurfaceHigh,
+        )
+    }
+}
+
+/** Downloaded Bible chapters, by book; each book can be deleted at once. */
+@Composable
+private fun BibleDownloadsTab(padding: PaddingValues, onOpenBible: () -> Unit) {
+    val pocket = LocalPocket.current
+    val downloads = pocket.media.downloads
+    val all by downloads.items.collectAsState()
+    val settings by pocket.core.settings.settings.collectAsState()
+    var deleting by remember { mutableStateOf<Pair<String, List<DownloadItem>>?>(null) }
+    // Genesis to Revelation, chapter by chapter.
+    val chapters = all.values.mapNotNull { item -> BibleRepository.bookAndChapter(item.video.id)?.let { it to item } }
+        .sortedWith(compareBy({ it.first.first }, { it.first.second }))
+    val row = chapters.filter { it.second.isDone }.map { it.second.video }
+    val books = chapters.groupBy({ it.first.first }, { it.second })
+    val names = pocket.core.bible.loadedBooks(settings.languageCode)
+
+    LazyColumn(Modifier.fillMaxSize(), contentPadding = padding) {
+        if (chapters.isEmpty()) item {
+            EmptyState(Icons.AutoMirrored.Rounded.MenuBook, stringResource(R.string.library_bible_empty_title), stringResource(R.string.library_bible_empty_body)) {
+                TextButton(onClick = onOpenBible) { Text(stringResource(R.string.library_bible_open), color = Pocket.Accent) }
+            }
+        }
+        books.forEach { (number, items) ->
+            val name = names?.firstOrNull { it.number == number }?.name ?: items.first().video.title.substringBeforeLast(' ')
+            item(key = "book_$number") {
+                Row(Modifier.fillMaxWidth().padding(start = 16.dp, top = 12.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Column(Modifier.weight(1f)) {
+                        Text(name, style = MaterialTheme.typography.titleMedium)
+                        Text(
+                            pluralStringResource(R.plurals.bible_chapters, items.size, items.size) + " · " + formatBytes(items.sumOf { it.bytes }),
+                            style = MaterialTheme.typography.bodySmall, color = Pocket.TextSecondary,
+                        )
+                    }
+                    IconButton(onClick = { deleting = name to items }) { Icon(Icons.Rounded.Delete, stringResource(R.string.common_delete_download), tint = Pocket.TextSecondary) }
+                }
+            }
+            items(items, key = { it.video.id }) { DownloadRow(it, row) }
+        }
+    }
+
+    deleting?.let { (name, items) ->
+        AlertDialog(
+            onDismissRequest = { deleting = null },
+            title = { Text(stringResource(R.string.library_bible_delete_title, name)) },
+            text = { Text(stringResource(R.string.library_bible_delete_body, items.size, formatBytes(items.sumOf { it.bytes }))) },
+            confirmButton = {
+                TextButton(onClick = { items.forEach { downloads.remove(it.video.id) }; deleting = null }) {
+                    Text(stringResource(R.string.common_delete_download), color = Pocket.Accent)
+                }
+            },
+            dismissButton = { TextButton(onClick = { deleting = null }) { Text(stringResource(R.string.common_cancel)) } },
             containerColor = Pocket.SurfaceHigh,
         )
     }
@@ -169,13 +237,12 @@ private fun Header(text: String) {
     Text(text, style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(start = 16.dp, top = 12.dp, bottom = 4.dp))
 }
 
+/** A download in a list; [row] is what plays after it. */
 @Composable
-private fun DownloadRow(item: DownloadItem) {
+private fun DownloadRow(item: DownloadItem, row: List<Video>) {
     val pocket = LocalPocket.current
     val downloads = pocket.media.downloads
     val actions = LocalVideoActions.current
-    val allDone by downloads.items.collectAsState()
-    val row = allDone.values.filter { it.isDone }.map { it.video }
     var menu by remember { mutableStateOf(false) }
     Column {
         VideoListItem(

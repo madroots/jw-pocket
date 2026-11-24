@@ -46,4 +46,10 @@
         <item quantity="many">%d piesne</item>
         <item quantity="other">%d piesní</item>
     </plurals>
+    <string name="library_tab_bible">Biblia</string>
+    <string name="library_bible_empty_title">Žiadne stiahnuté kapitoly Biblie</string>
+    <string name="library_bible_empty_body">Na karte Biblia otvorte knihu a ťuknite na Stiahnuť, aby ste mohli počúvať offline.</string>
+    <string name="library_bible_open">Otvoriť Bibliu</string>
+    <string name="library_bible_delete_title">Vymazať %1$s?</string>
+    <string name="library_bible_delete_body">Z telefónu sa odstránia kapitoly: %1$d (%2$s).</string>
 </resources>

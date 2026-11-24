@@ -335,7 +335,11 @@ private fun PocketNavHost(nav: NavHostController, padding: androidx.compose.foun
         composable("search") { SearchScreen(padding) { openCategory(it.key) } }
         composable("library?tab={tab}", arguments = listOf(navArgument("tab") { type = NavType.StringType; defaultValue = LibraryTab.Downloads.name })) { e ->
             val initial = runCatching { LibraryTab.valueOf(e.arguments?.getString("tab").orEmpty()) }.getOrDefault(LibraryTab.Downloads)
-            LibraryScreen(padding, initial, onBrowse = { onTab(Tab.Browse); nav.navigate("browse") { launchSingleTop = true } })
+            LibraryScreen(
+                padding, initial,
+                onBrowse = { onTab(Tab.Browse); nav.navigate("browse") { launchSingleTop = true } },
+                onOpenBible = { onTab(Tab.Bible); nav.navigate("bible") { launchSingleTop = true } },
+            )
         }
         composable("settings") {
             SettingsScreen(

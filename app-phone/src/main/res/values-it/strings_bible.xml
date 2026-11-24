@@ -42,4 +42,10 @@
         <item quantity="one">%d cantico</item>
         <item quantity="other">%d cantici</item>
     </plurals>
+    <string name="library_tab_bible">Bibbia</string>
+    <string name="library_bible_empty_title">Nessun capitolo della Bibbia scaricato</string>
+    <string name="library_bible_empty_body">Nella scheda Bibbia apri un libro e tocca Scarica per ascoltare offline.</string>
+    <string name="library_bible_open">Apri la Bibbia</string>
+    <string name="library_bible_delete_title">Eliminare %1$s?</string>
+    <string name="library_bible_delete_body">%1$d capitoli (%2$s) verranno rimossi da questo telefono.</string>
 </resources>

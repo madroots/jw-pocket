@@ -42,4 +42,10 @@
         <item quantity="one">%d ének</item>
         <item quantity="other">%d ének</item>
     </plurals>
+    <string name="library_tab_bible">Biblia</string>
+    <string name="library_bible_empty_title">Nincs letöltött bibliai fejezet</string>
+    <string name="library_bible_empty_body">A Biblia lapon nyiss meg egy könyvet, és koppints a Letöltés gombra, hogy offline is hallgathasd.</string>
+    <string name="library_bible_open">Biblia megnyitása</string>
+    <string name="library_bible_delete_title">Törlöd: %1$s?</string>
+    <string name="library_bible_delete_body">%1$d fejezet (%2$s) törlődik erről a telefonról.</string>
 </resources>

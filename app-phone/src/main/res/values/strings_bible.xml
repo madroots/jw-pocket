@@ -50,4 +50,12 @@
     <string name="album_search">Song number or title</string>
     <string name="album_download_title">Download %1$d songs?</string>
     <string name="album_download_body">About %1$s.</string>
+
+    <!-- Library › Bible: downloaded chapters -->
+    <string name="library_tab_bible">Bible</string>
+    <string name="library_bible_empty_title">No Bible chapters downloaded</string>
+    <string name="library_bible_empty_body">In the Bible tab, open a book and tap Download to listen offline.</string>
+    <string name="library_bible_open">Open the Bible</string>
+    <string name="library_bible_delete_title">Delete %1$s?</string>
+    <string name="library_bible_delete_body">%1$d chapters (%2$s) will be removed from this phone.</string>
 </resources>

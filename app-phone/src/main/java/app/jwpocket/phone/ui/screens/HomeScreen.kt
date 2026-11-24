@@ -82,7 +82,8 @@ fun HomeScreen(
     val favorites by pocket.core.favorites.favorites.collectAsState()
     val downloads by pocket.media.downloads.items.collectAsState()
     val online by pocket.core.network.online.collectAsState()
-    val downloaded = remember(downloads) { downloads.values.filter { it.isDone }.map { it.video } }
+    // Bible chapters have their own place (Bible tab, Library › Bible).
+    val downloaded = remember(downloads) { downloads.values.filter { it.isDone && !it.video.isBible }.map { it.video } }
     val refreshing = (latest as? Load.Ready)?.refreshing == true
 
     PullToRefreshBox(isRefreshing = refreshing, onRefresh = vm::refresh, modifier = Modifier.fillMaxSize()) {
