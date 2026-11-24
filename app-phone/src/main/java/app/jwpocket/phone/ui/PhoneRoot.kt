@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.automirrored.rounded.MenuBook
 import androidx.compose.material.icons.rounded.GridView
 import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.Search
@@ -62,6 +63,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
@@ -74,12 +76,16 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import app.jwpocket.core.data.LibraryRepository
 import app.jwpocket.core.model.Video
 import app.jwpocket.core.util.formatBytes
 import app.jwpocket.phone.R
 import app.jwpocket.phone.ui.details.DetailsSheet
 import app.jwpocket.phone.ui.player.FullPlayer
 import app.jwpocket.phone.ui.player.MiniPlayer
+import app.jwpocket.phone.ui.screens.AlbumScreen
+import app.jwpocket.phone.ui.screens.BibleBookScreen
+import app.jwpocket.phone.ui.screens.BibleScreen
 import app.jwpocket.phone.ui.screens.BrowseScreen
 import app.jwpocket.phone.ui.screens.CategoryScreen
 import app.jwpocket.phone.ui.screens.HomeScreen
@@ -104,12 +110,13 @@ class PhoneUiState {
 private enum class Tab(val route: String, @StringRes val label: Int, val icon: ImageVector) {
     Home("home", R.string.nav_home, Icons.Rounded.Home),
     Browse("browse", R.string.nav_browse, Icons.Rounded.GridView),
+    Bible("bible", R.string.nav_bible, Icons.AutoMirrored.Rounded.MenuBook),
     Search("search", R.string.nav_search, Icons.Rounded.Search),
     Library("library", R.string.nav_library, Icons.Rounded.VideoLibrary),
 }
 
 /** Routes that draw their own header instead of the top bar. */
-private val OWN_HEADER = setOf("home", "search", "library?tab={tab}")
+private val OWN_HEADER = setOf("home", "search", "library?tab={tab}", "bible")
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -219,7 +226,8 @@ fun PhoneRoot(ui: PhoneUiState, onPictureInPicture: () -> Unit, onToggleFullscre
                                         if (t == Tab.Library && active > 0) BadgedBox(badge = { Badge(containerColor = Pocket.Accent) { Text("$active") } }) { Icon(t.icon, label) }
                                         else Icon(t.icon, label)
                                     },
-                                    label = { Text(stringResource(t.label)) },
+                                    // Five tabs: labels stay on one line (long words in some languages).
+                                    label = { Text(stringResource(t.label), style = MaterialTheme.typography.labelSmall, maxLines = 1, softWrap = false, overflow = TextOverflow.Ellipsis) },
                                     colors = NavigationBarItemDefaults.colors(
                                         selectedIconColor = MaterialTheme.colorScheme.onSurface,
                                         selectedTextColor = MaterialTheme.colorScheme.onSurface,
@@ -293,6 +301,10 @@ private fun titleFor(route: String, args: android.os.Bundle?): String = when {
     route == "subtitles" -> stringResource(R.string.nav_subtitle_language)
     route.startsWith("category/") -> categoryTitle(args?.getString("key").orEmpty())
     route.startsWith("section/") -> categoryTitle(args?.getString("cat").orEmpty(), args?.getString("sec"))
+    route.startsWith("album/") -> categoryTitle(LibraryRepository.AUDIO, args?.getString("sec"))
+    route.startsWith("bible/") -> LocalPocket.current.let { p ->
+        p.core.bible.loadedBooks(p.core.settings.current.languageCode)?.firstOrNull { it.number == args?.getInt("book") }?.name.orEmpty()
+    }
     else -> ""
 }
 
@@ -314,7 +326,12 @@ private fun PocketNavHost(nav: NavHostController, padding: androidx.compose.foun
                 onOpenFavorites = { onTab(Tab.Library); nav.navigate("library?tab=${LibraryTab.Favorites.name}") { launchSingleTop = true } },
             )
         }
-        composable("browse") { BrowseScreen(padding) { openCategory(it.key) } }
+        composable("browse") { BrowseScreen(padding, onOpenCategory = { openCategory(it.key) }, onOpenAlbum = { nav.navigate("album/$it") }) }
+        composable("album/{sec}") { e -> AlbumScreen(e.arguments?.getString("sec").orEmpty(), padding) }
+        composable("bible") { BibleScreen(padding) { book -> nav.navigate("bible/$book") } }
+        composable("bible/{book}", arguments = listOf(navArgument("book") { type = NavType.IntType })) { e ->
+            BibleBookScreen(e.arguments?.getInt("book") ?: 1, padding)
+        }
         composable("search") { SearchScreen(padding) { openCategory(it.key) } }
         composable("library?tab={tab}", arguments = listOf(navArgument("tab") { type = NavType.StringType; defaultValue = LibraryTab.Downloads.name })) { e ->
             val initial = runCatching { LibraryTab.valueOf(e.arguments?.getString("tab").orEmpty()) }.getOrDefault(LibraryTab.Downloads)

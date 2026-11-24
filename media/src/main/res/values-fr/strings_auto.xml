@@ -6,4 +6,7 @@
     <string name="auto_latest">Dernières vidéos</string>
     <string name="auto_browse">Parcourir</string>
     <string name="auto_gb_updates">Points actualité du Collège central</string>
+    <string name="auto_bible">Bible</string>
+    <string name="auto_music">Musique</string>
+    <string name="auto_bible_continue">Continuer : %1$s</string>
 </resources>

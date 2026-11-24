@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="nav_bible">Bibbia</string>
+    <string name="bible_translation">Traduzione del Nuovo Mondo</string>
+    <string name="bible_continue">Continua ad ascoltare</string>
+    <string name="bible_start">Inizia ad ascoltare</string>
+    <string name="bible_verse_of">Versetto %1$d di %2$d</string>
+    <string name="bible_heard">capitoli ascoltati</string>
+    <string name="bible_this_week">capitoli questa settimana</string>
+    <string name="bible_hebrew">Scritture Ebraico-Aramaiche</string>
+    <string name="bible_greek">Scritture Greche Cristiane</string>
+    <string name="bible_book_heard">%1$d ascoltati</string>
+    <string name="bible_play_chapter">Riproduci capitolo %1$d</string>
+    <string name="bible_download_title">Scaricare %1$s?</string>
+    <string name="bible_download_body">%1$d capitoli, circa %2$s.</string>
+    <string name="bible_legend_heard">ascoltato</string>
+    <string name="bible_legend_started">iniziato</string>
+    <string name="bible_error">Impossibile caricare la Bibbia. Controlla la connessione.</string>
+    <string name="bible_chapter_of">Capitolo %1$d di %2$d</string>
+    <string name="bible_verse">Versetto</string>
+    <string name="bible_prev_chapter">Capitolo precedente</string>
+    <string name="bible_next_chapter">Capitolo successivo</string>
+    <string name="bible_prev_verse">Versetto precedente</string>
+    <string name="bible_next_verse">Versetto successivo</string>
+    <string name="bible_text_get">Mostra il testo durante l\'ascolto</string>
+    <string name="bible_text_size">Scarica %1$s una sola volta</string>
+    <string name="bible_text_loading">Recupero del testo…</string>
+    <string name="bible_text_failed">Impossibile scaricare il testo. Riprova.</string>
+    <string name="browse_videos">Video</string>
+    <string name="browse_audio">Audio</string>
+    <string name="audio_music">Musica</string>
+    <string name="album_play_all">Riproduci tutto</string>
+    <string name="album_shuffle">Casuale</string>
+    <string name="album_search">Numero o titolo del cantico</string>
+    <string name="album_download_title">Scaricare %1$d cantici?</string>
+    <string name="album_download_body">Circa %1$s.</string>
+    <plurals name="bible_chapters">
+        <item quantity="one">%d capitolo</item>
+        <item quantity="other">%d capitoli</item>
+    </plurals>
+    <plurals name="album_songs">
+        <item quantity="one">%d cantico</item>
+        <item quantity="other">%d cantici</item>
+    </plurals>
+</resources>

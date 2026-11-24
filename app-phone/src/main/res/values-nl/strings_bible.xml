@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="nav_bible">Bijbel</string>
+    <string name="bible_translation">Nieuwe-Wereldvertaling</string>
+    <string name="bible_continue">Verder luisteren</string>
+    <string name="bible_start">Begin met luisteren</string>
+    <string name="bible_verse_of">Vers %1$d van %2$d</string>
+    <string name="bible_heard">hoofdstukken beluisterd</string>
+    <string name="bible_this_week">hoofdstukken deze week</string>
+    <string name="bible_hebrew">Hebreeuws-Aramese Geschriften</string>
+    <string name="bible_greek">Christelijke Griekse Geschriften</string>
+    <string name="bible_book_heard">%1$d beluisterd</string>
+    <string name="bible_play_chapter">Hoofdstuk %1$d afspelen</string>
+    <string name="bible_download_title">%1$s downloaden?</string>
+    <string name="bible_download_body">%1$d hoofdstukken, ongeveer %2$s.</string>
+    <string name="bible_legend_heard">beluisterd</string>
+    <string name="bible_legend_started">begonnen</string>
+    <string name="bible_error">De Bijbel kon niet worden geladen. Controleer de verbinding.</string>
+    <string name="bible_chapter_of">Hoofdstuk %1$d van %2$d</string>
+    <string name="bible_verse">Vers</string>
+    <string name="bible_prev_chapter">Vorig hoofdstuk</string>
+    <string name="bible_next_chapter">Volgend hoofdstuk</string>
+    <string name="bible_prev_verse">Vorig vers</string>
+    <string name="bible_next_verse">Volgend vers</string>
+    <string name="bible_text_get">Tekst tonen tijdens het luisteren</string>
+    <string name="bible_text_size">Downloadt eenmalig %1$s</string>
+    <string name="bible_text_loading">Tekst ophalen…</string>
+    <string name="bible_text_failed">De tekst kon niet worden gedownload. Probeer het opnieuw.</string>
+    <string name="browse_videos">Video\'s</string>
+    <string name="browse_audio">Audio</string>
+    <string name="audio_music">Muziek</string>
+    <string name="album_play_all">Alles afspelen</string>
+    <string name="album_shuffle">Willekeurig</string>
+    <string name="album_search">Liednummer of titel</string>
+    <string name="album_download_title">%1$d liederen downloaden?</string>
+    <string name="album_download_body">Ongeveer %1$s.</string>
+    <plurals name="bible_chapters">
+        <item quantity="one">%d hoofdstuk</item>
+        <item quantity="other">%d hoofdstukken</item>
+    </plurals>
+    <plurals name="album_songs">
+        <item quantity="one">%d lied</item>
+        <item quantity="other">%d liederen</item>
+    </plurals>
+</resources>

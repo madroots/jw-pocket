@@ -21,6 +21,8 @@ data class Category(
     val media: List<Video>? = null,
 ) {
     val imageUrl: String? get() = images.bestUrl(small = true)
+    /** Square artwork (album covers of the music collections), or the best other one. */
+    val squareImageUrl: String? get() = images?.get("sqr")?.large() ?: imageUrl
 }
 
 @Serializable
@@ -85,9 +87,24 @@ data class Video(
     /** Year-month-day of first publication, or null. */
     val publishedDate: String? get() = firstPublished?.take(10)
 
-    /** jw.org link to this video, for sharing. */
+    /** Sound only (songs, audio dramas, the Bible read aloud): every file is audio. */
+    val isAudio: Boolean get() = files.orEmpty().let { list -> list.isNotEmpty() && list.all { it.mimetype?.startsWith("audio/") == true } }
+
+    /** A chapter of the Bible read aloud (made by BibleRepository, not the library). */
+    val isBible: Boolean get() = naturalKey?.startsWith(BIBLE_PREFIX) == true
+
+    /** The label to download this in when no video quality applies (audio has a single file). */
+    val audioQuality: String? get() = if (isAudio) files?.firstOrNull()?.label ?: AUDIO_QUALITY else null
+
+    /** jw.org link to this video, for sharing (none for Bible chapters, which have no such page). */
     fun shareUrl(languageCode: String): String? =
-        languageAgnosticNaturalKey?.let { "https://www.jw.org/finder?srcid=share&wtlocale=$languageCode&lank=$it" }
+        languageAgnosticNaturalKey?.takeIf { !isBible }?.let { "https://www.jw.org/finder?srcid=share&wtlocale=$languageCode&lank=$it" }
+
+    companion object {
+        /** Natural keys of Bible chapters: "bible:<language>:<book>:<chapter>". */
+        const val BIBLE_PREFIX = "bible:"
+        const val AUDIO_QUALITY = "MP3"
+    }
 }
 
 @Serializable
@@ -96,6 +113,8 @@ data class MediaFile(
     val label: String? = null,
     val filesize: Long? = null,
     val subtitles: SubtitleFile? = null,
+    /** "video/mp4", "audio/mpeg"... */
+    val mimetype: String? = null,
 ) {
     val height: Int get() = label?.filter { it.isDigit() }?.toIntOrNull() ?: 0
 }
@@ -148,6 +167,8 @@ data class Section(
     val key: String,
     val title: String,
     val videos: List<Video>,
+    /** Square artwork of the row (album covers of the music collections). */
+    val imageUrl: String? = null,
 )
 
 /** A browsable category (e.g. "Children") with its sections. */

@@ -20,6 +20,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.foundation.layout.Column
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.jwpocket.core.data.Load
@@ -35,16 +39,31 @@ import app.jwpocket.phone.R
 import app.jwpocket.phone.ui.pocketViewModel
 import app.jwpocket.phone.ui.theme.Pocket
 
-/** All categories as a picture grid. */
+/** All categories as a picture grid, or (switched to Audio) the music, dramas and readings. */
 @Composable
-fun BrowseScreen(contentPadding: PaddingValues, onOpenCategory: (Category) -> Unit) {
+fun BrowseScreen(contentPadding: PaddingValues, onOpenCategory: (Category) -> Unit, onOpenAlbum: (String) -> Unit) {
+    var audio by rememberSaveable { mutableStateOf(false) }
+    Column(Modifier.fillMaxSize().padding(top = contentPadding.calculateTopPadding())) {
+        Segmented(
+            listOf(stringResource(R.string.browse_videos), stringResource(R.string.browse_audio)),
+            selected = if (audio) 1 else 0,
+            onSelect = { audio = it == 1 },
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+        )
+        val below = PaddingValues(bottom = contentPadding.calculateBottomPadding())
+        if (audio) AudioBrowse(below, onOpenAlbum) else VideoCategories(below, onOpenCategory)
+    }
+}
+
+@Composable
+private fun VideoCategories(contentPadding: PaddingValues, onOpenCategory: (Category) -> Unit) {
     val vm = pocketViewModel { HomeViewModel(it) }
     val categories by vm.categories.collectAsState()
     LazyVerticalGrid(
         columns = GridCells.Adaptive(160.dp),
         contentPadding = PaddingValues(
             start = 16.dp, end = 16.dp,
-            top = contentPadding.calculateTopPadding() + 8.dp,
+            top = 8.dp,
             bottom = contentPadding.calculateBottomPadding() + 16.dp,
         ),
         horizontalArrangement = Arrangement.spacedBy(12.dp),

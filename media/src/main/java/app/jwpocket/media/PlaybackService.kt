@@ -284,7 +284,7 @@ class PlaybackService : MediaLibraryService() {
         }
         return item.buildUpon()
             .setUri(uri)
-            .setMimeType(MimeTypes.VIDEO_MP4)
+            .setMimeType(video.files?.firstOrNull()?.mimetype ?: MimeTypes.VIDEO_MP4)
             // Only a finished download is read by its key; a stream must never
             // read the bytes of a download of another quality still in progress.
             .setCustomCacheKey(if (download != null) DownloadsRepository.cacheKey(video.id) else null)

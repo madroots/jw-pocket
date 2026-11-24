@@ -6,4 +6,7 @@
     <string name="auto_latest">Neueste</string>
     <string name="auto_browse">Entdecken</string>
     <string name="auto_gb_updates">Lageberichte der Leitenden Körperschaft</string>
+    <string name="auto_bible">Bibel</string>
+    <string name="auto_music">Musik</string>
+    <string name="auto_bible_continue">Weiter: %1$s</string>
 </resources>

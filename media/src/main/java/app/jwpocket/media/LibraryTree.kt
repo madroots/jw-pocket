@@ -10,6 +10,8 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.session.MediaConstants
 import androidx.media3.session.MediaLibraryService.LibraryParams
 import androidx.media3.session.MediaSession
+import app.jwpocket.core.data.BibleProgress
+import app.jwpocket.core.data.LibraryRepository
 import app.jwpocket.core.data.Load
 import app.jwpocket.core.model.CategoryContent
 import app.jwpocket.core.model.Video
@@ -67,6 +69,7 @@ internal class LibraryTree(private val context: Context) {
             }
             // Root entries that didn't fit as tabs.
             parentId == BROWSE -> topFolders(language).drop((rootLimit(browser, Int.MAX_VALUE) ?: (FIXED.size + 1)) - 1)
+            parentId == BIBLE -> bibleChildren(language)
             parentId.startsWith(CATEGORY) -> {
                 val key = parentId.removePrefix(CATEGORY)
                 val content = category(language, key) ?: return null
@@ -86,6 +89,9 @@ internal class LibraryTree(private val context: Context) {
         return when {
             mediaId == ROOT -> folder(ROOT, "JW Pocket")
             mediaId == BROWSE -> folder(BROWSE, context.getString(R.string.auto_browse))
+            mediaId == BIBLE -> folder(BIBLE, context.getString(R.string.auto_bible))
+            mediaId.startsWith(BIBLE_BOOK) -> mediaId.removePrefix(BIBLE_BOOK).toIntOrNull()
+                ?.let { n -> graph.core.bible.books(language)?.firstOrNull { it.number == n } }?.let { folder(mediaId, it.name) }
             mediaId in FIXED -> fixedFolder(mediaId)
             mediaId.startsWith(CATEGORY) -> topFolders(language).firstOrNull { it.mediaId == mediaId }
             mediaId.startsWith(ROW) -> {
@@ -123,7 +129,9 @@ internal class LibraryTree(private val context: Context) {
         val videoId = mediaId.substringAfter(LEAF)
         if (folder.isNotEmpty()) {
             val language = language
-            val videos = listed["$language|$folder"] ?: videos(folder, language)
+            // A Bible chapter goes on into the following chapters and books.
+            val videos = if (folder.startsWith(BIBLE_BOOK)) graph.core.bible.books(language)?.flatMap { b -> b.chapters.map { it.video } }
+                else listed["$language|$folder"] ?: videos(folder, language)
             val index = videos?.indexOfFirst { it.id == videoId } ?: -1
             if (videos != null && index >= 0) return videos to index
         }
@@ -154,6 +162,8 @@ internal class LibraryTree(private val context: Context) {
             folder == FAVORITES -> core.favorites.favorites.loaded { it.isEmpty() }
             folder == LATEST -> core.library.latest(language).settle()
             folder.startsWith(CATEGORY) -> category(language, folder.removePrefix(CATEGORY))?.sections?.singleOrNull()?.videos
+            folder.startsWith(BIBLE_BOOK) -> folder.removePrefix(BIBLE_BOOK).toIntOrNull()
+                ?.let { n -> core.bible.books(language)?.firstOrNull { it.number == n } }?.chapters?.map { it.video }
             folder.startsWith(ROW) -> {
                 val (categoryKey, rowKey) = folder.removePrefix(ROW).split(':', limit = 2).takeIf { it.size == 2 } ?: return null
                 category(language, categoryKey)?.sections?.firstOrNull { it.key == rowKey }?.videos
@@ -171,7 +181,11 @@ internal class LibraryTree(private val context: Context) {
             ?.also { categories[cacheKey] = System.currentTimeMillis() to it }
     }
 
-    /** Continue watching, Downloads, Favorites, Latest, then the categories. */
+    /**
+     * Continue watching, the Bible and music first (they suit the car best),
+     * then Downloads, Favorites, Latest, audio dramas and readings, then the
+     * video categories.
+     */
     private suspend fun topFolders(language: String): List<MediaItem> {
         val roots = graph.core.library.rootCategories(language).settle().orEmpty()
         // Governing Body Updates sit in a row of JW Broadcasting: given a folder of their own.
@@ -179,7 +193,20 @@ internal class LibraryTree(private val context: Context) {
         val folders = (roots.map { it.key to folder(CATEGORY + it.key, it.name, it.imageUrl) } + listOfNotNull(gbUpdates))
             .sortedBy { (key, _) -> AUDIO_FIRST.indexOf(key).takeIf { it >= 0 } ?: AUDIO_FIRST.size }
             .map { it.second }
-        return FIXED.map { fixedFolder(it) } + folders
+        val music = folder(CATEGORY + LibraryRepository.AUDIO, context.getString(R.string.auto_music))
+        val audio = listOf(LibraryRepository.AUDIO_DRAMAS, LibraryRepository.AUDIO_BIBLE_READINGS).mapNotNull { key ->
+            category(language, key)?.let { folder(CATEGORY + key, it.category.name, it.category.imageUrl) }
+        }
+        return listOf(fixedFolder(CONTINUE), folder(BIBLE, context.getString(R.string.auto_bible)), music) +
+            FIXED.drop(1).map { fixedFolder(it) } + audio + folders
+    }
+
+    /** Bible: "continue" (the next chapter to hear), then the books. */
+    private suspend fun bibleChildren(language: String): List<MediaItem>? {
+        val books = graph.core.bible.books(language) ?: return null
+        val next = BibleProgress.next(graph.core.progress.states.value, books.flatMap { it.chapters })?.first
+        val resume = next?.let { leaf(BIBLE_BOOK + it.book, it.video, title = context.getString(R.string.auto_bible_continue, it.video.title)) }
+        return listOfNotNull(resume) + books.map { folder(BIBLE_BOOK + it.number, it.name) }
     }
 
     /** The browser's root limit when the root holds more than it shows; null when all fit. */
@@ -214,7 +241,7 @@ internal class LibraryTree(private val context: Context) {
             .build()
 
     /** A playable video, with how far it was watched (the car shows it). */
-    private fun leaf(folder: String, video: Video): MediaItem {
+    private fun leaf(folder: String, video: Video, title: String = video.title): MediaItem {
         val state = graph.core.progress.states.value[video.id]
         val extras = Bundle().apply {
             when {
@@ -229,12 +256,12 @@ internal class LibraryTree(private val context: Context) {
             .setMediaId(folder + LEAF + video.id)
             .setMediaMetadata(
                 MediaMetadata.Builder()
-                    .setTitle(video.title)
+                    .setTitle(title)
                     .setSubtitle(formatDuration(video.duration).ifEmpty { null })
                     .setArtworkUri(artwork(video.thumbnailUrl))
                     .setIsBrowsable(false)
                     .setIsPlayable(true)
-                    .setMediaType(MediaMetadata.MEDIA_TYPE_VIDEO)
+                    .setMediaType(if (video.isAudio) MediaMetadata.MEDIA_TYPE_MUSIC else MediaMetadata.MEDIA_TYPE_VIDEO)
                     .setExtras(extras)
                     .build()
             )
@@ -274,6 +301,9 @@ internal class LibraryTree(private val context: Context) {
         const val ROW = "row:"
         const val LEAF = '#'
         val FIXED = listOf(CONTINUE, DOWNLOADS, FAVORITES, LATEST)
+        const val BIBLE = "bible"
+        /** "bbook:<number>" */
+        const val BIBLE_BOOK = "bbook:"
 
         /** "News and Announcements" of JW Broadcasting: nearly all Governing Body Updates. */
         const val GB_UPDATES = "StudioNewsReports"

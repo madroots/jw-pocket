@@ -6,4 +6,7 @@
     <string name="auto_latest">Cele mai noi</string>
     <string name="auto_browse">Explorează</string>
     <string name="auto_gb_updates">Rapoarte din partea Corpului de Guvernare</string>
+    <string name="auto_bible">Biblia</string>
+    <string name="auto_music">Muzică</string>
+    <string name="auto_bible_continue">Continuă: %1$s</string>
 </resources>

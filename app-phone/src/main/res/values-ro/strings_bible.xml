@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="nav_bible">Biblia</string>
+    <string name="bible_translation">Traducerea lumii noi</string>
+    <string name="bible_continue">Continuă ascultarea</string>
+    <string name="bible_start">Începe ascultarea</string>
+    <string name="bible_verse_of">Versetul %1$d din %2$d</string>
+    <string name="bible_heard">capitole ascultate</string>
+    <string name="bible_this_week">capitole săptămâna aceasta</string>
+    <string name="bible_hebrew">Scripturile ebraice și arameice</string>
+    <string name="bible_greek">Scripturile grecești creștine</string>
+    <string name="bible_book_heard">%1$d ascultate</string>
+    <string name="bible_play_chapter">Redă capitolul %1$d</string>
+    <string name="bible_download_title">Descarci %1$s?</string>
+    <string name="bible_download_body">%1$d capitole, cam %2$s.</string>
+    <string name="bible_legend_heard">ascultat</string>
+    <string name="bible_legend_started">început</string>
+    <string name="bible_error">Biblia nu a putut fi încărcată. Verifică conexiunea.</string>
+    <string name="bible_chapter_of">Capitolul %1$d din %2$d</string>
+    <string name="bible_verse">Verset</string>
+    <string name="bible_prev_chapter">Capitolul anterior</string>
+    <string name="bible_next_chapter">Capitolul următor</string>
+    <string name="bible_prev_verse">Versetul anterior</string>
+    <string name="bible_next_verse">Versetul următor</string>
+    <string name="bible_text_get">Arată textul în timp ce asculți</string>
+    <string name="bible_text_size">Descarcă o singură dată %1$s</string>
+    <string name="bible_text_loading">Se obține textul…</string>
+    <string name="bible_text_failed">Textul nu a putut fi descărcat. Încearcă din nou.</string>
+    <string name="browse_videos">Videoclipuri</string>
+    <string name="browse_audio">Audio</string>
+    <string name="audio_music">Muzică</string>
+    <string name="album_play_all">Redă tot</string>
+    <string name="album_shuffle">Aleatoriu</string>
+    <string name="album_search">Numărul sau titlul cântării</string>
+    <string name="album_download_title">Descarci %1$d cântări?</string>
+    <string name="album_download_body">Cam %1$s.</string>
+    <plurals name="bible_chapters">
+        <item quantity="one">%d capitol</item>
+        <item quantity="few">%d capitole</item>
+        <item quantity="other">%d de capitole</item>
+    </plurals>
+    <plurals name="album_songs">
+        <item quantity="one">%d cântare</item>
+        <item quantity="few">%d cântări</item>
+        <item quantity="other">%d de cântări</item>
+    </plurals>
+</resources>

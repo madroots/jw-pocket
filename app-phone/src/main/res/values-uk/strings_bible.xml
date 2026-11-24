@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="nav_bible">Біблія</string>
+    <string name="bible_translation">Переклад нового світу</string>
+    <string name="bible_continue">Слухати далі</string>
+    <string name="bible_start">Почати слухати</string>
+    <string name="bible_verse_of">Вірш %1$d з %2$d</string>
+    <string name="bible_heard">розділів прослухано</string>
+    <string name="bible_this_week">розділів цього тижня</string>
+    <string name="bible_hebrew">Єврейсько-арамейські Писання</string>
+    <string name="bible_greek">Християнські грецькі Писання</string>
+    <string name="bible_book_heard">Прослухано: %1$d</string>
+    <string name="bible_play_chapter">Відтворити розділ %1$d</string>
+    <string name="bible_download_title">Завантажити %1$s?</string>
+    <string name="bible_download_body">Розділів: %1$d, близько %2$s.</string>
+    <string name="bible_legend_heard">прослухано</string>
+    <string name="bible_legend_started">розпочато</string>
+    <string name="bible_error">Не вдалося завантажити Біблію. Перевірте з’єднання.</string>
+    <string name="bible_chapter_of">Розділ %1$d з %2$d</string>
+    <string name="bible_verse">Вірш</string>
+    <string name="bible_prev_chapter">Попередній розділ</string>
+    <string name="bible_next_chapter">Наступний розділ</string>
+    <string name="bible_prev_verse">Попередній вірш</string>
+    <string name="bible_next_verse">Наступний вірш</string>
+    <string name="bible_text_get">Показувати текст під час слухання</string>
+    <string name="bible_text_size">Одноразово завантажить %1$s</string>
+    <string name="bible_text_loading">Завантаження тексту…</string>
+    <string name="bible_text_failed">Не вдалося завантажити текст. Спробуйте ще раз.</string>
+    <string name="browse_videos">Відео</string>
+    <string name="browse_audio">Аудіо</string>
+    <string name="audio_music">Музика</string>
+    <string name="album_play_all">Відтворити все</string>
+    <string name="album_shuffle">Перемішати</string>
+    <string name="album_search">Номер або назва пісні</string>
+    <string name="album_download_title">Завантажити пісні: %1$d?</string>
+    <string name="album_download_body">Близько %1$s.</string>
+    <plurals name="bible_chapters">
+        <item quantity="one">%d розділ</item>
+        <item quantity="few">%d розділи</item>
+        <item quantity="many">%d розділів</item>
+        <item quantity="other">%d розділу</item>
+    </plurals>
+    <plurals name="album_songs">
+        <item quantity="one">%d пісня</item>
+        <item quantity="few">%d пісні</item>
+        <item quantity="many">%d пісень</item>
+        <item quantity="other">%d пісні</item>
+    </plurals>
+</resources>

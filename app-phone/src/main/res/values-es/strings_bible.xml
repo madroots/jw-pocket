@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="nav_bible">Biblia</string>
+    <string name="bible_translation">Traducción del Nuevo Mundo</string>
+    <string name="bible_continue">Seguir escuchando</string>
+    <string name="bible_start">Empezar a escuchar</string>
+    <string name="bible_verse_of">Versículo %1$d de %2$d</string>
+    <string name="bible_heard">capítulos escuchados</string>
+    <string name="bible_this_week">capítulos esta semana</string>
+    <string name="bible_hebrew">Escrituras Hebreoarameas</string>
+    <string name="bible_greek">Escrituras Griegas Cristianas</string>
+    <string name="bible_book_heard">%1$d escuchados</string>
+    <string name="bible_play_chapter">Reproducir capítulo %1$d</string>
+    <string name="bible_download_title">¿Descargar %1$s?</string>
+    <string name="bible_download_body">%1$d capítulos, unos %2$s.</string>
+    <string name="bible_legend_heard">escuchado</string>
+    <string name="bible_legend_started">empezado</string>
+    <string name="bible_error">No se pudo cargar la Biblia. Revisa la conexión.</string>
+    <string name="bible_chapter_of">Capítulo %1$d de %2$d</string>
+    <string name="bible_verse">Versículo</string>
+    <string name="bible_prev_chapter">Capítulo anterior</string>
+    <string name="bible_next_chapter">Capítulo siguiente</string>
+    <string name="bible_prev_verse">Versículo anterior</string>
+    <string name="bible_next_verse">Versículo siguiente</string>
+    <string name="bible_text_get">Mostrar el texto mientras escuchas</string>
+    <string name="bible_text_size">Descarga %1$s una sola vez</string>
+    <string name="bible_text_loading">Obteniendo el texto…</string>
+    <string name="bible_text_failed">No se pudo descargar el texto. Inténtalo de nuevo.</string>
+    <string name="browse_videos">Videos</string>
+    <string name="browse_audio">Audio</string>
+    <string name="audio_music">Música</string>
+    <string name="album_play_all">Reproducir todo</string>
+    <string name="album_shuffle">Aleatorio</string>
+    <string name="album_search">Número o título de la canción</string>
+    <string name="album_download_title">¿Descargar %1$d canciones?</string>
+    <string name="album_download_body">Unos %1$s.</string>
+    <plurals name="bible_chapters">
+        <item quantity="one">%d capítulo</item>
+        <item quantity="other">%d capítulos</item>
+    </plurals>
+    <plurals name="album_songs">
+        <item quantity="one">%d canción</item>
+        <item quantity="other">%d canciones</item>
+    </plurals>
+</resources>

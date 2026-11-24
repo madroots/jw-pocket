@@ -13,6 +13,7 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
 import app.jwpocket.core.CoreGraph
+import app.jwpocket.core.data.BibleProgress
 import app.jwpocket.core.model.SeriesOrder
 import app.jwpocket.core.model.Video
 import app.jwpocket.media.download.DownloadsRepository
@@ -28,6 +29,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.withTimeoutOrNull
 
 /** Everything the screens need to draw the player. */
 data class PlaybackState(
@@ -54,6 +57,8 @@ data class PlaybackState(
     /** Sleep timer end (epoch ms), or -1 for "end of this video", or null. */
     val sleepAt: Long? = null,
     val error: String? = null,
+    /** Nothing loaded yet: a session brought back after a restart, waiting for play. */
+    val idle: Boolean = false,
     /** Streaming the smallest quality because only the sound is heard. */
     val listening: Boolean = false,
     /** The person turned listening on with the Listen button. */
@@ -76,6 +81,11 @@ class PlayerConnection internal constructor(
     private val downloads: DownloadsRepository,
 ) {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
+    private val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+
+    private fun sessionClosed(closed: Boolean) {
+        if (prefs.getBoolean(KEY_CLOSED, false) != closed) prefs.edit().putBoolean(KEY_CLOSED, closed).apply()
+    }
     private val _state = MutableStateFlow(PlaybackState())
     val state: StateFlow<PlaybackState> = _state.asStateFlow()
 
@@ -119,11 +129,13 @@ class PlayerConnection internal constructor(
 
     /** Reloads the queue when its quality no longer matches; downloads are untouched. */
     private fun applyListening() {
-        val listening = listening()
         val c = _controller.value ?: return
         val current = c.currentMediaItem?.let { PlayRequest.from(it) } ?: return
+        // Audio has a single file and no picture: nothing to switch.
+        if (current.video.isAudio) return
+        val listening = listening()
         if (current.listening == listening) return
-        reload { it.copy(listening = listening) }
+        reload { it.copy(listening = listening && !it.video.isAudio) }
     }
 
     /** Connects to the service ahead of time, so the first tap plays at once. */
@@ -159,6 +171,7 @@ class PlayerConnection internal constructor(
      * then the next videos of [row]. Starts where the person left off unless [fromStart].
      */
     fun play(video: Video, row: List<Video> = emptyList(), fromStart: Boolean = false, quality: String? = null) {
+        sessionClosed(false)
         scope.launch {
             val c = controller()
             val settings = core.settings.current
@@ -172,11 +185,41 @@ class PlayerConnection internal constructor(
         }
     }
 
+    /**
+     * After the app was closed: the last thing played comes back in the mini
+     * player, paused where it was left (a finished Bible chapter gives the
+     * next one). Nothing loads until play is pressed. Not after the person
+     * closed the player.
+     */
+    fun restoreLastSession() {
+        if (prefs.getBoolean(KEY_CLOSED, false)) return
+        scope.launch {
+            val c = controller()
+            if (c.mediaItemCount > 0) return@launch
+            val states = withTimeoutOrNull(3_000) { core.progress.states.first { it.isNotEmpty() } } ?: return@launch
+            val last = states.values.maxByOrNull { it.updatedAt } ?: return@launch
+            val (video, position, row) = if (last.video.isBible) {
+                val chapter = core.bible.chapterOf(last.video) ?: return@launch
+                val all = core.bible.allChapters(chapter.language)
+                val (next, at) = BibleProgress.next(states, all) ?: return@launch
+                Triple(next.video, at, all.map { it.video })
+            } else {
+                if (last.finished) return@launch
+                Triple(last.video, last.positionMs, listOf(last.video))
+            }
+            if (c.mediaItemCount > 0) return@launch // something started meanwhile
+            val queue = if (core.settings.current.autoplayNext) upNext(video, row, row) else listOf(video)
+            c.setMediaItems(queue.map { request(it, null).toMediaItem() }, 0, position)
+        }
+    }
+
     /** [video], the later parts of its series found in [pool], then what follows it in [row]. */
     private fun upNext(video: Video, row: List<Video>, pool: List<Video>): List<Video> {
         val start = row.indexOfFirst { it.id == video.id }
         val rest = if (start >= 0) row.drop(start + 1) else emptyList()
-        return (listOf(video) + SeriesOrder.nextParts(video, pool) + rest).distinctBy { it.id }.take(1 + QUEUE_AHEAD)
+        // Albums and the Bible go on track after track, chapter after chapter.
+        val ahead = if (video.isAudio) AUDIO_QUEUE_AHEAD else QUEUE_AHEAD
+        return (listOf(video) + SeriesOrder.nextParts(video, pool) + rest).distinctBy { it.id }.take(1 + ahead)
     }
 
     /**
@@ -186,7 +229,7 @@ class PlayerConnection internal constructor(
      */
     private suspend fun addSeriesParts(c: MediaController, video: Video, row: List<Video>, queued: List<Video>) {
         val category = video.primaryCategory ?: return
-        if (!SeriesOrder.mayBePart(video)) return
+        if (video.isAudio || !SeriesOrder.mayBePart(video)) return
         val own = runCatching { core.library.row(core.settings.current.languageCode, category) }.getOrNull() ?: return
         val better = upNext(video, row, row + own)
         if (better.map { it.id } == queued.map { it.id }) return
@@ -195,18 +238,31 @@ class PlayerConnection internal constructor(
         c.addMediaItems(better.drop(1).map { request(it, null).toMediaItem() })
     }
 
-    fun togglePlay() = command { if (it.isPlaying) it.pause() else { if (it.playbackState == Player.STATE_ENDED) it.seekTo(0); it.play() } }
+    fun togglePlay() = command {
+        if (it.isPlaying) it.pause()
+        else {
+            if (it.playbackState == Player.STATE_ENDED) it.seekTo(0)
+            startIfRestored(it)
+            it.play()
+        }
+    }
     fun pause() = command { it.pause() }
-    fun resume() = command { it.play() }
+    fun resume() = command { startIfRestored(it); it.play() }
     fun seekTo(positionMs: Long) = command { it.seekTo(positionMs); refreshPosition(it) }
     fun seekBy(deltaMs: Long) = command { it.seekTo((it.currentPosition + deltaMs).coerceIn(0, it.duration.takeIf { d -> d > 0 } ?: Long.MAX_VALUE)); refreshPosition(it) }
     fun next() = command { if (it.hasNextMediaItem()) it.seekToNextMediaItem() }
     fun previous() = command { if (it.currentPosition > 5_000 || !it.hasPreviousMediaItem()) it.seekTo(0) else it.seekToPreviousMediaItem() }
-    fun playQueueItem(index: Int) = command { it.seekTo(index, 0); it.play() }
+    fun playQueueItem(index: Int) = command { it.seekTo(index, 0); startIfRestored(it); it.play() }
+
+    /** A session brought back by [restoreLastSession] loads only when played. */
+    private fun startIfRestored(player: Player) {
+        if (player.playbackState == Player.STATE_IDLE && player.mediaItemCount > 0) player.prepare()
+    }
     fun setSpeed(speed: Float) = command { it.playbackParameters = PlaybackParameters(speed) }
 
     /** Stops playback, closes the notification and forgets the queue. */
     fun stop() = command {
+        sessionClosed(true)
         sleepJob?.cancel()
         it.stop()
         it.clearMediaItems()
@@ -251,7 +307,7 @@ class PlayerConnection internal constructor(
         val s = core.settings.current
         // A copy loaded in this session may carry fields an older saved copy lacks.
         val fresh = core.library.findLoaded(video.id) ?: video
-        return PlayRequest(fresh, s.languageCode, quality ?: s.streamQuality, s.subtitleLanguage, listening())
+        return PlayRequest(fresh, s.languageCode, quality ?: s.streamQuality, s.subtitleLanguage, listening() && !fresh.isAudio)
     }
 
     /** Rebuilds every queued item with [change] (e.g. a new subtitle language). */
@@ -311,6 +367,7 @@ class PlayerConnection internal constructor(
                 playWhenReady = player.playWhenReady,
                 buffering = player.playbackState == Player.STATE_BUFFERING,
                 ended = player.playbackState == Player.STATE_ENDED,
+                idle = player.playbackState == Player.STATE_IDLE,
                 positionMs = player.currentPosition.coerceAtLeast(0),
                 bufferedMs = player.bufferedPosition.coerceAtLeast(0),
                 durationMs = player.duration.takeIf { it != C.TIME_UNSET && it > 0 } ?: (video?.durationMs ?: 0),
@@ -349,6 +406,11 @@ class PlayerConnection internal constructor(
     private companion object {
         /** How many videos of the row follow the chosen one. */
         const val QUEUE_AHEAD = 10
+        /** Songs of an album, chapters of the Bible. */
+        const val AUDIO_QUEUE_AHEAD = 60
+        private const val PREFS = "jw_pocket_player"
+        /** The person closed the player: nothing comes back at the next start. */
+        private const val KEY_CLOSED = "closed"
         const val END_OF_VIDEO = -1L
     }
 }

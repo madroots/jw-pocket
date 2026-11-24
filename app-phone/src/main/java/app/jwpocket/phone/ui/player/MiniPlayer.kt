@@ -2,6 +2,8 @@ package app.jwpocket.phone.ui.player
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.ui.layout.ContentScale
+import coil.compose.AsyncImage
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -60,8 +62,10 @@ fun MiniPlayer(state: PlaybackState, onExpand: () -> Unit, modifier: Modifier = 
     ) {
         Row(Modifier.fillMaxWidth().height(60.dp), verticalAlignment = Alignment.CenterVertically) {
             Box(Modifier.fillMaxHeight().aspectRatio(16f / 9f).background(Color.Black)) {
-                VideoSurface(controller, Modifier.fillMaxHeight().fillMaxWidth(), subtitles = false)
-                if (state.listening) ListenVisual(video, state.playWhenReady && !state.ended, cue = null, Modifier.fillMaxSize(), compact = true)
+                if (!video.isAudio) VideoSurface(controller, Modifier.fillMaxHeight().fillMaxWidth(), subtitles = false)
+                // Brought back after a restart and not played yet: no picture until play, so its cover.
+                if (!video.isAudio && state.idle) AsyncImage(video.thumbnailUrl, null, contentScale = ContentScale.Crop, modifier = Modifier.fillMaxSize())
+                if (state.listening || video.isAudio) ListenVisual(video, state.playWhenReady && !state.ended, cue = null, Modifier.fillMaxSize(), compact = true)
             }
             Spacer(Modifier.width(12.dp))
             Column(Modifier.weight(1f)) {

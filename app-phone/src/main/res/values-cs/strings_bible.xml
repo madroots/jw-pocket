@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="nav_bible">Bible</string>
+    <string name="bible_translation">Překlad nový svět</string>
+    <string name="bible_continue">Pokračovat v poslechu</string>
+    <string name="bible_start">Začít poslouchat</string>
+    <string name="bible_verse_of">Verš %1$d z %2$d</string>
+    <string name="bible_heard">kapitol vyslechnuto</string>
+    <string name="bible_this_week">kapitol tento týden</string>
+    <string name="bible_hebrew">Hebrejská písma</string>
+    <string name="bible_greek">Křesťanská řecká písma</string>
+    <string name="bible_book_heard">%1$d vyslechnuto</string>
+    <string name="bible_play_chapter">Přehrát kapitolu %1$d</string>
+    <string name="bible_download_title">Stáhnout %1$s?</string>
+    <string name="bible_download_body">Kapitol: %1$d, asi %2$s.</string>
+    <string name="bible_legend_heard">vyslechnuto</string>
+    <string name="bible_legend_started">rozposloucháno</string>
+    <string name="bible_error">Bibli se nepodařilo načíst. Zkontrolujte připojení.</string>
+    <string name="bible_chapter_of">Kapitola %1$d z %2$d</string>
+    <string name="bible_verse">Verš</string>
+    <string name="bible_prev_chapter">Předchozí kapitola</string>
+    <string name="bible_next_chapter">Další kapitola</string>
+    <string name="bible_prev_verse">Předchozí verš</string>
+    <string name="bible_next_verse">Další verš</string>
+    <string name="bible_text_get">Zobrazit text během poslechu</string>
+    <string name="bible_text_size">Jednorázově stáhne %1$s</string>
+    <string name="bible_text_loading">Načítá se text…</string>
+    <string name="bible_text_failed">Text se nepodařilo stáhnout. Zkuste to znovu.</string>
+    <string name="browse_videos">Videa</string>
+    <string name="browse_audio">Audio</string>
+    <string name="audio_music">Hudba</string>
+    <string name="album_play_all">Přehrát vše</string>
+    <string name="album_shuffle">Náhodně</string>
+    <string name="album_search">Číslo nebo název písně</string>
+    <string name="album_download_title">Stáhnout %1$d písní?</string>
+    <string name="album_download_body">Asi %1$s.</string>
+    <plurals name="bible_chapters">
+        <item quantity="one">%d kapitola</item>
+        <item quantity="few">%d kapitoly</item>
+        <item quantity="many">%d kapitoly</item>
+        <item quantity="other">%d kapitol</item>
+    </plurals>
+    <plurals name="album_songs">
+        <item quantity="one">%d píseň</item>
+        <item quantity="few">%d písně</item>
+        <item quantity="many">%d písně</item>
+        <item quantity="other">%d písní</item>
+    </plurals>
+</resources>

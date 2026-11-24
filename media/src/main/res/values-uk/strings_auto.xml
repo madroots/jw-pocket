@@ -6,4 +6,7 @@
     <string name="auto_latest">Нове</string>
     <string name="auto_browse">Огляд</string>
     <string name="auto_gb_updates">Звернення Керівного органу</string>
+    <string name="auto_bible">Біблія</string>
+    <string name="auto_music">Музика</string>
+    <string name="auto_bible_continue">Далі: %1$s</string>
 </resources>

@@ -4,6 +4,8 @@ import app.jwpocket.core.model.Category
 import app.jwpocket.core.model.CategoryResponse
 import app.jwpocket.core.model.LanguageResponse
 import app.jwpocket.core.model.MediaItemsResponse
+import app.jwpocket.core.model.PubMediaFile
+import app.jwpocket.core.model.PubMediaResponse
 import app.jwpocket.core.model.Video
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -56,6 +58,17 @@ class MediatorApi(
     /** Age of the cached copy in ms, or null when there is none. */
     suspend fun cacheAge(language: String, key: String): Long? = cache.age("cat_${language}_$key")
 
+    /** The Bible read aloud in [language]: every chapter with its verse timings (about 4 MB, cached). */
+    suspend fun bibleAudio(language: String, fresh: Boolean): PubMediaResponse? =
+        load(BIBLE_AUDIO + language, "$PUB_MEDIA?output=json&alllangs=0&pub=nwt&fileformat=MP3&langwritten=$language", fresh, PubMediaResponse.serializer())
+
+    suspend fun bibleAudioAge(language: String): Long? = cache.age(BIBLE_AUDIO + language)
+
+    /** The Bible's EPUB in [language] (its text, to follow along); network only. */
+    suspend fun bibleEpub(language: String): PubMediaFile? =
+        load(null, "$PUB_MEDIA?output=json&alllangs=0&pub=nwt&fileformat=EPUB&langwritten=$language", true, PubMediaResponse.serializer())
+            ?.files?.get(language)?.get("EPUB")?.firstOrNull()
+
     private suspend fun <T> load(cacheKey: String?, url: String, fresh: Boolean, serializer: KSerializer<T>): T? {
         if (!fresh) {
             val text = cacheKey?.let { cache.read(it) } ?: return null
@@ -89,6 +102,9 @@ class MediatorApi(
 
     companion object {
         const val BASE = "https://b.jw-cdn.org/apis/mediator/v1"
+        /** jw.org's publication media: Bible audio and publication files. */
+        const val PUB_MEDIA = "https://b.jw-cdn.org/apis/pub-media/GETPUBMEDIALINKS"
+        private const val BIBLE_AUDIO = "bible_audio_"
     }
 }
 

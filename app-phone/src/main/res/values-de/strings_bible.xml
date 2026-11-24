@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="nav_bible">Bibel</string>
+    <string name="bible_translation">Neue-Welt-Übersetzung</string>
+    <string name="bible_continue">Weiterhören</string>
+    <string name="bible_start">Jetzt anhören</string>
+    <string name="bible_verse_of">Vers %1$d von %2$d</string>
+    <string name="bible_heard">Kapitel gehört</string>
+    <string name="bible_this_week">Kapitel diese Woche</string>
+    <string name="bible_hebrew">Hebräisch-Aramäische Schriften</string>
+    <string name="bible_greek">Christliche Griechische Schriften</string>
+    <string name="bible_book_heard">%1$d gehört</string>
+    <string name="bible_play_chapter">Kapitel %1$d abspielen</string>
+    <string name="bible_download_title">%1$s herunterladen?</string>
+    <string name="bible_download_body">%1$d Kapitel, etwa %2$s.</string>
+    <string name="bible_legend_heard">gehört</string>
+    <string name="bible_legend_started">angefangen</string>
+    <string name="bible_error">Die Bibel konnte nicht geladen werden. Prüfe die Verbindung.</string>
+    <string name="bible_chapter_of">Kapitel %1$d von %2$d</string>
+    <string name="bible_verse">Vers</string>
+    <string name="bible_prev_chapter">Vorheriges Kapitel</string>
+    <string name="bible_next_chapter">Nächstes Kapitel</string>
+    <string name="bible_prev_verse">Vorheriger Vers</string>
+    <string name="bible_next_verse">Nächster Vers</string>
+    <string name="bible_text_get">Text beim Zuhören anzeigen</string>
+    <string name="bible_text_size">Lädt einmalig %1$s herunter</string>
+    <string name="bible_text_loading">Text wird geladen …</string>
+    <string name="bible_text_failed">Der Text konnte nicht heruntergeladen werden. Versuch es noch einmal.</string>
+    <string name="browse_videos">Videos</string>
+    <string name="browse_audio">Audio</string>
+    <string name="audio_music">Musik</string>
+    <string name="album_play_all">Alle abspielen</string>
+    <string name="album_shuffle">Zufällig</string>
+    <string name="album_search">Liednummer oder Titel</string>
+    <string name="album_download_title">%1$d Lieder herunterladen?</string>
+    <string name="album_download_body">Etwa %1$s.</string>
+    <plurals name="bible_chapters">
+        <item quantity="one">%d Kapitel</item>
+        <item quantity="other">%d Kapitel</item>
+    </plurals>
+    <plurals name="album_songs">
+        <item quantity="one">%d Lied</item>
+        <item quantity="other">%d Lieder</item>
+    </plurals>
+</resources>

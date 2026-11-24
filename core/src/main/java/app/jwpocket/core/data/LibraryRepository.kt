@@ -97,7 +97,7 @@ class LibraryRepository(private val api: MediatorApi, private val text: AppText)
     /** Every video of the library, loading what isn't loaded yet. */
     suspend fun index(language: String): List<SearchHit> = indexLock.withLock {
         val roots = api.category(language, ROOT, fresh = false) ?: api.category(language, ROOT, fresh = true)
-        val keys = roots?.subcategories.orEmpty().map { it.key }.filter { it !in NOT_SEARCHED }
+        val keys = roots?.subcategories.orEmpty().map { it.key }.filter { it !in NOT_SEARCHED } + AUDIO_CATEGORIES
         val gate = Semaphore(4)
         coroutineScope {
             keys.map { key ->
@@ -152,14 +152,14 @@ class LibraryRepository(private val api: MediatorApi, private val text: AppText)
         val sections = coroutineScope {
             subs.map { sub ->
                 async {
-                    if (!sub.media.isNullOrEmpty()) listOf(Section(sub.key, sub.name, sub.media))
+                    if (!sub.media.isNullOrEmpty()) listOf(Section(sub.key, sub.name, sub.media, sub.squareImageUrl))
                     else gate.withPermit {
                         val loaded = api.category(language, sub.key, fresh) ?: api.category(language, sub.key, !fresh)
                         when {
                             loaded == null -> emptyList()
-                            !loaded.media.isNullOrEmpty() -> listOf(Section(sub.key, sub.name, loaded.media))
+                            !loaded.media.isNullOrEmpty() -> listOf(Section(sub.key, sub.name, loaded.media, sub.squareImageUrl))
                             else -> loaded.subcategories.orEmpty().filter { !it.media.isNullOrEmpty() }
-                                .map { Section(it.key, it.name, it.media!!) }
+                                .map { Section(it.key, it.name, it.media!!, it.squareImageUrl) }
                         }
                     }
                 }
@@ -171,6 +171,12 @@ class LibraryRepository(private val api: MediatorApi, private val text: AppText)
     companion object {
         const val ROOT = "VideoOnDemand"
         const val LATEST = "LatestVideos"
+        /** Music collections (one row each). */
+        const val AUDIO = "Audio"
+        const val AUDIO_DRAMAS = "Dramas"
+        const val AUDIO_BIBLE_READINGS = "DramaticBibleReadings"
+        /** Sound-only categories: music, audio dramas, dramatic Bible readings. */
+        val AUDIO_CATEGORIES = listOf(AUDIO, AUDIO_DRAMAS, AUDIO_BIBLE_READINGS)
         /** Audio-described copies of videos found elsewhere; left out of search to avoid doubles. */
         private val NOT_SEARCHED = setOf("VODAudioDescriptions")
 

@@ -9,14 +9,16 @@ The successor of JW TV, rebuilt from scratch with a clean structure and a shared
 **Phone**
 - **Keeps playing** with the screen locked or in other apps (as audio), with lock-screen, notification, headset and Bluetooth controls. Can be turned off in Settings.
 - **Picture-in-picture**: leave the app during a video and it shrinks to a floating window (automatic on Android 12+, or with the button in the player).
-- **Mini player** above the tab bar: browse while the video keeps playing; tap it to open the full player, swipe the full player down to shrink it again.
+- **Mini player** above the tab bar: browse while the video keeps playing; tap it to open the full player, swipe the full player down to shrink it again. After the app is closed, the last thing played waits there, paused where it was left (until you close it with ×).
+- **Bible tab**: the Bible read aloud (New World Translation), chapter by chapter. Continue where you stopped, chapters heard per book, every chapter of a book at a glance, download a whole book. The player follows the reading verse by verse with the verse text on screen (from jw.org's Bible EPUB, downloaded once), tap a verse to jump to it, step a verse or a chapter back and forward.
+- **Audio**: Browse › Audio has the music collections as albums (Play all, Shuffle, Download all, find a song by number), audio dramas and dramatic Bible readings, played with sound bars over the cover. Search finds them too.
 - **Full player**: Up next list with autoplay (the parts of a series and numbered episodes always follow in order), subtitles in any language, quality, playback speed, sleep timer, share, download and favorite in one row. The app stays upright; the full-screen button turns the video sideways (double-tap a side there to skip 10 s).
 - **Library tab**: Downloads (progress, size, free space, pause/resume/retry/delete, Wi-Fi only), Favorites, History and Clips.
 - **Share a moment**: Share › Share a moment opens a full-screen clip editor (the video pauses): set the start and end with the handles on the trim bar, or tap the first and last subtitle line; tap the video to preview. The phone makes a short MP4 (subtitles drawn in, if wanted). Clips are kept in Library › Clips and are for personal sharing only, not for social media or anywhere public.
 - **Search** across the whole library, by title and description.
 - **Downloaded videos are marked everywhere** with a green check; "Ready offline" row on Home and an offline banner when there's no internet.
 - **New-video notifications** for the monthly JW Broadcasting program and Governing Body updates, each with its own switch in Settings; tapping one opens the video.
-- **Android Auto**: browse Continue watching, Downloads, Favorites, Latest and every category in the car and listen (sound only).
+- **Android Auto**: browse Continue watching, the Bible, Music, Downloads, Favorites, Latest, audio dramas and every category in the car and listen (sound only).
 - **Saves data when only listening**: with the screen off or the app in the background (and in the car), videos stream in the smallest quality, on mobile data by default; the **Listen** button in the player does it anytime and shows moving sound bars with the subtitles instead of the picture. The picture isn't decoded meanwhile, which saves battery.
 
 **TV**

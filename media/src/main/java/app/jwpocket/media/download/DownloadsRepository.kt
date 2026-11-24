@@ -136,7 +136,7 @@ class DownloadsRepository internal constructor(
         val url = file.progressiveDownloadURL ?: return
         val meta = DownloadMeta(video.toJson(), file.label ?: quality, language, System.currentTimeMillis())
         val request = DownloadRequest.Builder(video.id, android.net.Uri.parse(url))
-            .setMimeType(MimeTypes.VIDEO_MP4)
+            .setMimeType(file.mimetype ?: MimeTypes.VIDEO_MP4)
             .setCustomCacheKey(cacheKey(video.id))
             .setData(PocketJson.encodeToString(DownloadMeta.serializer(), meta).toByteArray())
             .build()

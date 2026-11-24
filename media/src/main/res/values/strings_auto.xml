@@ -9,4 +9,9 @@
     <string name="auto_browse">Browse</string>
     <!-- Folder of the Governing Body Update videos (JW Broadcasting news). -->
     <string name="auto_gb_updates">Governing Body Updates</string>
+    <!-- The Bible read aloud, and the music collections. -->
+    <string name="auto_bible">Bible</string>
+    <string name="auto_music">Music</string>
+    <!-- First entry of the Bible folder: the chapter to hear next, e.g. "Continue: Matthew 5". -->
+    <string name="auto_bible_continue">Continue: %1$s</string>
 </resources>

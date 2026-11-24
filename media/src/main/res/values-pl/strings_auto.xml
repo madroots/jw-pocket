@@ -6,4 +6,7 @@
     <string name="auto_latest">Najnowsze</string>
     <string name="auto_browse">Przeglądaj</string>
     <string name="auto_gb_updates">Sprawozdania Ciała Kierowniczego</string>
+    <string name="auto_bible">Biblia</string>
+    <string name="auto_music">Muzyka</string>
+    <string name="auto_bible_continue">Dalej: %1$s</string>
 </resources>

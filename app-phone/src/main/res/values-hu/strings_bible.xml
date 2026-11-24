@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="nav_bible">Biblia</string>
+    <string name="bible_translation">Új világ fordítás</string>
+    <string name="bible_continue">Hallgatás folytatása</string>
+    <string name="bible_start">Hallgatás indítása</string>
+    <string name="bible_verse_of">%1$d. vers / %2$d</string>
+    <string name="bible_heard">meghallgatott fejezet</string>
+    <string name="bible_this_week">fejezet ezen a héten</string>
+    <string name="bible_hebrew">Héber-arámi iratok</string>
+    <string name="bible_greek">Keresztény görög iratok</string>
+    <string name="bible_book_heard">%1$d meghallgatva</string>
+    <string name="bible_play_chapter">%1$d. fejezet lejátszása</string>
+    <string name="bible_download_title">Letöltöd: %1$s?</string>
+    <string name="bible_download_body">%1$d fejezet, kb. %2$s.</string>
+    <string name="bible_legend_heard">meghallgatva</string>
+    <string name="bible_legend_started">elkezdve</string>
+    <string name="bible_error">Nem sikerült betölteni a Bibliát. Ellenőrizd a kapcsolatot.</string>
+    <string name="bible_chapter_of">%1$d. fejezet / %2$d</string>
+    <string name="bible_verse">Vers</string>
+    <string name="bible_prev_chapter">Előző fejezet</string>
+    <string name="bible_next_chapter">Következő fejezet</string>
+    <string name="bible_prev_verse">Előző vers</string>
+    <string name="bible_next_verse">Következő vers</string>
+    <string name="bible_text_get">Szöveg mutatása hallgatás közben</string>
+    <string name="bible_text_size">Egyszer letölt %1$s adatot</string>
+    <string name="bible_text_loading">Szöveg betöltése…</string>
+    <string name="bible_text_failed">Nem sikerült letölteni a szöveget. Próbáld újra.</string>
+    <string name="browse_videos">Videók</string>
+    <string name="browse_audio">Hang</string>
+    <string name="audio_music">Zene</string>
+    <string name="album_play_all">Összes lejátszása</string>
+    <string name="album_shuffle">Véletlenszerű</string>
+    <string name="album_search">Ének száma vagy címe</string>
+    <string name="album_download_title">Letöltesz %1$d éneket?</string>
+    <string name="album_download_body">Kb. %1$s.</string>
+    <plurals name="bible_chapters">
+        <item quantity="one">%d fejezet</item>
+        <item quantity="other">%d fejezet</item>
+    </plurals>
+    <plurals name="album_songs">
+        <item quantity="one">%d ének</item>
+        <item quantity="other">%d ének</item>
+    </plurals>
+</resources>

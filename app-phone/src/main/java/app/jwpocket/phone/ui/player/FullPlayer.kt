@@ -109,7 +109,7 @@ import app.jwpocket.phone.ui.clips.ClipEditor
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-private enum class Sheet { Subtitles, Quality, Speed, Sleep, Moment }
+internal enum class Sheet { Subtitles, Quality, Speed, Sleep, Moment }
 
 /**
  * The full player. Portrait: video on top, then controls, actions and Up
@@ -185,22 +185,32 @@ fun FullPlayer(
                     Column(Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(stringResource(R.string.player_now_playing), style = MaterialTheme.typography.labelSmall, color = Pocket.TextSecondary)
                         Text(
-                            if (fromDownload) stringResource(R.string.player_from_downloads) else (state.quality ?: stringResource(R.string.player_streaming)),
+                            when {
+                                video.isBible -> stringResource(R.string.bible_translation)
+                                fromDownload -> stringResource(R.string.player_from_downloads)
+                                video.isAudio -> stringResource(R.string.player_streaming)
+                                else -> state.quality ?: stringResource(R.string.player_streaming)
+                            },
                             style = MaterialTheme.typography.bodySmall, color = Pocket.TextSecondary,
                         )
                     }
-                    IconButton(onClick = onPictureInPicture) { Icon(Icons.Rounded.PictureInPictureAlt, stringResource(R.string.player_picture_in_picture)) }
+                    if (!video.isAudio) IconButton(onClick = onPictureInPicture) { Icon(Icons.Rounded.PictureInPictureAlt, stringResource(R.string.player_picture_in_picture)) }
+                    else Spacer(Modifier.size(48.dp))
                 }
 
-                Box(Modifier.fillMaxWidth().aspectRatio(16f / 9f).background(Color.Black)) {
-                    VideoSurface(controller, Modifier.fillMaxSize(), settings.subtitleScale)
-                    if (state.listening) ListenVisual(video, state.playWhenReady && !state.ended, cue, Modifier.fillMaxSize(), subtitleScale = settings.subtitleScale)
-                    VideoOverlay(state, fullscreen = false, title = null, onCollapse = onCollapse,
-                        onFullscreen = onToggleFullscreen, onSubtitles = { sheet = Sheet.Subtitles }, onQuality = { sheet = Sheet.Quality })
+                if (!video.isBible) {
+                    Box(Modifier.fillMaxWidth().aspectRatio(16f / 9f).background(Color.Black)) {
+                        if (!video.isAudio) VideoSurface(controller, Modifier.fillMaxSize(), settings.subtitleScale)
+                        // Audio has no picture: the sound bars over its cover stand in for it.
+                        if (state.listening || video.isAudio) ListenVisual(video, state.playWhenReady && !state.ended, cue, Modifier.fillMaxSize(), subtitleScale = settings.subtitleScale)
+                        if (!video.isAudio) VideoOverlay(state, fullscreen = false, title = null, onCollapse = onCollapse,
+                            onFullscreen = onToggleFullscreen, onSubtitles = { sheet = Sheet.Subtitles }, onQuality = { sheet = Sheet.Quality })
+                    }
                 }
             }
 
-            LazyColumn(Modifier.weight(1f)) {
+            if (video.isBible) BiblePlayerBody(state, video, onSheet = { sheet = it }, modifier = Modifier.weight(1f))
+            else LazyColumn(Modifier.weight(1f)) {
                 item { NowPlayingInfo(state, onSheet = { sheet = it }) }
                 if (state.queue.size > 1) {
                     item {
@@ -263,10 +273,7 @@ private fun NowPlayingInfo(state: PlaybackState, onSheet: (Sheet) -> Unit) {
     val pocket = LocalPocket.current
     val connection = pocket.media.player
     val video = state.video ?: return
-    val marks by rememberMarks(video.id)
     val settings by pocket.core.settings.settings.collectAsState()
-    val context = LocalContext.current
-    var confirmRemove by remember { mutableStateOf(false) }
 
     Column(Modifier.padding(horizontal = 20.dp)) {
         Spacer(Modifier.height(16.dp))
@@ -303,7 +310,32 @@ private fun NowPlayingInfo(state: PlaybackState, onSheet: (Sheet) -> Unit) {
             )
         }
 
-        Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        PlayerActions(state, onSheet)
+        if (!state.error.isNullOrBlank()) {
+            Spacer(Modifier.height(12.dp))
+            Text(state.error!!, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodyMedium)
+        }
+    }
+}
+
+/**
+ * The row of action pills: subtitles, quality, Listen, download, favorite,
+ * speed, sleep timer, share. Audio has no picture: no subtitles, quality,
+ * Listen or "share a moment" there.
+ */
+@Composable
+internal fun PlayerActions(state: PlaybackState, onSheet: (Sheet) -> Unit, modifier: Modifier = Modifier) {
+    val pocket = LocalPocket.current
+    val connection = pocket.media.player
+    val video = state.video ?: return
+    val marks by rememberMarks(video.id)
+    val settings by pocket.core.settings.settings.collectAsState()
+    val context = LocalContext.current
+    var confirmRemove by remember { mutableStateOf(false) }
+    val audio = video.isAudio
+
+    Row(modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        if (!audio) {
             val cc = state.subtitleLanguage
             Pill(if (cc != null) Icons.Rounded.ClosedCaption else Icons.Rounded.ClosedCaptionDisabled,
                 if (cc != null) pocket.core.languages.name(cc) else stringResource(R.string.player_subtitles_off), highlighted = cc != null) { onSheet(Sheet.Subtitles) }
@@ -313,48 +345,48 @@ private fun NowPlayingInfo(state: PlaybackState, onSheet: (Sheet) -> Unit) {
                     connection.setListen(!state.listenByHand)
                 }
             }
-            val download = marks.download
-            when {
-                download == null -> Pill(Icons.Rounded.Download, stringResource(R.string.common_download)) {
-                    val quality = settings.downloadQuality ?: state.quality ?: video.file(null)?.label
-                    if (quality != null) pocket.media.downloads.download(video, quality, settings.languageCode)
-                }
-                download.status == DownloadStatus.Done -> Pill(Icons.Rounded.CheckCircle, stringResource(R.string.player_pill_downloaded, download.quality), highlighted = true) { confirmRemove = true }
-                else -> Pill(Icons.Rounded.Download, stringResource(R.string.player_pill_download_progress, (download.progress * 100).toInt(), formatBytes(download.totalBytes))) { confirmRemove = true }
+        }
+        val download = marks.download
+        when {
+            download == null -> Pill(Icons.Rounded.Download, stringResource(R.string.common_download)) {
+                val quality = video.audioQuality ?: settings.downloadQuality ?: state.quality ?: video.file(null)?.label
+                if (quality != null) pocket.media.downloads.download(video, quality, settings.languageCode)
             }
+            download.status == DownloadStatus.Done -> Pill(Icons.Rounded.CheckCircle,
+                if (audio) stringResource(R.string.common_downloaded) else stringResource(R.string.player_pill_downloaded, download.quality), highlighted = true) { confirmRemove = true }
+            else -> Pill(Icons.Rounded.Download, stringResource(R.string.player_pill_download_progress, (download.progress * 100).toInt(), formatBytes(download.totalBytes))) { confirmRemove = true }
+        }
+        if (!video.isBible) {
             Pill(if (marks.favorite) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder, stringResource(if (marks.favorite) R.string.common_saved else R.string.common_favorite), highlighted = marks.favorite) {
                 pocket.core.favorites.toggle(video)
             }
-            Pill(Icons.Rounded.Speed, if (state.speed == 1f) stringResource(R.string.player_speed) else "${state.speed}×", highlighted = state.speed != 1f) { onSheet(Sheet.Speed) }
-            Pill(Icons.Rounded.Bedtime, sleepLabel(state.sleepAt), highlighted = state.sleepAt != null) { onSheet(Sheet.Sleep) }
-            Box {
-                var shareMenu by remember { mutableStateOf(false) }
-                Pill(Icons.Rounded.Share, stringResource(R.string.common_share)) { shareMenu = true }
-                DropdownMenu(shareMenu, onDismissRequest = { shareMenu = false }, containerColor = Pocket.SurfaceHigh) {
-                    video.shareUrl(settings.languageCode)?.let { url ->
-                        DropdownMenuItem(
-                            text = { Text(stringResource(R.string.share_video)) },
-                            leadingIcon = { Icon(Icons.Rounded.Link, null) },
-                            onClick = {
-                                shareMenu = false
-                                context.startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).apply {
-                                    type = "text/plain"
-                                    putExtra(Intent.EXTRA_TEXT, "${video.title}\n$url")
-                                }, null))
-                            },
-                        )
-                    }
+        }
+        Pill(Icons.Rounded.Speed, if (state.speed == 1f) stringResource(R.string.player_speed) else "${state.speed}×", highlighted = state.speed != 1f) { onSheet(Sheet.Speed) }
+        Pill(Icons.Rounded.Bedtime, sleepLabel(state.sleepAt), highlighted = state.sleepAt != null) { onSheet(Sheet.Sleep) }
+        val shareUrl = video.shareUrl(settings.languageCode)
+        if (shareUrl != null || !audio) Box {
+            var shareMenu by remember { mutableStateOf(false) }
+            Pill(Icons.Rounded.Share, stringResource(R.string.common_share)) { shareMenu = true }
+            DropdownMenu(shareMenu, onDismissRequest = { shareMenu = false }, containerColor = Pocket.SurfaceHigh) {
+                shareUrl?.let { url ->
                     DropdownMenuItem(
-                        text = { Text(stringResource(R.string.share_moment)) },
-                        leadingIcon = { Icon(Icons.Rounded.ContentCut, null) },
-                        onClick = { shareMenu = false; onSheet(Sheet.Moment) },
+                        text = { Text(stringResource(R.string.share_video)) },
+                        leadingIcon = { Icon(Icons.Rounded.Link, null) },
+                        onClick = {
+                            shareMenu = false
+                            context.startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).apply {
+                                type = "text/plain"
+                                putExtra(Intent.EXTRA_TEXT, "${video.title}\n$url")
+                            }, null))
+                        },
                     )
                 }
+                if (!audio) DropdownMenuItem(
+                    text = { Text(stringResource(R.string.share_moment)) },
+                    leadingIcon = { Icon(Icons.Rounded.ContentCut, null) },
+                    onClick = { shareMenu = false; onSheet(Sheet.Moment) },
+                )
             }
-        }
-        if (!state.error.isNullOrBlank()) {
-            Spacer(Modifier.height(12.dp))
-            Text(state.error!!, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodyMedium)
         }
     }
 

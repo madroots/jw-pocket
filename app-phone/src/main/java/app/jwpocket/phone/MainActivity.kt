@@ -74,6 +74,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setFullscreen(false)
         graph.media.player.warmUp()
+        // The last thing played waits in the mini player, paused, as it was left.
+        if (savedInstanceState == null) graph.media.player.restoreLastSession()
         handle(intent, opensDetails = savedInstanceState == null && (intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) == 0)
         addOnPictureInPictureModeChangedListener(pipListener)
 
@@ -115,7 +117,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun shouldAutoPip(): Boolean =
-        hasPip && ui.expanded && graph.core.settings.current.autoPictureInPicture && graph.media.player.state.value.isPlaying
+        hasPip && ui.expanded && graph.core.settings.current.autoPictureInPicture && graph.media.player.state.value.let { it.isPlaying && it.video?.isAudio != true }
 
     private fun pipParams(): PictureInPictureParams? {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return null

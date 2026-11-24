@@ -6,4 +6,7 @@
     <string name="auto_latest">Nejnovější</string>
     <string name="auto_browse">Procházet</string>
     <string name="auto_gb_updates">Aktuální informace od vedoucího sboru</string>
+    <string name="auto_bible">Bible</string>
+    <string name="auto_music">Hudba</string>
+    <string name="auto_bible_continue">Pokračovat: %1$s</string>
 </resources>

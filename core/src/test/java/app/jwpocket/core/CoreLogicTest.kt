@@ -131,4 +131,35 @@ class CoreLogicTest {
         val cues = WebVtt.parse(vtt)
         assertEquals(listOf(Cue(5_120, 7_900, "The Bible says that\nJehovah & his Son"), Cue(123_500, 124_000, "Only minutes")), cues)
     }
+
+    @Test
+    fun bibleVersesWithoutNotesAndStoppingAtTheNextBook() {
+        val html = """
+            <p><span id="chapter5"></span><span id="chapter5_verse1"></span><span class="w_ch"><strong>5</strong> </span>Keď Ježiš videl zástupy.
+            <span id="chapter5_verse2"></span><strong><sup>2</sup></strong> A začal&nbsp;rozprávať:</p>
+            <p><span id="chapter5_verse3"></span><strong><sup>3</sup></strong> „Šťastní sú,<span id="footnotesource38"></span><a epub:type="noteref" href="#footnote38">*</a> lebo…</p>
+            <aside epub:type="footnote">poznámka</aside>
+            <p><span id="chapter5_verse1"></span>Next book, chapter 5 again</p>
+        """.trimIndent()
+        val verses = app.jwpocket.core.data.BibleText.parse(html, 5)
+        assertEquals(listOf(1, 2, 3), verses.keys.toList())
+        assertEquals("Keď Ježiš videl zástupy.", verses[1])
+        assertEquals("A začal rozprávať:", verses[2])
+        assertEquals("„Šťastní sú, lebo…", verses[3])
+    }
+
+    @Test
+    fun bibleContinuesAfterAFinishedChapter() {
+        fun chapter(n: Int) = app.jwpocket.core.data.BibleChapter("V", 40, n, "Matúš",
+            Video(naturalKey = "${Video.BIBLE_PREFIX}V:40:$n", title = "Matúš $n"), emptyList())
+        val chapters = (1..3).map(::chapter)
+        fun state(c: app.jwpocket.core.data.BibleChapter, pos: Long, finished: Boolean, at: Long) =
+            c.id to app.jwpocket.core.data.WatchState(c.video, pos, 100_000, finished, at)
+        assertEquals(chapters[0] to 0L, app.jwpocket.core.data.BibleProgress.next(emptyMap(), chapters))
+        val listened = mapOf(state(chapters[0], 100_000, true, 1), state(chapters[1], 30_000, false, 2))
+        assertEquals(chapters[1] to 30_000L, app.jwpocket.core.data.BibleProgress.next(listened, chapters))
+        val finishedLast = mapOf(state(chapters[1], 30_000, false, 2), state(chapters[0], 100_000, true, 3))
+        assertEquals(chapters[1] to 0L, app.jwpocket.core.data.BibleProgress.next(finishedLast, chapters))
+        assertEquals(62_345L, app.jwpocket.core.data.BibleRepository.parseTime("00:01:02.345"))
+    }
 }

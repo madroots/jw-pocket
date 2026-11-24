@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="nav_bible">Библия</string>
+    <string name="bible_translation">Перевод нового мира</string>
+    <string name="bible_continue">Продолжить слушать</string>
+    <string name="bible_start">Начать слушать</string>
+    <string name="bible_verse_of">Стих %1$d из %2$d</string>
+    <string name="bible_heard">глав прослушано</string>
+    <string name="bible_this_week">глав на этой неделе</string>
+    <string name="bible_hebrew">Еврейско-арамейские Писания</string>
+    <string name="bible_greek">Христианские Греческие Писания</string>
+    <string name="bible_book_heard">Прослушано: %1$d</string>
+    <string name="bible_play_chapter">Воспроизвести главу %1$d</string>
+    <string name="bible_download_title">Скачать %1$s?</string>
+    <string name="bible_download_body">Глав: %1$d, около %2$s.</string>
+    <string name="bible_legend_heard">прослушано</string>
+    <string name="bible_legend_started">начато</string>
+    <string name="bible_error">Не удалось загрузить Библию. Проверьте подключение.</string>
+    <string name="bible_chapter_of">Глава %1$d из %2$d</string>
+    <string name="bible_verse">Стих</string>
+    <string name="bible_prev_chapter">Предыдущая глава</string>
+    <string name="bible_next_chapter">Следующая глава</string>
+    <string name="bible_prev_verse">Предыдущий стих</string>
+    <string name="bible_next_verse">Следующий стих</string>
+    <string name="bible_text_get">Показывать текст во время прослушивания</string>
+    <string name="bible_text_size">Один раз скачает %1$s</string>
+    <string name="bible_text_loading">Загрузка текста…</string>
+    <string name="bible_text_failed">Не удалось скачать текст. Попробуйте ещё раз.</string>
+    <string name="browse_videos">Видео</string>
+    <string name="browse_audio">Аудио</string>
+    <string name="audio_music">Музыка</string>
+    <string name="album_play_all">Воспроизвести всё</string>
+    <string name="album_shuffle">Вперемешку</string>
+    <string name="album_search">Номер или название песни</string>
+    <string name="album_download_title">Скачать песни: %1$d?</string>
+    <string name="album_download_body">Около %1$s.</string>
+    <plurals name="bible_chapters">
+        <item quantity="one">%d глава</item>
+        <item quantity="few">%d главы</item>
+        <item quantity="many">%d глав</item>
+        <item quantity="other">%d главы</item>
+    </plurals>
+    <plurals name="album_songs">
+        <item quantity="one">%d песня</item>
+        <item quantity="few">%d песни</item>
+        <item quantity="many">%d песен</item>
+        <item quantity="other">%d песни</item>
+    </plurals>
+</resources>

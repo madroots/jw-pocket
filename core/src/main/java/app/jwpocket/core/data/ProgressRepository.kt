@@ -45,11 +45,11 @@ class ProgressRepository(private val dao: ProgressDao, private val scope: Corout
         }
         .stateIn(scope, SharingStarted.Eagerly, emptyMap())
 
-    /** Started but not finished, most recent first. */
-    val continueWatching: Flow<List<WatchState>> = states.map { map -> map.values.filter { it.canResume } }
+    /** Started but not finished, most recent first. Bible chapters have their own place (the Bible tab). */
+    val continueWatching: Flow<List<WatchState>> = states.map { map -> map.values.filter { it.canResume && !it.video.isBible } }
 
-    /** Everything watched or started, most recent first. */
-    val history: Flow<List<WatchState>> = states.map { it.values.toList() }
+    /** Everything watched or started, most recent first (without Bible chapters, tracked in the Bible tab). */
+    val history: Flow<List<WatchState>> = states.map { map -> map.values.filter { !it.video.isBible } }
 
     fun resumePositionMs(videoId: String): Long = states.value[videoId]?.takeIf { it.canResume }?.positionMs ?: 0L
 

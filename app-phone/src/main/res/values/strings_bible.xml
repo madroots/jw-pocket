@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Bottom bar -->
+    <string name="nav_bible">Bible</string>
+
+    <!-- Bible tab -->
+    <string name="bible_translation">New World Translation</string>
+    <string name="bible_continue">Continue listening</string>
+    <string name="bible_start">Start listening</string>
+    <!-- %1$d verse, %2$d verses in the chapter -->
+    <string name="bible_verse_of">Verse %1$d of %2$d</string>
+    <string name="bible_heard">chapters heard</string>
+    <string name="bible_this_week">chapters this week</string>
+    <string name="bible_hebrew">Hebrew-Aramaic Scriptures</string>
+    <string name="bible_greek">Christian Greek Scriptures</string>
+    <plurals name="bible_chapters">
+        <item quantity="one">%d chapter</item>
+        <item quantity="other">%d chapters</item>
+    </plurals>
+    <string name="bible_book_heard">%1$d heard</string>
+    <string name="bible_play_chapter">Play chapter %1$d</string>
+    <string name="bible_download_title">Download %1$s?</string>
+    <string name="bible_download_body">%1$d chapters, about %2$s.</string>
+    <string name="bible_legend_heard">heard</string>
+    <string name="bible_legend_started">started</string>
+    <string name="bible_error">The Bible couldn\'t be loaded. Check the connection.</string>
+
+    <!-- Bible player -->
+    <string name="bible_chapter_of">Chapter %1$d of %2$d</string>
+    <string name="bible_verse">Verse</string>
+    <string name="bible_prev_chapter">Previous chapter</string>
+    <string name="bible_next_chapter">Next chapter</string>
+    <string name="bible_prev_verse">Previous verse</string>
+    <string name="bible_next_verse">Next verse</string>
+    <string name="bible_text_get">Show the text while listening</string>
+    <string name="bible_text_size">Downloads %1$s once</string>
+    <string name="bible_text_loading">Getting the text…</string>
+    <string name="bible_text_failed">The text couldn\'t be downloaded. Try again.</string>
+
+    <!-- Browse › Audio -->
+    <string name="browse_videos">Videos</string>
+    <string name="browse_audio">Audio</string>
+    <string name="audio_music">Music</string>
+    <plurals name="album_songs">
+        <item quantity="one">%d song</item>
+        <item quantity="other">%d songs</item>
+    </plurals>
+    <string name="album_play_all">Play all</string>
+    <string name="album_shuffle">Shuffle</string>
+    <string name="album_search">Song number or title</string>
+    <string name="album_download_title">Download %1$d songs?</string>
+    <string name="album_download_body">About %1$s.</string>
+</resources>

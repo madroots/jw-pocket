@@ -2,6 +2,7 @@ package app.jwpocket.core
 
 import android.app.ActivityManager
 import android.content.Context
+import app.jwpocket.core.data.BibleRepository
 import app.jwpocket.core.data.FavoritesRepository
 import app.jwpocket.core.data.LanguageRepository
 import app.jwpocket.core.data.LibraryRepository
@@ -61,6 +62,7 @@ class CoreGraph(context: Context, updateRepo: String, updateApk: String, version
     val library = LibraryRepository(api, text)
     val languages = LanguageRepository(api, appScope)
     val subtitles = SubtitleRepository(api)
+    val bible = BibleRepository(api, appContext.filesDir)
     val progress by lazy { ProgressRepository(database.progress(), appScope) }
     val favorites by lazy { FavoritesRepository(database.favorites(), appScope) }
     val updates = UpdateController(
