@@ -45,7 +45,6 @@
         <item quantity="many">%d песен</item>
         <item quantity="other">%d песни</item>
     </plurals>
-    <string name="library_tab_bible">Библия</string>
     <string name="library_bible_empty_title">Нет скачанных глав Библии</string>
     <string name="library_bible_empty_body">На вкладке «Библия» откройте книгу и нажмите «Скачать», чтобы слушать офлайн.</string>
     <string name="library_bible_open">Открыть Библию</string>

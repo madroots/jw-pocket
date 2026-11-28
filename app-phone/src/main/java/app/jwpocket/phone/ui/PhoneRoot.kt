@@ -21,9 +21,6 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.automirrored.rounded.MenuBook
@@ -94,8 +91,12 @@ import app.jwpocket.phone.ui.screens.BrowseScreen
 import app.jwpocket.phone.ui.screens.CategoryScreen
 import app.jwpocket.phone.ui.screens.HomeScreen
 import app.jwpocket.phone.ui.screens.LanguageScreen
+import app.jwpocket.phone.ui.screens.DownloadKind
+import app.jwpocket.phone.ui.screens.LibraryClipsScreen
+import app.jwpocket.phone.ui.screens.LibraryDownloadsScreen
+import app.jwpocket.phone.ui.screens.LibraryFavoritesScreen
+import app.jwpocket.phone.ui.screens.LibraryHistoryScreen
 import app.jwpocket.phone.ui.screens.LibraryScreen
-import app.jwpocket.phone.ui.screens.LibraryTab
 import app.jwpocket.phone.ui.screens.SearchScreen
 import app.jwpocket.phone.ui.screens.SectionScreen
 import app.jwpocket.phone.ui.screens.SettingsScreen
@@ -121,7 +122,7 @@ private enum class Tab(val route: String, @StringRes val label: Int, val icon: I
 }
 
 /** Routes that draw their own header instead of the top bar. */
-private val OWN_HEADER = setOf("home", "search", "library?tab={tab}", "bible")
+private val OWN_HEADER = setOf("home", "search", "library", "bible")
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -264,13 +265,7 @@ fun PhoneRoot(ui: PhoneUiState, onPictureInPicture: () -> Unit, onToggleFullscre
             AlertDialog(
                 onDismissRequest = pocket.core.updates::dismiss,
                 title = { Text(stringResource(R.string.update_available_title, update.versionName)) },
-                text = {
-                    // Every version since the installed one: can be long, so it scrolls.
-                    Text(
-                        update.notes ?: stringResource(R.string.update_available_message, formatBytes(update.sizeBytes)),
-                        modifier = Modifier.heightIn(max = 360.dp).verticalScroll(rememberScrollState()),
-                    )
-                },
+                text = { UpdateNotes(update) },
                 confirmButton = { TextButton(onClick = pocket.core.updates::install) { Text(stringResource(R.string.update_install), color = Pocket.Accent) } },
                 dismissButton = { TextButton(onClick = pocket.core.updates::dismiss) { Text(stringResource(R.string.update_later)) } },
                 containerColor = Pocket.SurfaceHigh,
@@ -301,6 +296,10 @@ private fun titleFor(route: String, args: android.os.Bundle?): String = when {
     route == "language" -> stringResource(R.string.nav_library_language)
     route == "subtitles" -> stringResource(R.string.nav_subtitle_language)
     route == "bible-language" -> stringResource(R.string.bible_language_title)
+    route == "library/favorites" -> stringResource(R.string.library_favorites)
+    route == "library/clips" -> stringResource(R.string.library_clips)
+    route == "library/history" -> stringResource(R.string.library_history)
+    route.startsWith("library/downloads/") -> DownloadKind.from(args?.getString("kind"))?.let { stringResource(it.label) }.orEmpty()
     route.startsWith("category/") -> categoryTitle(args?.getString("key").orEmpty())
     route.startsWith("section/") -> categoryTitle(args?.getString("cat").orEmpty(), args?.getString("sec"))
     route.startsWith("album/") -> categoryTitle(LibraryRepository.AUDIO, args?.getString("sec"))
@@ -313,6 +312,8 @@ private fun titleFor(route: String, args: android.os.Bundle?): String = when {
 @Composable
 private fun PocketNavHost(nav: NavHostController, padding: androidx.compose.foundation.layout.PaddingValues, onTab: (Tab) -> Unit) {
     val openCategory: (String) -> Unit = { key -> nav.navigate("category/$key") }
+    val openLibrary: () -> Unit = { onTab(Tab.Library); nav.navigate("library") { launchSingleTop = true } }
+    val openBrowse: () -> Unit = { onTab(Tab.Browse); nav.navigate("browse") { launchSingleTop = true } }
     NavHost(
         nav,
         startDestination = "home",
@@ -324,8 +325,8 @@ private fun PocketNavHost(nav: NavHostController, padding: androidx.compose.foun
                 contentPadding = padding,
                 onOpenSettings = { nav.navigate("settings") },
                 onOpenCategory = { openCategory(it.key) },
-                onOpenDownloads = { onTab(Tab.Library); nav.navigate("library?tab=${LibraryTab.Downloads.name}") { launchSingleTop = true } },
-                onOpenFavorites = { onTab(Tab.Library); nav.navigate("library?tab=${LibraryTab.Favorites.name}") { launchSingleTop = true } },
+                onOpenDownloads = openLibrary,
+                onOpenFavorites = { openLibrary(); nav.navigate("library/favorites") },
             )
         }
         composable("browse") { BrowseScreen(padding, onOpenCategory = { openCategory(it.key) }, onOpenAlbum = { nav.navigate("album/$it") }) }
@@ -335,21 +336,33 @@ private fun PocketNavHost(nav: NavHostController, padding: androidx.compose.foun
             BibleBookScreen(e.arguments?.getInt("book") ?: 1, padding)
         }
         composable("search") { SearchScreen(padding) { openCategory(it.key) } }
-        composable("library?tab={tab}", arguments = listOf(navArgument("tab") { type = NavType.StringType; defaultValue = LibraryTab.Downloads.name })) { e ->
-            val initial = runCatching { LibraryTab.valueOf(e.arguments?.getString("tab").orEmpty()) }.getOrDefault(LibraryTab.Downloads)
+        composable("library") {
             LibraryScreen(
-                padding, initial,
-                onBrowse = { onTab(Tab.Browse); nav.navigate("browse") { launchSingleTop = true } },
+                padding,
+                onBrowse = openBrowse,
+                onOpenDownloads = { kind -> nav.navigate("library/downloads/${kind.name}") },
+                onOpenFavorites = { nav.navigate("library/favorites") },
+                onOpenClips = { nav.navigate("library/clips") },
+                onOpenHistory = { nav.navigate("library/history") },
+            )
+        }
+        composable("library/downloads/{kind}") { e ->
+            LibraryDownloadsScreen(
+                DownloadKind.from(e.arguments?.getString("kind")) ?: DownloadKind.Videos, padding,
+                onBrowse = openBrowse,
                 onOpenBible = { onTab(Tab.Bible); nav.navigate("bible") { launchSingleTop = true } },
             )
         }
+        composable("library/favorites") { LibraryFavoritesScreen(padding, onBrowse = openBrowse) }
+        composable("library/clips") { LibraryClipsScreen(padding) }
+        composable("library/history") { LibraryHistoryScreen(padding, onBrowse = openBrowse) }
         composable("settings") {
             SettingsScreen(
                 padding,
                 onOpenLanguage = { nav.navigate("language") },
                 onOpenSubtitles = { nav.navigate("subtitles") },
                 onOpenBibleLanguage = { nav.navigate("bible-language") },
-                onOpenDownloads = { onTab(Tab.Library); nav.navigate("library?tab=${LibraryTab.Downloads.name}") { launchSingleTop = true } },
+                onOpenDownloads = openLibrary,
             )
         }
         composable("language") { LanguageScreen(padding) { nav.popBackStack() } }

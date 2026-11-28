@@ -15,7 +15,6 @@
     <string name="clip_share_warning">Tylko do osobistego udostępniania znajomym. Publikowanie go w mediach społecznościowych lub w innych publicznych miejscach jest niedozwolone.</string>
     <string name="clip_share_link">Dodaj link do całego filmu</string>
     <string name="clip_share_action">Udostępnij</string>
-    <string name="library_tab_clips">Klipy</string>
     <string name="clips_empty_title">Nie ma jeszcze klipów</string>
     <string name="clips_empty_body">W odtwarzaczu stuknij Udostępnij › Udostępnij fragment, aby zachować kilka zdań, które ci się podobają.</string>
     <string name="clip_delete">Usuń klip</string>

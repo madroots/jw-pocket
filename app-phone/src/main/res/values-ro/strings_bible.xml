@@ -43,7 +43,6 @@
         <item quantity="few">%d cântări</item>
         <item quantity="other">%d de cântări</item>
     </plurals>
-    <string name="library_tab_bible">Biblia</string>
     <string name="library_bible_empty_title">Niciun capitol din Biblie descărcat</string>
     <string name="library_bible_empty_body">În fila Biblia, deschide o carte și atinge Descarcă pentru a asculta offline.</string>
     <string name="library_bible_open">Deschide Biblia</string>

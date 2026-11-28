@@ -32,8 +32,6 @@
     <string name="quality_ask_every_time">Pokaždé se zeptat</string>
     <string name="quality_download_note">Nižší kvalita šetří místo.</string>
 
-    <string name="subtitles_same_as_video">Jako ve videu</string>
-    <string name="subtitles_same_as_video_detail">Titulky v jazyce videí</string>
     <string name="subtitles_off">Vypnuto</string>
     <string name="subtitles_any_language_note">Libovolný jazyk: titulky se zobrazí u každého videa, které v něm bylo zveřejněno, bez ohledu na jazyk videa.</string>
     <string name="search_languages">Hledat jazyky</string>
@@ -43,8 +41,4 @@
     <string name="cascade_app_yes">Videa i titulky</string>
     <string name="cascade_app_videos_only">Jen videa</string>
     <string name="cascade_app_no">Jen aplikaci</string>
-    <string name="cascade_video_title">I titulky v jazyce %1$s?</string>
-    <string name="cascade_video_text">Titulky máš nastavené na jazyk %1$s. Zobrazovat raději titulky v jazyce videí?</string>
-    <string name="cascade_video_yes">Ano</string>
-    <string name="cascade_video_no">Ponechat jazyk %1$s</string>
 </resources>

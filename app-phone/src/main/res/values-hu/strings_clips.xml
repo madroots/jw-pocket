@@ -15,7 +15,6 @@
     <string name="clip_share_warning">Csak személyes megosztásra, ismerőseiddel. Közösségi oldalakon vagy bárhol nyilvánosan közzétenni nem szabad.</string>
     <string name="clip_share_link">Link hozzáadása a teljes videóhoz</string>
     <string name="clip_share_action">Megosztás</string>
-    <string name="library_tab_clips">Klipek</string>
     <string name="clips_empty_title">Még nincsenek klipek</string>
     <string name="clips_empty_body">A lejátszóban koppints a Megosztás › Egy pillanat megosztása lehetőségre, és ments el néhány mondatot, ami tetszik.</string>
     <string name="clip_delete">Klip törlése</string>

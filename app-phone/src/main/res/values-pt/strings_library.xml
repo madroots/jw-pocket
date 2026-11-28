@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="library_storage">%1$s neste celular · %2$s livres</string>
+    <string name="library_menu_delete_all">Excluir todos os downloads</string>
+    <string name="library_favorites">Favoritos</string>
+    <string name="library_clips">Clipes</string>
+    <string name="library_recent">Reproduzidos recentemente</string>
+    <string name="library_history">Histórico</string>
+    <string name="library_on_phone">Neste celular</string>
+    <string name="library_kind_videos">Vídeos</string>
+    <string name="library_kind_dramas">Dramas em áudio</string>
+    <plurals name="library_recordings">
+        <item quantity="one">%d gravação</item>
+        <item quantity="other">%d gravações</item>
+    </plurals>
+    <plurals name="library_pending_more">
+        <item quantity="one">mais %d</item>
+        <item quantity="other">mais %d</item>
+    </plurals>
+    <string name="library_empty_title">Sua biblioteca está vazia</string>
+    <string name="library_empty_body">Toque no coração de um vídeo para guardá-lo nos Favoritos, ou toque em Baixar para assistir depois sem internet.</string>
+</resources>

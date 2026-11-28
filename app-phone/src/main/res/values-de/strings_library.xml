@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="library_storage">%1$s auf diesem Smartphone · %2$s frei</string>
+    <string name="library_menu_delete_all">Alle Downloads löschen</string>
+    <string name="library_favorites">Favoriten</string>
+    <string name="library_clips">Clips</string>
+    <string name="library_recent">Zuletzt abgespielt</string>
+    <string name="library_history">Verlauf</string>
+    <string name="library_on_phone">Auf diesem Smartphone</string>
+    <string name="library_kind_videos">Videos</string>
+    <string name="library_kind_dramas">Hörspiele</string>
+    <plurals name="library_recordings">
+        <item quantity="one">%d Aufnahme</item>
+        <item quantity="other">%d Aufnahmen</item>
+    </plurals>
+    <plurals name="library_pending_more">
+        <item quantity="one">%d weiterer</item>
+        <item quantity="other">%d weitere</item>
+    </plurals>
+    <string name="library_empty_title">Ihre Mediathek ist leer</string>
+    <string name="library_empty_body">Tippen Sie bei einem Video auf das Herz, um es zu den Favoriten hinzuzufügen, oder auf „Herunterladen“, um es später ohne Internet anzusehen.</string>
+</resources>

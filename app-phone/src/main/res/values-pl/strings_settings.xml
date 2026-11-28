@@ -32,8 +32,6 @@
     <string name="quality_ask_every_time">Pytaj za każdym razem</string>
     <string name="quality_download_note">Niższa jakość oszczędza miejsce.</string>
 
-    <string name="subtitles_same_as_video">Jak w filmie</string>
-    <string name="subtitles_same_as_video_detail">Napisy w języku filmów</string>
     <string name="subtitles_off">Wyłączone</string>
     <string name="subtitles_any_language_note">Dowolny język: napisy są wyświetlane w każdym filmie, który ma napisy w tym języku, niezależnie od języka filmu.</string>
     <string name="search_languages">Szukaj języków</string>
@@ -43,8 +41,4 @@
     <string name="cascade_app_yes">Filmy i napisy</string>
     <string name="cascade_app_videos_only">Tylko filmy</string>
     <string name="cascade_app_no">Tylko aplikacja</string>
-    <string name="cascade_video_title">Napisy też w języku: %1$s?</string>
-    <string name="cascade_video_text">Twoje napisy są ustawione na język: %1$s. Wyświetlać zamiast tego napisy w języku filmów?</string>
-    <string name="cascade_video_yes">Tak</string>
-    <string name="cascade_video_no">Zachowaj: %1$s</string>
 </resources>

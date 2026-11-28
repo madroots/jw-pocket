@@ -41,7 +41,6 @@
         <item quantity="one">%d cântico</item>
         <item quantity="other">%d cânticos</item>
     </plurals>
-    <string name="library_tab_bible">Bíblia</string>
     <string name="library_bible_empty_title">Nenhum capítulo da Bíblia baixado</string>
     <string name="library_bible_empty_body">Na aba Bíblia, abra um livro e toque em Baixar para ouvir off-line.</string>
     <string name="library_bible_open">Abrir a Bíblia</string>

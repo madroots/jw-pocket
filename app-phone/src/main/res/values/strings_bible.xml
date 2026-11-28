@@ -51,7 +51,6 @@
     <string name="album_download_body">About %1$s.</string>
 
     <!-- Library › Bible: downloaded chapters -->
-    <string name="library_tab_bible">Bible</string>
     <string name="library_bible_empty_title">No Bible chapters downloaded</string>
     <string name="library_bible_empty_body">In the Bible tab, open a book and tap Download to listen offline.</string>
     <string name="library_bible_open">Open the Bible</string>

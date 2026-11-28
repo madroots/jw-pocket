@@ -14,6 +14,8 @@ import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
 import app.jwpocket.core.CoreGraph
 import app.jwpocket.core.data.BibleProgress
+import app.jwpocket.core.data.ProgressRepository
+import app.jwpocket.core.data.TipKind
 import app.jwpocket.core.model.SeriesOrder
 import app.jwpocket.core.model.Video
 import app.jwpocket.media.download.DownloadsRepository
@@ -30,6 +32,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withTimeoutOrNull
 
 /** Everything the screens need to draw the player. */
@@ -50,6 +55,8 @@ data class PlaybackState(
     val quality: String? = null,
     /** Language of the subtitles shown, or null when off. */
     val subtitleLanguage: String? = null,
+    /** Subtitles asked for on this item: null = its own language, "off", or a language code. */
+    val subtitleChoice: String? = null,
     /** The wanted subtitle language isn't published for this video. */
     val subtitleMissing: Boolean = false,
     val fromDownload: Boolean = false,
@@ -94,6 +101,44 @@ class PlayerConnection internal constructor(
     private fun sessionClosed(closed: Boolean) {
         if (prefs.getBoolean(KEY_CLOSED, false) != closed) prefs.edit().putBoolean(KEY_CLOSED, closed).apply()
     }
+
+    init {
+        // The Bible language changed while a chapter plays: it goes on in the new language from the same verse.
+        scope.launch {
+            core.settings.settings.map { it.bibleLanguageCode }.distinctUntilChanged().drop(1).collect { switchBibleLanguage(it) }
+        }
+    }
+
+    /** Every Bible chapter queued becomes [language]'s; the one playing continues at the start of the same verse. */
+    private suspend fun switchBibleLanguage(language: String) {
+        val c = _controller.value ?: return
+        val current = c.currentMediaItem?.let { PlayRequest.from(it) } ?: return
+        if (!current.video.isBible || current.language == language) return
+        val chapters = core.bible.books(language)?.flatMap { it.chapters }?.associateBy { ProgressRepository.key(it.id) } ?: return
+        if (c.currentMediaItem?.mediaId != current.video.id) return // moved on while the chapters loaded
+        val verse = core.bible.chapter(current.video.id)?.verseAt(c.currentPosition)
+        val position = verse?.let { chapters[ProgressRepository.key(current.video.id)]?.startOf(it) } ?: 0L
+        val index = c.currentMediaItemIndex
+        val wasPlaying = c.playWhenReady
+        val items = (0 until c.mediaItemCount).map { i ->
+            val item = c.getMediaItemAt(i)
+            val request = PlayRequest.from(item)?.takeIf { it.video.isBible }
+            val chapter = request?.let { chapters[ProgressRepository.key(it.video.id)] }
+            if (request != null && chapter != null) request.copy(video = chapter.video, language = language).toMediaItem() else item
+        }
+        c.setMediaItems(items, index, position)
+        c.prepare()
+        if (wasPlaying) c.play()
+    }
+
+    /** Where [video] resumes; a Bible chapter last heard in another language starts at the verse at the same share of the way. */
+    private fun resumeAt(video: Video): Long {
+        val state = core.progress.states.value[video.id] ?: return 0L
+        val at = state.positionFor(video)
+        if (state.video.id == video.id || at == 0L) return at
+        return core.bible.chapter(video.id)?.let { c -> c.startOf(c.verseAt(at)) } ?: at
+    }
+
     private val _state = MutableStateFlow(PlaybackState())
     val state: StateFlow<PlaybackState> = _state.asStateFlow()
 
@@ -185,7 +230,7 @@ class PlayerConnection internal constructor(
             val settings = core.settings.current
             val queue = if (settings.autoplayNext) upNext(video, row, row) else listOf(video)
             val items = queue.map { request(it, if (it.id == video.id) quality else null).toMediaItem() }
-            val position = if (fromStart) 0L else core.progress.resumePositionMs(video.id)
+            val position = if (fromStart) 0L else resumeAt(video)
             c.setMediaItems(items, 0, position)
             c.prepare()
             c.play()
@@ -207,8 +252,10 @@ class PlayerConnection internal constructor(
             val states = withTimeoutOrNull(3_000) { core.progress.states.first { it.isNotEmpty() } } ?: return@launch
             val last = states.values.maxByOrNull { it.updatedAt } ?: return@launch
             val (video, position, row) = if (last.video.isBible) {
-                val chapter = core.bible.chapterOf(last.video) ?: return@launch
-                val all = core.bible.allChapters(chapter.language)
+                // The Bible language now, wherever the last chapter was heard.
+                val language = core.settings.current.bibleLanguageCode
+                core.bible.books(language) ?: return@launch
+                val all = core.bible.allChapters(language)
                 val (next, at) = BibleProgress.next(states, all) ?: return@launch
                 Triple(next.video, at, all.map { it.video })
             } else {
@@ -277,10 +324,19 @@ class PlayerConnection internal constructor(
         _state.value = PlaybackState()
     }
 
-    /** Subtitle choice for this and later videos: null = original, "off", or a language code. */
-    fun setSubtitles(choice: String?) {
-        core.settings.setSubtitleLanguage(choice)
-        reload { it.copy(subtitleChoice = core.settings.current.subtitleLanguage) }
+    /**
+     * Subtitles for what's playing only: null = the video's own language,
+     * "off", or a language code. The default for other videos is set in
+     * Settings; picking the same thing again and again brings a tip about it.
+     */
+    fun setSubtitles(choice: String?) = command { c ->
+        val current = c.currentMediaItem?.let { PlayRequest.from(it) } ?: return@command
+        if (choice != null) {
+            if (choice != app.jwpocket.core.data.Settings.SUBTITLES_OFF) core.settings.recordLanguageUse(choice)
+            core.tips.record(TipKind.Subtitles, choice, current.video.id)
+        }
+        val id = current.video.id
+        reload { if (it.video.id == id) it.copy(subtitleChoice = choice) else it }
     }
 
     /**
@@ -292,7 +348,10 @@ class PlayerConnection internal constructor(
         val current = c.currentMediaItem?.let { PlayRequest.from(it) } ?: return@command
         val wanted = language?.takeIf { it != current.language }
         if (wanted == current.spoken) return@command
-        if (wanted != null) core.settings.recordLanguageUse(wanted)
+        if (wanted != null) {
+            core.settings.recordLanguageUse(wanted)
+            core.tips.record(TipKind.VideoLanguage, wanted, current.video.id)
+        }
         val id = current.video.id
         reload { if (it.video.id == id) it.copy(spoken = wanted) else it }
     }
@@ -431,6 +490,7 @@ class PlayerConnection internal constructor(
                 queueIndex = player.currentMediaItemIndex,
                 quality = extras?.getString(PlayRequest.KEY_PLAYING_QUALITY),
                 subtitleLanguage = extras?.getString(PlayRequest.KEY_SUBTITLE_LANGUAGE),
+                subtitleChoice = item?.let { PlayRequest.from(it)?.subtitleChoice },
                 subtitleMissing = extras?.getBoolean(PlayRequest.KEY_SUBTITLE_MISSING) == true,
                 fromDownload = extras?.getBoolean(PlayRequest.KEY_FROM_DOWNLOAD) == true,
                 listening = item?.let { PlayRequest.from(it)?.listening } == true && extras?.getBoolean(PlayRequest.KEY_FROM_DOWNLOAD) != true,

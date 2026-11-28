@@ -77,6 +77,7 @@ import app.jwpocket.core.data.BibleBook
 import app.jwpocket.core.data.BibleChapter
 import app.jwpocket.core.data.BibleProgress
 import app.jwpocket.core.data.WatchState
+import app.jwpocket.core.model.Video
 import app.jwpocket.core.util.formatBytes
 import app.jwpocket.core.util.formatDuration
 import app.jwpocket.core.util.formatTimeLeft
@@ -143,6 +144,7 @@ fun BibleScreen(contentPadding: PaddingValues, onOpenBook: (Int) -> Unit) {
                         Stat(Modifier.weight(1f), "${BibleProgress.heardSince(states, all, weekAgo)}", null, stringResource(R.string.bible_this_week))
                     }
                 }
+                full { OtherLanguageDownloads() }
                 full {
                     Segmented(
                         listOf(stringResource(R.string.bible_hebrew), stringResource(R.string.bible_greek)),
@@ -159,6 +161,52 @@ fun BibleScreen(contentPadding: PaddingValues, onOpenBook: (Int) -> Unit) {
 }
 
 private fun LazyGridScope.full(content: @Composable () -> Unit) = item(span = { GridItemSpan(maxLineSpan) }) { content() }
+
+/**
+ * Chapters downloaded in a language other than the Bible language: they
+ * aren't played now (each language is its own recording), so say so and
+ * offer to free the space. Nothing is deleted without asking.
+ */
+@Composable
+private fun OtherLanguageDownloads() {
+    val pocket = LocalPocket.current
+    val settings by pocket.core.settings.settings.collectAsState()
+    val downloads by pocket.media.downloads.items.collectAsState()
+    val language = settings.bibleLanguageCode
+    val others = downloads.values.filter { it.video.isBible }
+        .groupBy { it.video.id.removePrefix(Video.BIBLE_PREFIX).substringBefore(':') }
+        .filterKeys { it != language }
+    var removing by remember { mutableStateOf<String?>(null) }
+    Column {
+        others.forEach { (code, items) ->
+            Row(
+                Modifier.fillMaxWidth().padding(top = 8.dp).clip(RoundedCornerShape(12.dp)).background(Pocket.Surface).padding(start = 14.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    pluralStringResource(R.plurals.bible_other_language_downloads, items.size, items.size, pocket.core.languages.name(code)) + " · " + formatBytes(items.sumOf { it.bytes }),
+                    style = MaterialTheme.typography.bodySmall, color = Pocket.TextSecondary, modifier = Modifier.weight(1f),
+                )
+                TextButton(onClick = { removing = code }) { Text(stringResource(R.string.bible_other_language_remove), color = Pocket.Accent) }
+            }
+        }
+    }
+    removing?.let { code ->
+        val items = others[code].orEmpty()
+        AlertDialog(
+            onDismissRequest = { removing = null },
+            title = { Text(stringResource(R.string.library_bible_delete_title, pocket.core.languages.name(code))) },
+            text = { Text(stringResource(R.string.library_bible_delete_body, items.size, formatBytes(items.sumOf { it.bytes }))) },
+            confirmButton = {
+                TextButton(onClick = { items.forEach { pocket.media.downloads.remove(it.video.id) }; removing = null }) {
+                    Text(stringResource(R.string.common_delete_download), color = Pocket.Accent)
+                }
+            },
+            dismissButton = { TextButton(onClick = { removing = null }) { Text(stringResource(R.string.common_cancel)) } },
+            containerColor = Pocket.SurfaceHigh,
+        )
+    }
+}
 
 @Composable
 private fun ContinueCard(chapter: BibleChapter, positionMs: Long, states: Map<String, WatchState>, all: List<BibleChapter>, playing: Boolean) {

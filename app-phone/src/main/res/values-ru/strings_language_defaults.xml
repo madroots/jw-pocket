@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_language_note">Это настройки по умолчанию. Во время воспроизведения можно сменить язык или субтитры только для текущего видео.</string>
+    <string name="language_follow_videos">Как у видео (%1$s)</string>
+    <string name="tip_video_title">Всегда смотреть на языке %1$s?</string>
+    <string name="tip_video_body">Вы часто переключаете видео на язык %1$s. Сделать его языком всех видео? Это можно изменить в настройках.</string>
+    <string name="tip_subtitles_title">Всегда субтитры на языке %1$s?</string>
+    <string name="tip_subtitles_body">Вы часто выбираете субтитры на языке %1$s. Показывать их во всех видео? Это можно изменить в настройках.</string>
+    <string name="tip_subtitles_off_title">Всегда без субтитров?</string>
+    <string name="tip_subtitles_off_body">Вы часто отключаете субтитры. Отключить их во всех видео? Это можно изменить в настройках.</string>
+    <string name="tip_make_default">По умолчанию</string>
+    <string name="tip_not_now">Не сейчас</string>
+    <string name="bible_other_language_remove">Удалить</string>
+    <plurals name="bible_other_language_downloads">
+        <item quantity="one">%1$d глава скачана на языке %2$s</item>
+        <item quantity="few">%1$d главы скачаны на языке %2$s</item>
+        <item quantity="many">%1$d глав скачано на языке %2$s</item>
+        <item quantity="other">%1$d главы скачано на языке %2$s</item>
+    </plurals>
+</resources>

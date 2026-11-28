@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_language_note">To są ustawienia domyślne. Podczas odtwarzania możesz zmienić język lub napisy tylko dla tego, co gra.</string>
+    <string name="language_follow_videos">Jak filmy (%1$s)</string>
+    <string name="tip_subtitles_title">Zawsze napisy w języku %1$s?</string>
+    <string name="tip_subtitles_body">Często wybierasz napisy w języku %1$s. Pokazywać je we wszystkich filmach? Zawsze możesz to zmienić w Ustawieniach.</string>
+    <string name="tip_subtitles_off_title">Zawsze bez napisów?</string>
+    <string name="tip_subtitles_off_body">Często wyłączasz napisy. Wyłączyć je we wszystkich filmach? Zawsze możesz to zmienić w Ustawieniach.</string>
+    <string name="tip_make_default">Ustaw domyślnie</string>
+    <string name="tip_not_now">Nie teraz</string>
+</resources>

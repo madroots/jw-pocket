@@ -15,7 +15,6 @@
     <string name="clip_share_warning">Doar pentru distribuire personală, cu persoane pe care le cunoști. Nu este permisă publicarea pe rețelele sociale sau oriunde în public.</string>
     <string name="clip_share_link">Adaugă un link către întregul videoclip</string>
     <string name="clip_share_action">Distribuie</string>
-    <string name="library_tab_clips">Clipuri</string>
     <string name="clips_empty_title">Încă nu ai clipuri</string>
     <string name="clips_empty_body">În player, atinge Distribuie › Distribuie un moment ca să păstrezi câteva propoziții care îți plac.</string>
     <string name="clip_delete">Șterge clipul</string>

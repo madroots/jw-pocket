@@ -31,8 +31,6 @@
     <string name="quality_streaming_note">Os vídeos baixados sempre são reproduzidos na qualidade em que foram baixados.</string>
     <string name="quality_ask_every_time">Perguntar sempre</string>
     <string name="quality_download_note">Qualidades menores economizam espaço.</string>
-    <string name="subtitles_same_as_video">Igual ao vídeo</string>
-    <string name="subtitles_same_as_video_detail">Legendas no idioma dos vídeos</string>
     <string name="subtitles_off">Desativadas</string>
     <string name="subtitles_any_language_note">Qualquer idioma: as legendas aparecem em todos os vídeos que as tiverem, seja qual for o idioma do vídeo.</string>
     <string name="search_languages">Pesquisar idiomas</string>
@@ -41,8 +39,4 @@
     <string name="cascade_app_yes">Vídeos e legendas</string>
     <string name="cascade_app_videos_only">Só os vídeos</string>
     <string name="cascade_app_no">Só o app</string>
-    <string name="cascade_video_title">Legendas em %1$s também?</string>
-    <string name="cascade_video_text">Suas legendas estão em %1$s. Mostrar as legendas no idioma dos vídeos?</string>
-    <string name="cascade_video_yes">Sim</string>
-    <string name="cascade_video_no">Manter %1$s</string>
 </resources>

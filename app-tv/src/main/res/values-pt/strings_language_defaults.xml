@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_language_note">Estes são os padrões. Durante a reprodução, você pode mudar o idioma ou as legendas só para aquele conteúdo.</string>
+    <string name="language_follow_videos">Igual aos vídeos (%1$s)</string>
+    <string name="tip_subtitles_title">Legendas sempre em %1$s?</string>
+    <string name="tip_subtitles_body">Você costuma escolher legendas em %1$s. Mostrá-las em todos os vídeos? Dá para mudar quando quiser em Configurações.</string>
+    <string name="tip_subtitles_off_title">Sempre sem legendas?</string>
+    <string name="tip_subtitles_off_body">Você costuma desligar as legendas. Desligar em todos os vídeos? Dá para mudar quando quiser em Configurações.</string>
+    <string name="tip_make_default">Tornar padrão</string>
+    <string name="tip_not_now">Agora não</string>
+</resources>

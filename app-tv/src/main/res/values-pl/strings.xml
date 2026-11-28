@@ -94,7 +94,7 @@
     <string name="player_subtitles">Napisy</string>
     <string name="player_speed">Prędkość</string>
     <string name="player_subtitles_same_as_video">Jak w filmie</string>
-    <string name="player_subtitles_remembered">Zapamiętano dla kolejnych filmów.</string>
+    <string name="player_subtitles_remembered">Tylko dla tego filmu. Ustawienie domyślne dla wszystkich filmów jest w Ustawieniach.</string>
     <string name="player_subtitles_off">Wyłączone</string>
     <string name="player_playback_speed">Prędkość odtwarzania</string>
     <string name="player_speed_normal">Normalna</string>

@@ -30,8 +30,6 @@
     <string name="quality_streaming_note">A letöltött videók mindig a letöltött minőségben játszódnak le.</string>
     <string name="quality_ask_every_time">Mindig kérdezzen rá</string>
     <string name="quality_download_note">A kisebb minőség helyet takarít meg.</string>
-    <string name="subtitles_same_as_video">A videó nyelvén</string>
-    <string name="subtitles_same_as_video_detail">Felirat a videók nyelvén</string>
     <string name="subtitles_off">Ki</string>
     <string name="subtitles_any_language_note">Bármelyik nyelv: minden olyan videón megjelenik, amelyhez ezen a nyelven kiadták, függetlenül a videó nyelvétől.</string>
     <string name="search_languages">Nyelvek keresése</string>
@@ -40,8 +38,4 @@
     <string name="cascade_app_yes">Videók és feliratok</string>
     <string name="cascade_app_videos_only">Csak a videók</string>
     <string name="cascade_app_no">Csak az alkalmazás</string>
-    <string name="cascade_video_title">A feliratok is ezen a nyelven: %1$s?</string>
-    <string name="cascade_video_text">A felirat nyelve jelenleg: %1$s. Inkább a videók nyelvén jelenjen meg a felirat?</string>
-    <string name="cascade_video_yes">Igen</string>
-    <string name="cascade_video_no">Marad: %1$s</string>
 </resources>

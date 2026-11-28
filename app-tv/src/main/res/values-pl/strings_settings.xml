@@ -22,8 +22,4 @@
     <string name="cascade_app_yes">Filmy i napisy</string>
     <string name="cascade_app_videos_only">Tylko filmy</string>
     <string name="cascade_app_no">Tylko aplikacja</string>
-    <string name="cascade_video_title">Napisy też w języku: %1$s?</string>
-    <string name="cascade_video_text">Twoje napisy są ustawione na język: %1$s. Wyświetlać zamiast tego napisy w języku filmów?</string>
-    <string name="cascade_video_yes">Tak</string>
-    <string name="cascade_video_no">Zachowaj: %1$s</string>
 </resources>

@@ -25,8 +25,4 @@
     <string name="cascade_app_yes">Videos and subtitles</string>
     <string name="cascade_app_videos_only">Only videos</string>
     <string name="cascade_app_no">Only the app</string>
-    <string name="cascade_video_title">Subtitles in %1$s too?</string>
-    <string name="cascade_video_text">Your subtitles are set to %1$s. Show subtitles in the videos\' language instead?</string>
-    <string name="cascade_video_yes">Yes</string>
-    <string name="cascade_video_no">Keep %1$s</string>
 </resources>

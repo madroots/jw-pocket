@@ -35,9 +35,6 @@
     <string name="quality_ask_every_time">Ask every time</string>
     <string name="quality_download_note">Smaller qualities save space.</string>
 
-    <!-- Subtitle choices. -->
-    <string name="subtitles_same_as_video">Same as the video</string>
-    <string name="subtitles_same_as_video_detail">Subtitles in the language of the videos</string>
     <string name="subtitles_off">Off</string>
     <string name="subtitles_any_language_note">Any language: shown over every video published in it, whatever language the video is in.</string>
     <string name="search_languages">Search languages</string>
@@ -49,8 +46,4 @@
     <string name="cascade_app_yes">Videos and subtitles</string>
     <string name="cascade_app_videos_only">Only videos</string>
     <string name="cascade_app_no">Only the app</string>
-    <string name="cascade_video_title">Subtitles in %1$s too?</string>
-    <string name="cascade_video_text">Your subtitles are set to %1$s. Show subtitles in the videos\' language instead?</string>
-    <string name="cascade_video_yes">Yes</string>
-    <string name="cascade_video_no">Keep %1$s</string>
 </resources>

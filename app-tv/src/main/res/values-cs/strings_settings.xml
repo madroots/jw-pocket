@@ -22,8 +22,4 @@
     <string name="cascade_app_yes">Videa i titulky</string>
     <string name="cascade_app_videos_only">Jen videa</string>
     <string name="cascade_app_no">Jen aplikaci</string>
-    <string name="cascade_video_title">I titulky v jazyce %1$s?</string>
-    <string name="cascade_video_text">Titulky máš nastavené na jazyk %1$s. Zobrazovat raději titulky v jazyce videí?</string>
-    <string name="cascade_video_yes">Ano</string>
-    <string name="cascade_video_no">Ponechat jazyk %1$s</string>
 </resources>

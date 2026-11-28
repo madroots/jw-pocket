@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_language_note">Acestea sunt setările implicite. În timpul redării poți schimba limba sau subtitrările doar pentru ce rulează.</string>
+    <string name="language_follow_videos">La fel ca videoclipurile (%1$s)</string>
+    <string name="tip_subtitles_title">Mereu subtitrări în %1$s?</string>
+    <string name="tip_subtitles_body">Alegi des subtitrări în %1$s. Le afișezi la toate videoclipurile? Poți schimba oricând din Setări.</string>
+    <string name="tip_subtitles_off_title">Mereu fără subtitrări?</string>
+    <string name="tip_subtitles_off_body">Oprești des subtitrările. Le oprești la toate videoclipurile? Poți schimba oricând din Setări.</string>
+    <string name="tip_make_default">Setează implicit</string>
+    <string name="tip_not_now">Nu acum</string>
+</resources>

@@ -116,7 +116,7 @@
     <string name="player_subtitles">Subtitles</string>
     <string name="player_speed">Speed</string>
     <string name="player_subtitles_same_as_video">Same as the video</string>
-    <string name="player_subtitles_remembered">Remembered for the next videos.</string>
+    <string name="player_subtitles_remembered">Only for this video. Set the default for all videos in Settings.</string>
     <!-- Subtitles turned off -->
     <string name="player_subtitles_off">Off</string>
     <string name="player_playback_speed">Playback speed</string>

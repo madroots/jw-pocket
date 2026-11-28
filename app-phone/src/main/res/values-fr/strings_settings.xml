@@ -31,8 +31,6 @@
     <string name="quality_streaming_note">Les vidéos téléchargées sont toujours lues dans la qualité téléchargée.</string>
     <string name="quality_ask_every_time">Toujours demander</string>
     <string name="quality_download_note">Une qualité inférieure prend moins de place.</string>
-    <string name="subtitles_same_as_video">Comme la vidéo</string>
-    <string name="subtitles_same_as_video_detail">Sous-titres dans la langue des vidéos</string>
     <string name="subtitles_off">Désactivés</string>
     <string name="subtitles_any_language_note">Toute langue : les sous-titres s\'affichent sur toutes les vidéos qui les proposent, quelle que soit la langue de la vidéo.</string>
     <string name="search_languages">Rechercher une langue</string>
@@ -41,8 +39,4 @@
     <string name="cascade_app_yes">Vidéos et sous-titres</string>
     <string name="cascade_app_videos_only">Vidéos uniquement</string>
     <string name="cascade_app_no">Appli uniquement</string>
-    <string name="cascade_video_title">Les sous-titres aussi en %1$s ?</string>
-    <string name="cascade_video_text">Vos sous-titres sont en %1$s. Afficher plutôt les sous-titres dans la langue des vidéos ?</string>
-    <string name="cascade_video_yes">Oui</string>
-    <string name="cascade_video_no">Garder %1$s</string>
 </resources>

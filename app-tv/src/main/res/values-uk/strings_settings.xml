@@ -21,8 +21,4 @@
     <string name="cascade_app_yes">Відео й субтитри</string>
     <string name="cascade_app_videos_only">Лише відео</string>
     <string name="cascade_app_no">Лише додаток</string>
-    <string name="cascade_video_title">Субтитри теж мовою «%1$s»?</string>
-    <string name="cascade_video_text">Зараз вибрано субтитри мовою «%1$s». Показувати натомість субтитри мовою відео?</string>
-    <string name="cascade_video_yes">Так</string>
-    <string name="cascade_video_no">Залишити «%1$s»</string>
 </resources>

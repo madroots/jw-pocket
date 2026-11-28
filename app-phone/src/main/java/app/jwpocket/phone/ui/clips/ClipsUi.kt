@@ -20,6 +20,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.ContentCut
@@ -158,7 +161,7 @@ fun ClipPlayerDialog(clip: Clip, onDismiss: () -> Unit) {
 
 /** Library › Clips: the clips made with "Share a moment", newest first. */
 @Composable
-fun ClipsTab(padding: PaddingValues) {
+fun ClipsList(padding: PaddingValues) {
     val pocket = LocalPocket.current
     val clips by pocket.clips.clips.collectAsState()
     var playing by remember { mutableStateOf<Clip?>(null) }
@@ -184,21 +187,43 @@ fun ClipsTab(padding: PaddingValues) {
     }
 }
 
+/** Library overview: saved clips side by side; a tap plays one. */
+@Composable
+fun ClipsRow(clips: List<Clip>) {
+    var playing by remember { mutableStateOf<Clip?>(null) }
+    LazyRow(contentPadding = PaddingValues(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+        items(clips, key = { it.id }) { clip ->
+            Column(Modifier.width(168.dp).clip(RoundedCornerShape(10.dp)).clickable { playing = clip }) {
+                ClipThumbnail(clip, Modifier.fillMaxWidth(), corner = 10.dp)
+                Spacer(Modifier.height(8.dp))
+                Text(clip.title, style = MaterialTheme.typography.bodyMedium, maxLines = 2, overflow = TextOverflow.Ellipsis, modifier = Modifier.padding(horizontal = 2.dp))
+            }
+        }
+    }
+    playing?.let { ClipPlayerDialog(it, onDismiss = { playing = null }) }
+}
+
+/** 16:9 picture of a clip with its length. */
+@Composable
+private fun ClipThumbnail(clip: Clip, modifier: Modifier, corner: Dp) {
+    val pocket = LocalPocket.current
+    Box(modifier.aspectRatio(16f / 9f).clip(RoundedCornerShape(corner)).background(Pocket.SurfaceHigh)) {
+        AsyncImage(model = pocket.clips.thumbnail(clip), contentDescription = null, contentScale = ContentScale.Crop, modifier = Modifier.fillMaxSize())
+        Text(
+            formatClock(clip.durationMs),
+            style = MaterialTheme.typography.labelSmall, color = Color.White,
+            modifier = Modifier.align(Alignment.BottomEnd).padding(4.dp).background(Color(0xAA000000), RoundedCornerShape(4.dp)).padding(horizontal = 4.dp),
+        )
+    }
+}
+
 @Composable
 private fun ClipRow(clip: Clip, onPlay: () -> Unit, onShare: () -> Unit, onDelete: () -> Unit) {
-    val pocket = LocalPocket.current
     Row(
         Modifier.fillMaxWidth().clickable(onClick = onPlay).padding(start = 16.dp, top = 8.dp, bottom = 8.dp, end = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Box(Modifier.width(112.dp).aspectRatio(16f / 9f).clip(RoundedCornerShape(8.dp)).background(Pocket.SurfaceHigh)) {
-            AsyncImage(model = pocket.clips.thumbnail(clip), contentDescription = null, contentScale = ContentScale.Crop, modifier = Modifier.fillMaxSize())
-            Text(
-                formatClock(clip.durationMs),
-                style = MaterialTheme.typography.labelSmall, color = Color.White,
-                modifier = Modifier.align(Alignment.BottomEnd).padding(4.dp).background(Color(0xAA000000), RoundedCornerShape(4.dp)).padding(horizontal = 4.dp),
-            )
-        }
+        ClipThumbnail(clip, Modifier.width(112.dp), corner = 8.dp)
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
             Text(clip.title, style = MaterialTheme.typography.bodyMedium, maxLines = 2, overflow = TextOverflow.Ellipsis)

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_language_note">Dit zijn de standaardinstellingen. Tijdens het afspelen kun je de taal of ondertiteling alleen daarvoor wijzigen.</string>
+    <string name="language_follow_videos">Zelfde als video’s (%1$s)</string>
+    <string name="tip_video_title">Altijd kijken in het %1$s?</string>
+    <string name="tip_video_body">Je zet video’s vaak op %1$s. Dit de taal van alle video’s maken? Je kunt het altijd wijzigen bij Instellingen.</string>
+    <string name="tip_subtitles_title">Altijd ondertiteling in het %1$s?</string>
+    <string name="tip_subtitles_body">Je kiest vaak ondertiteling in het %1$s. Die bij alle video’s tonen? Je kunt het altijd wijzigen bij Instellingen.</string>
+    <string name="tip_subtitles_off_title">Altijd zonder ondertiteling?</string>
+    <string name="tip_subtitles_off_body">Je zet ondertiteling vaak uit. Voor alle video’s uitzetten? Je kunt het altijd wijzigen bij Instellingen.</string>
+    <string name="tip_make_default">Als standaard</string>
+    <string name="tip_not_now">Niet nu</string>
+    <string name="bible_other_language_remove">Verwijderen</string>
+    <plurals name="bible_other_language_downloads">
+        <item quantity="one">%1$d hoofdstuk gedownload in het %2$s</item>
+        <item quantity="other">%1$d hoofdstukken gedownload in het %2$s</item>
+    </plurals>
+</resources>

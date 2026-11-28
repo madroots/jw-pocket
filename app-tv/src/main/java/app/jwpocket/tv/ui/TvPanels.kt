@@ -90,7 +90,14 @@ fun TvSidePanel(
                     item { Spacer(Modifier.height(12.dp)) }
                     items(body.lines().filter { it.isNotBlank() }) { paragraph ->
                         FocusSurface(onClick = {}, modifier = Modifier.fillMaxWidth(), scale = 1f, color = Color.Transparent) {
-                            Text(paragraph.trim(), color = Tv.TextSecondary, modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp))
+                            // Release notes: version numbers stand out above their "• change" lines.
+                            val heading = !paragraph.trimStart().startsWith("•")
+                            Text(
+                                paragraph.trim(),
+                                color = if (heading) Tv.Accent else Tv.TextSecondary,
+                                fontWeight = if (heading) FontWeight.Bold else FontWeight.Normal,
+                                modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp),
+                            )
                         }
                     }
                 }

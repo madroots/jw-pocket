@@ -19,11 +19,11 @@ data class Settings(
     /** Download quality; null = ask every time. */
     val downloadQuality: String? = null,
     val wifiOnlyDownloads: Boolean = false,
-    /** null = the video's own language, [SUBTITLES_OFF], or a language code. */
+    /** Default subtitles: null = follow the video language, [SUBTITLES_OFF], or a language picked (kept even if the videos later use it too). */
     val subtitleLanguage: String? = null,
     /** Other languages picked (subtitles, or a video's language in the player) and how often, most recent first. */
     val languageUses: List<LanguageUse> = emptyList(),
-    /** Language of the Bible tab and its reading; null = the video language. */
+    /** Language of the Bible tab and its reading; null = follow the video language, else a language picked (kept). */
     val bibleLanguage: String? = null,
     val subtitleScale: Float = 1f,
     /** Keep playing (as audio) when the app goes to the background or the screen locks. */
@@ -86,20 +86,19 @@ class SettingsRepository(context: Context) {
         write(_settings.value)
     }
 
-    fun setLanguage(code: String, name: String) = update {
-        // A subtitle or Bible preference equal to the new library language means "same as videos".
-        it.copy(languageCode = code, languageName = name,
-            subtitleLanguage = it.subtitleLanguage.takeUnless { s -> s == code },
-            bibleLanguage = it.bibleLanguage.takeUnless { b -> b == code })
-    }
+    /**
+     * The default language of videos and audio. Subtitles and the Bible that
+     * follow it change with it; a language picked for them stays.
+     */
+    fun setLanguage(code: String, name: String) = update { it.copy(languageCode = code, languageName = name) }
 
-    /** null or the video language = follow the video language. */
-    fun setBibleLanguage(code: String?) = update { it.copy(bibleLanguage = code.takeUnless { c -> c == it.languageCode }) }
+    /** null = follow the video language. */
+    fun setBibleLanguage(code: String?) = update { it.copy(bibleLanguage = code) }
 
+    /** Default subtitles: null = follow the video language, [Settings.SUBTITLES_OFF], or a language. */
     fun setSubtitleLanguage(choice: String?) = update {
-        val normalized = choice.takeUnless { c -> c == it.languageCode }
-        val uses = if (normalized != null && normalized != Settings.SUBTITLES_OFF) withUse(it, normalized) else it.languageUses
-        it.copy(subtitleLanguage = normalized, languageUses = uses)
+        val uses = if (choice != null && choice != Settings.SUBTITLES_OFF) withUse(it, choice) else it.languageUses
+        it.copy(subtitleLanguage = choice, languageUses = uses)
     }
 
     /** A language picked for one video in the player: counts toward the languages pinned at the top, like subtitle picks. */

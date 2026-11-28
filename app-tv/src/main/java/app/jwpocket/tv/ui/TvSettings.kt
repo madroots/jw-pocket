@@ -31,7 +31,7 @@ import app.jwpocket.core.util.AppLanguage
 import app.jwpocket.tv.BuildConfig
 import app.jwpocket.tv.R
 
-private enum class SettingsPanel { AppLanguage, AppCascade, Language, VideoCascade, Subtitles, Stream, Download }
+private enum class SettingsPanel { AppLanguage, AppCascade, Language, Subtitles, Stream, Download }
 
 private val QUALITIES = listOf("240p", "360p", "480p", "720p", "1080p", "2160p")
 
@@ -67,7 +67,7 @@ fun TvSettings() {
         activity?.recreate()
     }
     val subtitleValue = when (val s = settings.subtitleLanguage) {
-        null -> stringResource(R.string.player_subtitles_same_as_video)
+        null -> settings.languageName
         Settings.SUBTITLES_OFF -> stringResource(R.string.settings_off)
         else -> tv.core.languages.name(s)
     }
@@ -77,10 +77,12 @@ fun TvSettings() {
 
     LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(start = 48.dp, end = 48.dp, top = 32.dp, bottom = 48.dp)) {
         item { Text(stringResource(R.string.nav_settings), style = MaterialTheme.typography.displaySmall, modifier = Modifier.padding(bottom = 16.dp)) }
-        // Top to bottom: each language follows the one above it unless changed.
-        item { SettingRow(stringResource(R.string.settings_app_language), settings.appLanguage?.let(AppLanguage::name) ?: deviceLanguage, row(SettingsPanel.AppLanguage)) { open(SettingsPanel.AppLanguage) } }
+        // Defaults for everything; what's playing can be switched just for itself. A row that
+        // follows the one above shows that language dimmed until something else is picked.
+        item { Text(stringResource(R.string.settings_language_note), color = Tv.TextSecondary, modifier = Modifier.padding(bottom = 8.dp).width(720.dp)) }
+        item { SettingRow(stringResource(R.string.settings_app_language), settings.appLanguage?.let(AppLanguage::name) ?: deviceLanguage, row(SettingsPanel.AppLanguage), inherited = settings.appLanguage == null) { open(SettingsPanel.AppLanguage) } }
         item { SettingRow(stringResource(R.string.settings_video_language), settings.languageName, row(SettingsPanel.Language)) { open(SettingsPanel.Language) } }
-        item { SettingRow(stringResource(R.string.settings_subtitle_language), subtitleValue, row(SettingsPanel.Subtitles)) { open(SettingsPanel.Subtitles) } }
+        item { SettingRow(stringResource(R.string.settings_subtitle_language), subtitleValue, row(SettingsPanel.Subtitles), inherited = settings.subtitleLanguage == null) { open(SettingsPanel.Subtitles) } }
         item { SettingRow(stringResource(R.string.settings_streaming_quality), settings.streamQuality ?: stringResource(R.string.common_quality_auto), row(SettingsPanel.Stream)) { open(SettingsPanel.Stream) } }
         item { SettingRow(stringResource(R.string.settings_download_quality), settings.downloadQuality ?: stringResource(R.string.settings_ask_every_time), row(SettingsPanel.Download)) { open(SettingsPanel.Download) } }
         item { SettingRow(stringResource(R.string.settings_autoplay), if (settings.autoplayNext) on else off) { repo.update { it.copy(autoplayNext = !it.autoplayNext) } } }
@@ -126,37 +128,18 @@ fun TvSettings() {
             stringResource(R.string.settings_video_language),
             options = languages.map { PanelOption(it.code, it.vernacular, it.name.takeIf { n -> n != it.vernacular }, it.code == settings.languageCode) },
             onPick = { o ->
-                val lang = languages.first { it.code == o.key }
-                val subs = settings.subtitleLanguage
-                if (subs != null && subs != Settings.SUBTITLES_OFF && subs != lang.code) {
-                    pendingVideos = lang
-                    panel = SettingsPanel.VideoCascade
-                } else {
-                    applyVideos(lang, subtitlesToo = false)
-                    panel = null
-                }
+                // Subtitles that follow the videos change with them; a language picked for them stays.
+                applyVideos(languages.first { it.code == o.key }, subtitlesToo = false)
+                panel = null
             },
             onDismiss = { panel = null },
         )
-        SettingsPanel.VideoCascade -> pendingVideos?.let { videos ->
-            val subs = tv.core.languages.name(settings.subtitleLanguage.orEmpty())
-            TvSidePanel(
-                stringResource(R.string.cascade_video_title, videos.vernacular),
-                stringResource(R.string.cascade_video_text, subs),
-                options = listOf(
-                    PanelOption("yes", stringResource(R.string.cascade_video_yes), selected = true),
-                    PanelOption("no", stringResource(R.string.cascade_video_no, subs)),
-                ),
-                onPick = { o -> applyVideos(videos, subtitlesToo = o.key == "yes"); panel = null },
-                onDismiss = { applyVideos(videos, subtitlesToo = false); panel = null },
-            )
-        }
         SettingsPanel.Subtitles -> {
             val mostUsed = stringResource(R.string.settings_most_used)
             TvSidePanel(
                 stringResource(R.string.settings_subtitle_language), stringResource(R.string.settings_subtitles_note),
                 options = listOf(
-                    PanelOption("__same", stringResource(R.string.player_subtitles_same_as_video), selected = settings.subtitleLanguage == null),
+                    PanelOption("__same", stringResource(R.string.language_follow_videos, settings.languageName), selected = settings.subtitleLanguage == null),
                     PanelOption(Settings.SUBTITLES_OFF, stringResource(R.string.settings_off), selected = settings.subtitleLanguage == Settings.SUBTITLES_OFF),
                 ) + tv.core.subtitles.subtitleLanguages(languages, settings.pinnedLanguages).map {
                     PanelOption(it.code, it.vernacular, if (it.code in settings.mostUsedLanguages) mostUsed else null, it.code == settings.subtitleLanguage)
@@ -183,12 +166,13 @@ fun TvSettings() {
     }
 }
 
+/** [inherited]: the value follows another setting (shown dimmed until something is picked). */
 @Composable
-private fun SettingRow(title: String, value: String, modifier: Modifier = Modifier, onClick: () -> Unit) {
+private fun SettingRow(title: String, value: String, modifier: Modifier = Modifier, inherited: Boolean = false, onClick: () -> Unit) {
     FocusSurface(onClick = onClick, modifier = modifier.fillMaxWidth(0.7f).padding(vertical = 5.dp), scale = 1.02f) {
         Row(Modifier.padding(horizontal = 24.dp, vertical = 16.dp), verticalAlignment = Alignment.CenterVertically) {
             Column(Modifier.weight(1f)) { Text(title, style = MaterialTheme.typography.titleMedium) }
-            Text(value, color = Tv.TextSecondary)
+            Text(value, color = if (inherited) Tv.TextSecondary.copy(alpha = 0.5f) else Tv.TextSecondary)
         }
     }
 }

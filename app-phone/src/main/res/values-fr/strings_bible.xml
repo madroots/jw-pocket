@@ -41,7 +41,6 @@
         <item quantity="one">%d cantique</item>
         <item quantity="other">%d cantiques</item>
     </plurals>
-    <string name="library_tab_bible">Bible</string>
     <string name="library_bible_empty_title">Aucun chapitre de la Bible téléchargé</string>
     <string name="library_bible_empty_body">Dans l\'onglet Bible, ouvrez un livre et touchez Télécharger pour écouter hors connexion.</string>
     <string name="library_bible_open">Ouvrir la Bible</string>

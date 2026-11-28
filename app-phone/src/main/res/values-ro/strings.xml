@@ -60,15 +60,11 @@
         <item quantity="few">%d videoclipuri</item>
         <item quantity="other">%d de videoclipuri</item>
     </plurals>
-    <string name="library_tab_downloads">Descărcări</string>
-    <string name="library_tab_favorites">Favorite</string>
-    <string name="library_tab_history">Istoric</string>
     <plurals name="library_downloads_summary">
         <item quantity="one">%1$d videoclip · %2$s</item>
         <item quantity="few">%1$d videoclipuri · %2$s</item>
         <item quantity="other">%1$d de videoclipuri · %2$s</item>
     </plurals>
-    <string name="library_free_space">Spațiu liber pe acest telefon: %1$s</string>
     <string name="library_delete_all">Șterge tot</string>
     <string name="library_wifi_only">Descarcă doar prin Wi-Fi</string>
     <string name="library_downloads_empty_title">Nicio descărcare încă</string>
@@ -140,7 +136,7 @@
         <item quantity="few">Mai rămân %d min</item>
         <item quantity="other">Mai rămân %d min</item>
     </plurals>
-    <string name="player_subtitles_hint">Alegerea dvs. va fi reținută pentru următoarele videoclipuri.</string>
+    <string name="player_subtitles_hint">Doar pentru acest videoclip. Setarea implicită pentru toate este în Setări.</string>
     <string name="player_search_languages">Caută limbi</string>
     <string name="player_subtitles_off_choice">Dezactivate</string>
     <string name="player_subtitles_same_as_video">Limba videoclipului</string>

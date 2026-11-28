@@ -62,16 +62,12 @@
         <item quantity="many">%d відео</item>
         <item quantity="other">%d відео</item>
     </plurals>
-    <string name="library_tab_downloads">Завантаження</string>
-    <string name="library_tab_favorites">Обране</string>
-    <string name="library_tab_history">Історія</string>
     <plurals name="library_downloads_summary">
         <item quantity="one">%1$d відео · %2$s</item>
         <item quantity="few">%1$d відео · %2$s</item>
         <item quantity="many">%1$d відео · %2$s</item>
         <item quantity="other">%1$d відео · %2$s</item>
     </plurals>
-    <string name="library_free_space">Вільно на телефоні: %1$s</string>
     <string name="library_delete_all">Видалити все</string>
     <string name="library_wifi_only">Завантажувати лише через Wi-Fi</string>
     <string name="library_downloads_empty_title">Завантажень ще немає</string>
@@ -144,7 +140,7 @@
         <item quantity="many">Залишилося %d хв</item>
         <item quantity="other">Залишилося %d хв</item>
     </plurals>
-    <string name="player_subtitles_hint">Ваш вибір буде збережено для наступних відео.</string>
+    <string name="player_subtitles_hint">Лише для цього відео. Типове налаштування для всіх відео — у налаштуваннях.</string>
     <string name="player_search_languages">Пошук мов</string>
     <string name="player_subtitles_off_choice">Вимк.</string>
     <string name="player_subtitles_same_as_video">Мовою відео</string>

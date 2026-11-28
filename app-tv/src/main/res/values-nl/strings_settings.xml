@@ -22,8 +22,4 @@
     <string name="cascade_app_yes">Video\'s en ondertiteling</string>
     <string name="cascade_app_videos_only">Alleen video\'s</string>
     <string name="cascade_app_no">Alleen de app</string>
-    <string name="cascade_video_title">Ondertiteling ook in %1$s?</string>
-    <string name="cascade_video_text">Je ondertiteling staat op %1$s. Ondertiteling in plaats daarvan tonen in de taal van de video\'s?</string>
-    <string name="cascade_video_yes">Ja</string>
-    <string name="cascade_video_no">%1$s behouden</string>
 </resources>

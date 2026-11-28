@@ -15,7 +15,6 @@
     <string name="clip_share_warning">Len na osobné zdieľanie s ľuďmi, ktorých poznáte. Zverejňovať ho na sociálnych sieťach alebo kdekoľvek verejne nie je dovolené.</string>
     <string name="clip_share_link">Pridať odkaz na celé video</string>
     <string name="clip_share_action">Zdieľať</string>
-    <string name="library_tab_clips">Klipy</string>
     <string name="clips_empty_title">Zatiaľ žiadne klipy</string>
     <string name="clips_empty_body">V prehrávači ťuknite na Zdieľať › Zdieľať okamih a uložte si zopár viet, ktoré sa vám páčia.</string>
     <string name="clip_delete">Vymazať klip</string>

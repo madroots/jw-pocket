@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_language_note">Toto sú predvolené nastavenia. Počas prehrávania môžete jazyk alebo titulky zmeniť len pre to, čo práve hrá.</string>
+    <string name="language_follow_videos">Rovnaký ako videá (%1$s)</string>
+    <string name="tip_video_title">Pozerať vždy v jazyku %1$s?</string>
+    <string name="tip_video_body">Často prepínate videá do jazyka %1$s. Nastaviť ho pre všetky videá? Kedykoľvek to môžete zmeniť v Nastaveniach.</string>
+    <string name="tip_subtitles_title">Vždy titulky v jazyku %1$s?</string>
+    <string name="tip_subtitles_body">Často volíte titulky v jazyku %1$s. Zobrazovať ich pri všetkých videách? Kedykoľvek to môžete zmeniť v Nastaveniach.</string>
+    <string name="tip_subtitles_off_title">Vždy bez titulkov?</string>
+    <string name="tip_subtitles_off_body">Titulky často vypínate. Vypnúť ich pri všetkých videách? Kedykoľvek to môžete zmeniť v Nastaveniach.</string>
+    <string name="tip_make_default">Nastaviť ako predvolené</string>
+    <string name="tip_not_now">Teraz nie</string>
+    <string name="bible_other_language_remove">Odstrániť</string>
+    <plurals name="bible_other_language_downloads">
+        <item quantity="one">%1$d kapitola stiahnutá v jazyku %2$s</item>
+        <item quantity="few">%1$d kapitoly stiahnuté v jazyku %2$s</item>
+        <item quantity="many">%1$d kapitoly stiahnutej v jazyku %2$s</item>
+        <item quantity="other">%1$d kapitol stiahnutých v jazyku %2$s</item>
+    </plurals>
+</resources>

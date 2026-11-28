@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_language_note">Queste sono le impostazioni predefinite. Durante la riproduzione puoi cambiare lingua o sottotitoli solo per quel contenuto.</string>
+    <string name="language_follow_videos">Come i video (%1$s)</string>
+    <string name="tip_video_title">Guardare sempre in %1$s?</string>
+    <string name="tip_video_body">Passi spesso i video in %1$s. Usarla per tutti i video? Puoi cambiarla quando vuoi in Impostazioni.</string>
+    <string name="tip_subtitles_title">Sottotitoli sempre in %1$s?</string>
+    <string name="tip_subtitles_body">Scegli spesso i sottotitoli in %1$s. Mostrarli in tutti i video? Puoi cambiarlo quando vuoi in Impostazioni.</string>
+    <string name="tip_subtitles_off_title">Sempre senza sottotitoli?</string>
+    <string name="tip_subtitles_off_body">Disattivi spesso i sottotitoli. Disattivarli in tutti i video? Puoi cambiarlo quando vuoi in Impostazioni.</string>
+    <string name="tip_make_default">Imposta predefinito</string>
+    <string name="tip_not_now">Non ora</string>
+    <string name="bible_other_language_remove">Rimuovi</string>
+    <plurals name="bible_other_language_downloads">
+        <item quantity="one">%1$d capitolo scaricato in %2$s</item>
+        <item quantity="many">%1$d capitoli scaricati in %2$s</item>
+        <item quantity="other">%1$d capitoli scaricati in %2$s</item>
+    </plurals>
+</resources>

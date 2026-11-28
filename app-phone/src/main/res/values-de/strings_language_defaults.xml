@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_language_note">Das sind die Standards. Während etwas läuft, kannst du Sprache oder Untertitel nur dafür ändern.</string>
+    <string name="language_follow_videos">Wie die Videos (%1$s)</string>
+    <string name="tip_video_title">Immer auf %1$s ansehen?</string>
+    <string name="tip_video_body">Du stellst Videos oft auf %1$s um. Als Sprache für alle Videos festlegen? Du kannst das jederzeit in den Einstellungen ändern.</string>
+    <string name="tip_subtitles_title">Immer Untertitel auf %1$s?</string>
+    <string name="tip_subtitles_body">Du wählst oft Untertitel auf %1$s. Bei allen Videos zeigen? Du kannst das jederzeit in den Einstellungen ändern.</string>
+    <string name="tip_subtitles_off_title">Immer ohne Untertitel?</string>
+    <string name="tip_subtitles_off_body">Du schaltest Untertitel oft aus. Für alle Videos ausschalten? Du kannst das jederzeit in den Einstellungen ändern.</string>
+    <string name="tip_make_default">Als Standard</string>
+    <string name="tip_not_now">Nicht jetzt</string>
+    <string name="bible_other_language_remove">Entfernen</string>
+    <plurals name="bible_other_language_downloads">
+        <item quantity="one">%1$d Kapitel auf %2$s geladen</item>
+        <item quantity="other">%1$d Kapitel auf %2$s geladen</item>
+    </plurals>
+</resources>

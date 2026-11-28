@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_language_note">Ce sont les réglages par défaut. Pendant la lecture, vous pouvez changer la langue ou les sous-titres pour ce contenu seulement.</string>
+    <string name="language_follow_videos">Comme les vidéos (%1$s)</string>
+    <string name="tip_subtitles_title">Toujours des sous-titres en %1$s ?</string>
+    <string name="tip_subtitles_body">Vous choisissez souvent des sous-titres en %1$s. Les afficher pour toutes les vidéos ? Modifiable à tout moment dans Paramètres.</string>
+    <string name="tip_subtitles_off_title">Toujours sans sous-titres ?</string>
+    <string name="tip_subtitles_off_body">Vous désactivez souvent les sous-titres. Les désactiver pour toutes les vidéos ? Modifiable à tout moment dans Paramètres.</string>
+    <string name="tip_make_default">Par défaut</string>
+    <string name="tip_not_now">Plus tard</string>
+</resources>

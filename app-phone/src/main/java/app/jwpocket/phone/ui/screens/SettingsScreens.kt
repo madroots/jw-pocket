@@ -100,12 +100,19 @@ fun SettingsScreen(
     }
 
     LazyColumn(Modifier.fillMaxSize(), contentPadding = contentPadding) {
-        // Top to bottom: each language follows the one above it unless changed.
+        // Defaults for everything; what's playing can be switched just for itself (in the player).
+        // A row that follows the one above shows that language dimmed until something else is picked.
         item { Group(stringResource(R.string.settings_group_language)) }
-        item { Entry(stringResource(R.string.settings_app_language), appLanguageLabel(settings.appLanguage)) { pick = "app" } }
+        item {
+            Text(
+                stringResource(R.string.settings_language_note), style = MaterialTheme.typography.bodySmall, color = Pocket.TextSecondary,
+                modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 4.dp),
+            )
+        }
+        item { Entry(stringResource(R.string.settings_app_language), appLanguageLabel(settings.appLanguage), inherited = settings.appLanguage == null) { pick = "app" } }
         item { Entry(stringResource(R.string.settings_video_language), settings.languageName, onClick = onOpenLanguage) }
-        item { Entry(stringResource(R.string.settings_subtitle_language), subtitleLabel(settings, pocket.core.languages::name), onClick = onOpenSubtitles) }
-        item { Entry(stringResource(R.string.bible_language_title), bibleLanguageLabel(settings, pocket.core.languages::name), onClick = onOpenBibleLanguage) }
+        item { Entry(stringResource(R.string.settings_subtitle_language), subtitleLabel(settings, pocket.core.languages::name), inherited = settings.subtitleLanguage == null, onClick = onOpenSubtitles) }
+        item { Entry(stringResource(R.string.bible_language_title), settings.bibleLanguage?.let(pocket.core.languages::name) ?: settings.languageName, inherited = settings.bibleLanguage == null, onClick = onOpenBibleLanguage) }
 
         item { Group(stringResource(R.string.settings_group_playback)) }
         item { Toggle(stringResource(R.string.settings_background_title), stringResource(R.string.settings_background_detail), settings.backgroundPlayback) { on -> repo.update { it.copy(backgroundPlayback = on) } } }
@@ -238,16 +245,13 @@ private fun AppLanguageSheet(chosen: String?, onDismiss: () -> Unit) {
     }
 }
 
+/** The default subtitles; following the videos shows their language. */
 @Composable
-fun subtitleLabel(settings: Settings, name: (String) -> String): String = when (val s = settings.subtitleLanguage) {
-    null -> stringResource(R.string.subtitles_same_as_video)
+private fun subtitleLabel(settings: Settings, name: (String) -> String): String = when (val s = settings.subtitleLanguage) {
+    null -> settings.languageName
     Settings.SUBTITLES_OFF -> stringResource(R.string.subtitles_off)
     else -> name(s)
 }
-
-@Composable
-private fun bibleLanguageLabel(settings: Settings, name: (String) -> String): String =
-    settings.bibleLanguage?.let(name) ?: stringResource(R.string.bible_language_same)
 
 /** Whether the app may post notifications: allowed in system settings and, on Android 13+, permitted. */
 private fun canNotify(context: Context): Boolean = NotificationManagerCompat.from(context).areNotificationsEnabled()
@@ -257,11 +261,12 @@ private fun Group(title: String) {
     Text(title.uppercase(), style = MaterialTheme.typography.labelSmall, color = Pocket.Accent, modifier = Modifier.padding(start = 20.dp, top = 24.dp, bottom = 4.dp))
 }
 
+/** [inherited]: the value follows another setting, shown dimmed until something else is picked. */
 @Composable
-private fun Entry(title: String, value: String, onClick: () -> Unit) {
+private fun Entry(title: String, value: String, inherited: Boolean = false, onClick: () -> Unit) {
     Column(Modifier.fillMaxWidth().clickable(onClick = onClick).padding(horizontal = 20.dp, vertical = 12.dp)) {
         Text(title, style = MaterialTheme.typography.bodyLarge)
-        Text(value, style = MaterialTheme.typography.bodySmall, color = Pocket.TextSecondary)
+        Text(value, style = MaterialTheme.typography.bodySmall, color = if (inherited) Pocket.TextMuted else Pocket.TextSecondary)
     }
 }
 
@@ -318,37 +323,17 @@ private fun LanguageList(
     }
 }
 
-/**
- * Video language. If subtitles are set to another language, asks whether
- * they should now follow the videos instead.
- */
+/** Default video (and audio) language. Subtitles and the Bible that follow it change with it; languages picked for them stay. */
 @Composable
 fun LanguageScreen(contentPadding: PaddingValues, onDone: () -> Unit) {
     val pocket = LocalPocket.current
     val settings by pocket.core.settings.settings.collectAsState()
     val languages by pocket.core.languages.languages.collectAsState()
-    var asking by remember { mutableStateOf<Language?>(null) }
-    fun apply(lang: Language, subtitlesToo: Boolean) {
+    LanguageList(contentPadding, languages, settings.languageCode) { lang ->
         pocket.core.settings.setLanguage(lang.code, lang.vernacular)
-        if (subtitlesToo) pocket.core.settings.setSubtitleLanguage(null)
         pocket.core.library.clearMemory()
         pocket.core.languages.load(lang.code)
         onDone()
-    }
-    LanguageList(contentPadding, languages, settings.languageCode) { lang ->
-        val subs = settings.subtitleLanguage
-        if (subs != null && subs != Settings.SUBTITLES_OFF && subs != lang.code) asking = lang else apply(lang, subtitlesToo = false)
-    }
-    asking?.let { lang ->
-        val subs = pocket.core.languages.name(settings.subtitleLanguage.orEmpty())
-        AlertDialog(
-            onDismissRequest = { apply(lang, subtitlesToo = false) },
-            title = { Text(stringResource(R.string.cascade_video_title, lang.vernacular)) },
-            text = { Text(stringResource(R.string.cascade_video_text, subs)) },
-            confirmButton = { TextButton(onClick = { apply(lang, subtitlesToo = true) }) { Text(stringResource(R.string.cascade_video_yes), color = Pocket.Accent) } },
-            dismissButton = { TextButton(onClick = { apply(lang, subtitlesToo = false) }) { Text(stringResource(R.string.cascade_video_no, subs)) } },
-            containerColor = Pocket.SurfaceHigh,
-        )
     }
 }
 
@@ -362,7 +347,7 @@ fun BibleLanguageScreen(contentPadding: PaddingValues, onDone: () -> Unit) {
     LanguageList(
         contentPadding, list, settings.bibleLanguage,
         header = {
-            ChoiceRow(stringResource(R.string.bible_language_same), settings.bibleLanguage == null, settings.languageName) {
+            ChoiceRow(stringResource(R.string.language_follow_videos, settings.languageName), settings.bibleLanguage == null) {
                 pocket.core.settings.setBibleLanguage(null); onDone()
             }
         },
@@ -382,7 +367,7 @@ fun SubtitleLanguageScreen(contentPadding: PaddingValues, onDone: () -> Unit) {
         contentPadding, list, settings.subtitleLanguage,
         header = {
             Column {
-                ChoiceRow(stringResource(R.string.subtitles_same_as_video), settings.subtitleLanguage == null, stringResource(R.string.subtitles_same_as_video_detail)) { pocket.core.settings.setSubtitleLanguage(null); onDone() }
+                ChoiceRow(stringResource(R.string.language_follow_videos, settings.languageName), settings.subtitleLanguage == null) { pocket.core.settings.setSubtitleLanguage(null); onDone() }
                 ChoiceRow(stringResource(R.string.subtitles_off), settings.subtitleLanguage == Settings.SUBTITLES_OFF) { pocket.core.settings.setSubtitleLanguage(Settings.SUBTITLES_OFF); onDone() }
                 Text(
                     stringResource(R.string.subtitles_any_language_note),

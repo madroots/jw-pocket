@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="library_storage">%1$s sur ce téléphone · %2$s libres</string>
+    <string name="library_menu_delete_all">Supprimer tous les téléchargements</string>
+    <string name="library_favorites">Favoris</string>
+    <string name="library_clips">Extraits</string>
+    <string name="library_recent">Écoutés récemment</string>
+    <string name="library_history">Historique</string>
+    <string name="library_on_phone">Sur ce téléphone</string>
+    <string name="library_kind_videos">Vidéos</string>
+    <string name="library_kind_dramas">Drames audio</string>
+    <plurals name="library_recordings">
+        <item quantity="one">%d enregistrement</item>
+        <item quantity="other">%d enregistrements</item>
+    </plurals>
+    <plurals name="library_pending_more">
+        <item quantity="one">%d autre</item>
+        <item quantity="other">%d autres</item>
+    </plurals>
+    <string name="library_empty_title">Votre bibliothèque est vide</string>
+    <string name="library_empty_body">Appuyez sur le cœur d\'une vidéo pour l\'ajouter aux favoris, ou sur Télécharger pour la regarder plus tard sans Internet.</string>
+</resources>

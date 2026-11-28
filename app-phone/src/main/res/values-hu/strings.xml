@@ -58,14 +58,10 @@
         <item quantity="one">%d videó</item>
         <item quantity="other">%d videó</item>
     </plurals>
-    <string name="library_tab_downloads">Letöltések</string>
-    <string name="library_tab_favorites">Kedvencek</string>
-    <string name="library_tab_history">Előzmények</string>
     <plurals name="library_downloads_summary">
         <item quantity="one">%1$d videó · %2$s</item>
         <item quantity="other">%1$d videó · %2$s</item>
     </plurals>
-    <string name="library_free_space">Szabad hely a telefonon: %1$s</string>
     <string name="library_delete_all">Összes törlése</string>
     <string name="library_wifi_only">Letöltés csak Wi-Fi-n</string>
     <string name="library_downloads_empty_title">Még nincsenek letöltések</string>
@@ -136,7 +132,7 @@
         <item quantity="one">Még %d perc</item>
         <item quantity="other">Még %d perc</item>
     </plurals>
-    <string name="player_subtitles_hint">A választásod a következő videóknál is érvényes lesz.</string>
+    <string name="player_subtitles_hint">Csak ehhez a videóhoz. Az összes videó alapértelmezése a Beállításokban van.</string>
     <string name="player_search_languages">Nyelvek keresése</string>
     <string name="player_subtitles_off_choice">Ki</string>
     <string name="player_subtitles_same_as_video">A videó nyelvén</string>

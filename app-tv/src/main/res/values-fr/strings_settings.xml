@@ -22,8 +22,4 @@
     <string name="cascade_app_yes">Vidéos et sous-titres</string>
     <string name="cascade_app_videos_only">Vidéos uniquement</string>
     <string name="cascade_app_no">Appli uniquement</string>
-    <string name="cascade_video_title">Les sous-titres aussi en %1$s ?</string>
-    <string name="cascade_video_text">Vos sous-titres sont en %1$s. Afficher plutôt les sous-titres dans la langue des vidéos ?</string>
-    <string name="cascade_video_yes">Oui</string>
-    <string name="cascade_video_no">Garder %1$s</string>
 </resources>

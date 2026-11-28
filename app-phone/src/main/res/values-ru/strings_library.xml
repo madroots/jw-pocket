@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="library_storage">%1$s на телефоне · свободно %2$s</string>
+    <string name="library_menu_delete_all">Удалить все загрузки</string>
+    <string name="library_favorites">Избранное</string>
+    <string name="library_clips">Клипы</string>
+    <string name="library_recent">Недавно воспроизведённые</string>
+    <string name="library_history">История</string>
+    <string name="library_on_phone">На телефоне</string>
+    <string name="library_kind_videos">Видео</string>
+    <string name="library_kind_dramas">Аудиоспектакли</string>
+    <plurals name="library_recordings">
+        <item quantity="one">%d запись</item>
+        <item quantity="few">%d записи</item>
+        <item quantity="many">%d записей</item>
+        <item quantity="other">%d записи</item>
+    </plurals>
+    <plurals name="library_pending_more">
+        <item quantity="one">и ещё %d</item>
+        <item quantity="few">и ещё %d</item>
+        <item quantity="many">и ещё %d</item>
+        <item quantity="other">и ещё %d</item>
+    </plurals>
+    <string name="library_empty_title">Библиотека пока пуста</string>
+    <string name="library_empty_body">Нажмите на сердечко у видео, чтобы добавить его в избранное, или «Скачать», чтобы посмотреть позже без интернета.</string>
+</resources>

@@ -30,8 +30,6 @@
     <string name="quality_streaming_note">Videoclipurile descărcate sunt redate întotdeauna la calitatea în care au fost descărcate.</string>
     <string name="quality_ask_every_time">Întreabă de fiecare dată</string>
     <string name="quality_download_note">Calitățile mai mici economisesc spațiu.</string>
-    <string name="subtitles_same_as_video">Limba videoclipului</string>
-    <string name="subtitles_same_as_video_detail">Subtitrări în limba videoclipurilor</string>
     <string name="subtitles_off">Dezactivate</string>
     <string name="subtitles_any_language_note">Orice limbă: subtitrările apar la fiecare videoclip publicat în limba respectivă, indiferent de limba videoclipului.</string>
     <string name="search_languages">Caută limbi</string>
@@ -40,8 +38,4 @@
     <string name="cascade_app_yes">Videoclipuri și subtitrări</string>
     <string name="cascade_app_videos_only">Doar videoclipurile</string>
     <string name="cascade_app_no">Doar aplicația</string>
-    <string name="cascade_video_title">Și subtitrările în limba %1$s?</string>
-    <string name="cascade_video_text">Subtitrările sunt setate în limba %1$s. Doriți ca subtitrările să apară în schimb în limba videoclipurilor?</string>
-    <string name="cascade_video_yes">Da</string>
-    <string name="cascade_video_no">Păstrează %1$s</string>
 </resources>

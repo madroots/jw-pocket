@@ -41,7 +41,6 @@
         <item quantity="one">%d Lied</item>
         <item quantity="other">%d Lieder</item>
     </plurals>
-    <string name="library_tab_bible">Bibel</string>
     <string name="library_bible_empty_title">Keine Bibelkapitel heruntergeladen</string>
     <string name="library_bible_empty_body">Öffne im Tab Bibel ein Buch und tippe auf Herunterladen, um offline zu hören.</string>
     <string name="library_bible_open">Bibel öffnen</string>

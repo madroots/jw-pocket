@@ -66,6 +66,7 @@ import androidx.tv.material3.Icon
 import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Text
 import app.jwpocket.core.data.Settings
+import app.jwpocket.core.data.TipKind
 import app.jwpocket.core.util.formatBytes
 import app.jwpocket.core.util.formatClock
 import app.jwpocket.tv.R
@@ -104,8 +105,9 @@ fun TvPlayer(onExit: () -> Unit) {
     LaunchedEffect(visible) {
         runCatching { if (visible) playButton.requestFocus() else root.requestFocus() }
     }
+    val tip by tv.core.tips.tip.collectAsState()
     LaunchedEffect(state.subtitleMissing, state.video?.id) {
-        val wanted = settings.subtitleLanguage
+        val wanted = state.subtitleChoice
         if (state.subtitleMissing && wanted != null && wanted != Settings.SUBTITLES_OFF) {
             notice = context.getString(R.string.player_subtitles_missing, tv.core.languages.name(wanted))
             delay(4_000)
@@ -213,13 +215,14 @@ fun TvPlayer(onExit: () -> Unit) {
 
     when (panel) {
         PlayerPanel.Subtitles -> if (video != null) {
-            val own = video.subtitleUrl?.let { PanelOption(null, tv.core.languages.name(settings.languageCode), stringResource(R.string.player_subtitles_same_as_video), settings.subtitleLanguage == null) }
+            val chosen = state.subtitleChoice
+            val own = video.subtitleUrl?.let { PanelOption(null, tv.core.languages.name(settings.languageCode), stringResource(R.string.player_subtitles_same_as_video), chosen == null) }
             val mostUsed = stringResource(R.string.player_subtitles_most_used)
             val others = tv.core.subtitles.otherLanguages(video, settings.languageCode, languages, settings.pinnedLanguages)
-                .map { PanelOption(it.code, it.vernacular, if (it.code in settings.mostUsedLanguages) mostUsed else it.name.takeIf { n -> n != it.vernacular }, settings.subtitleLanguage == it.code) }
+                .map { PanelOption(it.code, it.vernacular, if (it.code in settings.mostUsedLanguages) mostUsed else it.name.takeIf { n -> n != it.vernacular }, chosen == it.code) }
             TvSidePanel(
                 stringResource(R.string.player_subtitles), stringResource(R.string.player_subtitles_remembered),
-                listOf(PanelOption(Settings.SUBTITLES_OFF, stringResource(R.string.player_subtitles_off), selected = settings.subtitleLanguage == Settings.SUBTITLES_OFF)) + listOfNotNull(own) + others,
+                listOf(PanelOption(Settings.SUBTITLES_OFF, stringResource(R.string.player_subtitles_off), selected = chosen == Settings.SUBTITLES_OFF)) + listOfNotNull(own) + others,
                 onPick = { connection.setSubtitles(it.key); panel = null },
                 onDismiss = { panel = null },
             )
@@ -240,7 +243,21 @@ fun TvPlayer(onExit: () -> Unit) {
                 onDismiss = { panel = null },
             )
         }
-        null -> Unit
+        null -> tip?.takeIf { it.kind == TipKind.Subtitles }?.let { t ->
+            // Subtitles picked the same way video after video: offer once to make it the default.
+            val name = tv.core.languages.name(t.language)
+            val off = t.language == Settings.SUBTITLES_OFF
+            TvSidePanel(
+                if (off) stringResource(R.string.tip_subtitles_off_title) else stringResource(R.string.tip_subtitles_title, name),
+                if (off) stringResource(R.string.tip_subtitles_off_body) else stringResource(R.string.tip_subtitles_body, name),
+                options = listOf(
+                    PanelOption("yes", stringResource(R.string.tip_make_default), selected = true),
+                    PanelOption("no", stringResource(R.string.tip_not_now)),
+                ),
+                onPick = { o -> if (o.key == "yes") tv.core.acceptTip(t) else tv.core.tips.dismiss(t) },
+                onDismiss = { tv.core.tips.dismiss(t) },
+            )
+        }
     }
 }
 

@@ -85,16 +85,11 @@
     </plurals>
 
     <!-- Library: downloads, favorites and history. -->
-    <string name="library_tab_downloads">Downloads</string>
-    <string name="library_tab_favorites">Favorites</string>
-    <string name="library_tab_history">History</string>
     <!-- %1$d: number of downloaded videos, %2$s: their total size, e.g. "1.2 GB". -->
     <plurals name="library_downloads_summary">
         <item quantity="one">%1$d video · %2$s</item>
         <item quantity="other">%1$d videos · %2$s</item>
     </plurals>
-    <!-- %1$s: free storage, e.g. "8.4 GB". -->
-    <string name="library_free_space">%1$s free on this phone</string>
     <string name="library_delete_all">Delete all</string>
     <string name="library_wifi_only">Download on Wi-Fi only</string>
     <string name="library_downloads_empty_title">No downloads yet</string>
@@ -193,7 +188,7 @@
     </plurals>
 
     <!-- Player choice sheets. -->
-    <string name="player_subtitles_hint">Your choice is remembered for the next videos.</string>
+    <string name="player_subtitles_hint">Only for this video. Set the default for all videos in Settings.</string>
     <string name="player_search_languages">Search languages</string>
     <!-- Subtitle choice: no subtitles. -->
     <string name="player_subtitles_off_choice">Off</string>

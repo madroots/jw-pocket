@@ -262,7 +262,7 @@ fun FullPlayer(
                 ownLanguageName = if (state.spokenLanguage != null || video.subtitleUrl != null) pocket.core.languages.name(heard) else null,
                 others = pocket.core.subtitles.otherLanguages(video, heard, languages, settings.pinnedLanguages),
                 pinned = settings.mostUsedLanguages,
-                selected = settings.subtitleLanguage,
+                selected = state.subtitleChoice,
                 showingLanguage = state.subtitleLanguage,
                 onPick = { connection.setSubtitles(it); sheet = null },
                 onDismiss = { sheet = null },
@@ -322,12 +322,14 @@ private fun NowPlayingInfo(state: PlaybackState, onSheet: (Sheet) -> Unit) {
                 style = MaterialTheme.typography.bodySmall, color = Pocket.TextSecondary, modifier = Modifier.padding(bottom = 8.dp),
             )
         }
-        if (state.subtitleMissing && settings.subtitleLanguage != null && settings.subtitleLanguage != Settings.SUBTITLES_OFF) {
+        val askedSubtitles = state.subtitleChoice
+        if (state.subtitleMissing && askedSubtitles != null && askedSubtitles != Settings.SUBTITLES_OFF) {
             Text(
-                stringResource(R.string.player_subtitles_missing, pocket.core.languages.name(settings.subtitleLanguage!!)),
+                stringResource(R.string.player_subtitles_missing, pocket.core.languages.name(askedSubtitles)),
                 style = MaterialTheme.typography.bodySmall, color = Pocket.TextSecondary, modifier = Modifier.padding(bottom = 8.dp),
             )
         }
+        LanguageTipCard(Modifier.padding(bottom = 12.dp))
 
         PlayerActions(state, onSheet)
         if (!state.error.isNullOrBlank()) {

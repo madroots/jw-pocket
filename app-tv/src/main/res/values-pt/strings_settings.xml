@@ -22,8 +22,4 @@
     <string name="cascade_app_yes">Vídeos e legendas</string>
     <string name="cascade_app_videos_only">Só os vídeos</string>
     <string name="cascade_app_no">Só o app</string>
-    <string name="cascade_video_title">Legendas em %1$s também?</string>
-    <string name="cascade_video_text">Suas legendas estão em %1$s. Mostrar as legendas no idioma dos vídeos?</string>
-    <string name="cascade_video_yes">Sim</string>
-    <string name="cascade_video_no">Manter %1$s</string>
 </resources>

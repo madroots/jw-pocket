@@ -31,8 +31,6 @@
     <string name="quality_streaming_note">Los videos descargados siempre se reproducen en la calidad en que se descargaron.</string>
     <string name="quality_ask_every_time">Preguntar siempre</string>
     <string name="quality_download_note">Las calidades más bajas ocupan menos espacio.</string>
-    <string name="subtitles_same_as_video">Igual que el video</string>
-    <string name="subtitles_same_as_video_detail">Subtítulos en el idioma de los videos</string>
     <string name="subtitles_off">Desactivados</string>
     <string name="subtitles_any_language_note">Cualquier idioma: se muestran en todos los videos que los incluyan, sea cual sea el idioma del video.</string>
     <string name="search_languages">Buscar idiomas</string>
@@ -41,8 +39,4 @@
     <string name="cascade_app_yes">Videos y subtítulos</string>
     <string name="cascade_app_videos_only">Solo los videos</string>
     <string name="cascade_app_no">Solo la app</string>
-    <string name="cascade_video_title">¿También los subtítulos en %1$s?</string>
-    <string name="cascade_video_text">Tus subtítulos están en %1$s. ¿Prefieres ver los subtítulos en el idioma de los videos?</string>
-    <string name="cascade_video_yes">Sí</string>
-    <string name="cascade_video_no">Mantener %1$s</string>
 </resources>

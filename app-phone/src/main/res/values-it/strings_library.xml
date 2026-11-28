@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="library_storage">%1$s su questo telefono · %2$s liberi</string>
+    <string name="library_menu_delete_all">Elimina tutti i download</string>
+    <string name="library_favorites">Preferiti</string>
+    <string name="library_clips">Clip</string>
+    <string name="library_recent">Riprodotti di recente</string>
+    <string name="library_history">Cronologia</string>
+    <string name="library_on_phone">Su questo telefono</string>
+    <string name="library_kind_videos">Video</string>
+    <string name="library_kind_dramas">Drammi audio</string>
+    <plurals name="library_recordings">
+        <item quantity="one">%d registrazione</item>
+        <item quantity="other">%d registrazioni</item>
+    </plurals>
+    <plurals name="library_pending_more">
+        <item quantity="one">altro %d</item>
+        <item quantity="other">altri %d</item>
+    </plurals>
+    <string name="library_empty_title">La tua libreria è vuota</string>
+    <string name="library_empty_body">Tocca il cuore su un video per aggiungerlo ai Preferiti, oppure tocca Scarica per guardarlo più tardi senza Internet.</string>
+</resources>

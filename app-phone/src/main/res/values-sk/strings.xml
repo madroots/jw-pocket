@@ -68,16 +68,12 @@
         <item quantity="other">%d videí</item>
     </plurals>
 
-    <string name="library_tab_downloads">Stiahnuté</string>
-    <string name="library_tab_favorites">Obľúbené</string>
-    <string name="library_tab_history">História</string>
     <plurals name="library_downloads_summary">
         <item quantity="one">%1$d video · %2$s</item>
         <item quantity="few">%1$d videá · %2$s</item>
         <item quantity="many">%1$d videa · %2$s</item>
         <item quantity="other">%1$d videí · %2$s</item>
     </plurals>
-    <string name="library_free_space">Voľné miesto v telefóne: %1$s</string>
     <string name="library_delete_all">Vymazať všetko</string>
     <string name="library_wifi_only">Sťahovať len cez Wi-Fi</string>
     <string name="library_downloads_empty_title">Zatiaľ žiadne stiahnuté videá</string>
@@ -153,7 +149,7 @@
         <item quantity="other">Zostáva %d min</item>
     </plurals>
 
-    <string name="player_subtitles_hint">Tvoja voľba sa zapamätá aj pre ďalšie videá.</string>
+    <string name="player_subtitles_hint">Len pre toto video. Predvolené nastavenie pre všetky videá nájdete v Nastaveniach.</string>
     <string name="player_search_languages">Hľadať jazyky</string>
     <string name="player_subtitles_off_choice">Vypnuté</string>
     <string name="player_subtitles_same_as_video">Ako vo videu</string>

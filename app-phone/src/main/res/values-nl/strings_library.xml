@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="library_storage">%1$s op deze telefoon · %2$s vrij</string>
+    <string name="library_menu_delete_all">Alle downloads verwijderen</string>
+    <string name="library_favorites">Favorieten</string>
+    <string name="library_clips">Clips</string>
+    <string name="library_recent">Onlangs afgespeeld</string>
+    <string name="library_history">Geschiedenis</string>
+    <string name="library_on_phone">Op deze telefoon</string>
+    <string name="library_kind_videos">Video\'s</string>
+    <string name="library_kind_dramas">Hoorspelen</string>
+    <plurals name="library_recordings">
+        <item quantity="one">%d opname</item>
+        <item quantity="other">%d opnamen</item>
+    </plurals>
+    <plurals name="library_pending_more">
+        <item quantity="one">nog %d</item>
+        <item quantity="other">nog %d</item>
+    </plurals>
+    <string name="library_empty_title">Je bibliotheek is leeg</string>
+    <string name="library_empty_body">Tik op het hartje bij een video om hem bij je favorieten te bewaren, of op Downloaden om hem later zonder internet te kijken.</string>
+</resources>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Library overview and its lists. -->
+    <!-- %1$s: size of all downloads, %2$s: free storage, e.g. "2.4 GB on this phone · 11 GB free". -->
+    <string name="library_storage">%1$s on this phone · %2$s free</string>
+    <!-- Item of the Library's ⋮ menu. -->
+    <string name="library_menu_delete_all">Delete all downloads</string>
+    <string name="library_favorites">Favorites</string>
+    <string name="library_clips">Clips</string>
+    <string name="library_recent">Recently played</string>
+    <!-- Link from "Recently played" to the full list. -->
+    <string name="library_history">History</string>
+    <!-- Heading above the downloads, by kind. -->
+    <string name="library_on_phone">On this phone</string>
+    <string name="library_kind_videos">Videos</string>
+    <!-- Downloaded audio dramas and dramatic Bible readings. -->
+    <string name="library_kind_dramas">Audio dramas</string>
+    <!-- Count of downloaded audio dramas and dramatic Bible readings. -->
+    <plurals name="library_recordings">
+        <item quantity="one">%d recording</item>
+        <item quantity="other">%d recordings</item>
+    </plurals>
+    <!-- Pending downloads not shown in the overview's card. -->
+    <plurals name="library_pending_more">
+        <item quantity="one">%d more</item>
+        <item quantity="other">%d more</item>
+    </plurals>
+    <string name="library_empty_title">Your library is empty</string>
+    <string name="library_empty_body">Tap the heart on a video to keep it in Favorites, or tap Download to watch it later without internet.</string>
+</resources>

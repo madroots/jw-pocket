@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_language_note">Ezek az alapértelmezések. Lejátszás közben a nyelvet vagy a feliratot csak az éppen szóló tartalomra is módosíthatod.</string>
+    <string name="language_follow_videos">Mint a videók (%1$s)</string>
+    <string name="tip_subtitles_title">Mindig ilyen felirat: %1$s?</string>
+    <string name="tip_subtitles_body">Gyakran választod ezt a feliratot: %1$s. Minden videónál ez legyen? A Beállításokban bármikor módosíthatod.</string>
+    <string name="tip_subtitles_off_title">Mindig felirat nélkül?</string>
+    <string name="tip_subtitles_off_body">Gyakran kikapcsolod a feliratot. Minden videónál legyen kikapcsolva? A Beállításokban bármikor módosíthatod.</string>
+    <string name="tip_make_default">Legyen alapértelmezett</string>
+    <string name="tip_not_now">Most nem</string>
+</resources>

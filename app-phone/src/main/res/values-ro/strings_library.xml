@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="library_storage">%1$s pe acest telefon · %2$s liberi</string>
+    <string name="library_menu_delete_all">Ștergeți toate descărcările</string>
+    <string name="library_favorites">Favorite</string>
+    <string name="library_clips">Clipuri</string>
+    <string name="library_recent">Redate recent</string>
+    <string name="library_history">Istoric</string>
+    <string name="library_on_phone">Pe acest telefon</string>
+    <string name="library_kind_videos">Videoclipuri</string>
+    <string name="library_kind_dramas">Drame audio</string>
+    <plurals name="library_recordings">
+        <item quantity="one">%d înregistrare</item>
+        <item quantity="few">%d înregistrări</item>
+        <item quantity="other">%d de înregistrări</item>
+    </plurals>
+    <plurals name="library_pending_more">
+        <item quantity="one">încă %d</item>
+        <item quantity="few">încă %d</item>
+        <item quantity="other">încă %d</item>
+    </plurals>
+    <string name="library_empty_title">Biblioteca este goală</string>
+    <string name="library_empty_body">Atingeți inima unui videoclip ca să-l păstrați la Favorite sau butonul Descarcă ca să-l vizionați mai târziu fără internet.</string>
+</resources>

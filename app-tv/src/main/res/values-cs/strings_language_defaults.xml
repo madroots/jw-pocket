@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_language_note">Toto jsou výchozí nastavení. Během přehrávání můžete jazyk nebo titulky změnit jen pro to, co právě hraje.</string>
+    <string name="language_follow_videos">Stejný jako videa (%1$s)</string>
+    <string name="tip_subtitles_title">Vždy titulky v jazyce %1$s?</string>
+    <string name="tip_subtitles_body">Často volíte titulky v jazyce %1$s. Zobrazovat je u všech videí? Kdykoli to můžete změnit v Nastavení.</string>
+    <string name="tip_subtitles_off_title">Vždy bez titulků?</string>
+    <string name="tip_subtitles_off_body">Titulky často vypínáte. Vypnout je u všech videí? Kdykoli to můžete změnit v Nastavení.</string>
+    <string name="tip_make_default">Nastavit jako výchozí</string>
+    <string name="tip_not_now">Teď ne</string>
+</resources>

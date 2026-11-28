@@ -94,7 +94,7 @@
     <string name="player_subtitles">Titulky</string>
     <string name="player_speed">Rychlost</string>
     <string name="player_subtitles_same_as_video">Jako ve videu</string>
-    <string name="player_subtitles_remembered">Zapamatuje se i pro další videa.</string>
+    <string name="player_subtitles_remembered">Jen pro toto video. Výchozí nastavení pro všechna videa najdete v Nastavení.</string>
     <string name="player_subtitles_off">Vypnuto</string>
     <string name="player_playback_speed">Rychlost přehrávání</string>
     <string name="player_speed_normal">Normální</string>

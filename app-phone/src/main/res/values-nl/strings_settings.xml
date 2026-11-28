@@ -32,8 +32,6 @@
     <string name="quality_ask_every_time">Elke keer vragen</string>
     <string name="quality_download_note">Een lagere kwaliteit bespaart ruimte.</string>
 
-    <string name="subtitles_same_as_video">Zelfde als de video</string>
-    <string name="subtitles_same_as_video_detail">Ondertiteling in de taal van de video\'s</string>
     <string name="subtitles_off">Uit</string>
     <string name="subtitles_any_language_note">Elke taal: wordt getoond bij elke video met ondertiteling in die taal, ongeacht de taal van de video.</string>
     <string name="search_languages">Talen zoeken</string>
@@ -43,8 +41,4 @@
     <string name="cascade_app_yes">Video\'s en ondertiteling</string>
     <string name="cascade_app_videos_only">Alleen video\'s</string>
     <string name="cascade_app_no">Alleen de app</string>
-    <string name="cascade_video_title">Ondertiteling ook in %1$s?</string>
-    <string name="cascade_video_text">Je ondertiteling staat op %1$s. Ondertiteling in plaats daarvan tonen in de taal van de video\'s?</string>
-    <string name="cascade_video_yes">Ja</string>
-    <string name="cascade_video_no">%1$s behouden</string>
 </resources>

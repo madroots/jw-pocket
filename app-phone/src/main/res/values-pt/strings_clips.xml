@@ -15,7 +15,6 @@
     <string name="clip_share_warning">Apenas para compartilhar de forma pessoal, com pessoas que você conhece. Não é permitido publicá-lo em redes sociais ou em qualquer lugar público.</string>
     <string name="clip_share_link">Adicionar um link para o vídeo completo</string>
     <string name="clip_share_action">Compartilhar</string>
-    <string name="library_tab_clips">Clipes</string>
     <string name="clips_empty_title">Nenhum clipe ainda</string>
     <string name="clips_empty_body">No player, toque em Compartilhar › Compartilhar um momento para guardar algumas frases de que você gostou.</string>
     <string name="clip_delete">Apagar clipe</string>

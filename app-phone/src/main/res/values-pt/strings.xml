@@ -59,14 +59,10 @@
         <item quantity="one">%d vídeo</item>
         <item quantity="other">%d vídeos</item>
     </plurals>
-    <string name="library_tab_downloads">Downloads</string>
-    <string name="library_tab_favorites">Favoritos</string>
-    <string name="library_tab_history">Histórico</string>
     <plurals name="library_downloads_summary">
         <item quantity="one">%1$d vídeo · %2$s</item>
         <item quantity="other">%1$d vídeos · %2$s</item>
     </plurals>
-    <string name="library_free_space">%1$s livres neste celular</string>
     <string name="library_delete_all">Excluir tudo</string>
     <string name="library_wifi_only">Baixar só com Wi-Fi</string>
     <string name="library_downloads_empty_title">Nenhum download ainda</string>
@@ -137,7 +133,7 @@
         <item quantity="one">Falta %d min</item>
         <item quantity="other">Faltam %d min</item>
     </plurals>
-    <string name="player_subtitles_hint">Sua escolha será lembrada nos próximos vídeos.</string>
+    <string name="player_subtitles_hint">Só para este vídeo. O padrão para todos os vídeos fica em Configurações.</string>
     <string name="player_search_languages">Pesquisar idiomas</string>
     <string name="player_subtitles_off_choice">Desativadas</string>
     <string name="player_subtitles_same_as_video">Igual ao vídeo</string>

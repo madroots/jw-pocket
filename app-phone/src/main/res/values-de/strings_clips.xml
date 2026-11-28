@@ -15,7 +15,6 @@
     <string name="clip_share_warning">Nur zum persönlichen Teilen mit Menschen, die du kennst. In sozialen Netzwerken oder anderswo öffentlich posten ist nicht erlaubt.</string>
     <string name="clip_share_link">Link zum ganzen Video hinzufügen</string>
     <string name="clip_share_action">Teilen</string>
-    <string name="library_tab_clips">Clips</string>
     <string name="clips_empty_title">Noch keine Clips</string>
     <string name="clips_empty_body">Tippe im Player auf Teilen › Einen Moment teilen, um ein paar Sätze zu speichern, die dir gefallen.</string>
     <string name="clip_delete">Clip löschen</string>

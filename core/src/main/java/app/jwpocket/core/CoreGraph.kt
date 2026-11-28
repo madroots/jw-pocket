@@ -5,6 +5,9 @@ import android.content.Context
 import app.jwpocket.core.data.BibleRepository
 import app.jwpocket.core.data.FavoritesRepository
 import app.jwpocket.core.data.LanguageRepository
+import app.jwpocket.core.data.LanguageTip
+import app.jwpocket.core.data.LanguageTips
+import app.jwpocket.core.data.TipKind
 import app.jwpocket.core.data.LibraryRepository
 import app.jwpocket.core.data.ProgressRepository
 import app.jwpocket.core.data.Settings
@@ -67,8 +70,19 @@ class CoreGraph(context: Context, updateRepo: String, updateApk: String, version
     val favorites by lazy { FavoritesRepository(database.favorites(), appScope) }
     val updates = UpdateController(
         UpdateRepository(api, updateRepo, updateApk), UpdateInstaller(appContext, http), text, appScope, versionName,
+        appLanguage = { AppLanguage.effective(settings.current.appLanguage) },
     )
     val network = NetworkMonitor(appContext)
+    val tips = LanguageTips(appContext, settings)
+
+    /** Makes a tip's choice the default; a new video language reloads the library in it. */
+    fun acceptTip(tip: LanguageTip) {
+        tips.accept(tip, languages.name(tip.language))
+        if (tip.kind == TipKind.VideoLanguage) {
+            library.clearMemory()
+            languages.load(tip.language)
+        }
+    }
 
     init {
         // First start: videos in the device's language when the library has it. The app's own

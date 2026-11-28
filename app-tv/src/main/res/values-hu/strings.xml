@@ -80,7 +80,7 @@
     <string name="player_subtitles">Feliratok</string>
     <string name="player_speed">Sebesség</string>
     <string name="player_subtitles_same_as_video">A videó nyelvén</string>
-    <string name="player_subtitles_remembered">A következő videóknál is érvényes lesz.</string>
+    <string name="player_subtitles_remembered">Csak ehhez a videóhoz. Az összes videó alapértelmezése a Beállításokban van.</string>
     <string name="player_subtitles_off">Ki</string>
     <string name="player_playback_speed">Lejátszási sebesség</string>
     <string name="player_speed_normal">Normál</string>

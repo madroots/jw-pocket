@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_language_note">Estes são os padrões. Durante a reprodução, você pode mudar o idioma ou as legendas só para aquele conteúdo.</string>
+    <string name="language_follow_videos">Igual aos vídeos (%1$s)</string>
+    <string name="tip_video_title">Assistir sempre em %1$s?</string>
+    <string name="tip_video_body">Você costuma mudar os vídeos para %1$s. Usar esse idioma em todos os vídeos? Dá para mudar quando quiser em Configurações.</string>
+    <string name="tip_subtitles_title">Legendas sempre em %1$s?</string>
+    <string name="tip_subtitles_body">Você costuma escolher legendas em %1$s. Mostrá-las em todos os vídeos? Dá para mudar quando quiser em Configurações.</string>
+    <string name="tip_subtitles_off_title">Sempre sem legendas?</string>
+    <string name="tip_subtitles_off_body">Você costuma desligar as legendas. Desligar em todos os vídeos? Dá para mudar quando quiser em Configurações.</string>
+    <string name="tip_make_default">Tornar padrão</string>
+    <string name="tip_not_now">Agora não</string>
+    <string name="bible_other_language_remove">Remover</string>
+    <plurals name="bible_other_language_downloads">
+        <item quantity="one">%1$d capítulo baixado em %2$s</item>
+        <item quantity="many">%1$d capítulos baixados em %2$s</item>
+        <item quantity="other">%1$d capítulos baixados em %2$s</item>
+    </plurals>
+</resources>

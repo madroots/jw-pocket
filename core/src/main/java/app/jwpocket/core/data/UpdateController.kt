@@ -30,6 +30,8 @@ class UpdateController(
     private val text: AppText,
     private val scope: CoroutineScope,
     private val currentVersion: String,
+    /** The app language tag the notes should be in. */
+    private val appLanguage: () -> String,
 ) {
     private val _state = MutableStateFlow(UpdateUiState())
     val state: StateFlow<UpdateUiState> = _state.asStateFlow()
@@ -37,7 +39,7 @@ class UpdateController(
     fun check(manual: Boolean = false) {
         scope.launch {
             if (manual) _state.update { it.copy(message = text.get(R.string.update_checking)) }
-            updates.check(currentVersion)
+            updates.check(currentVersion, appLanguage())
                 .onSuccess { update ->
                     _state.update {
                         when {

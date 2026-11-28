@@ -15,7 +15,6 @@
     <string name="clip_share_warning">Лише для особистого обміну зі знайомими. Публікувати його в соцмережах чи деінде публічно не дозволено.</string>
     <string name="clip_share_link">Додати посилання на все відео</string>
     <string name="clip_share_action">Поділитися</string>
-    <string name="library_tab_clips">Кліпи</string>
     <string name="clips_empty_title">Поки немає кліпів</string>
     <string name="clips_empty_body">У плеєрі торкніться Поділитися › Поділитися моментом, щоб зберегти кілька речень, які вам сподобалися.</string>
     <string name="clip_delete">Видалити кліп</string>

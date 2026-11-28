@@ -21,8 +21,4 @@
     <string name="cascade_app_yes">Videoclipuri și subtitrări</string>
     <string name="cascade_app_videos_only">Doar videoclipurile</string>
     <string name="cascade_app_no">Doar aplicația</string>
-    <string name="cascade_video_title">Și subtitrările în limba %1$s?</string>
-    <string name="cascade_video_text">Subtitrările sunt setate în limba %1$s. Doriți ca subtitrările să apară în schimb în limba videoclipurilor?</string>
-    <string name="cascade_video_yes">Da</string>
-    <string name="cascade_video_no">Păstrează %1$s</string>
 </resources>

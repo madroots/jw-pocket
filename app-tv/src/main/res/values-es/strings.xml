@@ -81,7 +81,7 @@
     <string name="player_subtitles">Subtítulos</string>
     <string name="player_speed">Velocidad</string>
     <string name="player_subtitles_same_as_video">Igual que el video</string>
-    <string name="player_subtitles_remembered">Se recordará para los próximos videos.</string>
+    <string name="player_subtitles_remembered">Solo para este video. El valor para todos los videos se elige en Ajustes.</string>
     <string name="player_subtitles_off">Desactivados</string>
     <string name="player_playback_speed">Velocidad de reproducción</string>
     <string name="player_speed_normal">Normal</string>

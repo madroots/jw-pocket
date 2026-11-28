@@ -32,8 +32,6 @@
     <string name="quality_ask_every_time">Jedes Mal fragen</string>
     <string name="quality_download_note">Geringere Qualität spart Speicherplatz.</string>
 
-    <string name="subtitles_same_as_video">Wie das Video</string>
-    <string name="subtitles_same_as_video_detail">Untertitel in der Sprache der Videos</string>
     <string name="subtitles_off">Aus</string>
     <string name="subtitles_any_language_note">Beliebige Sprache: wird bei jedem Video angezeigt, das Untertitel in dieser Sprache hat, egal in welcher Sprache das Video ist.</string>
     <string name="search_languages">Sprachen suchen</string>
@@ -43,8 +41,4 @@
     <string name="cascade_app_yes">Videos und Untertitel</string>
     <string name="cascade_app_videos_only">Nur Videos</string>
     <string name="cascade_app_no">Nur die App</string>
-    <string name="cascade_video_title">Untertitel auch auf %1$s?</string>
-    <string name="cascade_video_text">Ihre Untertitel sind auf %1$s eingestellt. Stattdessen Untertitel in der Sprache der Videos anzeigen?</string>
-    <string name="cascade_video_yes">Ja</string>
-    <string name="cascade_video_no">%1$s behalten</string>
 </resources>

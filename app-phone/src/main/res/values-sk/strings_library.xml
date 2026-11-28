@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="library_storage">V telefóne %1$s · voľné %2$s</string>
+    <string name="library_menu_delete_all">Vymazať všetky stiahnuté</string>
+    <string name="library_favorites">Obľúbené</string>
+    <string name="library_clips">Klipy</string>
+    <string name="library_recent">Naposledy prehrané</string>
+    <string name="library_history">História</string>
+    <string name="library_on_phone">V telefóne</string>
+    <string name="library_kind_videos">Videá</string>
+    <string name="library_kind_dramas">Audiodrámy</string>
+    <plurals name="library_recordings">
+        <item quantity="one">%d nahrávka</item>
+        <item quantity="few">%d nahrávky</item>
+        <item quantity="many">%d nahrávky</item>
+        <item quantity="other">%d nahrávok</item>
+    </plurals>
+    <plurals name="library_pending_more">
+        <item quantity="one">a %d ďalšie</item>
+        <item quantity="few">a %d ďalšie</item>
+        <item quantity="many">a %d ďalších</item>
+        <item quantity="other">a %d ďalších</item>
+    </plurals>
+    <string name="library_empty_title">Knižnica je zatiaľ prázdna</string>
+    <string name="library_empty_body">Ťukni pri videu na srdiečko a uložíš si ho do Obľúbených, alebo na Stiahnuť a pozrieš si ho neskôr bez internetu.</string>
+</resources>

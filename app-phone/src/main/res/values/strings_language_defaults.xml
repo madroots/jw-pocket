@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Language defaults note in Settings, the tip offered after the same language/subtitles were picked for many videos, and Bible downloads in another language. -->
+    <string name="settings_language_note">These are the defaults. While something plays, you can change its language or subtitles just for it.</string>
+    <string name="language_follow_videos">Same as videos (%1$s)</string>
+    <string name="tip_video_title">Always watch in %1$s?</string>
+    <string name="tip_video_body">You often switch videos to %1$s. Make it the language of all videos? You can change it anytime in Settings.</string>
+    <string name="tip_subtitles_title">Always show %1$s subtitles?</string>
+    <string name="tip_subtitles_body">You often pick %1$s subtitles. Show them in all videos? You can change it anytime in Settings.</string>
+    <string name="tip_subtitles_off_title">Always without subtitles?</string>
+    <string name="tip_subtitles_off_body">You often turn subtitles off. Turn them off for all videos? You can change it anytime in Settings.</string>
+    <string name="tip_make_default">Make default</string>
+    <string name="tip_not_now">Not now</string>
+    <string name="bible_other_language_remove">Remove</string>
+    <plurals name="bible_other_language_downloads">
+        <item quantity="one">%1$d chapter downloaded in %2$s</item>
+        <item quantity="other">%1$d chapters downloaded in %2$s</item>
+    </plurals>
+</resources>

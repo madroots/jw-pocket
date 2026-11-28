@@ -30,8 +30,6 @@
     <string name="quality_streaming_note">Завантажені відео завжди відтворюються в тій якості, у якій їх завантажено.</string>
     <string name="quality_ask_every_time">Щоразу питати</string>
     <string name="quality_download_note">Нижча якість заощаджує місце.</string>
-    <string name="subtitles_same_as_video">Мовою відео</string>
-    <string name="subtitles_same_as_video_detail">Субтитри мовою відео</string>
     <string name="subtitles_off">Вимк.</string>
     <string name="subtitles_any_language_note">Будь-яка мова: субтитри показуються в кожному відео, яке має їх цією мовою, незалежно від мови самого відео.</string>
     <string name="search_languages">Пошук мов</string>
@@ -40,8 +38,4 @@
     <string name="cascade_app_yes">Відео й субтитри</string>
     <string name="cascade_app_videos_only">Лише відео</string>
     <string name="cascade_app_no">Лише додаток</string>
-    <string name="cascade_video_title">Субтитри теж мовою «%1$s»?</string>
-    <string name="cascade_video_text">Зараз вибрано субтитри мовою «%1$s». Показувати натомість субтитри мовою відео?</string>
-    <string name="cascade_video_yes">Так</string>
-    <string name="cascade_video_no">Залишити «%1$s»</string>
 </resources>

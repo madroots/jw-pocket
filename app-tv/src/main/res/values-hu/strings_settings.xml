@@ -21,8 +21,4 @@
     <string name="cascade_app_yes">Videók és feliratok</string>
     <string name="cascade_app_videos_only">Csak a videók</string>
     <string name="cascade_app_no">Csak az alkalmazás</string>
-    <string name="cascade_video_title">A feliratok is ezen a nyelven: %1$s?</string>
-    <string name="cascade_video_text">A felirat nyelve jelenleg: %1$s. Inkább a videók nyelvén jelenjen meg a felirat?</string>
-    <string name="cascade_video_yes">Igen</string>
-    <string name="cascade_video_no">Marad: %1$s</string>
 </resources>

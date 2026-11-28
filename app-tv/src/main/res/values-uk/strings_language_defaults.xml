@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_language_note">Це типові налаштування. Під час відтворення можна змінити мову чи субтитри лише для поточного відео.</string>
+    <string name="language_follow_videos">Як у відео (%1$s)</string>
+    <string name="tip_subtitles_title">Завжди субтитри мовою %1$s?</string>
+    <string name="tip_subtitles_body">Ви часто обираєте субтитри мовою %1$s. Показувати їх у всіх відео? Це можна змінити в налаштуваннях.</string>
+    <string name="tip_subtitles_off_title">Завжди без субтитрів?</string>
+    <string name="tip_subtitles_off_body">Ви часто вимикаєте субтитри. Вимкнути їх у всіх відео? Це можна змінити в налаштуваннях.</string>
+    <string name="tip_make_default">Зробити типовим</string>
+    <string name="tip_not_now">Не зараз</string>
+</resources>

@@ -41,7 +41,6 @@
         <item quantity="one">%d canción</item>
         <item quantity="other">%d canciones</item>
     </plurals>
-    <string name="library_tab_bible">Biblia</string>
     <string name="library_bible_empty_title">No hay capítulos de la Biblia descargados</string>
     <string name="library_bible_empty_body">En la pestaña Biblia, abre un libro y toca Descargar para escuchar sin conexión.</string>
     <string name="library_bible_open">Abrir la Biblia</string>
