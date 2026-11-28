@@ -10,10 +10,4 @@
     <string name="tip_subtitles_off_body">Oprești des subtitrările. Le oprești la toate videoclipurile? Poți schimba oricând din Setări.</string>
     <string name="tip_make_default">Setează implicit</string>
     <string name="tip_not_now">Nu acum</string>
-    <string name="bible_other_language_remove">Elimină</string>
-    <plurals name="bible_other_language_downloads">
-        <item quantity="one">%1$d capitol descărcat în %2$s</item>
-        <item quantity="few">%1$d capitole descărcate în %2$s</item>
-        <item quantity="other">%1$d de capitole descărcate în %2$s</item>
-    </plurals>
 </resources>

@@ -10,11 +10,4 @@
     <string name="tip_subtitles_off_body">Вы часто отключаете субтитры. Отключить их во всех видео? Это можно изменить в настройках.</string>
     <string name="tip_make_default">По умолчанию</string>
     <string name="tip_not_now">Не сейчас</string>
-    <string name="bible_other_language_remove">Удалить</string>
-    <plurals name="bible_other_language_downloads">
-        <item quantity="one">%1$d глава скачана на языке %2$s</item>
-        <item quantity="few">%1$d главы скачаны на языке %2$s</item>
-        <item quantity="many">%1$d глав скачано на языке %2$s</item>
-        <item quantity="other">%1$d главы скачано на языке %2$s</item>
-    </plurals>
 </resources>

@@ -10,10 +10,4 @@
     <string name="tip_subtitles_off_body">Sueles quitar los subtítulos. ¿Quitarlos en todos los videos? Puedes cambiarlo cuando quieras en Ajustes.</string>
     <string name="tip_make_default">Usar siempre</string>
     <string name="tip_not_now">Ahora no</string>
-    <string name="bible_other_language_remove">Quitar</string>
-    <plurals name="bible_other_language_downloads">
-        <item quantity="one">%1$d capítulo descargado en %2$s</item>
-        <item quantity="many">%1$d capítulos descargados en %2$s</item>
-        <item quantity="other">%1$d capítulos descargados en %2$s</item>
-    </plurals>
 </resources>

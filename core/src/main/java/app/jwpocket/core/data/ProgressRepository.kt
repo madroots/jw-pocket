@@ -10,6 +10,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -25,26 +26,6 @@ data class WatchState(
     val fraction: Float get() = if (durationMs > 0) (positionMs.toFloat() / durationMs).coerceIn(0f, 1f) else 0f
     val remainingMs: Long get() = (durationMs - positionMs).coerceAtLeast(0)
     val canResume: Boolean get() = !finished && positionMs > 0
-
-    /**
-     * Where to resume [other], another language version of this video (a Bible
-     * chapter heard in another language): the same share of the way through,
-     * as readings in different languages take different times.
-     */
-    fun positionFor(other: Video): Long = when {
-        !canResume -> 0L
-        other.id == video.id || durationMs <= 0 || other.durationMs <= 0 -> positionMs
-        else -> (positionMs.toDouble() * other.durationMs / durationMs).toLong()
-    }
-}
-
-/**
- * Progress by video, where a Bible chapter is the same chapter in every
- * language: looking up "bible:V:1:1" finds Genesis 1 heard in English too.
- */
-class ProgressStates internal constructor(private val byKey: Map<String, WatchState>) : Map<String, WatchState> by byKey {
-    override fun get(key: String): WatchState? = byKey[ProgressRepository.key(key)]
-    override fun containsKey(key: String): Boolean = byKey.containsKey(ProgressRepository.key(key))
 }
 
 internal fun Video.toJson(): String = runCatching { PocketJson.encodeToString(Video.serializer(), this) }.getOrDefault("")
@@ -56,28 +37,29 @@ internal fun String.toVideo(): Video? = runCatching { PocketJson.decodeFromStrin
  */
 class ProgressRepository(private val dao: ProgressDao, private val scope: CoroutineScope) {
 
-    /** Saved row ids by progress key (a Bible chapter may have rows from several languages). */
-    @Volatile private var rowIds: Map<String, List<String>> = emptyMap()
-
-    /** progress key -> state, newest first; look up by video id (see [ProgressStates]). */
-    val states: StateFlow<ProgressStates> = dao.observeAll()
+    /** videoId -> state, newest first. Each language version (a Bible chapter in Slovak or English) is tracked on its own. */
+    val states: StateFlow<Map<String, WatchState>> = dao.observeAll()
         .map { rows ->
-            val byKey = LinkedHashMap<String, WatchState>()
-            val ids = HashMap<String, MutableList<String>>()
+            val byId = LinkedHashMap<String, WatchState>()
             for (row in rows) {
                 val video = row.videoJson.toVideo() ?: continue
-                val key = key(row.videoId)
-                ids.getOrPut(key) { mutableListOf() } += row.videoId
-                val state = WatchState(video, row.positionMs, row.durationMs, row.finished, row.updatedAt)
-                val kept = byKey[key]
-                // Newest first; a chapter heard in any language stays heard.
-                if (kept == null) byKey[key] = state
-                else if (state.finished && !kept.finished) byKey[key] = kept.copy(finished = true, positionMs = 0)
+                // By the video's own id: rows 1.12.0 saved under a language-free Bible key count for their language.
+                byId.putIfAbsent(video.id, WatchState(video, row.positionMs, row.durationMs, row.finished, row.updatedAt))
             }
-            rowIds = ids
-            ProgressStates(byKey)
+            byId
         }
-        .stateIn(scope, SharingStarted.Eagerly, ProgressStates(emptyMap()))
+        .stateIn(scope, SharingStarted.Eagerly, emptyMap())
+
+    init {
+        // 1.12.0 kept one row per Bible chapter for every language ("bible:1:1"); give each back to its language.
+        scope.launch {
+            dao.observeAll().first().filter { isSharedBibleKey(it.videoId) }.forEach { row ->
+                val video = row.videoJson.toVideo() ?: return@forEach
+                if (dao.get(video.id) == null) dao.upsert(row.copy(videoId = video.id))
+                dao.delete(row.videoId)
+            }
+        }
+    }
 
     /** Started but not finished, most recent first. Bible chapters have their own place (the Bible tab). */
     val continueWatching: Flow<List<WatchState>> = states.map { map -> map.values.filter { it.canResume && !it.video.isBible } }
@@ -85,8 +67,7 @@ class ProgressRepository(private val dao: ProgressDao, private val scope: Corout
     /** Everything watched or started, most recent first (without Bible chapters, tracked in the Bible tab). */
     val history: Flow<List<WatchState>> = states.map { map -> map.values.filter { !it.video.isBible } }
 
-    /** Where to resume [video] (0 = from the start); a chapter last heard in another language resumes at the same share. */
-    fun resumePositionMs(video: Video): Long = states.value[video.id]?.positionFor(video) ?: 0L
+    fun resumePositionMs(videoId: String): Long = states.value[videoId]?.takeIf { it.canResume }?.positionMs ?: 0L
 
     /**
      * Records a position. Under 5 s nothing is worth resuming; within the last
@@ -111,42 +92,29 @@ class ProgressRepository(private val dao: ProgressDao, private val scope: Corout
         upsert(video, 0, video.durationMs.coerceAtLeast(1), finished = true, updatedAt = states.value[video.id]?.updatedAt ?: 0L)
 
     private fun upsert(video: Video, positionMs: Long, durationMs: Long, finished: Boolean, updatedAt: Long = System.currentTimeMillis()) {
-        val key = key(video.id)
         val entity = ProgressEntity(
-            videoId = key,
+            videoId = video.id,
             videoJson = video.toJson(),
             positionMs = positionMs,
             durationMs = durationMs,
             finished = finished,
             updatedAt = updatedAt,
         )
-        // Rows saved per language before 1.12 give way to the one shared row.
-        val older = rowIds[key].orEmpty().filter { it != key }
-        scope.launch {
-            older.forEach { dao.delete(it) }
-            dao.upsert(entity)
-        }
+        scope.launch { dao.upsert(entity) }
     }
 
     /** Forgets the position: the video leaves Continue Watching and History. */
     fun remove(videoId: String) {
-        val key = key(videoId)
-        val ids = (rowIds[key].orEmpty() + key + videoId).distinct()
-        scope.launch { ids.forEach { dao.delete(it) } }
+        scope.launch { dao.delete(videoId) }
     }
 
     fun clearHistory() {
         scope.launch { dao.clear() }
     }
 
-    companion object {
-        /** The id progress is saved under: a Bible chapter without its language ("bible:1:1"), any other video its own id. */
-        fun key(videoId: String): String =
-            if (videoId.startsWith(Video.BIBLE_PREFIX)) {
-                val parts = videoId.removePrefix(Video.BIBLE_PREFIX).split(':')
-                if (parts.size == 3) Video.BIBLE_PREFIX + parts[1] + ":" + parts[2] else videoId
-            } else videoId
-    }
+    /** "bible:1:1": a chapter without its language, as 1.12.0 saved them (chapter ids are "bible:<language>:1:1"). */
+    private fun isSharedBibleKey(videoId: String): Boolean =
+        videoId.startsWith(Video.BIBLE_PREFIX) && videoId.removePrefix(Video.BIBLE_PREFIX).split(':').size == 2
 }
 
 class FavoritesRepository(private val dao: FavoriteDao, private val scope: CoroutineScope) {

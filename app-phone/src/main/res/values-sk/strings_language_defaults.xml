@@ -10,11 +10,4 @@
     <string name="tip_subtitles_off_body">Titulky často vypínate. Vypnúť ich pri všetkých videách? Kedykoľvek to môžete zmeniť v Nastaveniach.</string>
     <string name="tip_make_default">Nastaviť ako predvolené</string>
     <string name="tip_not_now">Teraz nie</string>
-    <string name="bible_other_language_remove">Odstrániť</string>
-    <plurals name="bible_other_language_downloads">
-        <item quantity="one">%1$d kapitola stiahnutá v jazyku %2$s</item>
-        <item quantity="few">%1$d kapitoly stiahnuté v jazyku %2$s</item>
-        <item quantity="many">%1$d kapitoly stiahnutej v jazyku %2$s</item>
-        <item quantity="other">%1$d kapitol stiahnutých v jazyku %2$s</item>
-    </plurals>
 </resources>

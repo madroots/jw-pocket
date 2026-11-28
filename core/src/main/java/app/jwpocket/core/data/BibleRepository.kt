@@ -195,24 +195,19 @@ class BibleRepository(private val api: MediatorApi, filesDir: File) {
 object BibleProgress {
 
     /**
-     * The chapter to continue with in [chapters] (a book, or the whole Bible)
-     * and where in it: the one listened to last if it isn't finished; after a
-     * finished one, the next chapter not heard yet. Null when every chapter is heard.
-     * Progress counts in every language: a chapter last heard in another
-     * language resumes at the start of the verse at the same share of the way.
+     * The chapter to continue with in [chapters] (a book, or the whole Bible,
+     * in one language) and where in it: the one listened to last if it isn't
+     * finished; after a finished one, the next chapter not heard yet. Null when
+     * every chapter is heard. Each language keeps its own progress.
      */
     fun next(states: Map<String, WatchState>, chapters: List<BibleChapter>): Pair<BibleChapter, Long>? {
         fun heard(c: BibleChapter) = states[c.id]?.finished == true
-        fun at(c: BibleChapter): Pair<BibleChapter, Long> {
-            val state = states[c.id] ?: return c to 0L
-            val position = state.positionFor(c.video)
-            return c to if (state.video.id == c.id || position == 0L) position else c.startOf(c.verseAt(position)) ?: position
-        }
+        fun at(c: BibleChapter) = c to (states[c.id]?.takeIf { it.canResume }?.positionMs ?: 0L)
         if (chapters.isEmpty() || chapters.all(::heard)) return null
-        val index = chapters.withIndex().associate { (i, c) -> ProgressRepository.key(c.id) to i }
-        val last = states.values.filter { ProgressRepository.key(it.video.id) in index }.maxByOrNull { it.updatedAt }
+        val index = chapters.withIndex().associate { (i, c) -> c.id to i }
+        val last = states.values.filter { it.video.id in index }.maxByOrNull { it.updatedAt }
             ?: return at(chapters.first())
-        val i = index.getValue(ProgressRepository.key(last.video.id))
+        val i = index.getValue(last.video.id)
         if (!last.finished) return at(chapters[i])
         val after = chapters.drop(i + 1).firstOrNull { !heard(it) } ?: chapters.first { !heard(it) }
         return at(after)

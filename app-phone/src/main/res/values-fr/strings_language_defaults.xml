@@ -10,10 +10,4 @@
     <string name="tip_subtitles_off_body">Vous désactivez souvent les sous-titres. Les désactiver pour toutes les vidéos ? Modifiable à tout moment dans Paramètres.</string>
     <string name="tip_make_default">Par défaut</string>
     <string name="tip_not_now">Plus tard</string>
-    <string name="bible_other_language_remove">Supprimer</string>
-    <plurals name="bible_other_language_downloads">
-        <item quantity="one">%1$d chapitre téléchargé en %2$s</item>
-        <item quantity="many">%1$d chapitres téléchargés en %2$s</item>
-        <item quantity="other">%1$d chapitres téléchargés en %2$s</item>
-    </plurals>
 </resources>

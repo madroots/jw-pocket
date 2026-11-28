@@ -10,10 +10,4 @@
     <string name="tip_subtitles_off_body">Disattivi spesso i sottotitoli. Disattivarli in tutti i video? Puoi cambiarlo quando vuoi in Impostazioni.</string>
     <string name="tip_make_default">Imposta predefinito</string>
     <string name="tip_not_now">Non ora</string>
-    <string name="bible_other_language_remove">Rimuovi</string>
-    <plurals name="bible_other_language_downloads">
-        <item quantity="one">%1$d capitolo scaricato in %2$s</item>
-        <item quantity="many">%1$d capitoli scaricati in %2$s</item>
-        <item quantity="other">%1$d capitoli scaricati in %2$s</item>
-    </plurals>
 </resources>

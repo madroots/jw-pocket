@@ -212,7 +212,7 @@ class PlaybackService : MediaLibraryService() {
             val folder = single?.let { tree.queue(it.mediaId) }
             if (folder != null) {
                 val (requests, index) = folder
-                val position = if (startPositionMs == C.TIME_UNSET) graph.core.progress.resumePositionMs(requests[index].video) else startPositionMs
+                val position = if (startPositionMs == C.TIME_UNSET) graph.core.progress.resumePositionMs(requests[index].video.id) else startPositionMs
                 MediaItemsWithStartPosition(resolveAll(requests.map { it.toMediaItem() }), index, position)
             } else {
                 MediaItemsWithStartPosition(resolveAll(mediaItems), startIndex, startPositionMs)
@@ -225,7 +225,7 @@ class PlaybackService : MediaLibraryService() {
             controller: MediaSession.ControllerInfo,
         ): ListenableFuture<MediaItemsWithStartPosition> = scope.future {
             val (requests, index) = tree.resumeQueue() ?: throw UnsupportedOperationException("Nothing to resume")
-            val position = graph.core.progress.resumePositionMs(requests[index].video)
+            val position = graph.core.progress.resumePositionMs(requests[index].video.id)
             MediaItemsWithStartPosition(resolveAll(requests.map { it.toMediaItem() }), index, position)
         }
     }

@@ -14,7 +14,6 @@ import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
 import app.jwpocket.core.CoreGraph
 import app.jwpocket.core.data.BibleProgress
-import app.jwpocket.core.data.ProgressRepository
 import app.jwpocket.core.data.TipKind
 import app.jwpocket.core.model.SeriesOrder
 import app.jwpocket.core.model.Video
@@ -32,9 +31,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.drop
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withTimeoutOrNull
 
 /** Everything the screens need to draw the player. */
@@ -100,43 +96,6 @@ class PlayerConnection internal constructor(
 
     private fun sessionClosed(closed: Boolean) {
         if (prefs.getBoolean(KEY_CLOSED, false) != closed) prefs.edit().putBoolean(KEY_CLOSED, closed).apply()
-    }
-
-    init {
-        // The Bible language changed while a chapter plays: it goes on in the new language from the same verse.
-        scope.launch {
-            core.settings.settings.map { it.bibleLanguageCode }.distinctUntilChanged().drop(1).collect { switchBibleLanguage(it) }
-        }
-    }
-
-    /** Every Bible chapter queued becomes [language]'s; the one playing continues at the start of the same verse. */
-    private suspend fun switchBibleLanguage(language: String) {
-        val c = _controller.value ?: return
-        val current = c.currentMediaItem?.let { PlayRequest.from(it) } ?: return
-        if (!current.video.isBible || current.language == language) return
-        val chapters = core.bible.books(language)?.flatMap { it.chapters }?.associateBy { ProgressRepository.key(it.id) } ?: return
-        if (c.currentMediaItem?.mediaId != current.video.id) return // moved on while the chapters loaded
-        val verse = core.bible.chapter(current.video.id)?.verseAt(c.currentPosition)
-        val position = verse?.let { chapters[ProgressRepository.key(current.video.id)]?.startOf(it) } ?: 0L
-        val index = c.currentMediaItemIndex
-        val wasPlaying = c.playWhenReady
-        val items = (0 until c.mediaItemCount).map { i ->
-            val item = c.getMediaItemAt(i)
-            val request = PlayRequest.from(item)?.takeIf { it.video.isBible }
-            val chapter = request?.let { chapters[ProgressRepository.key(it.video.id)] }
-            if (request != null && chapter != null) request.copy(video = chapter.video, language = language).toMediaItem() else item
-        }
-        c.setMediaItems(items, index, position)
-        c.prepare()
-        if (wasPlaying) c.play()
-    }
-
-    /** Where [video] resumes; a Bible chapter last heard in another language starts at the verse at the same share of the way. */
-    private fun resumeAt(video: Video): Long {
-        val state = core.progress.states.value[video.id] ?: return 0L
-        val at = state.positionFor(video)
-        if (state.video.id == video.id || at == 0L) return at
-        return core.bible.chapter(video.id)?.let { c -> c.startOf(c.verseAt(at)) } ?: at
     }
 
     private val _state = MutableStateFlow(PlaybackState())
@@ -230,7 +189,7 @@ class PlayerConnection internal constructor(
             val settings = core.settings.current
             val queue = if (settings.autoplayNext) upNext(video, row, row) else listOf(video)
             val items = queue.map { request(it, if (it.id == video.id) quality else null).toMediaItem() }
-            val position = if (fromStart) 0L else resumeAt(video)
+            val position = if (fromStart) 0L else core.progress.resumePositionMs(video.id)
             c.setMediaItems(items, 0, position)
             c.prepare()
             c.play()

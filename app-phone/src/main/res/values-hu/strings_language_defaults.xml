@@ -10,9 +10,4 @@
     <string name="tip_subtitles_off_body">Gyakran kikapcsolod a feliratot. Minden videónál legyen kikapcsolva? A Beállításokban bármikor módosíthatod.</string>
     <string name="tip_make_default">Legyen alapértelmezett</string>
     <string name="tip_not_now">Most nem</string>
-    <string name="bible_other_language_remove">Törlés</string>
-    <plurals name="bible_other_language_downloads">
-        <item quantity="one">%1$d fejezet letöltve (%2$s)</item>
-        <item quantity="other">%1$d fejezet letöltve (%2$s)</item>
-    </plurals>
 </resources>

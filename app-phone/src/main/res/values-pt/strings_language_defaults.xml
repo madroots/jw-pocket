@@ -10,10 +10,4 @@
     <string name="tip_subtitles_off_body">Você costuma desligar as legendas. Desligar em todos os vídeos? Dá para mudar quando quiser em Configurações.</string>
     <string name="tip_make_default">Tornar padrão</string>
     <string name="tip_not_now">Agora não</string>
-    <string name="bible_other_language_remove">Remover</string>
-    <plurals name="bible_other_language_downloads">
-        <item quantity="one">%1$d capítulo baixado em %2$s</item>
-        <item quantity="many">%1$d capítulos baixados em %2$s</item>
-        <item quantity="other">%1$d capítulos baixados em %2$s</item>
-    </plurals>
 </resources>

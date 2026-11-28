@@ -180,22 +180,17 @@ class CoreLogicTest {
     }
 
     @Test
-    fun bibleProgressCarriesOverToAnotherLanguage() {
-        fun chapter(lang: String, n: Int, durationS: Double, verses: List<Long>) = app.jwpocket.core.data.BibleChapter(lang, 1, n, "Genesis",
-            Video(naturalKey = "${Video.BIBLE_PREFIX}$lang:1:$n", title = "Genesis $n", duration = durationS),
-            verses.mapIndexed { i, ms -> app.jwpocket.core.data.VerseMark(i + 1, ms) })
-        val slovak = (1..3).map { chapter("V", it, 100.0, listOf(0, 25_000, 50_000, 75_000)) }
-        val english = (1..3).map { chapter("E", it, 200.0, listOf(0, 40_000, 90_000, 150_000)) }
-        // Slovak: chapter 1 heard, chapter 2 half way (verse 3 starts at 50 s).
-        val saved = mapOf(
-            app.jwpocket.core.data.ProgressRepository.key(slovak[0].id) to app.jwpocket.core.data.WatchState(slovak[0].video, 0, 100_000, true, 1),
-            app.jwpocket.core.data.ProgressRepository.key(slovak[1].id) to app.jwpocket.core.data.WatchState(slovak[1].video, 50_000, 100_000, false, 2),
+    fun eachBibleLanguageKeepsItsOwnProgress() {
+        fun chapter(lang: String, n: Int) = app.jwpocket.core.data.BibleChapter(lang, 1, n, "Genesis",
+            Video(naturalKey = "${Video.BIBLE_PREFIX}$lang:1:$n", title = "Genesis $n"), emptyList())
+        val slovak = (1..3).map { chapter("V", it) }
+        val english = (1..3).map { chapter("E", it) }
+        val states = mapOf(
+            slovak[0].id to app.jwpocket.core.data.WatchState(slovak[0].video, 0, 100_000, true, 1),
+            slovak[1].id to app.jwpocket.core.data.WatchState(slovak[1].video, 50_000, 100_000, false, 2),
         )
-        val states = app.jwpocket.core.data.ProgressStates(saved)
-        assertTrue(states[english[0].id]?.finished == true)
-        // Half of 200 s is 100 s, inside verse 3 of the English reading (from 90 s).
-        assertEquals(english[1] to 90_000L, app.jwpocket.core.data.BibleProgress.next(states, english))
-        assertEquals("bible:1:2", app.jwpocket.core.data.ProgressRepository.key("bible:E:1:2"))
-        assertEquals("pub-x_E_1_VIDEO", app.jwpocket.core.data.ProgressRepository.key("pub-x_E_1_VIDEO"))
+        assertEquals(slovak[1] to 50_000L, app.jwpocket.core.data.BibleProgress.next(states, slovak))
+        // Nothing heard in English yet: it starts at Genesis 1.
+        assertEquals(english[0] to 0L, app.jwpocket.core.data.BibleProgress.next(states, english))
     }
 }

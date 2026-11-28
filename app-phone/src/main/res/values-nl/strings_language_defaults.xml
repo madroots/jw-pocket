@@ -10,9 +10,4 @@
     <string name="tip_subtitles_off_body">Je zet ondertiteling vaak uit. Voor alle video’s uitzetten? Je kunt het altijd wijzigen bij Instellingen.</string>
     <string name="tip_make_default">Als standaard</string>
     <string name="tip_not_now">Niet nu</string>
-    <string name="bible_other_language_remove">Verwijderen</string>
-    <plurals name="bible_other_language_downloads">
-        <item quantity="one">%1$d hoofdstuk gedownload in het %2$s</item>
-        <item quantity="other">%1$d hoofdstukken gedownload in het %2$s</item>
-    </plurals>
 </resources>

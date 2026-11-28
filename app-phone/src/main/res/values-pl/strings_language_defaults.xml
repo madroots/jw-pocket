@@ -10,11 +10,4 @@
     <string name="tip_subtitles_off_body">Często wyłączasz napisy. Wyłączyć je we wszystkich filmach? Zawsze możesz to zmienić w Ustawieniach.</string>
     <string name="tip_make_default">Ustaw domyślnie</string>
     <string name="tip_not_now">Nie teraz</string>
-    <string name="bible_other_language_remove">Usuń</string>
-    <plurals name="bible_other_language_downloads">
-        <item quantity="one">%1$d rozdział pobrany w języku %2$s</item>
-        <item quantity="few">%1$d rozdziały pobrane w języku %2$s</item>
-        <item quantity="many">%1$d rozdziałów pobranych w języku %2$s</item>
-        <item quantity="other">%1$d rozdziału pobranego w języku %2$s</item>
-    </plurals>
 </resources>
