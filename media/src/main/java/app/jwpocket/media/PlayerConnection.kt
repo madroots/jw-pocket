@@ -69,8 +69,6 @@ data class PlaybackState(
     val spokenTitle: String? = null,
     /** A language picked for this video that couldn't be loaded (the library version plays). */
     val spokenMissing: String? = null,
-    /** The language heard before the last pick on this video: one tap flips back to it. */
-    val swapLanguage: String? = null,
 ) {
     val active: Boolean get() = video != null
     val progress: Float get() = if (durationMs > 0) (positionMs.toFloat() / durationMs).coerceIn(0f, 1f) else 0f
@@ -285,9 +283,6 @@ class PlayerConnection internal constructor(
         reload { it.copy(subtitleChoice = core.settings.current.subtitleLanguage) }
     }
 
-    /** The language heard before the last pick, for the video it was picked on. */
-    private var swap: Pair<String, String>? = null
-
     /**
      * Plays the current video in another of its languages ([language] null or
      * the library language = back to it), from the same moment. Only this
@@ -297,10 +292,27 @@ class PlayerConnection internal constructor(
         val current = c.currentMediaItem?.let { PlayRequest.from(it) } ?: return@command
         val wanted = language?.takeIf { it != current.language }
         if (wanted == current.spoken) return@command
-        if (wanted != null) core.settings.addRecentLanguage(wanted)
-        swap = current.video.id to (current.spoken ?: current.language)
+        if (wanted != null) core.settings.recordLanguageUse(wanted)
         val id = current.video.id
         reload { if (it.video.id == id) it.copy(spoken = wanted) else it }
+    }
+
+    /** A book introduction playing before a chapter: (intro id, chapter id, where the chapter was). */
+    private var resumeAfterIntro: Triple<String, String, Long>? = null
+
+    /**
+     * Plays [intro] (a Bible book's introduction video, published in [language])
+     * before the chapter now playing; when it ends, the chapter goes on from
+     * where it was. A language other than the video language is heard as that
+     * video's language, like a pick in the player.
+     */
+    fun playIntroduction(intro: Video, language: String) = command { c ->
+        val chapterId = c.currentMediaItem?.mediaId ?: return@command
+        val index = c.currentMediaItemIndex
+        resumeAfterIntro = Triple(intro.id, chapterId, c.currentPosition)
+        c.addMediaItem(index, request(intro, null).copy(spoken = language.takeIf { it != core.settings.current.languageCode }).toMediaItem())
+        c.seekTo(index, 0)
+        c.play()
     }
 
     /** Switches quality of the current video, keeping the position; picking one ends Listen. */
@@ -335,7 +347,7 @@ class PlayerConnection internal constructor(
         val s = core.settings.current
         // A copy loaded in this session may carry fields an older saved copy lacks.
         val fresh = core.library.findLoaded(video.id) ?: video
-        return PlayRequest(fresh, s.languageCode, quality ?: s.streamQuality, s.subtitleLanguage, listening() && !fresh.isAudio)
+        return PlayRequest(fresh, if (fresh.isBible) s.bibleLanguageCode else s.languageCode, quality ?: s.streamQuality, s.subtitleLanguage, listening() && !fresh.isAudio)
     }
 
     /** Rebuilds every queued item with [change] (e.g. a new subtitle language). */
@@ -369,6 +381,14 @@ class PlayerConnection internal constructor(
                 _controller.value?.pause()
                 _state.update { it.copy(sleepAt = null) }
             }
+            // Back from a book introduction: the chapter goes on where it was.
+            resumeAfterIntro?.let { (introId, chapterId, position) ->
+                when (mediaItem?.mediaId) {
+                    introId -> Unit
+                    chapterId -> { _controller.value?.seekTo(position); resumeAfterIntro = null }
+                    else -> resumeAfterIntro = null
+                }
+            }
         }
 
         override fun onCues(cueGroup: CueGroup) {
@@ -386,6 +406,12 @@ class PlayerConnection internal constructor(
     private fun sync(player: Player) {
         val item = player.currentMediaItem
         val extras = player.mediaMetadata.extras ?: item?.mediaMetadata?.extras
+        // The language asked for comes from the item itself, which changes at once; the
+        // service's extras can lag behind a switch (or never arrive when the rest of the
+        // metadata is unchanged), so they only say whether the asked language failed.
+        val requested = item?.let { PlayRequest.from(it)?.spoken }
+        val spokenMissing = extras?.getString(PlayRequest.KEY_SPOKEN_MISSING)?.takeIf { it == requested }
+        val spoken = requested?.takeIf { spokenMissing == null }
         val queue = (0 until player.mediaItemCount).mapNotNull { PlayRequest.from(player.getMediaItemAt(it))?.video }
         val video = item?.let { PlayRequest.from(it)?.video }
         _state.update { old ->
@@ -408,10 +434,9 @@ class PlayerConnection internal constructor(
                 subtitleMissing = extras?.getBoolean(PlayRequest.KEY_SUBTITLE_MISSING) == true,
                 fromDownload = extras?.getBoolean(PlayRequest.KEY_FROM_DOWNLOAD) == true,
                 listening = item?.let { PlayRequest.from(it)?.listening } == true && extras?.getBoolean(PlayRequest.KEY_FROM_DOWNLOAD) != true,
-                spokenLanguage = extras?.getString(PlayRequest.KEY_SPOKEN_LANGUAGE),
-                spokenTitle = extras?.getString(PlayRequest.KEY_SPOKEN_TITLE),
-                spokenMissing = extras?.getString(PlayRequest.KEY_SPOKEN_MISSING),
-                swapLanguage = swap?.takeIf { it.first == video?.id }?.second,
+                spokenLanguage = spoken,
+                spokenTitle = extras?.getString(PlayRequest.KEY_SPOKEN_TITLE)?.takeIf { spoken != null && extras.getString(PlayRequest.KEY_SPOKEN_LANGUAGE) == spoken },
+                spokenMissing = spokenMissing,
                 speed = player.playbackParameters.speed,
                 error = if (player.playerError == null) null else old.error,
                 sleepAt = if (old.sleepAt == END_OF_VIDEO && player.playbackState == Player.STATE_ENDED) null else old.sleepAt,

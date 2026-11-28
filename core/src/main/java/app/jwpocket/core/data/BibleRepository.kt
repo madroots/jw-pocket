@@ -89,6 +89,17 @@ class BibleRepository(private val api: MediatorApi, filesDir: File) {
     /** Every chapter in reading order, Genesis 1 to Revelation 22. */
     fun allChapters(language: String): List<BibleChapter> = books[language].orEmpty().flatMap { it.chapters }
 
+    /**
+     * jw.org's introduction video for [book] (1 = Genesis … 66 = Revelation) in
+     * [language], from the "Books of the Bible" row (pub-nwtsv_10 = Genesis,
+     * _20 = Exodus …); saved copy first. Null when that language hasn't one.
+     */
+    suspend fun introduction(language: String, book: Int): Video? {
+        val key = "pub-nwtsv_${book * 10}_VIDEO"
+        val row = api.category(language, BOOK_INTRODUCTIONS, fresh = false) ?: api.category(language, BOOK_INTRODUCTIONS, fresh = true)
+        return row?.media?.firstOrNull { it.languageAgnosticNaturalKey == key }
+    }
+
     private suspend fun load(language: String): List<BibleBook>? {
         val age = api.bibleAudioAge(language)
         val response = (if (age == null || age > REFRESH_MS) api.bibleAudio(language, fresh = true) else null)
@@ -151,6 +162,8 @@ class BibleRepository(private val api: MediatorApi, filesDir: File) {
     companion object {
         /** primaryCategory of Bible chapters. */
         const val CATEGORY = "bible"
+        /** The row of book introduction videos. */
+        private const val BOOK_INTRODUCTIONS = "BibleBooks"
         /** The audio list is fetched again after a month (links can move). */
         private const val REFRESH_MS = 30L * 24 * 60 * 60_000
 

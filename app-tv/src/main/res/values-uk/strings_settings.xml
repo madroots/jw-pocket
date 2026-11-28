@@ -16,7 +16,6 @@
     <string name="settings_version">Версія %1$s</string>
     <string name="settings_disclaimer">JW Pocket — особистий некомерційний проєкт, не пов\'язаний зі Свідками Єгови й не схвалений ними. Відео належать їхнім власникам і взяті із загальнодоступного відеосервісу jw.org.</string>
     <string name="settings_subtitles_note">Показуються в кожному відео, яке має субтитри цією мовою.</string>
-    <string name="settings_recently_used">Нещодавні</string>
     <string name="cascade_app_title">Відео теж мовою «%1$s»?</string>
     <string name="cascade_app_text">Ви також можете дивитися відео (і субтитри до них) мовою «%1$s». Кожну мову можна буде змінити тут пізніше.</string>
     <string name="cascade_app_yes">Відео й субтитри</string>

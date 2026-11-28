@@ -17,7 +17,6 @@
     <string name="settings_version">Versión %1$s</string>
     <string name="settings_disclaimer">JW Pocket es un proyecto personal y sin fines comerciales, no afiliado a los testigos de Jehová ni respaldado por ellos. Los videos pertenecen a sus propietarios y provienen del servicio público de videos de jw.org.</string>
     <string name="settings_subtitles_note">Se muestran en todos los videos que los incluyan.</string>
-    <string name="settings_recently_used">Usados recientemente</string>
     <string name="cascade_app_title">¿También los videos en %1$s?</string>
     <string name="cascade_app_text">También puedes ver los videos (y sus subtítulos) en %1$s. Podrás cambiar cada idioma aquí más tarde.</string>
     <string name="cascade_app_yes">Videos y subtítulos</string>

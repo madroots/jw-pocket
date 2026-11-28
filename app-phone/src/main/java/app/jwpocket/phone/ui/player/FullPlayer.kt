@@ -33,7 +33,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.PlaylistPlay
-import androidx.compose.material.icons.rounded.SwapHoriz
 import androidx.compose.material.icons.rounded.Translate
 import androidx.compose.material.icons.rounded.Bedtime
 import androidx.compose.material.icons.rounded.CheckCircle
@@ -250,8 +249,8 @@ fun FullPlayer(
     when (sheet) {
         Sheet.Language -> LanguageSheet(
             libraryLanguageName = pocket.core.languages.name(settings.languageCode),
-            others = pocket.core.subtitles.otherLanguages(video, settings.languageCode, languages, settings.subtitleShortcuts),
-            pinned = settings.recentSubtitleLanguages,
+            others = pocket.core.subtitles.otherLanguages(video, settings.languageCode, languages, settings.pinnedLanguages),
+            pinned = settings.mostUsedLanguages,
             selected = state.spokenLanguage,
             onPick = { connection.setSpokenLanguage(it); sheet = null },
             onDismiss = { sheet = null },
@@ -261,8 +260,8 @@ fun FullPlayer(
             val heard = state.spokenLanguage ?: settings.languageCode
             SubtitleSheet(
                 ownLanguageName = if (state.spokenLanguage != null || video.subtitleUrl != null) pocket.core.languages.name(heard) else null,
-                others = pocket.core.subtitles.otherLanguages(video, heard, languages, settings.subtitleShortcuts),
-                pinned = settings.recentSubtitleLanguages,
+                others = pocket.core.subtitles.otherLanguages(video, heard, languages, settings.pinnedLanguages),
+                pinned = settings.mostUsedLanguages,
                 selected = settings.subtitleLanguage,
                 showingLanguage = state.subtitleLanguage,
                 onPick = { connection.setSubtitles(it); sheet = null },
@@ -355,16 +354,10 @@ internal fun PlayerActions(state: PlaybackState, onSheet: (Sheet) -> Unit, modif
     val audio = video.isAudio
 
     Row(modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        // The language heard, for this video only; after a pick, one tap flips back (handy for comparing).
+        // The language heard, for this video only.
         if (!video.isBible && video.availableLanguages.orEmpty().any { it != settings.languageCode } && pocket.core.subtitles.supportsOtherLanguages(video)) {
             Pill(Icons.Rounded.Translate, pocket.core.languages.name(state.spokenLanguage ?: settings.languageCode), highlighted = state.spokenLanguage != null) {
                 onSheet(Sheet.Language)
-            }
-            state.swapLanguage?.let { other ->
-                val name = pocket.core.languages.name(other)
-                Pill(Icons.Rounded.SwapHoriz, name, description = stringResource(R.string.player_language_switch, name)) {
-                    connection.setSpokenLanguage(other)
-                }
             }
         }
         if (!audio) {
@@ -453,12 +446,12 @@ private fun sleepLabel(sleepAt: Long?): String = when {
 }
 
 @Composable
-private fun Pill(icon: ImageVector, label: String, highlighted: Boolean = false, description: String? = null, onClick: () -> Unit) {
+private fun Pill(icon: ImageVector, label: String, highlighted: Boolean = false, onClick: () -> Unit) {
     Row(
         Modifier
             .clip(RoundedCornerShape(50))
             .background(if (highlighted) Pocket.AccentSoft else Pocket.SurfaceHigh)
-            .clickable(onClickLabel = description, onClick = onClick)
+            .clickable(onClick = onClick)
             .padding(horizontal = 14.dp, vertical = 9.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {

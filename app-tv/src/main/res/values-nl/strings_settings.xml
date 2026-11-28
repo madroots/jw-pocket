@@ -16,7 +16,6 @@
     <string name="settings_version">Versie %1$s</string>
     <string name="settings_disclaimer">JW Pocket is een persoonlijk, niet-commercieel project, niet verbonden aan of goedgekeurd door Jehovah\'s Getuigen. Video\'s zijn eigendom van hun eigenaars en komen van de openbare videodienst van jw.org.</string>
     <string name="settings_subtitles_note">Wordt getoond bij elke video met ondertiteling in die taal.</string>
-    <string name="settings_recently_used">Recent gebruikt</string>
 
     <string name="cascade_app_title">Video\'s ook in %1$s?</string>
     <string name="cascade_app_text">Je kunt de video\'s (en hun ondertiteling) ook in %1$s bekijken. Elke taal kun je hier later nog wijzigen.</string>

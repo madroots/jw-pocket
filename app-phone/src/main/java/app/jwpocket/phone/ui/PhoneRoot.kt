@@ -21,6 +21,9 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.automirrored.rounded.MenuBook
@@ -85,6 +88,7 @@ import app.jwpocket.phone.ui.player.FullPlayer
 import app.jwpocket.phone.ui.player.MiniPlayer
 import app.jwpocket.phone.ui.screens.AlbumScreen
 import app.jwpocket.phone.ui.screens.BibleBookScreen
+import app.jwpocket.phone.ui.screens.BibleLanguageScreen
 import app.jwpocket.phone.ui.screens.BibleScreen
 import app.jwpocket.phone.ui.screens.BrowseScreen
 import app.jwpocket.phone.ui.screens.CategoryScreen
@@ -260,7 +264,13 @@ fun PhoneRoot(ui: PhoneUiState, onPictureInPicture: () -> Unit, onToggleFullscre
             AlertDialog(
                 onDismissRequest = pocket.core.updates::dismiss,
                 title = { Text(stringResource(R.string.update_available_title, update.versionName)) },
-                text = { Text(update.notes ?: stringResource(R.string.update_available_message, formatBytes(update.sizeBytes))) },
+                text = {
+                    // Every version since the installed one: can be long, so it scrolls.
+                    Text(
+                        update.notes ?: stringResource(R.string.update_available_message, formatBytes(update.sizeBytes)),
+                        modifier = Modifier.heightIn(max = 360.dp).verticalScroll(rememberScrollState()),
+                    )
+                },
                 confirmButton = { TextButton(onClick = pocket.core.updates::install) { Text(stringResource(R.string.update_install), color = Pocket.Accent) } },
                 dismissButton = { TextButton(onClick = pocket.core.updates::dismiss) { Text(stringResource(R.string.update_later)) } },
                 containerColor = Pocket.SurfaceHigh,
@@ -290,11 +300,12 @@ private fun titleFor(route: String, args: android.os.Bundle?): String = when {
     route == "settings" -> stringResource(R.string.nav_settings)
     route == "language" -> stringResource(R.string.nav_library_language)
     route == "subtitles" -> stringResource(R.string.nav_subtitle_language)
+    route == "bible-language" -> stringResource(R.string.bible_language_title)
     route.startsWith("category/") -> categoryTitle(args?.getString("key").orEmpty())
     route.startsWith("section/") -> categoryTitle(args?.getString("cat").orEmpty(), args?.getString("sec"))
     route.startsWith("album/") -> categoryTitle(LibraryRepository.AUDIO, args?.getString("sec"))
     route.startsWith("bible/") -> LocalPocket.current.let { p ->
-        p.core.bible.loadedBooks(p.core.settings.current.languageCode)?.firstOrNull { it.number == args?.getInt("book") }?.name.orEmpty()
+        p.core.bible.loadedBooks(p.core.settings.current.bibleLanguageCode)?.firstOrNull { it.number == args?.getInt("book") }?.name.orEmpty()
     }
     else -> ""
 }
@@ -337,11 +348,13 @@ private fun PocketNavHost(nav: NavHostController, padding: androidx.compose.foun
                 padding,
                 onOpenLanguage = { nav.navigate("language") },
                 onOpenSubtitles = { nav.navigate("subtitles") },
+                onOpenBibleLanguage = { nav.navigate("bible-language") },
                 onOpenDownloads = { onTab(Tab.Library); nav.navigate("library?tab=${LibraryTab.Downloads.name}") { launchSingleTop = true } },
             )
         }
         composable("language") { LanguageScreen(padding) { nav.popBackStack() } }
         composable("subtitles") { SubtitleLanguageScreen(padding) { nav.popBackStack() } }
+        composable("bible-language") { BibleLanguageScreen(padding) { nav.popBackStack() } }
         composable("category/{key}") { e ->
             val key = e.arguments?.getString("key").orEmpty()
             CategoryScreen(key, padding) { section -> nav.navigate("section/$key/$section") }

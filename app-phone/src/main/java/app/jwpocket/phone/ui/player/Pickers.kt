@@ -145,7 +145,7 @@ fun SubtitleSheet(
                     lang.vernacular,
                     selected == lang.code,
                     detail = when {
-                        lang.code in pinned -> stringResource(R.string.player_subtitles_recently_used, lang.name)
+                        lang.code in pinned -> stringResource(R.string.player_subtitles_most_used, lang.name)
                         lang.vernacular != lang.name -> lang.name
                         else -> null
                     },
@@ -223,7 +223,7 @@ fun LanguageSheet(
                 lang.vernacular,
                 selected == lang.code,
                 detail = when {
-                    lang.code in pinned -> stringResource(R.string.player_subtitles_recently_used, lang.name)
+                    lang.code in pinned -> stringResource(R.string.player_subtitles_most_used, lang.name)
                     lang.vernacular != lang.name -> lang.name
                     else -> null
                 },

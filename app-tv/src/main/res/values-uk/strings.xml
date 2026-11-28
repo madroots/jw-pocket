@@ -86,7 +86,6 @@
     <string name="player_subtitles">Субтитри</string>
     <string name="player_speed">Швидкість</string>
     <string name="player_subtitles_same_as_video">Мовою відео</string>
-    <string name="player_subtitles_recent">Нещодавні</string>
     <string name="player_subtitles_remembered">Вибір збережеться для наступних відео.</string>
     <string name="player_subtitles_off">Вимк.</string>
     <string name="player_playback_speed">Швидкість відтворення</string>

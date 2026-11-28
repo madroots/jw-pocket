@@ -214,9 +214,9 @@ fun TvPlayer(onExit: () -> Unit) {
     when (panel) {
         PlayerPanel.Subtitles -> if (video != null) {
             val own = video.subtitleUrl?.let { PanelOption(null, tv.core.languages.name(settings.languageCode), stringResource(R.string.player_subtitles_same_as_video), settings.subtitleLanguage == null) }
-            val recentlyUsed = stringResource(R.string.player_subtitles_recent)
-            val others = tv.core.subtitles.otherLanguages(video, settings.languageCode, languages, settings.subtitleShortcuts)
-                .map { PanelOption(it.code, it.vernacular, if (it.code in settings.recentSubtitleLanguages) recentlyUsed else it.name.takeIf { n -> n != it.vernacular }, settings.subtitleLanguage == it.code) }
+            val mostUsed = stringResource(R.string.player_subtitles_most_used)
+            val others = tv.core.subtitles.otherLanguages(video, settings.languageCode, languages, settings.pinnedLanguages)
+                .map { PanelOption(it.code, it.vernacular, if (it.code in settings.mostUsedLanguages) mostUsed else it.name.takeIf { n -> n != it.vernacular }, settings.subtitleLanguage == it.code) }
             TvSidePanel(
                 stringResource(R.string.player_subtitles), stringResource(R.string.player_subtitles_remembered),
                 listOf(PanelOption(Settings.SUBTITLES_OFF, stringResource(R.string.player_subtitles_off), selected = settings.subtitleLanguage == Settings.SUBTITLES_OFF)) + listOfNotNull(own) + others,

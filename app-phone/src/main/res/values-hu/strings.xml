@@ -140,7 +140,6 @@
     <string name="player_search_languages">Nyelvek keresése</string>
     <string name="player_subtitles_off_choice">Ki</string>
     <string name="player_subtitles_same_as_video">A videó nyelvén</string>
-    <string name="player_subtitles_recently_used">Nemrég használt · %1$s</string>
     <string name="player_subtitles_no_others">Ehhez a videóhoz nincs más nyelvű felirat.</string>
     <string name="player_subtitles_no_match">Egy nyelv sem felel meg ennek: „%1$s”.</string>
     <string name="player_subtitles_none">Ehhez a videóhoz nincs felirat.</string>

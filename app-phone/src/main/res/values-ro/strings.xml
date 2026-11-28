@@ -144,7 +144,6 @@
     <string name="player_search_languages">Caută limbi</string>
     <string name="player_subtitles_off_choice">Dezactivate</string>
     <string name="player_subtitles_same_as_video">Limba videoclipului</string>
-    <string name="player_subtitles_recently_used">Folosită recent · %1$s</string>
     <string name="player_subtitles_no_others">Acest videoclip nu are subtitrări în alte limbi.</string>
     <string name="player_subtitles_no_match">Nicio limbă nu corespunde cu „%1$s”.</string>
     <string name="player_subtitles_none">Acest videoclip nu are subtitrări.</string>

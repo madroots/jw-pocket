@@ -152,14 +152,14 @@ fun TvSettings() {
             )
         }
         SettingsPanel.Subtitles -> {
-            val recent = stringResource(R.string.settings_recently_used)
+            val mostUsed = stringResource(R.string.settings_most_used)
             TvSidePanel(
                 stringResource(R.string.settings_subtitle_language), stringResource(R.string.settings_subtitles_note),
                 options = listOf(
                     PanelOption("__same", stringResource(R.string.player_subtitles_same_as_video), selected = settings.subtitleLanguage == null),
                     PanelOption(Settings.SUBTITLES_OFF, stringResource(R.string.settings_off), selected = settings.subtitleLanguage == Settings.SUBTITLES_OFF),
-                ) + tv.core.subtitles.subtitleLanguages(languages, settings.subtitleShortcuts).map {
-                    PanelOption(it.code, it.vernacular, if (it.code in settings.recentSubtitleLanguages) recent else null, it.code == settings.subtitleLanguage)
+                ) + tv.core.subtitles.subtitleLanguages(languages, settings.pinnedLanguages).map {
+                    PanelOption(it.code, it.vernacular, if (it.code in settings.mostUsedLanguages) mostUsed else null, it.code == settings.subtitleLanguage)
                 },
                 onPick = { o -> repo.setSubtitleLanguage(o.key.takeUnless { it == "__same" }); panel = null },
                 onDismiss = { panel = null },

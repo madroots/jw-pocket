@@ -199,7 +199,6 @@
     <string name="player_subtitles_off_choice">Off</string>
     <string name="player_subtitles_same_as_video">Same as the video</string>
     <!-- %1$s: language name, e.g. "Slovak". -->
-    <string name="player_subtitles_recently_used">Recently used · %1$s</string>
     <string name="player_subtitles_no_others">This video has no other subtitle languages.</string>
     <!-- %1$s: what the user typed. -->
     <string name="player_subtitles_no_match">No language matches \"%1$s\".</string>

@@ -4,5 +4,4 @@
     <string name="player_language_hint">Solo para este video, desde donde estás. Los demás videos siguen en %1$s.</string>
     <string name="player_language_library">Idioma de la biblioteca</string>
     <string name="player_language_missing">No se pudo cargar %1$s. Se reproduce en %2$s.</string>
-    <string name="player_language_switch">Cambiar a %1$s</string>
 </resources>

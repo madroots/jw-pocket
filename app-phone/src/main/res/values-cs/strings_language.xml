@@ -4,5 +4,4 @@
     <string name="player_language_hint">Jen pro toto video, od místa, kde právě jste. Ostatní videa zůstanou v jazyce %1$s.</string>
     <string name="player_language_library">Jazyk knihovny</string>
     <string name="player_language_missing">Jazyk %1$s se nepodařilo načíst. Hraje %2$s.</string>
-    <string name="player_language_switch">Přepnout na %1$s</string>
 </resources>

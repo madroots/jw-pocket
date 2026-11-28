@@ -190,7 +190,7 @@ private fun BibleDownloadsTab(padding: PaddingValues, onOpenBible: () -> Unit) {
         .sortedWith(compareBy({ it.first.first }, { it.first.second }))
     val row = chapters.filter { it.second.isDone }.map { it.second.video }
     val books = chapters.groupBy({ it.first.first }, { it.second })
-    val names = pocket.core.bible.loadedBooks(settings.languageCode)
+    val names = pocket.core.bible.loadedBooks(settings.bibleLanguageCode)
 
     LazyColumn(Modifier.fillMaxSize(), contentPadding = padding) {
         if (chapters.isEmpty()) item {

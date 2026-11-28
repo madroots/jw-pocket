@@ -4,5 +4,4 @@
     <string name="player_language_hint">Nur für dieses Video, ab der aktuellen Stelle. Andere Videos bleiben auf %1$s.</string>
     <string name="player_language_library">Sprache der Bibliothek</string>
     <string name="player_language_missing">%1$s konnte nicht geladen werden. Es läuft %2$s.</string>
-    <string name="player_language_switch">Zu %1$s wechseln</string>
 </resources>

@@ -16,7 +16,6 @@
     <string name="settings_version">Versiunea %1$s</string>
     <string name="settings_disclaimer">JW Pocket este un proiect personal, necomercial, care nu este afiliat cu Martorii lui Iehova și nici susținut de aceștia. Videoclipurile aparțin proprietarilor lor și provin din serviciul video public jw.org.</string>
     <string name="settings_subtitles_note">Apar la fiecare videoclip publicat în limba respectivă.</string>
-    <string name="settings_recently_used">Folosite recent</string>
     <string name="cascade_app_title">Și videoclipurile în limba %1$s?</string>
     <string name="cascade_app_text">Puteți viziona și videoclipurile (și subtitrările lor) în limba %1$s. Fiecare limbă poate fi schimbată și mai târziu, aici.</string>
     <string name="cascade_app_yes">Videoclipuri și subtitrări</string>

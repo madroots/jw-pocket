@@ -157,7 +157,6 @@
     <string name="player_search_languages">Hledat jazyky</string>
     <string name="player_subtitles_off_choice">Vypnuto</string>
     <string name="player_subtitles_same_as_video">Jako ve videu</string>
-    <string name="player_subtitles_recently_used">Nedávno použité · %1$s</string>
     <string name="player_subtitles_no_others">Toto video nemá titulky v jiných jazycích.</string>
     <string name="player_subtitles_no_match">Jazyk „%1$s“ nebyl nalezen.</string>
     <string name="player_subtitles_none">Toto video nemá titulky.</string>

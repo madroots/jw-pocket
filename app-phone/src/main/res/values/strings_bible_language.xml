@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Settings: language of the Bible tab and reading; it follows the video language unless another is picked. -->
+    <string name="bible_language_title">Bible language</string>
+    <string name="bible_language_same">Same as the videos</string>
+</resources>

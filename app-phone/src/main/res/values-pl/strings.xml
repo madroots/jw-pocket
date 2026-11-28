@@ -157,7 +157,6 @@
     <string name="player_search_languages">Szukaj języków</string>
     <string name="player_subtitles_off_choice">Wyłączone</string>
     <string name="player_subtitles_same_as_video">Jak w filmie</string>
-    <string name="player_subtitles_recently_used">Ostatnio używany · %1$s</string>
     <string name="player_subtitles_no_others">Ten film nie ma napisów w innych językach.</string>
     <string name="player_subtitles_no_match">Żaden język nie pasuje do „%1$s”.</string>
     <string name="player_subtitles_none">Brak napisów do tego filmu.</string>

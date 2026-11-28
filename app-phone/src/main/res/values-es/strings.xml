@@ -141,7 +141,6 @@
     <string name="player_search_languages">Buscar idiomas</string>
     <string name="player_subtitles_off_choice">Desactivados</string>
     <string name="player_subtitles_same_as_video">Igual que el video</string>
-    <string name="player_subtitles_recently_used">Usado recientemente · %1$s</string>
     <string name="player_subtitles_no_others">Este video no tiene subtítulos en otros idiomas.</string>
     <string name="player_subtitles_no_match">Ningún idioma coincide con \"%1$s\".</string>
     <string name="player_subtitles_none">Este video no tiene subtítulos.</string>

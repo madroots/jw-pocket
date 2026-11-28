@@ -148,7 +148,6 @@
     <string name="player_search_languages">Поиск языков</string>
     <string name="player_subtitles_off_choice">Выкл.</string>
     <string name="player_subtitles_same_as_video">На языке видео</string>
-    <string name="player_subtitles_recently_used">Недавние · %1$s</string>
     <string name="player_subtitles_no_others">У этого видео нет субтитров на других языках.</string>
     <string name="player_subtitles_no_match">Нет языков по запросу «%1$s».</string>
     <string name="player_subtitles_none">У этого видео нет субтитров.</string>

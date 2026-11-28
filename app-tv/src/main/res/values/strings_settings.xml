@@ -18,7 +18,6 @@
     <string name="settings_version">Version %1$s</string>
     <string name="settings_disclaimer">JW Pocket is a personal, non-commercial project, not affiliated with or endorsed by Jehovah\'s Witnesses. Videos belong to their owners and come from the public jw.org video service.</string>
     <string name="settings_subtitles_note">Shown over every video published in it.</string>
-    <string name="settings_recently_used">Recently used</string>
 
     <!-- Asking whether a language change should also apply to the settings below it. %1$s: language name. -->
     <string name="cascade_app_title">Videos in %1$s too?</string>

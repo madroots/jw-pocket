@@ -2,7 +2,9 @@ package app.jwpocket.core
 
 import app.jwpocket.core.util.Cue
 import app.jwpocket.core.util.WebVtt
+import app.jwpocket.core.data.LanguageUse
 import app.jwpocket.core.data.LibraryRepository
+import app.jwpocket.core.data.Settings
 import app.jwpocket.core.data.UpdateRepository
 import app.jwpocket.core.model.Language
 import app.jwpocket.core.model.MediaFile
@@ -166,5 +168,14 @@ class CoreLogicTest {
         val allHeard = chapters.associate { state(it, 100_000, true, 1) }
         assertNull(app.jwpocket.core.data.BibleProgress.next(allHeard, chapters))
         assertEquals(62_345L, app.jwpocket.core.data.BibleRepository.parseTime("00:01:02.345"))
+    }
+
+    @Test
+    fun theTwoMostUsedLanguagesArePinnedEnglishUntilTwoAreUsed() {
+        // Most recent first: S once, then F and D three times each (F more recent).
+        val uses = listOf(LanguageUse("S", 1), LanguageUse("F", 3), LanguageUse("D", 3))
+        assertEquals(listOf("F", "D"), Settings(languageUses = uses).pinnedLanguages)
+        assertEquals(listOf("S", "E"), Settings(languageUses = listOf(LanguageUse("S", 1))).pinnedLanguages)
+        assertEquals(listOf("S"), Settings(languageUses = listOf(LanguageUse("S", 1))).mostUsedLanguages)
     }
 }

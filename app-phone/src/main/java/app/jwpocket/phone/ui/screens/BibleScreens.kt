@@ -86,12 +86,12 @@ import app.jwpocket.phone.ui.LocalVideoActions
 import app.jwpocket.phone.ui.components.EmptyState
 import app.jwpocket.phone.ui.theme.Pocket
 
-/** The books of the Bible in the library language; null while loading. */
+/** The books of the Bible in the Bible language; null while loading. */
 @Composable
 private fun rememberBooks(): Pair<List<BibleBook>?, Boolean> {
     val pocket = LocalPocket.current
     val settings by pocket.core.settings.settings.collectAsState()
-    val language = settings.languageCode
+    val language = settings.bibleLanguageCode
     var books by remember(language) { mutableStateOf(pocket.core.bible.loadedBooks(language)) }
     var failed by remember(language) { mutableStateOf(false) }
     LaunchedEffect(language) {
@@ -375,7 +375,7 @@ fun BibleBookScreen(bookNumber: Int, contentPadding: PaddingValues) {
             text = { Text(stringResource(R.string.bible_download_body, missing.size, formatBytes(missing.sumOf { it.video.files?.firstOrNull()?.filesize ?: 0 }))) },
             confirmButton = {
                 TextButton(onClick = {
-                    val language = pocket.core.settings.current.languageCode
+                    val language = pocket.core.settings.current.bibleLanguageCode
                     missing.forEach { pocket.media.downloads.download(it.video, it.video.audioQuality ?: return@forEach, language) }
                     confirmDownload = false
                 }) { Text(stringResource(R.string.common_download), color = Pocket.Accent) }
@@ -449,7 +449,7 @@ private fun ChapterSheet(chapter: BibleChapter, state: WatchState?, download: Do
             else SheetAction(Icons.Rounded.Check, stringResource(R.string.bible_mark_heard)) { pocket.core.progress.markFinished(video); onDismiss() }
             when {
                 download == null -> SheetAction(Icons.Rounded.Download, stringResource(R.string.bible_download_chapter, formatBytes(video.files?.firstOrNull()?.filesize ?: 0))) {
-                    video.audioQuality?.let { pocket.media.downloads.download(video, it, pocket.core.settings.current.languageCode) }
+                    video.audioQuality?.let { pocket.media.downloads.download(video, it, pocket.core.settings.current.bibleLanguageCode) }
                     onDismiss()
                 }
                 download.isDone -> SheetAction(Icons.Rounded.Delete, stringResource(R.string.bible_remove_download)) { pocket.media.downloads.remove(video.id); onDismiss() }

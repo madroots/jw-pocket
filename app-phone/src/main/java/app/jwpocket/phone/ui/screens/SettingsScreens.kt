@@ -70,6 +70,7 @@ fun SettingsScreen(
     contentPadding: PaddingValues,
     onOpenLanguage: () -> Unit,
     onOpenSubtitles: () -> Unit,
+    onOpenBibleLanguage: () -> Unit,
     onOpenDownloads: () -> Unit,
 ) {
     val pocket = LocalPocket.current
@@ -104,6 +105,7 @@ fun SettingsScreen(
         item { Entry(stringResource(R.string.settings_app_language), appLanguageLabel(settings.appLanguage)) { pick = "app" } }
         item { Entry(stringResource(R.string.settings_video_language), settings.languageName, onClick = onOpenLanguage) }
         item { Entry(stringResource(R.string.settings_subtitle_language), subtitleLabel(settings, pocket.core.languages::name), onClick = onOpenSubtitles) }
+        item { Entry(stringResource(R.string.bible_language_title), bibleLanguageLabel(settings, pocket.core.languages::name), onClick = onOpenBibleLanguage) }
 
         item { Group(stringResource(R.string.settings_group_playback)) }
         item { Toggle(stringResource(R.string.settings_background_title), stringResource(R.string.settings_background_detail), settings.backgroundPlayback) { on -> repo.update { it.copy(backgroundPlayback = on) } } }
@@ -243,6 +245,10 @@ fun subtitleLabel(settings: Settings, name: (String) -> String): String = when (
     else -> name(s)
 }
 
+@Composable
+private fun bibleLanguageLabel(settings: Settings, name: (String) -> String): String =
+    settings.bibleLanguage?.let(name) ?: stringResource(R.string.bible_language_same)
+
 /** Whether the app may post notifications: allowed in system settings and, on Android 13+, permitted. */
 private fun canNotify(context: Context): Boolean = NotificationManagerCompat.from(context).areNotificationsEnabled()
 
@@ -346,12 +352,32 @@ fun LanguageScreen(contentPadding: PaddingValues, onDone: () -> Unit) {
     }
 }
 
+/** Bible language: the video language unless another is picked (Bible tab, reading and its text). */
+@Composable
+fun BibleLanguageScreen(contentPadding: PaddingValues, onDone: () -> Unit) {
+    val pocket = LocalPocket.current
+    val settings by pocket.core.settings.settings.collectAsState()
+    val languages by pocket.core.languages.languages.collectAsState()
+    val list = remember(languages) { languages.filterNot { it.isSignLanguage } }
+    LanguageList(
+        contentPadding, list, settings.bibleLanguage,
+        header = {
+            ChoiceRow(stringResource(R.string.bible_language_same), settings.bibleLanguage == null, settings.languageName) {
+                pocket.core.settings.setBibleLanguage(null); onDone()
+            }
+        },
+    ) { lang ->
+        pocket.core.settings.setBibleLanguage(lang.code)
+        onDone()
+    }
+}
+
 @Composable
 fun SubtitleLanguageScreen(contentPadding: PaddingValues, onDone: () -> Unit) {
     val pocket = LocalPocket.current
     val settings by pocket.core.settings.settings.collectAsState()
     val languages by pocket.core.languages.languages.collectAsState()
-    val list = remember(languages, settings.subtitleShortcuts) { pocket.core.subtitles.subtitleLanguages(languages, settings.subtitleShortcuts) }
+    val list = remember(languages, settings.pinnedLanguages) { pocket.core.subtitles.subtitleLanguages(languages, settings.pinnedLanguages) }
     LanguageList(
         contentPadding, list, settings.subtitleLanguage,
         header = {

@@ -116,7 +116,6 @@
     <string name="player_subtitles">Subtitles</string>
     <string name="player_speed">Speed</string>
     <string name="player_subtitles_same_as_video">Same as the video</string>
-    <string name="player_subtitles_recent">Recently used</string>
     <string name="player_subtitles_remembered">Remembered for the next videos.</string>
     <!-- Subtitles turned off -->
     <string name="player_subtitles_off">Off</string>

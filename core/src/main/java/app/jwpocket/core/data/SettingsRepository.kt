@@ -21,8 +21,10 @@ data class Settings(
     val wifiOnlyDownloads: Boolean = false,
     /** null = the video's own language, [SUBTITLES_OFF], or a language code. */
     val subtitleLanguage: String? = null,
-    /** Other languages picked before (subtitles, or a video's language in the player), most recent first. */
-    val recentSubtitleLanguages: List<String> = emptyList(),
+    /** Other languages picked (subtitles, or a video's language in the player) and how often, most recent first. */
+    val languageUses: List<LanguageUse> = emptyList(),
+    /** Language of the Bible tab and its reading; null = the video language. */
+    val bibleLanguage: String? = null,
     val subtitleScale: Float = 1f,
     /** Keep playing (as audio) when the app goes to the background or the screen locks. */
     val backgroundPlayback: Boolean = true,
@@ -37,14 +39,25 @@ data class Settings(
     /** When only the sound plays (background, the car), stream the smallest quality. */
     val listenSaver: ListenSaver = ListenSaver.MobileData,
 ) {
-    /** Languages pinned at the top of subtitle lists: used before, then English. */
-    val subtitleShortcuts: List<String> get() = (recentSubtitleLanguages + ENGLISH).distinct()
+    /** The two languages picked most (the more recent first on a tie), always at the top of language lists; English until two are used. */
+    val pinnedLanguages: List<String>
+        get() = (languageUses.withIndex().sortedWith(compareByDescending<IndexedValue<LanguageUse>> { it.value.count }.thenBy { it.index })
+            .map { it.value.code } + ENGLISH).distinct().take(2)
+
+    /** Of [pinnedLanguages], those really picked before (labelled "most used" in lists). */
+    val mostUsedLanguages: List<String> get() = pinnedLanguages.filter { code -> languageUses.any { it.code == code } }
+
+    /** The language the Bible is read in. */
+    val bibleLanguageCode: String get() = bibleLanguage ?: languageCode
 
     companion object {
         const val ENGLISH = "E"
         const val SUBTITLES_OFF = "off"
     }
 }
+
+/** A language picked [count] times. */
+data class LanguageUse(val code: String, val count: Int)
 
 /** When to stream the smallest quality while only the sound is heard. */
 enum class ListenSaver {
@@ -74,23 +87,30 @@ class SettingsRepository(context: Context) {
     }
 
     fun setLanguage(code: String, name: String) = update {
-        // A subtitle preference equal to the new library language means "original".
+        // A subtitle or Bible preference equal to the new library language means "same as videos".
         it.copy(languageCode = code, languageName = name,
-            subtitleLanguage = it.subtitleLanguage.takeUnless { s -> s == code })
+            subtitleLanguage = it.subtitleLanguage.takeUnless { s -> s == code },
+            bibleLanguage = it.bibleLanguage.takeUnless { b -> b == code })
     }
+
+    /** null or the video language = follow the video language. */
+    fun setBibleLanguage(code: String?) = update { it.copy(bibleLanguage = code.takeUnless { c -> c == it.languageCode }) }
 
     fun setSubtitleLanguage(choice: String?) = update {
         val normalized = choice.takeUnless { c -> c == it.languageCode }
-        val recent = if (normalized != null && normalized != Settings.SUBTITLES_OFF) withRecent(it, normalized) else it.recentSubtitleLanguages
-        it.copy(subtitleLanguage = normalized, recentSubtitleLanguages = recent)
+        val uses = if (normalized != null && normalized != Settings.SUBTITLES_OFF) withUse(it, normalized) else it.languageUses
+        it.copy(subtitleLanguage = normalized, languageUses = uses)
     }
 
-    /** A language picked for one video in the player: offered first next time, like subtitle picks. */
-    fun addRecentLanguage(code: String) = update {
-        if (code == it.languageCode) it else it.copy(recentSubtitleLanguages = withRecent(it, code))
+    /** A language picked for one video in the player: counts toward the languages pinned at the top, like subtitle picks. */
+    fun recordLanguageUse(code: String) = update {
+        if (code == it.languageCode) it else it.copy(languageUses = withUse(it, code))
     }
 
-    private fun withRecent(s: Settings, code: String) = (listOf(code) + s.recentSubtitleLanguages - code).distinct().take(4)
+    private fun withUse(s: Settings, code: String): List<LanguageUse> {
+        val count = s.languageUses.firstOrNull { it.code == code }?.count ?: 0
+        return (listOf(LanguageUse(code, count + 1)) + s.languageUses.filter { it.code != code }).take(MAX_USES)
+    }
 
     /** [tag] from AppLanguage, or null to follow the device. Screens must be recreated to show it. */
     fun setAppLanguage(tag: String?) = update { it.copy(appLanguage = tag) }
@@ -103,8 +123,8 @@ class SettingsRepository(context: Context) {
         downloadQuality = prefs.getString("download_quality", null),
         wifiOnlyDownloads = prefs.getBoolean("wifi_only_downloads", false),
         subtitleLanguage = prefs.getString("subtitle_language", null),
-        recentSubtitleLanguages = prefs.getString("subtitle_recent", "").orEmpty()
-            .split(',').filter { it.isNotBlank() },
+        languageUses = readUses(),
+        bibleLanguage = prefs.getString("bible_language", null),
         subtitleScale = prefs.getFloat("subtitle_scale", 1f),
         backgroundPlayback = prefs.getBoolean("background_playback", true),
         autoPictureInPicture = prefs.getBoolean("auto_pip", true),
@@ -123,7 +143,9 @@ class SettingsRepository(context: Context) {
             .putString("download_quality", s.downloadQuality)
             .putBoolean("wifi_only_downloads", s.wifiOnlyDownloads)
             .putString("subtitle_language", s.subtitleLanguage)
-            .putString("subtitle_recent", s.recentSubtitleLanguages.joinToString(","))
+            .putString("language_uses", s.languageUses.joinToString(",") { "${it.code}:${it.count}" })
+            .remove("subtitle_recent")
+            .putString("bible_language", s.bibleLanguage)
             .putFloat("subtitle_scale", s.subtitleScale)
             .putBoolean("background_playback", s.backgroundPlayback)
             .putBoolean("auto_pip", s.autoPictureInPicture)
@@ -134,8 +156,22 @@ class SettingsRepository(context: Context) {
             .apply()
     }
 
+    /** "S:3,F:1"; before 1.11 only the recent codes were kept ("S,F"), each counted once. */
+    private fun readUses(): List<LanguageUse> {
+        prefs.getString("language_uses", null)?.let { saved ->
+            return saved.split(',').mapNotNull { entry ->
+                val code = entry.substringBefore(':')
+                val count = entry.substringAfter(':', "").toIntOrNull() ?: return@mapNotNull null
+                LanguageUse(code, count).takeIf { code.isNotBlank() }
+            }
+        }
+        return prefs.getString("subtitle_recent", "").orEmpty().split(',').filter { it.isNotBlank() }.map { LanguageUse(it, 1) }
+    }
+
     companion object {
         const val PREFS = "jw_pocket_settings"
         const val KEY_APP_LANGUAGE = "app_language"
+        /** Languages remembered for the counts; enough that a once-a-year pick doesn't push out a favorite. */
+        private const val MAX_USES = 12
     }
 }

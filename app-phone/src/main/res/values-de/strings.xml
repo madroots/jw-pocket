@@ -149,7 +149,6 @@
     <string name="player_search_languages">Sprachen suchen</string>
     <string name="player_subtitles_off_choice">Aus</string>
     <string name="player_subtitles_same_as_video">Wie das Video</string>
-    <string name="player_subtitles_recently_used">Zuletzt verwendet · %1$s</string>
     <string name="player_subtitles_no_others">Für dieses Video gibt es keine weiteren Untertitelsprachen.</string>
     <string name="player_subtitles_no_match">Keine Sprache passt zu „%1$s“.</string>
     <string name="player_subtitles_none">Keine Untertitel für dieses Video.</string>

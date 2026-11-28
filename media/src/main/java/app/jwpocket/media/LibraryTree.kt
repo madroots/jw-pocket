@@ -48,6 +48,7 @@ internal class LibraryTree(private val context: Context) {
     private val categories = ConcurrentHashMap<String, Pair<Long, CategoryContent>>()
 
     private val language get() = graph.core.settings.current.languageCode
+    private val bibleLanguage get() = graph.core.settings.current.bibleLanguageCode
 
     fun root(browser: MediaSession.ControllerInfo, params: LibraryParams?): MediaItem {
         params?.extras?.getInt(MediaConstants.EXTRAS_KEY_ROOT_CHILDREN_LIMIT, 0)?.takeIf { it > 0 }
@@ -69,7 +70,7 @@ internal class LibraryTree(private val context: Context) {
             }
             // Root entries that didn't fit as tabs.
             parentId == BROWSE -> topFolders(language).drop((rootLimit(browser, Int.MAX_VALUE) ?: (FIXED.size + 1)) - 1)
-            parentId == BIBLE -> bibleChildren(language)
+            parentId == BIBLE -> bibleChildren(bibleLanguage)
             parentId.startsWith(CATEGORY) -> {
                 val key = parentId.removePrefix(CATEGORY)
                 val content = category(language, key) ?: return null
@@ -91,7 +92,7 @@ internal class LibraryTree(private val context: Context) {
             mediaId == BROWSE -> folder(BROWSE, context.getString(R.string.auto_browse))
             mediaId == BIBLE -> folder(BIBLE, context.getString(R.string.auto_bible))
             mediaId.startsWith(BIBLE_BOOK) -> mediaId.removePrefix(BIBLE_BOOK).toIntOrNull()
-                ?.let { n -> graph.core.bible.books(language)?.firstOrNull { it.number == n } }?.let { folder(mediaId, it.name) }
+                ?.let { n -> graph.core.bible.books(bibleLanguage)?.firstOrNull { it.number == n } }?.let { folder(mediaId, it.name) }
             mediaId in FIXED -> fixedFolder(mediaId)
             mediaId.startsWith(CATEGORY) -> topFolders(language).firstOrNull { it.mediaId == mediaId }
             mediaId.startsWith(ROW) -> {
@@ -130,7 +131,7 @@ internal class LibraryTree(private val context: Context) {
         if (folder.isNotEmpty()) {
             val language = language
             // A Bible chapter goes on into the following chapters and books.
-            val videos = if (folder.startsWith(BIBLE_BOOK)) graph.core.bible.books(language)?.flatMap { b -> b.chapters.map { it.video } }
+            val videos = if (folder.startsWith(BIBLE_BOOK)) graph.core.bible.books(bibleLanguage)?.flatMap { b -> b.chapters.map { it.video } }
                 else listed["$language|$folder"] ?: videos(folder, language)
             val index = videos?.indexOfFirst { it.id == videoId } ?: -1
             if (videos != null && index >= 0) return videos to index
@@ -150,7 +151,7 @@ internal class LibraryTree(private val context: Context) {
     private fun request(video: Video): PlayRequest {
         val settings = graph.core.settings.current
         val listening = settings.listenSaver.applies(graph.core.network.isMetered())
-        return PlayRequest(graph.core.library.findLoaded(video.id) ?: video, settings.languageCode, null, settings.subtitleLanguage, listening)
+        return PlayRequest(graph.core.library.findLoaded(video.id) ?: video, if (video.isBible) settings.bibleLanguageCode else settings.languageCode, null, settings.subtitleLanguage, listening)
     }
 
     /** Videos of a folder that lists videos, or null for any other id. */
@@ -163,7 +164,7 @@ internal class LibraryTree(private val context: Context) {
             folder == LATEST -> core.library.latest(language).settle()
             folder.startsWith(CATEGORY) -> category(language, folder.removePrefix(CATEGORY))?.sections?.singleOrNull()?.videos
             folder.startsWith(BIBLE_BOOK) -> folder.removePrefix(BIBLE_BOOK).toIntOrNull()
-                ?.let { n -> core.bible.books(language)?.firstOrNull { it.number == n } }?.chapters?.map { it.video }
+                ?.let { n -> core.bible.books(bibleLanguage)?.firstOrNull { it.number == n } }?.chapters?.map { it.video }
             folder.startsWith(ROW) -> {
                 val (categoryKey, rowKey) = folder.removePrefix(ROW).split(':', limit = 2).takeIf { it.size == 2 } ?: return null
                 category(language, categoryKey)?.sections?.firstOrNull { it.key == rowKey }?.videos

@@ -88,7 +88,6 @@
     <string name="player_subtitles">Ondertiteling</string>
     <string name="player_speed">Snelheid</string>
     <string name="player_subtitles_same_as_video">Zelfde als de video</string>
-    <string name="player_subtitles_recent">Recent gebruikt</string>
     <string name="player_subtitles_remembered">Onthouden voor de volgende video\'s.</string>
     <string name="player_subtitles_off">Uit</string>
     <string name="player_playback_speed">Afspeelsnelheid</string>

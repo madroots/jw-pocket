@@ -3,6 +3,7 @@ package app.jwpocket.core.data
 import app.jwpocket.core.network.MediatorApi
 import app.jwpocket.core.network.PocketJson
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -11,7 +12,9 @@ internal data class GithubRelease(
     val body: String? = null,
     val prerelease: Boolean = false,
     val assets: List<GithubAsset> = emptyList(),
-)
+) {
+    val version: String get() = tagName.removePrefix("v")
+}
 
 @Serializable
 internal data class GithubAsset(
@@ -24,7 +27,9 @@ data class AppUpdate(val versionName: String, val notes: String?, val apkUrl: St
 
 /**
  * Self-update from the GitHub releases of [repo]: one API call reads the
- * latest release's tag, notes and the APK named [apkAsset].
+ * recent releases; the newest one gives the APK named [apkAsset], and the
+ * notes of every release newer than the installed version are listed, so
+ * skipping versions doesn't hide what changed.
  */
 class UpdateRepository(
     private val api: MediatorApi,
@@ -33,13 +38,25 @@ class UpdateRepository(
 ) {
     /** The update when the latest release is newer than [currentVersion]; null otherwise or on error. */
     suspend fun check(currentVersion: String): Result<AppUpdate?> = runCatching {
-        val text = api.getText("https://api.github.com/repos/$repo/releases/latest")
+        val text = api.getText("https://api.github.com/repos/$repo/releases?per_page=30")
             ?: error("Couldn't reach GitHub.")
-        val release = PocketJson.decodeFromString(GithubRelease.serializer(), text)
-        val version = release.tagName.removePrefix("v")
-        val asset = release.assets.firstOrNull { it.name == apkAsset }
-        if (release.prerelease || asset == null || !isNewer(version, currentVersion)) null
-        else AppUpdate(version, plainNotes(release.body), asset.url, asset.size)
+        val releases = PocketJson.decodeFromString(ListSerializer(GithubRelease.serializer()), text)
+        val newer = releases.filter { !it.prerelease && isNewer(it.version, currentVersion) }.sortedWith { a, b ->
+            when { isNewer(a.version, b.version) -> -1; isNewer(b.version, a.version) -> 1; else -> 0 }
+        }
+        val latest = newer.firstOrNull() ?: return@runCatching null
+        val asset = latest.assets.firstOrNull { it.name == apkAsset } ?: return@runCatching null
+        AppUpdate(latest.version, changes(newer), asset.url, asset.size)
+    }
+
+    /** Each release's notes, newest first; headed by its version when there are several. */
+    private fun changes(newer: List<GithubRelease>): String? {
+        val notes = newer.mapNotNull { release -> plainNotes(release.body)?.let { release.version to bullets(it) } }
+        return when (notes.size) {
+            0 -> null
+            1 -> notes.single().second
+            else -> notes.joinToString("\n\n") { (version, text) -> "$version\n$text" }
+        }
     }
 
     companion object {
@@ -65,5 +82,11 @@ class UpdateRepository(
             ?.replace(Regex("\n{3,}"), "\n\n")
             ?.trim()
             ?.ifBlank { null }
+
+        /** Every line of a release's notes as a bullet (one-line notes too). */
+        fun bullets(notes: String): String = notes.lineSequence()
+            .map { it.trim() }
+            .filter { it.isNotEmpty() }
+            .joinToString("\n") { if (it.startsWith("• ")) it else "• $it" }
     }
 }

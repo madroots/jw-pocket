@@ -149,7 +149,6 @@
     <string name="player_search_languages">Talen zoeken</string>
     <string name="player_subtitles_off_choice">Uit</string>
     <string name="player_subtitles_same_as_video">Zelfde als de video</string>
-    <string name="player_subtitles_recently_used">Recent gebruikt · %1$s</string>
     <string name="player_subtitles_no_others">Deze video heeft geen andere ondertitelingstalen.</string>
     <string name="player_subtitles_no_match">Geen taal gevonden voor \"%1$s\".</string>
     <string name="player_subtitles_none">Geen ondertiteling voor deze video.</string>

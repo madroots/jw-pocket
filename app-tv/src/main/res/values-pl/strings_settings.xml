@@ -16,7 +16,6 @@
     <string name="settings_version">Wersja %1$s</string>
     <string name="settings_disclaimer">JW Pocket to prywatny, niekomercyjny projekt, niepowiązany ze Świadkami Jehowy ani przez nich niepopierany. Filmy należą do ich właścicieli i pochodzą z publicznego serwisu wideo jw.org.</string>
     <string name="settings_subtitles_note">Wyświetlane w każdym filmie, który ma napisy w tym języku.</string>
-    <string name="settings_recently_used">Ostatnio używane</string>
 
     <string name="cascade_app_title">Filmy też w języku: %1$s?</string>
     <string name="cascade_app_text">Możesz też oglądać filmy (i ich napisy) w języku: %1$s. Każdy język można tu później zmienić.</string>

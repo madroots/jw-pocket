@@ -30,6 +30,7 @@ import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material.icons.rounded.Replay
 import androidx.compose.material.icons.rounded.SkipNext
 import androidx.compose.material.icons.rounded.SkipPrevious
+import androidx.compose.material.icons.rounded.SmartDisplay
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -57,6 +58,7 @@ import androidx.compose.ui.unit.sp
 import app.jwpocket.core.data.BibleChapter
 import app.jwpocket.core.model.Video
 import app.jwpocket.core.util.formatBytes
+import app.jwpocket.core.util.formatDuration
 import app.jwpocket.media.PlaybackState
 import app.jwpocket.phone.R
 import app.jwpocket.phone.ui.LocalPocket
@@ -102,6 +104,21 @@ internal fun BiblePlayerBody(state: PlaybackState, video: Video, onSheet: (Sheet
                     stringResource(R.string.bible_chapter_of, c.chapter, book.chapters.size) + " · " + stringResource(R.string.bible_verse_of, verse, c.verseCount),
                     style = MaterialTheme.typography.bodySmall, color = Pocket.TextSecondary,
                 )
+            }
+            // The book's introduction video, offered quietly: this stays an audio player.
+            val intro by produceState<Video?>(null, language, c?.book) { value = if (language != null && c != null) bible.introduction(language, c.book) else null }
+            intro?.let { v ->
+                Row(
+                    Modifier.padding(top = 6.dp).clip(RoundedCornerShape(50)).clickable { language?.let { connection.playIntroduction(v, it) } }.padding(horizontal = 10.dp, vertical = 4.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Icon(Icons.Rounded.SmartDisplay, null, tint = Pocket.TextMuted, modifier = Modifier.size(14.dp))
+                    Spacer(Modifier.width(6.dp))
+                    Text(
+                        listOfNotNull(v.title, formatDuration(v.duration).ifEmpty { null }).joinToString(" · "),
+                        style = MaterialTheme.typography.labelMedium, color = Pocket.TextMuted, maxLines = 1,
+                    )
+                }
             }
         }
 

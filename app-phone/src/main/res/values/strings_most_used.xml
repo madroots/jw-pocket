@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Detail of the two languages picked most, pinned at the top of language lists. %1$s: the language's name in the app language. -->
+    <string name="player_subtitles_most_used">Most used · %1$s</string>
+</resources>

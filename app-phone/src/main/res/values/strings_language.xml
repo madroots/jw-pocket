@@ -7,6 +7,4 @@
     <string name="player_language_library">Library language</string>
     <!-- %1$s: the language picked, %2$s: the library language played instead. -->
     <string name="player_language_missing">%1$s couldn\'t be loaded. Playing in %2$s.</string>
-    <!-- Accessibility action of the pill that flips back to the other language. %1$s: language name. -->
-    <string name="player_language_switch">Switch to %1$s</string>
 </resources>

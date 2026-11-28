@@ -81,7 +81,6 @@
     <string name="player_subtitles">Legendas</string>
     <string name="player_speed">Velocidade</string>
     <string name="player_subtitles_same_as_video">Igual ao vídeo</string>
-    <string name="player_subtitles_recent">Usados recentemente</string>
     <string name="player_subtitles_remembered">Será lembrado nos próximos vídeos.</string>
     <string name="player_subtitles_off">Desativadas</string>
     <string name="player_playback_speed">Velocidade de reprodução</string>

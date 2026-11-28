@@ -4,5 +4,4 @@
     <string name="player_language_hint">Лише для цього відео, з місця, де ви зараз. Інші відео залишаться мовою %1$s.</string>
     <string name="player_language_library">Мова бібліотеки</string>
     <string name="player_language_missing">Не вдалося завантажити мову %1$s. Відтворюється %2$s.</string>
-    <string name="player_language_switch">Перемкнути на %1$s</string>
 </resources>

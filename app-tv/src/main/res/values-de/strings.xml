@@ -88,7 +88,6 @@
     <string name="player_subtitles">Untertitel</string>
     <string name="player_speed">Geschwindigkeit</string>
     <string name="player_subtitles_same_as_video">Wie das Video</string>
-    <string name="player_subtitles_recent">Zuletzt verwendet</string>
     <string name="player_subtitles_remembered">Für die nächsten Videos gespeichert.</string>
     <string name="player_subtitles_off">Aus</string>
     <string name="player_playback_speed">Wiedergabegeschwindigkeit</string>

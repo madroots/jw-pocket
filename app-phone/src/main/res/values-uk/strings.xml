@@ -148,7 +148,6 @@
     <string name="player_search_languages">Пошук мов</string>
     <string name="player_subtitles_off_choice">Вимк.</string>
     <string name="player_subtitles_same_as_video">Мовою відео</string>
-    <string name="player_subtitles_recently_used">Нещодавні · %1$s</string>
     <string name="player_subtitles_no_others">Це відео не має субтитрів іншими мовами.</string>
     <string name="player_subtitles_no_match">Немає мов за запитом «%1$s».</string>
     <string name="player_subtitles_none">Це відео не має субтитрів.</string>

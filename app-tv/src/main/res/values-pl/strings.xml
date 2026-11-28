@@ -94,7 +94,6 @@
     <string name="player_subtitles">Napisy</string>
     <string name="player_speed">Prędkość</string>
     <string name="player_subtitles_same_as_video">Jak w filmie</string>
-    <string name="player_subtitles_recent">Ostatnio używane</string>
     <string name="player_subtitles_remembered">Zapamiętano dla kolejnych filmów.</string>
     <string name="player_subtitles_off">Wyłączone</string>
     <string name="player_playback_speed">Prędkość odtwarzania</string>

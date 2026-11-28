@@ -16,7 +16,6 @@
     <string name="settings_version">Verzia %1$s</string>
     <string name="settings_disclaimer">JW Pocket je osobný, nekomerčný projekt, ktorý nie je nijako spojený s Jehovovými svedkami ani nimi schválený. Videá patria ich vlastníkom a pochádzajú z verejnej videoslužby jw.org.</string>
     <string name="settings_subtitles_note">Zobrazia sa pri každom videu, ktoré v ňom bolo zverejnené.</string>
-    <string name="settings_recently_used">Nedávno použité</string>
 
     <string name="cascade_app_title">Aj videá v jazyku %1$s?</string>
     <string name="cascade_app_text">Videá (aj ich titulky) môžeš pozerať tiež v jazyku %1$s. Každý jazyk môžeš neskôr zmeniť tu.</string>

@@ -16,7 +16,6 @@
     <string name="settings_version">Verzió: %1$s</string>
     <string name="settings_disclaimer">A JW Pocket személyes, nem kereskedelmi projekt, amely nem áll kapcsolatban Jehova Tanúival, és nem is ők hagyták jóvá. A videók a tulajdonosaikéi, és a jw.org nyilvános videószolgáltatásából származnak.</string>
     <string name="settings_subtitles_note">Minden olyan videón megjelenik, amelyhez ezen a nyelven kiadták.</string>
-    <string name="settings_recently_used">Nemrég használt</string>
     <string name="cascade_app_title">A videók is ezen a nyelven: %1$s?</string>
     <string name="cascade_app_text">A videókat (és a feliratukat) is nézheted ezen a nyelven: %1$s. Az egyes nyelveket később itt is módosíthatod.</string>
     <string name="cascade_app_yes">Videók és feliratok</string>
